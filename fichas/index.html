@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fichas · Matemáticas OAOA · CEIP Camino Largo</title>
+<style>
+:root{
+  --ink:#17384e;--muted:#60798a;--line:#c8dce7;--bg:#eef7fb;
+  --blue:#469ac7;--green:#69aa7b;--white:#fff;--shadow:0 8px 22px rgba(35,69,90,.08)
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+.site-header{background:#fff;border-bottom:2px solid var(--line);position:sticky;top:0;z-index:20}
+.header-inner{max-width:1120px;margin:auto;padding:14px 20px 0}
+.brand-row{display:flex;align-items:end;justify-content:space-between;gap:16px}
+.brand h1{margin:0;font-size:clamp(1.35rem,2.4vw,2rem)}
+.brand p{margin:4px 0 0;color:var(--muted);font-weight:700}
+.main-tabs{display:flex;gap:8px;margin-top:14px}
+.main-tab{
+  min-width:150px;text-align:center;text-decoration:none;color:var(--ink);font-weight:900;
+  padding:11px 20px;border:2px solid var(--line);border-bottom:0;border-radius:16px 16px 0 0;
+  background:#f7fbfd;transform:translateY(2px)
+}
+.main-tab:hover{background:#edf7fb;border-color:#9cc7dc}
+.main-tab.active{background:var(--bg);border-color:var(--blue);color:#236f98}
+.page-main{max-width:1120px;margin:auto;padding:22px}
+.section-title{margin:0 0 6px;font-size:1.35rem}
+.section-lead{margin:0 0 18px;color:var(--muted);font-weight:700}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.card{
+  background:#fff;border:2px solid var(--line);border-radius:20px;padding:18px;
+  display:grid;grid-template-columns:58px 1fr auto;gap:14px;align-items:center;
+  text-decoration:none;color:inherit;box-shadow:var(--shadow);transition:.16s
+}
+.card:hover{transform:translateY(-2px);border-color:var(--blue)}
+.icon{width:58px;height:58px;border-radius:16px;background:#e6f4fa;display:grid;place-items:center;font-size:1.8rem}
+.card h2{margin:0;font-size:1.08rem}.card p{margin:5px 0 0;color:var(--muted);font-weight:700}
+.arrow{font-size:1.8rem;color:var(--blue);font-weight:900}
+.note{margin-top:16px;background:#fff9dd;border:2px solid #e2c873;border-radius:15px;padding:12px 15px;font-weight:800;color:#665421}
+@media(max-width:760px){
+  .header-inner{padding:12px 14px 0}.brand-row{align-items:flex-start}.page-main{padding:14px}
+  .main-tabs{gap:5px}.main-tab{min-width:0;flex:1;padding:10px 8px}
+  .cards{grid-template-columns:1fr}.card{padding:14px}
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand-row">
+      <div class="brand">
+        <h1>Matemáticas OAOA</h1>
+        <p>1.º de Primaria · CEIP Camino Largo</p>
+      </div>
+    </div>
+    <nav class="main-tabs" aria-label="Secciones principales">
+      <a class="main-tab active" href="../fichas/" aria-current="page">📘 Fichas</a>
+      <a class="main-tab" href="../recursos/">🧰 Recursos</a>
+      <a class="main-tab" href="../vocabulario/">🎵 Vocabulario</a>
+      <a class="main-tab" href="../juegos/">🎮 Juegos</a>
+      <a class="main-tab" href="../examenes/">📝 Exámenes</a>
+    </nav>
+  </div>
+</header>
+
+<main class="page-main">
+  <h2 class="section-title">Fichas interactivas</h2>
+  <p class="section-lead">Selecciona una ficha para trabajarla en la PDI o en el ordenador.</p>
+  <div class="cards">
+    <a class="card" href="../numeros-hasta-el-4/"><div class="icon">🔢</div><div><h2>Números hasta el 4</h2><p>Abrir actividad interactiva</p></div><span class="arrow">→</span></a>
+<a class="card" href="../numero-5/"><div class="icon">5️⃣</div><div><h2>Número 5</h2><p>Abrir actividad interactiva</p></div><span class="arrow">→</span></a>
+<a class="card" href="../cuatro-o-cinco/"><div class="icon">🔍</div><div><h2>4 o 5 · Diferencias</h2><p>Abrir actividad interactiva</p></div><span class="arrow">→</span></a>
+<a class="card" href="../complementarios/"><div class="icon">🧩</div><div><h2>Complementarios 2, 3 y 4</h2><p>Abrir actividad interactiva</p></div><span class="arrow">→</span></a>
+<a class="card" href="../pagina-9/"><div class="icon">🌳</div><div><h2>Página 9 · Parte–todo</h2><p>Abrir actividad interactiva</p></div><span class="arrow">→</span></a>
+<a class="card" href="../pagina-10/"><div class="icon">➕</div><div><h2>Página 10 · Sumas y resultados</h2><p>Abrir actividad interactiva</p></div><span class="arrow">→</span></a>
+<a class="card" href="../pagina-11/"><div class="icon">↔️</div><div><h2>Página 11 · Propiedad conmutativa</h2><p>Abrir actividad interactiva</p></div><span class="arrow">→</span></a>
+<a class="card" href="../pagina-13/"><div class="icon">6️⃣</div><div><h2>Página 13 · Número 6</h2><p>Abrir actividad interactiva</p></div><span class="arrow">→</span></a>
+<a class="card" href="../pagina-14/"><div class="icon">🌿</div><div><h2>Página 14 · 5 o 6 y diagramas</h2><p>Abrir actividad interactiva</p></div><span class="arrow">→</span></a>
+<a class="card" href="../pagina-16/"><div class="icon">7️⃣</div><div><h2>Página 16 · Número 7</h2><p>Juego 2×1, parejas del 7 y parte–todo</p></div><span class="arrow">→</span></a>
+<a class="card" href="../pagina-17/"><div class="icon">🎯</div><div><h2>Página 17 · Números hasta el 7</h2><p>Tarjetas rápidas, muros y moneda escondida</p></div><span class="arrow">→</span></a>
+<a class="card" href="../pagina-18/"><div class="icon">🧱</div><div><h2>Página 18 · Parejas del 5, 6 y 7</h2><p>Muros, pareja escondida y recuperación rápida</p></div><span class="arrow">→</span></a>
+<a class="card" href="../pagina-19/"><div class="icon">🌳</div><div><h2>Página 19 · Descomposición sucesiva</h2><p>Muro libre del 7, completar y árbol que crece</p></div><span class="arrow">→</span></a>
+<a class="card" href="../pagina-20/"><div class="icon">➕</div><div><h2>Página 20 · El número posterior</h2><p>Estrategia +1, escalera y “uno más”</p></div><span class="arrow">→</span></a>
+<a class="card" href="../pagina-21/"><div class="icon">💶</div><div><h2>Página 21 · Billetes y monedas</h2><p>Ladrillos, valor del dinero y situaciones de compra</p></div><span class="arrow">→</span></a>
+  </div>
+  <div class="note">Cada actividad tiene su propia URL. Dentro de cada ficha, «← Menú de fichas» vuelve a esta pantalla.</div>
+</main>
+<script src="../assets/fullscreen-persistent.js"></script>
+</body>
+</html>

@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Página 20 · El número posterior · Matemáticas OAOA</title>
+<style>
+:root{
+ --ink:#17384e;--muted:#60798a;--line:#bfd5e1;--bg:#eef7fb;--blue:#469ac7;
+ --ok:#e9f7ed;--bad:#fff1f1;--yellow:#f5d65c;
+ --r1:#f7f4ec;--r2:#d95757;--r3:#9acb6a;--r4:#b978b5;--r5:#edda4a;--r6:#2d7b4d;--r7:#202020;
+ --unit:36px
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+button{font:inherit}
+.app{height:100%;display:grid;grid-template-rows:auto auto minmax(0,1fr)}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 10px;background:#fff;border-bottom:2px solid var(--line)}
+.brand{display:flex;align-items:center;gap:9px;min-width:0}
+.brand .icon{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#9acb6a,#202020);color:#fff;display:grid;place-items:center;font-weight:1000}
+.brand h1{font-size:1.12rem;margin:0;white-space:nowrap}.brand small{display:block;color:var(--muted);font-weight:800;font-size:.72rem}
+.top-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.control,.action,.tab,.pick,.choice,.toolbtn,.pdf-type,.stepbtn{border:2px solid #b9cedb;background:#fff;color:var(--ink);border-radius:13px;font-weight:900;cursor:pointer}
+.control{padding:7px 10px;min-height:38px;text-decoration:none;display:inline-flex;align-items:center}.action{padding:8px 13px;min-height:42px}.action.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.tabs-wrap{padding:5px 7px;background:#fbfdff;border-bottom:2px solid var(--line)}
+.tabs{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:5px}.tab{padding:6px 2px;min-height:39px;font-size:.68rem}.tab.active{background:#dceff8;border-color:var(--blue)}.tab.done{background:#e9f6ed;border-color:#76ba8d;color:#326d46}
+.main{position:relative;min-height:0;overflow:hidden}.badge{position:absolute;right:9px;top:5px;z-index:20;background:#eef5f9;color:var(--muted);border-radius:999px;padding:4px 9px;font-size:.68rem;font-weight:1000}
+.step{display:none;position:absolute;inset:4px;padding:3px 8px;overflow:hidden}.step.active{display:block}
+.head{height:42px;display:flex;align-items:center;justify-content:center}.title{font-size:1.18rem;font-weight:1000}
+.card{background:#fff;border:2px solid var(--line);border-radius:18px;padding:11px}
+.feedback{max-width:980px;margin:7px auto 0;padding:8px 12px;border:2px solid #d4e1e9;border-radius:14px;background:#fff;display:flex;gap:9px;align-items:center;min-height:42px;font-weight:850}
+.feedback.ok{background:var(--ok);border-color:#7ac294}.feedback.err{background:var(--bad);border-color:#e5a1a1}
+.actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.prompt{font-size:1.08rem;font-weight:900;text-align:center;line-height:1.4}.sub{color:var(--muted);font-weight:800;text-align:center;line-height:1.4}.rule{padding:10px;background:#f7fbfd;border:2px solid #d3e3eb;border-radius:14px;font-weight:850;line-height:1.35}
+
+/* rods */
+.rod{--n:1;width:calc(var(--unit)*var(--n));height:38px;border-radius:7px;border:2px solid rgba(40,50,60,.3);display:grid;place-items:center;font-weight:1000;box-shadow:0 2px 4px rgba(0,0,0,.08);flex:0 0 auto}
+.rod[data-n="1"]{background:var(--r1);color:#333}.rod[data-n="2"]{background:var(--r2);color:#fff}.rod[data-n="3"]{background:var(--r3);color:#17384e}.rod[data-n="4"]{background:var(--r4);color:#fff}.rod[data-n="5"]{background:var(--r5);color:#333}.rod[data-n="6"]{background:var(--r6);color:#fff}.rod[data-n="7"]{background:var(--r7);color:#fff}.eq{font-size:1.3rem;font-weight:1000}.rodline{display:flex;align-items:center;justify-content:center;gap:5px}
+
+/* 1 */
+.plusone-layout{max-width:1060px;margin:auto;display:grid;grid-template-columns:1.25fr .75fr;gap:14px}
+.plusone-stage{min-height:340px;display:grid;align-content:center;gap:18px}
+.big-eq{font-size:3rem;font-weight:1000;text-align:center}
+.rod-demo{display:grid;gap:12px;justify-items:center}.rod-demo .rod{--unit:44px;height:48px}
+.number-picks{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.number-picks button{min-height:54px;font-size:1.2rem}.number-picks button.active{background:#dceff8;border-color:var(--blue)}
+.concept{display:grid;gap:10px;align-content:start}.concept-word{font-size:2rem;font-weight:1000;text-align:center;color:#17384e}
+
+/* 2 */
+.stairs-layout{max-width:1080px;margin:auto;display:grid;grid-template-columns:1.2fr .8fr;gap:14px}
+.stairs{display:grid;gap:7px;align-content:end;padding:12px}.stair-row{display:flex;align-items:center;gap:10px}.stair-label{width:38px;font-size:1.1rem;font-weight:1000;text-align:center}.stair-row .rod{--unit:32px;height:32px}.stair-row.highlight{background:#eef8fc;border-radius:12px;padding:5px}
+.machine{display:grid;align-content:center;gap:12px}.machine-box{border:3px solid #a8bfcb;border-radius:18px;background:#fff;min-height:145px;display:grid;place-items:center;text-align:center;font-size:1.45rem;font-weight:1000}.machine-arrow{font-size:2rem;text-align:center;font-weight:1000;color:#469ac7}
+
+/* 3 */
+.next-layout{max-width:1020px;margin:auto;display:grid;grid-template-columns:1.2fr .8fr;gap:14px}.next-stage{min-height:330px;display:grid;place-items:center;align-content:center;gap:18px}.next-q{font-size:4rem;font-weight:1000}.next-choices{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.next-choices button{min-height:70px;font-size:1.55rem}.score{font-size:2rem;font-weight:1000;text-align:center;background:#f2f8fb;border:2px solid #c8dce7;border-radius:15px;padding:12px}
+
+/* 4 */
+.compare-grid{max-width:1080px;margin:auto;display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.compare-card{display:grid;gap:11px;align-content:start}.compare-sum{font-size:2rem;font-weight:1000;text-align:center}.compare-card .rodline .rod{--unit:28px;height:32px}.tag{justify-self:center;padding:7px 12px;border-radius:999px;font-size:.8rem;font-weight:1000;background:#eef5f9;border:2px solid #c8dce7}.tag.posterior{background:#e9f7ed;border-color:#79b68c}.compare-note{grid-column:1/-1}
+
+/* 5 */
+.visual-layout{max-width:1060px;margin:auto;display:grid;grid-template-columns:1.15fr .85fr;gap:14px}.object-stage{min-height:330px;display:grid;align-content:center;gap:15px}.objects{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;font-size:3rem}.new-object{animation:pop .35s ease}@keyframes pop{0%{transform:scale(.2);opacity:.2}100%{transform:scale(1);opacity:1}}.visual-choices{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.visual-choices button{min-height:62px;font-size:1.3rem}
+
+/* 6 */
+.problem{max-width:1040px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:14px}.problem-text{font-size:1.08rem;font-weight:900;line-height:1.5}.problem-pic{font-size:3rem;text-align:center;padding:20px}.answer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.answer-grid button{min-height:62px;font-size:1.3rem}.reveal{margin-top:10px;padding:10px;border:2px solid #7fbd92;background:#eef9f1;border-radius:14px;font-weight:900}.reveal[hidden]{display:none}
+
+/* 7 */
+.sheet-stage{height:calc(100% - 44px);display:grid;grid-template-columns:minmax(0,1fr) 225px;gap:10px;min-height:0}.viewer{position:relative;min-height:0;background:#dfe8ee;border:2px solid var(--line);border-radius:18px;overflow:auto;display:grid;place-items:start center;padding:10px}.sheet-transform{position:relative;transform-origin:top center;max-width:760px;width:min(100%,700px)}.sheet-img{display:block;width:100%;height:auto;background:#fff;border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,.14);user-select:none;-webkit-user-drag:none}#annotCanvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}.tools{display:flex;flex-direction:column;gap:7px;background:#fff;border:2px solid var(--line);border-radius:17px;padding:8px;align-self:start;max-height:100%;overflow:auto}.tools h3{margin:0;text-align:center;font-size:.9rem}.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.toolbtn{min-height:40px;padding:6px;font-size:.76rem}.toolbtn.active{background:#dceff8;border-color:var(--blue)}.colors{display:flex;justify-content:center;gap:8px}.color{width:30px;height:30px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #b5c9d4;cursor:pointer}.color.active{box-shadow:0 0 0 4px #ffcf58}
+
+/* 8 */
+.pdf-layout{height:calc(100% - 44px);display:grid;grid-template-columns:220px minmax(0,1fr);gap:12px;max-width:1100px;margin:auto}.pdf-types{display:grid;gap:7px;align-content:start}.pdf-types h3{margin:3px;text-align:center}.pdf-type{padding:9px;min-height:45px;text-align:left}.pdf-type.selected{background:#dceff8;border-color:var(--blue)}.pdf-panel{background:#fff;border:2px solid var(--line);border-radius:18px;padding:10px;display:grid;grid-template-rows:auto minmax(0,1fr) auto;min-height:0}.pdf-title{text-align:center;font-weight:1000}.pdf-preview{display:grid;place-items:center;overflow:auto;background:#eef3f6;border-radius:12px;padding:8px;min-height:0}.pdf-preview canvas{max-height:100%;max-width:100%;width:auto;height:auto;box-shadow:0 3px 12px rgba(0,0,0,.16)}
+@media(max-width:920px){.brand small{display:none}.tabs{grid-template-columns:repeat(4,1fr)}.plusone-layout,.stairs-layout,.next-layout,.visual-layout,.problem{grid-template-columns:1fr}.compare-grid{grid-template-columns:1fr}.compare-note{grid-column:1}.sheet-stage{grid-template-columns:1fr 180px}.pdf-layout{grid-template-columns:185px 1fr}.step{overflow:auto}.rod{--unit:30px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+ <div class="brand"><div class="icon">+1</div><div><h1>Página 20 · El número posterior</h1><small>Uno más · escalera · sucesor · conexiones entre sumas</small></div></div>
+ <div class="top-actions"><a class="control" href="../fichas/">← Menú de fichas</a><button class="control" id="soundBtn">🔊 Sonido</button></div>
+</header>
+<nav class="tabs-wrap"><div class="tabs">
+ <button class="tab active" data-step="1">1 · Uno más</button>
+ <button class="tab" data-step="2">2 · Escalera +1</button>
+ <button class="tab" data-step="3">3 · ¿Cuál sigue?</button>
+ <button class="tab" data-step="4">4 · Conecto sumas</button>
+ <button class="tab" data-step="5">5 · Añade uno</button>
+ <button class="tab" data-step="6">6 · Problema</button>
+ <button class="tab" data-step="7">7 · Ver la página</button>
+ <button class="tab" data-step="8">8 · Páginas imprimibles</button>
+</div></nav>
+
+<main class="main"><div class="badge">P20 · OAOA</div>
+
+<section class="step active" data-step="1">
+ <div class="head"><div class="title">1. El posterior es uno más</div></div>
+ <div class="plusone-layout">
+  <div class="card plusone-stage">
+   <div class="big-eq" id="plusEq">5 + 1 = 6</div>
+   <div class="rod-demo">
+    <div class="rodline" id="plusRods"></div>
+    <div class="sub">La regleta blanca vale 1. Al añadirla construimos exactamente la siguiente longitud.</div>
+   </div>
+   <div class="number-picks" id="numberPicks"></div>
+  </div>
+  <div class="concept">
+   <div class="card"><div class="prompt">Palabra matemática</div><div class="concept-word">POSTERIOR</div><div class="sub">Es el número que viene justo después.</div></div>
+   <div class="card"><div class="prompt">Regla que comprendemos</div><div class="rule"><strong>POSTERIOR = +1</strong><br>El posterior de 5 es 6 porque 5 + 1 = 6.</div></div>
+  </div>
+ </div>
+ <div class="feedback" id="fb1"><span>➕</span><span>No memorizamos una flecha: construimos físicamente “uno más”.</span></div>
+</section>
+
+<section class="step" data-step="2">
+ <div class="head"><div class="title">2. Escalera de regletas · subo un escalón</div></div>
+ <div class="stairs-layout">
+  <div class="card stairs" id="stairs"></div>
+  <div class="card machine">
+   <div class="machine-box" id="machineIn">ENTRA<br><strong>4</strong></div>
+   <div class="machine-arrow">＋ 1 ↓</div>
+   <div class="machine-box" id="machineOut">SALE<br><strong>5</strong></div>
+   <div class="actions"><button class="action primary" id="nextMachine">Otro número</button></div>
+   <div class="rule">Cada vez que sumo 1 subo exactamente un escalón en la escalera.</div>
+  </div>
+ </div>
+ <div class="feedback" id="fb2"><span>🪜</span><span>Observa el patrón: 2→3, 3→4, 4→5, 5→6, 6→7.</span></div>
+</section>
+
+<section class="step" data-step="3">
+ <div class="head"><div class="title">3. ¿Cuál es el número posterior?</div></div>
+ <div class="next-layout">
+  <div class="card next-stage">
+   <div class="sub">Piensa “uno más”, no recites toda la serie desde 1.</div>
+   <div class="next-q" id="nextQ">4 → ?</div>
+   <div class="next-choices" id="nextChoices"></div>
+  </div>
+  <div class="card">
+   <div class="score">Aciertos: <span id="nextScore">0</span></div>
+   <div class="rule">1️⃣ Mira el número.</div>
+   <div class="rule">2️⃣ Imagina una unidad más.</div>
+   <div class="rule">3️⃣ Di el posterior.</div>
+   <div class="rule">4️⃣ Comprueba con la escalera si lo necesitas.</div>
+  </div>
+ </div>
+ <div class="feedback" id="fb3"><span>🎯</span><span>El posterior está a una unidad de distancia.</span></div>
+</section>
+
+<section class="step" data-step="4">
+ <div class="head"><div class="title">4. Las sumas de la ficha · ¿todas significan “posterior”?</div></div>
+ <div class="compare-grid" id="compareGrid"></div>
+ <div class="feedback" id="fb4"><span>🔗</span><span>Todas pueden dar 6, pero solo algunas muestran directamente la estrategia +1.</span></div>
+</section>
+
+<section class="step" data-step="5">
+ <div class="head"><div class="title">5. Añade un objeto · piensa sin volver a contar todo</div></div>
+ <div class="visual-layout">
+  <div class="card object-stage">
+   <div class="prompt" id="objectPrompt">Hay 4 flores. Llega una más.</div>
+   <div class="objects" id="objects"></div>
+   <div class="actions"><button class="action primary" id="addOne">＋ Añadir una</button><button class="action" id="newObjects">Otra ronda</button></div>
+  </div>
+  <div class="card">
+   <div class="prompt">¿Cuántas hay ahora?</div>
+   <div class="visual-choices" id="visualChoices"></div>
+   <div class="rule">Si ya sabes que había 4, no necesitas volver a contar 1, 2, 3, 4. Piensa: <strong>4 y una más son 5</strong>.</div>
+  </div>
+ </div>
+ <div class="feedback" id="fb5"><span>🌼</span><span>El +1 es una estrategia de cálculo, no solo una secuencia oral.</span></div>
+</section>
+
+<section class="step" data-step="6">
+ <div class="head"><div class="title">6. Problema · llega uno más</div></div>
+ <div class="problem">
+  <div class="card">
+   <div class="problem-text">En una hoja hay <strong>5 mariquitas</strong>. Llega <strong>1 mariquita más</strong>. ¿Cuántas mariquitas hay ahora?</div>
+   <div class="problem-pic">🐞 🐞 🐞 🐞 🐞 ➕ 🐞</div>
+   <div class="sub">Representa la situación como “uno más”.</div>
+  </div>
+  <div class="card">
+   <div class="prompt">5 + 1 = ?</div>
+   <div class="answer-grid" id="problemAnswers"></div>
+   <div class="reveal" id="problemReveal" hidden>✅ 5 + 1 = 6. El 6 es el número posterior a 5.</div>
+  </div>
+ </div>
+ <div class="feedback" id="fb6"><span>💭</span><span>Situación → +1 → posterior → respuesta.</span></div>
+</section>
+
+<section class="step" data-step="7">
+ <div class="head"><div class="title">7. Ver la página original · Página 20</div></div>
+ <div class="sheet-stage">
+  <div class="viewer"><div class="sheet-transform" id="sheetTransform">
+   <img class="sheet-img" id="sheetImg" src="../assets/pagina20-original.png" alt="Ficha original página 20">
+   <canvas id="annotCanvas"></canvas>
+  </div></div>
+  <aside class="tools">
+   <h3>Anotar sobre la ficha</h3>
+   <div class="tool-grid">
+    <button class="toolbtn active" data-tool="pen">✏️ Lápiz</button>
+    <button class="toolbtn" data-tool="highlight">🖍️ Resaltar</button>
+    <button class="toolbtn" data-tool="circle">⭕ Círculo</button>
+    <button class="toolbtn" data-tool="check">✓ Correcto</button>
+    <button class="toolbtn" data-tool="eraser">⌫ Goma</button>
+    <button class="toolbtn" id="undoBtn">↶ Deshacer</button>
+   </div>
+   <div class="colors">
+    <button class="color active" data-color="#e53935" style="background:#e53935"></button>
+    <button class="color" data-color="#1d74b7" style="background:#1d74b7"></button>
+    <button class="color" data-color="#27874a" style="background:#27874a"></button>
+   </div>
+   <label style="font-weight:850;font-size:.78rem">Grosor <input id="widthRange" type="range" min="2" max="12" value="5"></label>
+   <button class="toolbtn" id="zoomIn">＋ Zoom</button><button class="toolbtn" id="zoomOut">－ Zoom</button>
+   <button class="toolbtn" id="fitBtn">↔ Ajustar</button><button class="toolbtn" id="clearBtn">🧹 Limpiar</button>
+  </aside>
+ </div>
+</section>
+
+<section class="step" data-step="8">
+ <div class="head"><div class="title">8. Páginas imprimibles · Página 20</div></div>
+ <div class="pdf-layout">
+  <aside class="pdf-types">
+   <h3>Elige</h3>
+   <button class="pdf-type selected" data-pdf="ampliacion">Ampliación</button>
+   <button class="pdf-type" data-pdf="refuerzo">Refuerzo</button>
+   <button class="pdf-type" data-pdf="tarea">Tarea</button>
+   <button class="pdf-type" data-pdf="paso">Trabajo paso a paso</button>
+   <button class="pdf-type" data-pdf="pictogramas">Pictogramas</button>
+  </aside>
+  <div class="pdf-panel">
+   <div class="pdf-title" id="pdfTitle">Ampliación · Página 20</div>
+   <div class="pdf-preview" id="pdfPreview"></div>
+   <div class="actions"><button class="action" id="regenPdf">↻ Otra versión</button><button class="action primary" id="downloadPdf">⬇ Descargar PDF</button></div>
+  </div>
+ </div>
+</section>
+</main></div>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+let current=1,sound=true;
+function go(n){current=n;$$('.step').forEach(x=>x.classList.toggle('active',+x.dataset.step===n));$$('.tab').forEach(x=>{x.classList.toggle('active',+x.dataset.step===n);if(+x.dataset.step<n)x.classList.add('done')});location.hash='step'+n;if(n===7)setTimeout(resizeCanvas,100);if(n===8)setTimeout(renderPdf,50)}
+$$('.tab').forEach(b=>b.onclick=()=>go(+b.dataset.step));
+$('#soundBtn').onclick=()=>{sound=!sound;$('#soundBtn').textContent=sound?'🔊 Sonido':'🔇 Sonido'};
+function tone(ok=true){if(!sound)return;try{const A=new AudioContext(),o=A.createOscillator(),g=A.createGain();o.connect(g);g.connect(A.destination);o.frequency.value=ok?670:230;g.gain.setValueAtTime(.08,A.currentTime);g.gain.exponentialRampToValueAtTime(.001,A.currentTime+.18);o.start();o.stop(A.currentTime+.18)}catch(e){}}
+function fb(id,ok,icon,msg){const el=$(id);el.className='feedback '+(ok?'ok':'err');el.innerHTML=`<span>${icon}</span><span>${msg}</span>`}
+function rod(n){const d=document.createElement('div');d.className='rod';d.dataset.n=n;d.style.setProperty('--n',n);d.textContent=n;return d}
+function plus(host){const p=document.createElement('span');p.className='eq';p.textContent='+';host.append(p)}
+function equals(host){const p=document.createElement('span');p.className='eq';p.textContent='=';host.append(p)}
+
+/* 1 */
+let plusN=5;
+function renderPlusOne(){
+ $('#plusEq').textContent=`${plusN} + 1 = ${plusN+1}`;
+ const h=$('#plusRods');h.innerHTML='';h.append(rod(plusN));plus(h);h.append(rod(1));equals(h);h.append(rod(plusN+1));
+ $$('#numberPicks button').forEach(b=>b.classList.toggle('active',+b.dataset.n===plusN))
+}
+for(let n=2;n<=6;n++){const b=document.createElement('button');b.className='stepbtn';b.dataset.n=n;b.textContent=`${n} + 1`;b.onclick=()=>{plusN=n;renderPlusOne();tone(true);fb('#fb1',true,'➕',`El posterior de ${n} es ${n+1}: ${n} + 1 = ${n+1}.`)};$('#numberPicks').append(b)}
+renderPlusOne();
+
+/* 2 stairs */
+function renderStairs(high=4){const h=$('#stairs');h.innerHTML='';for(let n=1;n<=7;n++){const r=document.createElement('div');r.className='stair-row'+((n===high||n===high+1)?' highlight':'');const l=document.createElement('span');l.className='stair-label';l.textContent=n;r.append(l);r.append(rod(n));h.append(r)}}
+let machine=4;
+function renderMachine(){renderStairs(machine);$('#machineIn').innerHTML=`ENTRA<br><strong>${machine}</strong>`;$('#machineOut').innerHTML=`SALE<br><strong>${machine+1}</strong>`}
+$('#nextMachine').onclick=()=>{machine++;if(machine>6)machine=2;renderMachine();tone(true);fb('#fb2',true,'🪜',`${machine} + 1 = ${machine+1}. Has subido un escalón.`)};renderMachine();
+
+/* 3 */
+const nextRounds=[4,2,6,3,5];let ni=0,nextScore=0;
+function renderNext(){const n=nextRounds[ni];$('#nextQ').textContent=`${n} → ?`;const h=$('#nextChoices');h.innerHTML='';[n,n+1,Math.min(7,n+2)].filter((x,i,a)=>a.indexOf(x)===i).sort((a,b)=>a-b).forEach(v=>{const b=document.createElement('button');b.className='choice';b.textContent=v;b.onclick=()=>{if(v===n+1){nextScore++;$('#nextScore').textContent=nextScore;tone(true);b.style.background='#e9f7ed';fb('#fb3',true,'🎯',`${v} es uno más que ${n}.`);setTimeout(()=>{ni=(ni+1)%nextRounds.length;renderNext()},550)}else{tone(false);b.style.background='#fff1f1';fb('#fb3',false,'➕',`Piensa ${n} + 1, no ${n} + 0 ni ${n} + 2.`)}};h.append(b)})}
+renderNext();
+
+/* 4 */
+const comparisons=[
+ {a:5,b:1,r:6,label:'Sí: muestra +1',posterior:true,why:'Empiezo en 5 y añado una unidad. Llego a su posterior, 6.'},
+ {a:1,b:5,r:6,label:'Mismo total',posterior:false,why:'Da 6 porque 1 + 5 = 5 + 1. Es la misma suma con el orden cambiado.'},
+ {a:4,b:2,r:6,label:'Mismo total',posterior:false,why:'También forma 6, pero aquí estoy añadiendo 2, no buscando el posterior de 4.'},
+ {a:2,b:4,r:6,label:'Mismo total',posterior:false,why:'También forma 6. Cambiar el orden no cambia el total.'}
+];
+function buildCompare(){const h=$('#compareGrid');h.innerHTML='';comparisons.forEach(c=>{const card=document.createElement('div');card.className='card compare-card';const s=document.createElement('div');s.className='compare-sum';s.textContent=`${c.a} + ${c.b} = ${c.r}`;card.append(s);const rl=document.createElement('div');rl.className='rodline';rl.append(rod(c.a));plus(rl);rl.append(rod(c.b));equals(rl);rl.append(rod(c.r));card.append(rl);const tag=document.createElement('div');tag.className='tag'+(c.posterior?' posterior':'');tag.textContent=c.label;card.append(tag);const why=document.createElement('div');why.className='sub';why.textContent=c.why;card.append(why);h.append(card)});const note=document.createElement('div');note.className='card compare-note';note.innerHTML='<div class="prompt">Idea clave</div><div class="rule">La ficha usa 5+1, 1+5, 4+2 y 2+4. Todas dan 6. Pero la estrategia <strong>posterior = +1</strong> se ve directamente en 5+1. Las demás nos ayudan a conectar con la conmutatividad y con otras descomposiciones del 6.</div>';h.append(note)}
+buildCompare();
+
+/* 5 */
+const objectRounds=[{n:4,icon:'🌼',name:'flores'},{n:5,icon:'⭐',name:'estrellas'},{n:3,icon:'🍎',name:'manzanas'},{n:6,icon:'🔵',name:'fichas'}];let oi=0,added=false;
+function renderObjects(){const r=objectRounds[oi];added=false;$('#objectPrompt').textContent=`Hay ${r.n} ${r.name}. Llega una más.`;const h=$('#objects');h.innerHTML='';for(let i=0;i<r.n;i++){const s=document.createElement('span');s.textContent=r.icon;h.append(s)};const ch=$('#visualChoices');ch.innerHTML='';[r.n,r.n+1,Math.min(7,r.n+2)].filter((x,i,a)=>a.indexOf(x)===i).sort((a,b)=>a-b).forEach(v=>{const b=document.createElement('button');b.className='choice';b.textContent=v;b.onclick=()=>{if(!added){fb('#fb5',false,'👀','Primero pulsa “Añadir una” para representar la situación.');return}if(v===r.n+1){tone(true);b.style.background='#e9f7ed';fb('#fb5',true,'🌼',`${r.n} y una más son ${r.n+1}.`)}else{tone(false);b.style.background='#fff1f1';fb('#fb5',false,'➕',`Había ${r.n}. Solo hemos añadido 1.`)}};ch.append(b)})}
+$('#addOne').onclick=()=>{if(added)return;const r=objectRounds[oi],s=document.createElement('span');s.textContent=r.icon;s.className='new-object';$('#objects').append(s);added=true;tone(true)};
+$('#newObjects').onclick=()=>{oi=(oi+1)%objectRounds.length;renderObjects()};renderObjects();
+
+/* 6 */
+[5,6,7].forEach(n=>{const b=document.createElement('button');b.className='choice';b.textContent=n;b.onclick=()=>{if(n===6){tone(true);b.style.background='#e9f7ed';$('#problemReveal').hidden=false;fb('#fb6',true,'✅','5 + 1 = 6. El 6 es el posterior de 5.')}else{tone(false);b.style.background='#fff1f1';fb('#fb6',false,'🐞','Había 5 y llegó exactamente una más.')}};$('#problemAnswers').append(b)});
+
+/* 7 annotation */
+let tool='pen',color='#e53935',lw=5,zoom=1,history=[],drawing=false,start=null;
+const canvas=$('#annotCanvas'),ctx=canvas.getContext('2d'),img=$('#sheetImg');
+function resizeCanvas(){const rect=img.getBoundingClientRect();const d=window.devicePixelRatio||1;canvas.width=Math.max(1,Math.round(rect.width*d));canvas.height=Math.max(1,Math.round(rect.height*d));canvas.style.width=rect.width+'px';canvas.style.height=rect.height+'px';ctx.setTransform(d,0,0,d,0,0);redraw()}
+function redraw(){ctx.clearRect(0,0,canvas.width,canvas.height);history.forEach(drawOp)}
+function drawOp(o){ctx.save();ctx.lineCap='round';ctx.lineJoin='round';if(['pen','highlight','eraser'].includes(o.tool)){ctx.globalAlpha=o.tool==='highlight'?.3:1;ctx.globalCompositeOperation=o.tool==='eraser'?'destination-out':'source-over';ctx.strokeStyle=o.color;ctx.lineWidth=o.tool==='highlight'?o.w*3:o.w;ctx.beginPath();o.pts.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke()}else if(o.tool==='circle'){ctx.strokeStyle=o.color;ctx.lineWidth=o.w;ctx.beginPath();ctx.ellipse((o.a.x+o.b.x)/2,(o.a.y+o.b.y)/2,Math.abs(o.b.x-o.a.x)/2,Math.abs(o.b.y-o.a.y)/2,0,0,Math.PI*2);ctx.stroke()}else if(o.tool==='check'){ctx.strokeStyle=o.color;ctx.lineWidth=o.w;ctx.beginPath();ctx.moveTo(o.a.x,o.a.y);ctx.lineTo(o.a.x+18,o.a.y+20);ctx.lineTo(o.a.x+55,o.a.y-22);ctx.stroke()}ctx.restore()}
+function pos(e){const r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
+canvas.addEventListener('pointerdown',e=>{drawing=true;start=pos(e);if(['pen','highlight','eraser'].includes(tool))history.push({tool,color,w:lw,pts:[start]})});
+canvas.addEventListener('pointermove',e=>{if(!drawing)return;const p=pos(e);if(['pen','highlight','eraser'].includes(tool)){history.at(-1).pts.push(p);redraw()}});
+canvas.addEventListener('pointerup',e=>{if(!drawing)return;const p=pos(e);if(tool==='circle')history.push({tool,color,w:lw,a:start,b:p});if(tool==='check')history.push({tool,color,w:lw,a:p});drawing=false;redraw()});
+$$('[data-tool]').forEach(b=>b.onclick=()=>{tool=b.dataset.tool;$$('[data-tool]').forEach(x=>x.classList.toggle('active',x===b))});$$('.color').forEach(b=>b.onclick=()=>{color=b.dataset.color;$$('.color').forEach(x=>x.classList.toggle('active',x===b))});
+$('#widthRange').oninput=e=>lw=+e.target.value;$('#undoBtn').onclick=()=>{history.pop();redraw()};$('#clearBtn').onclick=()=>{history=[];redraw()};
+function applyZoom(){$('#sheetTransform').style.transform=`scale(${zoom})`}$('#zoomIn').onclick=()=>{zoom=Math.min(2,zoom+.15);applyZoom()};$('#zoomOut').onclick=()=>{zoom=Math.max(.55,zoom-.15);applyZoom()};$('#fitBtn').onclick=()=>{zoom=1;$('#sheetTransform').style.transform='none';requestAnimationFrame(resizeCanvas)};
+img.onload=()=>setTimeout(resizeCanvas,50);window.addEventListener('resize',()=>{if(current===7)setTimeout(resizeCanvas,100)});
+
+/* 8 PDF */
+let pdfType='ampliacion',pdfVersion=1,pdfCanvas=null;const labels={ampliacion:'Ampliación',refuerzo:'Refuerzo',tarea:'Tarea',paso:'Trabajo paso a paso',pictogramas:'Pictogramas'};
+function rr(g,x,y,w,h,r=14,fill='#fff',stroke='#bfd5e1',sw=3){g.beginPath();g.roundRect(x,y,w,h,r);g.fillStyle=fill;g.fill();g.lineWidth=sw;g.strokeStyle=stroke;g.stroke()}
+function txt(g,t,x,y,s=28,b=true,align='left',col='#17384e'){g.fillStyle=col;g.font=`${b?'700':'400'} ${s}px Arial`;g.textAlign=align;g.textBaseline='alphabetic';g.fillText(t,x,y)}
+function line(g,x,y,w){g.strokeStyle='#718b99';g.lineWidth=2;g.setLineDash([8,6]);g.beginPath();g.moveTo(x,y);g.lineTo(x+w,y);g.stroke();g.setLineDash([])}
+function drawRod(g,n,x,y,u=26,h=34){const cols={1:'#f7f4ec',2:'#d95757',3:'#9acb6a',4:'#b978b5',5:'#edda4a',6:'#2d7b4d',7:'#202020'},tc={2:'#fff',4:'#fff',6:'#fff',7:'#fff'};rr(g,x,y,n*u,h,5,cols[n],'#788b96',2);txt(g,String(n),x+n*u/2,y+24,17,true,'center',tc[n]||'#25333d')}
+function makeSheet(){
+ const c=document.createElement('canvas');c.width=1240;c.height=1754;const g=c.getContext('2d');g.fillStyle='#fffefa';g.fillRect(0,0,c.width,c.height);
+ txt(g,`${labels[pdfType].toUpperCase()} · EL NÚMERO POSTERIOR`,620,75,34,true,'center');txt(g,'Nombre:',70,130,22);line(g,160,133,430);txt(g,'Fecha:',730,130,22);line(g,805,133,300);txt(g,`Página 20 · versión ${pdfVersion}`,620,172,18,true,'center','#60798a');
+ let y=220;const task=(title,h)=>{rr(g,65,y,1110,h,18,'#fff','#c7dce7',3);txt(g,title,90,y+42,27,true);const yy=y;y+=h+24;return yy};
+ let yy=task(pdfType==='pictogramas'?'1. ➕ AÑADE 1 Y ESCRIBE EL POSTERIOR':'1. Suma 1 y escribe el número posterior.',390);
+ const nums=pdfVersion%2?[2,3,4,5,6]:[6,5,4,3,2];
+ nums.forEach((n,i)=>{const x=105+(i%2)*530,ry=yy+88+Math.floor(i/2)*76;txt(g,`${n}  +  1  =`,x,ry,25,true);rr(g,x+185,ry-35,90,45,8,'#fff','#91a9b7',2)});
+ yy=task('2. Une cada número con su posterior.',300);[2,3,4,5,6].forEach((n,i)=>{txt(g,String(n),125+i*190,yy+95,28,true,'center');txt(g,'↓',125+i*190,yy+145,28,true,'center','#60798a');rr(g,80+i*190,yy+170,90,45,8,'#fff','#91a9b7',2)});
+ yy=task('3. Calcula y compara.',310);['5 + 1','1 + 5','4 + 2','2 + 4'].forEach((s,i)=>{const x=105+(i%2)*530,ry=yy+90+Math.floor(i/2)*92;txt(g,s+' =',x,ry,25,true);rr(g,x+170,ry-35,90,45,8,'#fff','#91a9b7',2)});txt(g,'Rodea la suma que muestra directamente “uno más”.',620,yy+270,21,true,'center','#60798a');
+ yy=task(pdfType==='tarea'?'4. En casa: problema de “uno más”.':'4. Problema: representa y resuelve.',285);txt(g,'Hay 5 mariquitas. Llega 1 más.',95,yy+78,24,true);txt(g,'¿Cuántas hay ahora?',95,yy+124,24,true);txt(g,'5 + 1 =',95,yy+210,25,true);rr(g,245,yy+176,90,45,8,'#fff','#91a9b7',2);txt(g,'Respuesta:',535,yy+210,21,true);line(g,650,yy+212,350);
+ txt(g,'Palabra matemática: POSTERIOR = el número que viene justo después; es uno más.',620,1692,18,true,'center','#17384e');return c
+}
+function renderPdf(){pdfCanvas=makeSheet();$('#pdfPreview').innerHTML='';$('#pdfPreview').appendChild(pdfCanvas);$('#pdfTitle').textContent=`${labels[pdfType]} · Página 20 · versión ${pdfVersion}`}
+$$('.pdf-type').forEach(b=>b.onclick=()=>{$$('.pdf-type').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');pdfType=b.dataset.pdf;pdfVersion=1;renderPdf()});$('#regenPdf').onclick=()=>{pdfVersion++;renderPdf()};
+function ascii(s){return new TextEncoder().encode(s)}function concat(parts){let n=0;parts.forEach(p=>n+=p.length);const o=new Uint8Array(n);let k=0;parts.forEach(p=>{o.set(p,k);k+=p.length});return o}function b64bytes(u){const b=atob(u.split(',')[1]),a=new Uint8Array(b.length);for(let i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a}
+function canvasPdf(c){const jpg=b64bytes(c.toDataURL('image/jpeg',.92)),objs=[],catalog=1,pages=2,page=3,imgO=4,cont=5;objs[catalog]=ascii('<< /Type /Catalog /Pages 2 0 R >>');objs[pages]=ascii('<< /Type /Pages /Count 1 /Kids [3 0 R] >>');objs[page]=ascii('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Resources << /XObject << /Im 4 0 R >> >> /Contents 5 0 R >>');objs[imgO]=concat([ascii(`<< /Type /XObject /Subtype /Image /Width ${c.width} /Height ${c.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpg.length} >>\nstream\n`),jpg,ascii('\nendstream')]);const st=ascii('q\n595.28 0 0 841.89 0 0 cm\n/Im Do\nQ\n');objs[cont]=concat([ascii(`<< /Length ${st.length} >>\nstream\n`),st,ascii('endstream')]);const head=ascii('%PDF-1.4\n%âãÏÓ\n'),parts=[head],off=[0];let pos=head.length;for(let i=1;i<=5;i++){off[i]=pos;const bl=concat([ascii(`${i} 0 obj\n`),objs[i],ascii('\nendobj\n')]);parts.push(bl);pos+=bl.length}const xp=pos;let xr='xref\n0 6\n0000000000 65535 f \n';for(let i=1;i<=5;i++)xr+=String(off[i]).padStart(10,'0')+' 00000 n \n';xr+=`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xp}\n%%EOF`;parts.push(ascii(xr));return new Blob([concat(parts)],{type:'application/pdf'})}
+$('#downloadPdf').onclick=()=>{if(!pdfCanvas)renderPdf();const a=document.createElement('a');a.href=URL.createObjectURL(canvasPdf(pdfCanvas));a.download=`pagina20_${pdfType}_v${pdfVersion}.pdf`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},700)};
+const h=location.hash.match(/step(\d+)/);if(h&&+h[1]>=1&&+h[1]<=8)go(+h[1]);
+})();
+</script>
+<script src="../assets/fullscreen-persistent.js"></script>
+</body></html>

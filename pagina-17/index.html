@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Página 17 · Números hasta el 7 · Matemáticas OAOA</title>
+<style>
+:root{
+ --ink:#17384e;--muted:#60798a;--line:#bfd5e1;--bg:#eef7fb;--blue:#469ac7;
+ --ok:#e9f7ed;--bad:#fff1f1;--r1:#f7f4ec;--r2:#d95757;--r3:#9acb6a;
+ --r4:#b978b5;--r5:#edda4a;--r6:#2d7b4d;--r7:#202020;--unit:38px
+}
+*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}button{font:inherit}
+.app{height:100%;display:grid;grid-template-rows:auto auto minmax(0,1fr)}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 10px;background:#fff;border-bottom:2px solid var(--line)}
+.brand{display:flex;align-items:center;gap:9px}.brand .icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#edda4a,#202020);color:#fff;display:grid;place-items:center;font-weight:1000}
+.brand h1{font-size:1.12rem;margin:0}.brand small{display:block;color:var(--muted);font-weight:800;font-size:.72rem}
+.top-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.control,.action,.tab,.pair-btn,.toolbtn,.pdf-type,.video-btn{border:2px solid #b9cedb;background:#fff;color:var(--ink);border-radius:13px;font-weight:900;cursor:pointer}
+.control{padding:7px 10px;min-height:38px;text-decoration:none;display:inline-flex;align-items:center}.video-btn{padding:7px 10px;min-height:38px;background:#fff7e5;border-color:#e2b65c}
+.action{padding:8px 13px;min-height:42px}.action.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.tabs-wrap{padding:5px 7px;background:#fbfdff;border-bottom:2px solid var(--line)}.tabs{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:5px}
+.tab{padding:6px 2px;min-height:39px;font-size:.69rem}.tab.active{background:#dceff8;border-color:var(--blue)}.tab.done{background:#e9f6ed;border-color:#76ba8d;color:#326d46}
+.main{position:relative;min-height:0;overflow:hidden}.badge{position:absolute;right:9px;top:5px;z-index:20;background:#eef5f9;color:var(--muted);border-radius:999px;padding:4px 9px;font-size:.68rem;font-weight:1000}
+.step{display:none;position:absolute;inset:4px;padding:3px 8px;overflow:hidden}.step.active{display:block}.head{height:42px;display:flex;align-items:center;justify-content:center}.title{font-size:1.18rem;font-weight:1000}
+.card{background:#fff;border:2px solid var(--line);border-radius:18px;padding:11px}
+.feedback{max-width:960px;margin:7px auto 0;padding:8px 12px;border:2px solid #d4e1e9;border-radius:14px;background:#fff;display:flex;gap:9px;align-items:center;min-height:42px;font-weight:850}
+.feedback.ok{background:var(--ok);border-color:#7ac294}.feedback.err{background:var(--bad);border-color:#e5a1a1}.actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.prompt{font-size:1.12rem;font-weight:900;text-align:center;line-height:1.4}.sub{color:var(--muted);font-weight:800;text-align:center;line-height:1.4}
+.rod{--n:1;width:calc(var(--unit)*var(--n));height:39px;border-radius:7px;border:2px solid rgba(40,50,60,.3);display:grid;place-items:center;font-weight:1000;box-shadow:0 2px 4px rgba(0,0,0,.08)}
+.rod[data-n="1"]{background:var(--r1);color:#333}.rod[data-n="2"]{background:var(--r2);color:#fff}.rod[data-n="3"]{background:var(--r3);color:#17384e}.rod[data-n="4"]{background:var(--r4);color:#fff}.rod[data-n="5"]{background:var(--r5);color:#333}.rod[data-n="6"]{background:var(--r6);color:#fff}.rod[data-n="7"]{background:var(--r7);color:#fff}.eq{font-size:1.3rem;font-weight:1000}.rodline{display:flex;align-items:center;justify-content:center;gap:4px}
+
+/* 1 */
+.intro-grid{max-width:1050px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:14px}.sum-card{min-height:310px;display:grid;place-items:center;align-content:center;gap:18px}.big-sum{font-size:3.2rem;font-weight:1000}.result-options{display:flex;gap:11px;justify-content:center;flex-wrap:wrap}.result-btn{min-width:118px;min-height:58px;border:3px solid #b8ccd7;border-radius:15px;background:#fff;font-size:1.55rem;font-weight:1000;cursor:pointer}.result-btn.correct{background:#e7f6eb;border-color:#62aa78}.result-btn.wrong{background:#fff1f1;border-color:#da8585}
+.bridge{min-height:310px;display:grid;align-content:center;gap:14px}.bridge-row{display:grid;grid-template-columns:95px 1fr;gap:10px;align-items:center}.bridge-row strong{text-align:center}
+
+/* 2 */
+.fast-wrap{max-width:1060px;margin:auto;display:grid;grid-template-columns:1.45fr .75fr;gap:14px}.fast-stage{min-height:330px;display:grid;align-content:center;gap:17px}.fast-card{font-size:3.4rem;font-weight:1000;text-align:center}.fast-results{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:620px;margin:auto}.fast-results .pair-btn{min-height:70px;font-size:1.55rem}.scorebox{display:grid;gap:9px;align-content:start}.score{font-size:2.2rem;font-weight:1000;text-align:center;background:#f3f9fc;border:2px solid #c8dce7;border-radius:15px;padding:12px}.rule{padding:10px;background:#f7fbfd;border:2px solid #d3e3eb;border-radius:14px;font-weight:850;line-height:1.35}
+
+/* 3 */
+.wall-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:1080px;margin:auto}.wall-card{display:grid;gap:9px;align-content:start}.wall-card h3{text-align:center;margin:0;font-size:1.25rem}.wall-target{display:grid;place-items:center}.wall-target .rod{--unit:32px}.wall-row{display:flex;align-items:center;justify-content:center;gap:5px;border:2px solid #d3e1e8;border-radius:13px;padding:7px;background:#fbfdfe;min-height:54px}.wall-row .rod{--unit:24px;height:30px;font-size:.75rem}.wall-options{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.wall-options button{min-height:44px}
+
+/* 4 */
+.coin-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;max-width:1040px;margin:auto}.hands{min-height:320px;display:grid;align-content:center;gap:18px}.money-total{text-align:center;font-size:1.15rem;font-weight:900}.hand-row{display:flex;gap:30px;justify-content:center;align-items:center}.hand{width:190px;height:150px;border:3px solid #b9cedb;border-radius:45% 45% 32% 32%;display:grid;place-items:center;background:#fff}.hand.hidden{background:#eef3f6}.hand .coin{width:76px;height:76px;border-radius:50%;border:5px solid #b58c2c;background:#f4d259;display:grid;place-items:center;font-size:1.7rem;font-weight:1000}.hidden-mark{font-size:3rem;font-weight:1000}.coin-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.coin-options button{min-height:62px;font-size:1.3rem}
+
+/* 5 */
+.color-layout{display:grid;grid-template-columns:1.25fr .75fr;gap:14px;max-width:1060px;margin:auto}.balloons{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-content:center}.balloon{aspect-ratio:1/1;border-radius:50% 50% 45% 45%;background:#fff;border:3px solid #b9cedb;display:grid;place-items:center;font-size:1.2rem;font-weight:1000;cursor:pointer;position:relative}.balloon:after{content:'';position:absolute;width:2px;height:28px;background:#9aaeb8;bottom:-24px}.legend{display:grid;gap:9px;align-content:center}.legend-item{display:flex;align-items:center;gap:10px;font-weight:1000;border:2px solid #d4e2e9;border-radius:13px;padding:10px;background:#fff}.dot{width:34px;height:34px;border-radius:50%;border:2px solid #718a97}.c5{background:#edda4a!important;color:#333!important}.c6{background:#2d7b4d!important;color:#fff!important}.c7{background:#202020!important;color:#fff!important}
+
+/* 6 */
+.problem{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:1080px;margin:auto}.problem-text{font-size:1.08rem;font-weight:900;line-height:1.45}.objects{font-size:2.5rem;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:15px}.reveal{margin-top:10px;padding:10px;border:2px solid #7fbd92;background:#eef9f1;border-radius:14px;font-weight:900}.reveal[hidden]{display:none}
+
+/* 7 */
+.sheet-stage{height:calc(100% - 44px);display:grid;grid-template-columns:minmax(0,1fr) 225px;gap:10px;min-height:0}.viewer{position:relative;min-height:0;background:#dfe8ee;border:2px solid var(--line);border-radius:18px;overflow:auto;display:grid;place-items:start center;padding:10px}.sheet-transform{position:relative;transform-origin:top center;max-width:760px;width:min(100%,700px)}.sheet-img{display:block;width:100%;height:auto;background:#fff;border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,.14);user-select:none;-webkit-user-drag:none}#annotCanvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}.tools{display:flex;flex-direction:column;gap:7px;background:#fff;border:2px solid var(--line);border-radius:17px;padding:8px;align-self:start;max-height:100%;overflow:auto}.tools h3{margin:0;text-align:center;font-size:.9rem}.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.toolbtn{min-height:40px;padding:6px;font-size:.76rem}.toolbtn.active{background:#dceff8;border-color:var(--blue)}.colors{display:flex;justify-content:center;gap:8px}.color{width:30px;height:30px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #b5c9d4;cursor:pointer}.color.active{box-shadow:0 0 0 4px #ffcf58}
+
+/* 8 */
+.pdf-layout{height:calc(100% - 44px);display:grid;grid-template-columns:220px minmax(0,1fr);gap:12px;max-width:1100px;margin:auto}.pdf-types{display:grid;gap:7px;align-content:start}.pdf-types h3{margin:3px;text-align:center}.pdf-type{padding:9px;min-height:45px;text-align:left}.pdf-type.selected{background:#dceff8;border-color:var(--blue)}.pdf-panel{background:#fff;border:2px solid var(--line);border-radius:18px;padding:10px;display:grid;grid-template-rows:auto minmax(0,1fr) auto;min-height:0}.pdf-title{text-align:center;font-weight:1000}.pdf-preview{display:grid;place-items:center;overflow:auto;background:#eef3f6;border-radius:12px;padding:8px;min-height:0}.pdf-preview canvas{max-height:100%;max-width:100%;width:auto;height:auto;box-shadow:0 3px 12px rgba(0,0,0,.16)}
+
+/* video */
+.modal{position:fixed;inset:0;background:rgba(10,30,42,.76);z-index:9999;display:none;place-items:center;padding:20px}.modal.open{display:grid}.modal-card{width:min(920px,96vw);background:#fff;border-radius:20px;padding:12px;border:2px solid #bfd5e1}.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}.modal iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:14px;background:#111}.offline-note{font-size:.76rem;color:var(--muted);font-weight:800;margin:7px 0 0;text-align:center}
+
+@media(max-width:920px){
+ .brand small{display:none}.tabs{grid-template-columns:repeat(4,1fr)}
+ .intro-grid,.fast-wrap,.coin-grid,.color-layout,.problem{grid-template-columns:1fr}.wall-grid{grid-template-columns:1fr}
+ .sheet-stage{grid-template-columns:1fr 180px}.pdf-layout{grid-template-columns:185px 1fr}.step{overflow:auto}.rod{--unit:31px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+ <div class="brand"><div class="icon">7</div><div><h1>Página 17 · Números hasta el 7</h1><small>Sumas, muros, complementarios y resultados</small></div></div>
+ <div class="top-actions">
+   <a class="control" href="../fichas/">← Menú de fichas</a>
+   <button class="video-btn" id="videoBtn">🎬 Vídeo modelo</button>
+   <button class="control" id="soundBtn">🔊 Sonido</button>
+ </div>
+</header>
+<nav class="tabs-wrap"><div class="tabs">
+ <button class="tab active" data-step="1">1 · Suma → regleta</button>
+ <button class="tab" data-step="2">2 · Tarjetas rápidas</button>
+ <button class="tab" data-step="3">3 · Muros 5·6·7</button>
+ <button class="tab" data-step="4">4 · Moneda escondida</button>
+ <button class="tab" data-step="5">5 · Colorea</button>
+ <button class="tab" data-step="6">6 · Problema</button>
+ <button class="tab" data-step="7">7 · Ver la página</button>
+ <button class="tab" data-step="8">8 · Páginas imprimibles</button>
+</div></nav>
+<main class="main"><div class="badge">P17 · OAOA</div>
+
+<section class="step active" data-step="1">
+ <div class="head"><div class="title">1. Mira la suma y piensa la regleta resultado</div></div>
+ <div class="intro-grid">
+  <div class="card sum-card">
+   <div class="sub">Mira las dos partes. No empieces siempre a contar desde 1.</div>
+   <div class="big-sum" id="introSum">4 + 1</div>
+   <div class="result-options" id="introOptions"></div>
+   <div class="rodline" id="introRods"></div>
+  </div>
+  <div class="card bridge">
+   <div class="prompt">Rutina de pensamiento</div>
+   <div class="bridge-row"><strong>1 · VEO</strong><div>Dos partes.</div></div>
+   <div class="bridge-row"><strong>2 · PIENSO</strong><div>Qué total forman juntas.</div></div>
+   <div class="bridge-row"><strong>3 · ELIJO</strong><div>La regleta con la misma longitud.</div></div>
+   <div class="bridge-row"><strong>4 · DIGO</strong><div>“4 y 1 forman 5”.</div></div>
+   <button class="action primary" id="introNext">Otra suma</button>
+  </div>
+ </div>
+ <div class="feedback" id="fb1"><span>👀</span><span>Piensa el total antes de pulsar.</span></div>
+</section>
+
+<section class="step" data-step="2">
+ <div class="head"><div class="title">2. Juego del vídeo · Tarjetas rápidas</div></div>
+ <div class="fast-wrap">
+  <div class="card fast-stage">
+   <div class="sub">Como en el vídeo: aparece una tarjeta y decidimos qué regleta resultado colocaríamos.</div>
+   <div class="fast-card" id="fastSum">3 + 3</div>
+   <div class="fast-results" id="fastOptions"></div>
+   <div class="feedback" id="fb2"><span>⚡</span><span>Piensa rápido, pero comprueba.</span></div>
+  </div>
+  <div class="scorebox">
+   <div class="score"><span id="scoreOk">0</span> / <span id="scoreTotal">0</span></div>
+   <div class="rule">1️⃣ Mira la tarjeta.</div>
+   <div class="rule">2️⃣ Piensa el total.</div>
+   <div class="rule">3️⃣ Elige la regleta.</div>
+   <div class="rule">4️⃣ Explica una ronda.</div>
+   <button class="action" id="restartFast">↻ Reiniciar</button>
+  </div>
+ </div>
+</section>
+
+<section class="step" data-step="3">
+ <div class="head"><div class="title">3. Segundo juego del vídeo · Muros de 5, 6 y 7</div></div>
+ <div class="wall-grid" id="wallGrid"></div>
+ <div class="feedback" id="fb3"><span>🧱</span><span>Solo dos regletas. Busca todas las parejas sin repetirlas al revés.</span></div>
+</section>
+
+<section class="step" data-step="4">
+ <div class="head"><div class="title">4. Tercer juego del vídeo · La moneda escondida</div></div>
+ <div class="coin-grid">
+  <div class="card hands">
+   <div class="money-total" id="moneyTotal">Tengo 7 € en total.</div>
+   <div class="hand-row">
+    <div class="hand"><div class="coin" id="shownCoin">3 €</div></div>
+    <div class="hand hidden"><div class="hidden-mark">?</div></div>
+   </div>
+   <div class="prompt" id="moneyPrompt">Te enseño 3 €. ¿Cuánto está escondido?</div>
+  </div>
+  <div class="card">
+   <div class="sub">Todo = parte que veo + parte escondida.</div>
+   <div class="coin-options" id="moneyOptions"></div>
+   <div class="actions"><button class="action primary" id="moneyNext">Otra ronda</button></div>
+   <div class="feedback" id="fb4"><span>🪙</span><span>Busca la pareja que completa el total.</span></div>
+  </div>
+ </div>
+</section>
+
+<section class="step" data-step="5">
+ <div class="head"><div class="title">5. Como en la ficha · Colorea según el resultado</div></div>
+ <div class="color-layout">
+  <div class="card balloons" id="balloons"></div>
+  <div class="legend">
+   <div class="legend-item"><span class="dot c5"></span> Resultado <strong>5</strong></div>
+   <div class="legend-item"><span class="dot c6"></span> Resultado <strong>6</strong></div>
+   <div class="legend-item"><span class="dot c7"></span> Resultado <strong>7</strong></div>
+   <div class="rule">Pulsa una suma. Primero di el resultado. Después aparecerá su color.</div>
+   <button class="action" id="resetColors">↻ Borrar colores</button>
+  </div>
+ </div>
+ <div class="feedback" id="fb5"><span>🎈</span><span>El color depende del resultado.</span></div>
+</section>
+
+<section class="step" data-step="6">
+ <div class="head"><div class="title">6. Problema · Clasifico el resultado</div></div>
+ <div class="problem">
+  <div class="card">
+   <div class="problem-text">En una mesa hay <strong>4 lápices azules</strong> y <strong>2 lápices verdes</strong>. ¿Cuántos lápices hay en total?</div>
+   <div class="objects">🖍️ 🖍️ 🖍️ 🖍️ 🟩 🟩</div>
+   <div class="sub">Representa primero. Después calcula y comprueba.</div>
+  </div>
+  <div class="card">
+   <div class="prompt">¿El resultado va a la caja del 5, del 6 o del 7?</div>
+   <div class="coin-options" id="problemOptions"></div>
+   <div class="reveal" id="problemReveal" hidden>✅ 4 + 2 = 6. Las dos partes forman el mismo total que la regleta verde oscuro.</div>
+  </div>
+ </div>
+ <div class="feedback" id="fb6"><span>🧠</span><span>Comprende → representa → calcula → comprueba → explica.</span></div>
+</section>
+
+<section class="step" data-step="7">
+ <div class="head"><div class="title">7. Ver la página original · Página 17</div></div>
+ <div class="sheet-stage">
+  <div class="viewer" id="viewer"><div class="sheet-transform" id="sheetTransform">
+   <img class="sheet-img" id="sheetImg" src="../assets/pagina17-original.png" alt="Ficha original página 17">
+   <canvas id="annotCanvas"></canvas>
+  </div></div>
+  <aside class="tools">
+   <h3>Anotar sobre la ficha</h3>
+   <div class="tool-grid">
+    <button class="toolbtn active" data-tool="pen">✏️ Lápiz</button>
+    <button class="toolbtn" data-tool="highlight">🖍️ Resaltar</button>
+    <button class="toolbtn" data-tool="circle">⭕ Círculo</button>
+    <button class="toolbtn" data-tool="check">✓ Correcto</button>
+    <button class="toolbtn" data-tool="eraser">⌫ Goma</button>
+    <button class="toolbtn" id="undoBtn">↶ Deshacer</button>
+   </div>
+   <div class="colors">
+    <button class="color active" data-color="#e53935" style="background:#e53935"></button>
+    <button class="color" data-color="#1d74b7" style="background:#1d74b7"></button>
+    <button class="color" data-color="#27874a" style="background:#27874a"></button>
+   </div>
+   <label style="font-weight:850;font-size:.78rem">Grosor <input id="widthRange" type="range" min="2" max="12" value="5"></label>
+   <button class="toolbtn" id="zoomIn">＋ Zoom</button><button class="toolbtn" id="zoomOut">－ Zoom</button>
+   <button class="toolbtn" id="fitBtn">↔ Ajustar</button><button class="toolbtn" id="clearBtn">🧹 Limpiar</button>
+  </aside>
+ </div>
+</section>
+
+<section class="step" data-step="8">
+ <div class="head"><div class="title">8. Páginas imprimibles · Página 17</div></div>
+ <div class="pdf-layout">
+  <aside class="pdf-types">
+   <h3>Elige</h3>
+   <button class="pdf-type selected" data-pdf="ampliacion">Ampliación</button>
+   <button class="pdf-type" data-pdf="refuerzo">Refuerzo</button>
+   <button class="pdf-type" data-pdf="tarea">Tarea</button>
+   <button class="pdf-type" data-pdf="paso">Trabajo paso a paso</button>
+   <button class="pdf-type" data-pdf="pictogramas">Pictogramas</button>
+  </aside>
+  <div class="pdf-panel">
+   <div class="pdf-title" id="pdfTitle">Ampliación · Página 17</div>
+   <div class="pdf-preview" id="pdfPreview"></div>
+   <div class="actions"><button class="action" id="regenPdf">↻ Otra versión</button><button class="action primary" id="downloadPdf">⬇ Descargar PDF</button></div>
+  </div>
+ </div>
+</section>
+</main></div>
+
+<div class="modal" id="videoModal" aria-hidden="true">
+ <div class="modal-card">
+  <div class="modal-head"><strong>Vídeo modelo · tres juegos hasta el 7</strong><button class="control" id="closeVideo">✕ Cerrar</button></div>
+  <div id="videoHost"></div>
+  <p class="offline-note">El vídeo es un apoyo opcional. Las actividades funcionan de forma independiente.</p>
+ </div>
+</div>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+let current=1,sound=true;
+function go(n){current=n;$$('.step').forEach(x=>x.classList.toggle('active',+x.dataset.step===n));$$('.tab').forEach(x=>{x.classList.toggle('active',+x.dataset.step===n);if(+x.dataset.step<n)x.classList.add('done')});location.hash='step'+n;if(n===7)setTimeout(resizeCanvas,120);if(n===8)setTimeout(renderPdf,50)}
+$$('.tab').forEach(b=>b.onclick=()=>go(+b.dataset.step));
+$('#soundBtn').onclick=()=>{sound=!sound;$('#soundBtn').textContent=sound?'🔊 Sonido':'🔇 Sonido'};
+function tone(ok=true){if(!sound)return;try{const A=new AudioContext(),o=A.createOscillator(),g=A.createGain();o.connect(g);g.connect(A.destination);o.frequency.value=ok?660:240;g.gain.setValueAtTime(.08,A.currentTime);g.gain.exponentialRampToValueAtTime(.001,A.currentTime+.18);o.start();o.stop(A.currentTime+.18)}catch(e){}}
+function fb(id,ok,icon,msg){const el=$(id);el.className='feedback '+(ok?'ok':'err');el.innerHTML=`<span>${icon}</span><span>${msg}</span>`}
+function rod(n){const d=document.createElement('div');d.className='rod';d.dataset.n=n;d.style.setProperty('--n',n);d.textContent=n;return d}
+function rodLine(host,a,b){host.innerHTML='';host.append(rod(a));const p=document.createElement('span');p.className='eq';p.textContent='+';host.append(p);host.append(rod(b));const e=document.createElement('span');e.className='eq';e.textContent='=';host.append(e);host.append(rod(a+b))}
+
+/* Vídeo */
+$('#videoBtn').onclick=()=>{$('#videoModal').classList.add('open');$('#videoModal').setAttribute('aria-hidden','false');$('#videoHost').innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/nFRDhL6WkVs?start=28&rel=0" title="Vídeo modelo OAOA" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'};
+function closeVideo(){$('#videoModal').classList.remove('open');$('#videoModal').setAttribute('aria-hidden','true');$('#videoHost').innerHTML=''}
+$('#closeVideo').onclick=closeVideo;$('#videoModal').addEventListener('click',e=>{if(e.target===$('#videoModal'))closeVideo()});
+
+/* 1 */
+const intro=[['4 + 1',4,1,5],['3 + 3',3,3,6],['5 + 2',5,2,7],['2 + 3',2,3,5],['4 + 2',4,2,6],['6 + 1',6,1,7]];
+let introI=0;
+function renderIntro(){
+ const [s,a,b,r]=intro[introI];$('#introSum').textContent=s;rodLine($('#introRods'),a,b);
+ const host=$('#introOptions');host.innerHTML='';
+ [5,6,7].forEach(n=>{const x=document.createElement('button');x.className='result-btn';x.textContent=n;x.onclick=()=>{if(n===r){tone(true);x.classList.add('correct');fb('#fb1',true,'✅',`${s} forma ${r}. La regleta resultado tiene la misma longitud.`)}else{tone(false);x.classList.add('wrong');fb('#fb1',false,'🔎','Compara las dos partes con las regletas 5, 6 y 7.')}};host.append(x)})
+}
+$('#introNext').onclick=()=>{introI=(introI+1)%intro.length;renderIntro();fb('#fb1',true,'👀','Nueva suma: piensa antes de pulsar.')};renderIntro();
+
+/* 2 */
+const fastRounds=[['3 + 3',6],['2 + 2',4],['6 + 1',7],['1 + 1',2],['4 + 2',6],['4 + 3',7],['5 + 2',7],['5 + 1',6],['2 + 3',5],['4 + 1',5]];
+let fastI=0,okCount=0,totalCount=0,locked=false;
+function renderFast(){
+ const [s,r]=fastRounds[fastI];$('#fastSum').textContent=s;const host=$('#fastOptions');host.innerHTML='';
+ const opts=r<5?[2,4,6]:[5,6,7];
+ opts.forEach(n=>{const b=document.createElement('button');b.className='pair-btn';b.textContent=n;b.onclick=()=>answerFast(n,b);host.append(b)})
+}
+function answerFast(n,b){
+ if(locked)return;locked=true;totalCount++;const r=fastRounds[fastI][1];
+ if(n===r){okCount++;tone(true);b.style.background='#e9f7ed';fb('#fb2',true,'⚡',`Sí: ${fastRounds[fastI][0]} = ${r}.`)}
+ else{tone(false);b.style.background='#fff1f1';fb('#fb2',false,'🧩',`La tarjeta forma ${r}. Mira sus dos partes.`)}
+ $('#scoreOk').textContent=okCount;$('#scoreTotal').textContent=totalCount;
+ setTimeout(()=>{fastI=(fastI+1)%fastRounds.length;locked=false;renderFast()},650)
+}
+$('#restartFast').onclick=()=>{fastI=0;okCount=0;totalCount=0;locked=false;$('#scoreOk').textContent='0';$('#scoreTotal').textContent='0';renderFast()};renderFast();
+
+/* 3 */
+const wallData={5:[[4,1],[3,2]],6:[[5,1],[4,2],[3,3]],7:[[6,1],[5,2],[4,3]]};
+function buildWalls(){
+ const host=$('#wallGrid');host.innerHTML='';
+ Object.entries(wallData).forEach(([target,pairs])=>{
+  const card=document.createElement('div');card.className='card wall-card';
+  card.innerHTML=`<h3>Muro del ${target}</h3><div class="wall-target"></div><div class="wall-options"></div><div class="wall-rows"></div>`;
+  card.querySelector('.wall-target').append(rod(+target));
+  const opts=card.querySelector('.wall-options'),rows=card.querySelector('.wall-rows');let found=0;
+  pairs.forEach(p=>{
+   const b=document.createElement('button');b.className='pair-btn';b.textContent=p.join(' + ');
+   b.onclick=()=>{if(b.disabled)return;b.disabled=true;b.style.background='#e9f7ed';found++;
+     const row=document.createElement('div');row.className='wall-row';row.append(rod(p[0]));const plus=document.createElement('span');plus.textContent='+';plus.className='eq';row.append(plus);row.append(rod(p[1]));rows.append(row);
+     if(found===pairs.length){tone(true);fb('#fb3',true,'🧱',`Muro del ${target} completo.`)}
+   };
+   opts.append(b)
+  });
+  host.append(card)
+ })
+}
+buildWalls();
+
+/* 4 */
+const moneyRounds=[{t:5,s:2},{t:6,s:1},{t:7,s:3},{t:6,s:4},{t:7,s:5},{t:5,s:1}];let moneyI=0;
+function renderMoney(){
+ const r=moneyRounds[moneyI],ans=r.t-r.s;$('#moneyTotal').textContent=`Tengo ${r.t} € en total.`;$('#shownCoin').textContent=`${r.s} €`;$('#moneyPrompt').textContent=`Te enseño ${r.s} €. ¿Cuánto está escondido?`;
+ const host=$('#moneyOptions');host.innerHTML='';
+ const vals=[...new Set([ans,Math.max(1,ans-1),Math.min(6,ans+1)])].sort((a,b)=>a-b);
+ vals.forEach(n=>{const b=document.createElement('button');b.className='pair-btn';b.textContent=n+' €';b.onclick=()=>{if(n===ans){tone(true);b.style.background='#e9f7ed';fb('#fb4',true,'🪙',`${r.s} + ${ans} = ${r.t}. Esa es la parte escondida.`)}else{tone(false);b.style.background='#fff1f1';fb('#fb4',false,'🤔',`Necesitamos completar ${r.t}.`)}};host.append(b)})
+}
+$('#moneyNext').onclick=()=>{moneyI=(moneyI+1)%moneyRounds.length;renderMoney()};renderMoney();
+
+/* 5 */
+const balloonData=[['4 + 2',6],['3 + 1',4],['2 + 1',3],['2 + 3',5],['1 + 1',2],['1 + 6',7],['3 + 3',6],['4 + 1',5],['5 + 2',7],['3 + 2',5],['2 + 2',4],['6 + 1',7]];
+function buildBalloons(){
+ const host=$('#balloons');host.innerHTML='';
+ balloonData.forEach(([s,r])=>{
+  const b=document.createElement('button');b.className='balloon';b.textContent=s;
+  b.onclick=()=>{
+   b.classList.remove('c5','c6','c7');b.style.background='';b.style.color='';
+   if(r===5)b.classList.add('c5');else if(r===6)b.classList.add('c6');else if(r===7)b.classList.add('c7');else{b.style.background='#f4f7f9';b.style.color='#17384e'}
+   if(r>=5){
+    tone(true);fb('#fb5',true,'🎈',`${s} = ${r}. Usa el color del ${r}.`);
+   }else{
+    tone(false);fb('#fb5',false,'🔍',`${s} = ${r}. En esta actividad buscamos especialmente los resultados 5, 6 y 7.`);
+   }
+  };
+  host.append(b)
+ })
+}
+$('#resetColors').onclick=buildBalloons;buildBalloons();
+
+/* 6 */
+[5,6,7].forEach(n=>{
+ const b=document.createElement('button');b.className='pair-btn';b.textContent=n;
+ b.onclick=()=>{if(n===6){tone(true);b.style.background='#e9f7ed';$('#problemReveal').hidden=false;fb('#fb6',true,'✅','Correcto: 4 + 2 = 6. Ahora explícalo con regletas o dibujo.')}else{tone(false);b.style.background='#fff1f1';fb('#fb6',false,'🖍️','Vuelve a las dos partes: 4 y 2. ¿Qué total forman?')}};
+ $('#problemOptions').append(b)
+});
+
+/* 7 */
+let tool='pen',color='#e53935',lw=5,zoom=1,history=[],drawing=false,start=null;
+const canvas=$('#annotCanvas'),ctx=canvas.getContext('2d'),img=$('#sheetImg');
+function resizeCanvas(){const rect=img.getBoundingClientRect();const scale=window.devicePixelRatio||1;canvas.width=Math.max(1,Math.round(rect.width*scale));canvas.height=Math.max(1,Math.round(rect.height*scale));canvas.style.width=rect.width+'px';canvas.style.height=rect.height+'px';ctx.setTransform(scale,0,0,scale,0,0);redraw()}
+function redraw(){ctx.clearRect(0,0,canvas.width,canvas.height);history.forEach(drawOp)}
+function drawOp(o){
+ ctx.save();ctx.lineCap='round';ctx.lineJoin='round';
+ if(['pen','highlight','eraser'].includes(o.tool)){ctx.globalAlpha=o.tool==='highlight'?.30:1;ctx.globalCompositeOperation=o.tool==='eraser'?'destination-out':'source-over';ctx.strokeStyle=o.color;ctx.lineWidth=o.tool==='highlight'?o.w*3:o.w;ctx.beginPath();o.pts.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke()}
+ else if(o.tool==='circle'){ctx.strokeStyle=o.color;ctx.lineWidth=o.w;ctx.beginPath();ctx.ellipse((o.a.x+o.b.x)/2,(o.a.y+o.b.y)/2,Math.abs(o.b.x-o.a.x)/2,Math.abs(o.b.y-o.a.y)/2,0,0,Math.PI*2);ctx.stroke()}
+ else if(o.tool==='check'){ctx.strokeStyle=o.color;ctx.lineWidth=o.w;ctx.beginPath();ctx.moveTo(o.a.x,o.a.y);ctx.lineTo(o.a.x+18,o.a.y+20);ctx.lineTo(o.a.x+55,o.a.y-22);ctx.stroke()}
+ ctx.restore()
+}
+function pos(e){const r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
+canvas.addEventListener('pointerdown',e=>{drawing=true;start=pos(e);if(['pen','highlight','eraser'].includes(tool))history.push({tool,color,w:lw,pts:[start]})});
+canvas.addEventListener('pointermove',e=>{if(!drawing)return;const p=pos(e);if(['pen','highlight','eraser'].includes(tool)){history.at(-1).pts.push(p);redraw()}});
+canvas.addEventListener('pointerup',e=>{if(!drawing)return;const p=pos(e);if(tool==='circle')history.push({tool,color,w:lw,a:start,b:p});if(tool==='check')history.push({tool,color,w:lw,a:p});drawing=false;redraw()});
+$$('[data-tool]').forEach(b=>b.onclick=()=>{tool=b.dataset.tool;$$('[data-tool]').forEach(x=>x.classList.toggle('active',x===b))});
+$$('.color').forEach(b=>b.onclick=()=>{color=b.dataset.color;$$('.color').forEach(x=>x.classList.toggle('active',x===b))});
+$('#widthRange').oninput=e=>lw=+e.target.value;$('#undoBtn').onclick=()=>{history.pop();redraw()};$('#clearBtn').onclick=()=>{history=[];redraw()};
+function applyZoom(){$('#sheetTransform').style.transform=`scale(${zoom})`}$('#zoomIn').onclick=()=>{zoom=Math.min(2,zoom+.15);applyZoom()};$('#zoomOut').onclick=()=>{zoom=Math.max(.55,zoom-.15);applyZoom()};$('#fitBtn').onclick=()=>{zoom=1;$('#sheetTransform').style.transform='none';requestAnimationFrame(resizeCanvas)};
+img.onload=()=>setTimeout(resizeCanvas,50);window.addEventListener('resize',()=>{if(current===7)setTimeout(resizeCanvas,100)});
+
+/* 8 */
+let pdfType='ampliacion',pdfVersion=1,pdfCanvas=null;const labels={ampliacion:'Ampliación',refuerzo:'Refuerzo',tarea:'Tarea',paso:'Trabajo paso a paso',pictogramas:'Pictogramas'};
+function rr(g,x,y,w,h,r=14,fill='#fff',stroke='#bfd5e1',sw=3){g.beginPath();g.roundRect(x,y,w,h,r);g.fillStyle=fill;g.fill();g.lineWidth=sw;g.strokeStyle=stroke;g.stroke()}
+function txt(g,t,x,y,s=28,b=true,align='left',col='#17384e'){g.fillStyle=col;g.font=`${b?'700':'400'} ${s}px Arial`;g.textAlign=align;g.textBaseline='alphabetic';g.fillText(t,x,y)}
+function line(g,x,y,w){g.strokeStyle='#718b99';g.lineWidth=2;g.setLineDash([8,6]);g.beginPath();g.moveTo(x,y);g.lineTo(x+w,y);g.stroke();g.setLineDash([])}
+function drawRod(g,n,x,y,u=28,h=36){const cols={1:'#f7f4ec',2:'#d95757',3:'#9acb6a',4:'#b978b5',5:'#edda4a',6:'#2d7b4d',7:'#202020'},tc={2:'#fff',4:'#fff',6:'#fff',7:'#fff'};rr(g,x,y,n*u,h,5,cols[n],'#788b96',2);txt(g,String(n),x+n*u/2,y+26,18,true,'center',tc[n]||'#25333d')}
+function makeSheet(){
+ const c=document.createElement('canvas');c.width=1240;c.height=1754;const g=c.getContext('2d');g.fillStyle='#fffefa';g.fillRect(0,0,c.width,c.height);
+ txt(g,`${labels[pdfType].toUpperCase()} · SUMAS HASTA EL 7`,620,75,35,true,'center');txt(g,'Nombre:',70,130,22);line(g,160,133,430);txt(g,'Fecha:',730,130,22);line(g,805,133,300);txt(g,`Página 17 · versión ${pdfVersion}`,620,172,18,true,'center','#60798a');
+ let y=225;const task=(title,h)=>{rr(g,65,y,1110,h,18,'#fff','#c7dce7',3);txt(g,title,90,y+42,27,true);const yy=y;y+=h+25;return yy};
+ if(pdfType==='paso'||pdfType==='pictogramas'){
+  let yy=task(pdfType==='pictogramas'?'1. 👀 MIRA LA SUMA Y BUSCA EL RESULTADO':'1. Piensa con regletas y escribe el resultado',330);
+  drawRod(g,4,110,yy+92,30,40);txt(g,'+',250,yy+121,30);drawRod(g,2,295,yy+92,30,40);txt(g,'=',385,yy+121,30);rr(g,440,yy+87,105,50,8,'#fff','#91a9b7',2);drawRod(g,6,650,yy+92,30,40);
+  txt(g,pdfType==='pictogramas'?'👁️ Mira → 🧠 Piensa → ✏️ Escribe':'Comprueba si tu resultado tiene la misma longitud.',105,yy+220,22,true);
+ }else{
+  let yy=task('1. Une cada suma con 5, 6 o 7.',340);
+  const sums=pdfVersion%2?['4 + 1','3 + 3','5 + 2','2 + 3','4 + 2','6 + 1']:['3 + 2','5 + 1','4 + 3','1 + 4','2 + 4','1 + 6'];
+  sums.forEach((s,i)=>{rr(g,95+(i%3)*350,yy+80+Math.floor(i/3)*100,280,65,12,'#fbfdfe','#c6d9e4',2);txt(g,s,235+(i%3)*350,yy+123+Math.floor(i/3)*100,27,true,'center')});
+  txt(g,'RESULTADOS:  5      6      7',620,yy+292,24,true,'center','#60798a');
+ }
+ let yy=task('2. Moneda escondida: completa el total.',330);const rounds=pdfVersion%2?[[7,3],[6,1],[5,2]]:[[7,5],[6,4],[5,1]];
+ rounds.forEach(([t,s],i)=>{txt(g,`Tengo ${t} €. Veo ${s} €. Escondido:`,100,yy+90+i*78,25,true);rr(g,570,yy+56+i*78,120,46,8,'#fff','#91a9b7',2);txt(g,'€',710,yy+90+i*78,24,true)});
+ yy=task('3. Colorea según el resultado.',365);const colSums=pdfVersion%2?['2 + 3','4 + 2','1 + 6','3 + 2','5 + 1','4 + 3']:['4 + 1','3 + 3','5 + 2','1 + 4','2 + 4','6 + 1'];
+ colSums.forEach((s,i)=>{g.beginPath();g.arc(180+(i%3)*360,yy+100+Math.floor(i/3)*125,58,0,Math.PI*2);g.fillStyle='#fff';g.fill();g.strokeStyle='#8aa3b1';g.lineWidth=3;g.stroke();txt(g,s,180+(i%3)*360,yy+110+Math.floor(i/3)*125,24,true,'center')});
+ txt(g,'5 = amarillo   ·   6 = verde   ·   7 = negro',620,yy+322,20,true,'center','#60798a');
+ yy=task(pdfType==='tarea'?'4. En casa: representa y explica.':'4. Problema: representa, calcula y comprueba.',285);
+ txt(g,'Hay 4 lápices azules y 2 verdes. ¿Cuántos hay en total?',95,yy+75,24,true);txt(g,'DIBUJO:',95,yy+132,19,true,'left','#60798a');rr(g,210,yy+105,800,85,12,'#fbfdfe','#d6e3eb',2);txt(g,'OPERACIÓN:',95,yy+238,19,true,'left','#60798a');line(g,240,yy+240,300);txt(g,'RESPUESTA:',650,yy+238,19,true,'left','#60798a');line(g,785,yy+240,300);
+ txt(g,'Palabra matemática: RESULTADO = el total que obtenemos al calcular.',620,1690,18,true,'center','#17384e');return c
+}
+function renderPdf(){pdfCanvas=makeSheet();$('#pdfPreview').innerHTML='';$('#pdfPreview').appendChild(pdfCanvas);$('#pdfTitle').textContent=`${labels[pdfType]} · Página 17 · versión ${pdfVersion}`}
+$$('.pdf-type').forEach(b=>b.onclick=()=>{$$('.pdf-type').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');pdfType=b.dataset.pdf;pdfVersion=1;renderPdf()});$('#regenPdf').onclick=()=>{pdfVersion++;renderPdf()};
+function ascii(s){return new TextEncoder().encode(s)}function concat(parts){let n=0;parts.forEach(p=>n+=p.length);const o=new Uint8Array(n);let k=0;parts.forEach(p=>{o.set(p,k);k+=p.length});return o}function b64bytes(u){const b=atob(u.split(',')[1]),a=new Uint8Array(b.length);for(let i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a}
+function canvasPdf(c){const jpg=b64bytes(c.toDataURL('image/jpeg',.92)),objs=[],catalog=1,pages=2,page=3,imgO=4,cont=5;objs[catalog]=ascii('<< /Type /Catalog /Pages 2 0 R >>');objs[pages]=ascii('<< /Type /Pages /Count 1 /Kids [3 0 R] >>');objs[page]=ascii('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Resources << /XObject << /Im 4 0 R >> >> /Contents 5 0 R >>');objs[imgO]=concat([ascii(`<< /Type /XObject /Subtype /Image /Width ${c.width} /Height ${c.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpg.length} >>\nstream\n`),jpg,ascii('\nendstream')]);const st=ascii('q\n595.28 0 0 841.89 0 0 cm\n/Im Do\nQ\n');objs[cont]=concat([ascii(`<< /Length ${st.length} >>\nstream\n`),st,ascii('endstream')]);const head=ascii('%PDF-1.4\n%âãÏÓ\n'),parts=[head],off=[0];let pos=head.length;for(let i=1;i<=5;i++){off[i]=pos;const bl=concat([ascii(`${i} 0 obj\n`),objs[i],ascii('\nendobj\n')]);parts.push(bl);pos+=bl.length}const xp=pos;let xr='xref\n0 6\n0000000000 65535 f \n';for(let i=1;i<=5;i++)xr+=String(off[i]).padStart(10,'0')+' 00000 n \n';xr+=`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xp}\n%%EOF`;parts.push(ascii(xr));return new Blob([concat(parts)],{type:'application/pdf'})}
+$('#downloadPdf').onclick=()=>{if(!pdfCanvas)renderPdf();const a=document.createElement('a');a.href=URL.createObjectURL(canvasPdf(pdfCanvas));a.download=`pagina17_${pdfType}_v${pdfVersion}.pdf`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},700)};
+const h=location.hash.match(/step(\d+)/);if(h&&+h[1]>=1&&+h[1]<=8)go(+h[1]);
+})();
+</script>
+<script src="../assets/fullscreen-persistent.js"></script>
+</body></html>

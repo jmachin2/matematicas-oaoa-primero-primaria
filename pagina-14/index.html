@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Número 6 · Página 14 · Matemáticas OAOA</title>
+<style>
+:root{
+ --ink:#143b55;--muted:#60798b;--line:#c6dbe7;--bg:#edf7fb;--panel:#fff;
+ --blue:#4c9ec9;--green:#3f8a5b;--yellow:#f0d950;--red:#d85b5b;--ochre:#a48a2c;
+ --rod1:#f5f1e8;--rod2:#d95757;--rod3:#9acb6a;--rod4:#b978b5;--rod5:#edda4a;--rod6:#2d7b4d;
+ --unit:38px;
+}
+*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}button{font:inherit}body.calm *{animation:none!important;transition:none!important}
+.app{height:100%;display:grid;grid-template-rows:auto auto minmax(0,1fr)}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 10px;background:#fff;border-bottom:2px solid var(--line)}
+.brand{display:flex;align-items:center;gap:8px;min-width:0}.brand-icon{width:31px;height:31px;border-radius:7px;background:#5d9ee0;color:#fff;display:grid;place-items:center;font-weight:1000;font-size:1.35rem}.brand h1{margin:0;font-size:1.18rem;white-space:nowrap}.brand small{display:block;color:var(--muted);font-weight:800;font-size:.75rem}.controls{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.control,.action,.tab,.answer,.choice,.toolbtn,.sum-btn,.diagram-option,.pdf-type{border:2px solid #b9cedb;background:#fff;color:var(--ink);border-radius:13px;font-weight:900;cursor:pointer}.control{padding:6px 9px;min-height:36px}.action{padding:8px 13px;min-height:40px}.action.primary,.control.primary{background:var(--blue);border-color:var(--blue);color:#fff}.action.warn{background:#fff8e9;border-color:#dfba6a}
+.tabs-wrap{padding:5px 7px;background:#fbfdff;border-bottom:2px solid var(--line)}.tabs{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:5px}.tab{padding:6px 3px;min-height:37px;font-size:.72rem}.tab.active{background:#dceff8;border-color:var(--blue)}.tab.done{background:#e9f6ed;border-color:#76ba8d;color:#326d46}
+.main{position:relative;min-height:0;overflow:hidden}.screen-badge{position:absolute;right:8px;top:4px;z-index:20;background:#eef5f9;color:var(--muted);border-radius:999px;padding:4px 8px;font-size:.68rem;font-weight:1000}
+.step{display:none;position:absolute;inset:4px;padding:3px 8px;overflow:hidden}.step.active{display:block}.step-head{height:39px;display:flex;align-items:center;justify-content:center;gap:8px}.step-title{font-size:1.26rem;font-weight:1000}.speak{border:0;background:#fff;width:35px;height:35px;border-radius:999px;cursor:pointer}.card,.panel,.problem-card,.pdf-selector,.pdf-preview-panel{background:#fff;border:2px solid var(--line);border-radius:18px}.card{padding:11px}.label{text-align:center;font-size:.72rem;letter-spacing:.07em;color:var(--muted);font-weight:1000}.big{font-size:1.9rem;font-weight:1000;text-align:center}.feedback{max-width:920px;margin:7px auto 0;padding:8px 12px;border:2px solid #d4e1e9;border-radius:14px;background:#fff;display:flex;gap:9px;align-items:center;min-height:40px;font-weight:850}.feedback.ok{background:#edf8f0;border-color:#7ac294}.feedback.err{background:#fff2f2;border-color:#e5a1a1}.actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:7px}
+.rod{--n:1;width:calc(var(--unit)*var(--n));height:37px;border-radius:7px;border:2px solid rgba(40,50,60,.24);display:grid;place-items:center;font-weight:1000;flex:0 0 auto}.rod[data-n="1"]{background:var(--rod1);color:#333}.rod[data-n="2"]{background:var(--rod2);color:#fff}.rod[data-n="3"]{background:var(--rod3);color:#fff}.rod[data-n="4"]{background:var(--rod4);color:#fff}.rod[data-n="5"]{background:var(--rod5);color:#333}.rod[data-n="6"]{background:var(--rod6);color:#fff}.rod-chain{display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap}.eqarea{min-height:58px;display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap}
+/* 1 */
+.targets{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:950px;margin:0 auto}.target-card{padding:12px;display:grid;gap:8px;place-items:center}.target-card .rod{--unit:46px;height:43px}.test-sum{max-width:750px;margin:10px auto 0;padding:11px;background:#fff;border:2px solid var(--line);border-radius:18px;display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center}.test-eq{font-size:2rem;font-weight:1000;text-align:center}.test-rods .rod{--unit:35px;height:34px}.answer-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.answer{min-height:56px;padding:8px;font-size:1.15rem}.answer.correct,.choice.correct,.sum-btn.correct,.diagram-option.correct{background:#e9f7ed;border-color:#61ae79}.answer.wrong,.choice.wrong,.sum-btn.wrong,.diagram-option.wrong{background:#fff1f1;border-color:#d98282}
+/* 2 */
+.classify-layout{display:grid;grid-template-columns:1.5fr .7fr;gap:12px;max-width:1120px;margin:0 auto}.sum-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.sum-card{border:2px solid #c9dce8;border-radius:16px;padding:9px;background:#fff;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.sum-card .op{font-size:1.75rem;font-weight:1000;text-align:center}.sum-card .mini-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px}.sum-btn{width:68px;min-height:45px;font-size:1.15rem}.sum-rods{grid-column:1/-1;min-height:38px;display:none;place-items:center;border-top:1px dashed #d4e2ea;padding-top:5px}.sum-rods.show{display:grid}.sum-rods .rod{--unit:28px;height:28px;font-size:.82rem}.legend{display:grid;gap:10px;margin-top:10px}.legend-row{display:flex;align-items:center;gap:8px;font-weight:1000}.swatch{width:56px;height:13px;border-radius:5px}.swatch.five{background:var(--yellow)}.swatch.six{background:var(--green)}
+/* 3 */
+.detective-layout{display:grid;grid-template-columns:1.4fr .8fr;gap:12px;max-width:1080px;margin:0 auto}.claims{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.choice{padding:10px;min-height:160px;display:grid;place-items:center;gap:7px}.claim-op{font-size:1.55rem}.claim-tag{font-size:.95rem;padding:5px 10px;border-radius:999px;background:#eff5f8}.claim-rods{min-height:45px}.claim-rods .rod{--unit:25px;height:27px;font-size:.76rem}.choice.selected{outline:4px solid rgba(76,158,201,.23);border-color:var(--blue)}
+/* 4 */
+.diagram-layout{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;max-width:1030px;margin:0 auto}.tree-card{display:grid;place-items:center;min-height:290px}.tree{position:relative;width:430px;height:245px}.node{position:absolute;width:125px;height:72px;border:4px solid #567354;background:#fff;border-radius:4px;display:grid;place-items:center;font-size:2rem;font-weight:1000}.node.top{left:152px;top:15px}.node.left{left:55px;bottom:15px}.node.right{right:55px;bottom:15px}.tree svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.node.blank{border-style:dashed;border-color:#8ea4b0;color:#7991a0}.diagram-options{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}.diagram-option{min-height:56px;font-size:1.25rem}.diagram-check{display:grid;gap:6px;margin-top:9px;padding:9px;border:2px solid #82be95;border-radius:13px;background:#eef9f1}.diagram-check[hidden]{display:none!important}.diagram-check .rod{--unit:28px;height:28px;font-size:.8rem}
+/* 5 */
+.from-diagram{display:grid;grid-template-columns:.9fr 1.1fr;gap:12px;max-width:1020px;margin:0 auto}.small-tree{transform:scale(.82);transform-origin:center;margin:-20px auto}.sum-choices{display:grid;gap:8px}.sum-choice{min-height:58px;font-size:1.18rem;padding:8px}.verbal-box{margin-top:8px;padding:9px;border:2px solid #d6e2ea;border-radius:13px;background:#f8fbfd;font-weight:900}.verbal-box[hidden]{display:none!important}
+/* 6 */
+.problem-layout{display:grid;grid-template-columns:1fr 1fr;gap:12px;height:calc(100% - 42px);min-height:0}.problem-left,.problem-right{display:grid;gap:8px;align-content:start;min-height:0}.problem-card{padding:10px}.problem-text{font-size:1.02rem;font-weight:1000;line-height:1.34}.problem-visual{min-height:170px;display:grid;place-items:center}.problem-visual svg{width:100%;max-height:180px}.problem-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.problem-stage{background:#fff;border:2px solid var(--line);border-radius:16px;padding:9px}.problem-stage[hidden]{display:none!important}.problem-diagram{display:grid;place-items:center}.problem-diagram .tree{transform:scale(.72);transform-origin:center;margin:-33px 0}.problem-reveal{padding:8px;border:2px solid #82be95;border-radius:13px;background:#eef9f1;font-weight:900;text-align:center}.problem-reveal[hidden]{display:none!important}
+/* 7 */
+.sheet-stage{height:calc(100% - 42px);display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:10px;min-height:0}.sheet-viewer{position:relative;min-height:0;background:#dfe8ee;border:2px solid var(--line);border-radius:18px;overflow:auto;display:grid;place-items:start center;padding:10px}.sheet-transform{position:relative;transform-origin:top center;max-width:820px;width:min(100%,720px)}.sheet-img{display:block;width:100%;height:auto;background:#fff;border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,.14);user-select:none;-webkit-user-drag:none}#annotCanvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}.sheet-tools{display:flex;flex-direction:column;gap:7px;background:#fff;border:2px solid var(--line);border-radius:17px;padding:8px;align-self:start;max-height:100%;overflow:auto}.sheet-tools h3{margin:0;text-align:center;font-size:.9rem}.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.toolbtn{min-height:41px;padding:6px;font-size:.76rem}.toolbtn.active{background:#dceff8;border-color:var(--blue)}.color-row{display:flex;gap:7px;justify-content:center}.color{width:31px;height:31px;border-radius:999px;border:3px solid #fff;box-shadow:0 0 0 2px #b6c8d4;cursor:pointer}.color.active{box-shadow:0 0 0 4px #ffcf58}.zoom-row{display:grid;grid-template-columns:1fr 1fr;gap:6px}body.explain-mode .topbar,body.explain-mode .tabs-wrap,body.explain-mode #step7 .step-head,body.explain-mode .screen-badge{display:none!important}body.explain-mode .app{grid-template-rows:minmax(0,1fr)}body.explain-mode .main{height:100vh}body.explain-mode .step{inset:0;padding:0}body.explain-mode .sheet-stage{height:100vh;grid-template-columns:1fr}body.explain-mode .sheet-viewer{border:0;border-radius:0;padding:2px}body.explain-mode .sheet-tools{position:fixed;right:10px;top:10px;z-index:40;width:218px;box-shadow:0 5px 20px rgba(0,0,0,.18)}
+/* 8 */
+.pdf-layout{height:calc(100% - 42px);display:grid;grid-template-columns:285px minmax(0,1fr);gap:10px;min-height:0}.pdf-selector{padding:10px;display:flex;flex-direction:column;gap:7px;overflow:auto}.pdf-selector h3{margin:0;text-align:center}.pdf-type{padding:8px;text-align:left;min-height:44px}.pdf-type.selected{background:#dceff8;border-color:var(--blue)}.pdf-preview-panel{padding:7px;display:grid;grid-template-rows:auto minmax(0,1fr) auto;min-height:0}.pdf-preview-title{text-align:center;font-weight:1000;padding:3px}.pdf-preview{min-height:0;display:grid;place-items:start center;overflow:auto;background:#e9eef1;border-radius:12px;padding:7px}.pdf-preview canvas{display:block;max-width:100%;height:auto;box-shadow:0 3px 12px rgba(0,0,0,.15)}.pdf-actions{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;padding-top:6px}.pdf-status{text-align:center;color:var(--muted);font-size:.72rem;font-weight:800}.finish{text-align:center;padding-top:120px}.finish h2{font-size:2rem}
+@media(max-width:900px){.tabs{grid-template-columns:repeat(4,1fr)}.controls{display:none}.classify-layout,.detective-layout,.diagram-layout,.from-diagram,.problem-layout,.pdf-layout,.sheet-stage{grid-template-columns:1fr}.step{overflow:auto}.claims{grid-template-columns:1fr}.sum-grid{grid-template-columns:1fr}.sheet-tools{position:static}.tree{transform:scale(.85)}.pdf-layout{height:auto}.sheet-stage{height:auto}}
+
+/* v3 · Correcciones visuales/pedagógicas actividades 1 y 3 */
+.target-card>b{display:none!important}
+.zero-rod{min-width:78px;height:48px;border:3px dashed #9babb6;border-radius:10px;background:#fff;display:grid;place-items:center;line-height:1.05;color:#5d7382;font-weight:1000;padding:3px 7px}
+.zero-rod .zero-number{font-size:1.35rem}
+.zero-rod .zero-label{font-size:.58rem;letter-spacing:.02em;text-transform:uppercase;white-space:nowrap}
+#warmRods{min-height:60px;display:flex;justify-content:center;align-items:center;gap:9px}
+.warm-check{max-width:750px;margin:7px auto 0;padding:8px 12px;border:2px solid #82be95;border-radius:14px;background:#eef9f1;display:flex;align-items:center;justify-content:center;gap:12px;font-weight:1000}
+.warm-check[hidden]{display:none!important}
+.warm-check .rod{--unit:35px;height:34px}
+.detect-reference{display:grid;gap:8px;margin:9px 0 12px;padding:9px;border:1px dashed #c4d5df;border-radius:13px;background:#fbfdfe}
+.detect-reference-row{display:grid;grid-template-columns:70px 1fr;align-items:center;gap:8px;font-weight:1000}
+.detect-reference-row .rod{--unit:27px;height:28px;font-size:.78rem}
+.choice.error-found{background:#fff4df!important;border-color:#e1a84a!important;box-shadow:0 0 0 3px rgba(225,168,74,.18) inset}
+.choice.error-found::after{content:'🔎 ERROR ENCONTRADO';font-size:.72rem;font-weight:1000;color:#8b5d12}
+.choice.checked-correct{background:#eef7fd!important;border-color:#6aaed6!important}.choice.checked-correct::after{content:'✓ ESTA AFIRMACIÓN ES CORRECTA';font-size:.68rem;font-weight:1000;color:#2b6f96}
+
+</style>
+
+<style id="console-back-style">
+.console-back{position:fixed;left:10px;bottom:10px;z-index:99999;text-decoration:none;background:#17384e;color:#fff;border:2px solid #fff;border-radius:999px;padding:9px 13px;font:900 13px Arial,Helvetica,sans-serif;box-shadow:0 4px 12px rgba(0,0,0,.22)}
+.console-back:hover{background:#469ac7}
+</style>
+</head>
+<body>
+<a class="console-back" href="../fichas/">← Menú de fichas</a>
+<div class="app">
+<header class="topbar">
+ <div class="brand"><div class="brand-icon">6</div><div><h1>Número 6 · Clasifico y descompongo</h1><small>Página 14 · OAOA · 1.º de Primaria</small></div></div>
+ <div class="controls"><button class="control" id="fullscreenBtn">⛶ Pantalla completa</button><button class="control" id="soundBtn">🔊 Sonido ON</button><button class="control" id="calmBtn">🌿 Modo calma</button><button class="control" id="resetBtn">↻ Reiniciar</button></div>
+</header>
+<nav class="tabs-wrap"><div class="tabs">
+ <button class="tab active" data-step="1">1. ¿5 o 6?</button><button class="tab" data-step="2">2. Clasifico sumas</button><button class="tab" data-step="3">3. Detective</button><button class="tab" data-step="4">4. Diagramas</button><button class="tab" data-step="5">5. Del diagrama a la suma</button><button class="tab" data-step="6">6. Problema</button><button class="tab" data-step="7">7. Ver la ficha</button><button class="tab" data-step="8">8. Fichas PDF</button>
+</div></nav>
+<main class="main"><div class="screen-badge" id="badge">Actividad 1 de 8</div>
+
+<section class="step active" id="step1">
+ <div class="step-head"><div class="step-title">1. ¿Forma 5 o forma 6?</div><button class="speak" data-say="Compara la suma con las regletas cinco y seis. Decide qué total forma.">🔈</button></div>
+ <div class="targets"><div class="card target-card"><div class="label">TOTAL 5</div><div id="target5"></div></div><div class="card target-card"><div class="label">TOTAL 6</div><div id="target6"></div></div></div>
+ <div class="test-sum"><div><div class="label">CONSTRUYO</div><div class="eqarea test-rods" id="warmRods"></div></div><div class="test-eq" id="warmEq"></div><div class="answer-grid"><button class="answer" id="warm5">5</button><button class="answer" id="warm6">6</button></div></div>
+ <div class="warm-check" id="warmCheck" hidden></div>
+ <div class="feedback" id="feedback1"><span>👀</span><div>Compara la longitud total antes de responder.</div></div>
+ <div class="actions"><button class="action" id="newWarm">Otra suma</button><button class="action primary" data-next="2">Siguiente →</button></div>
+</section>
+
+<section class="step" id="step2">
+ <div class="step-head"><div class="step-title">2. Clasifico las sumas</div><button class="speak" data-say="Decide si cada suma es igual a cinco o igual a seis.">🔈</button></div>
+ <div class="classify-layout"><div class="card"><div class="label">ELIGE 5 O 6 EN CADA SUMA</div><div class="sum-grid" id="classifyGrid"></div></div><div class="card"><div class="label">CÓDIGO DE LA FICHA</div><div class="legend"><div class="legend-row"><span class="swatch five"></span> Igual a 5</div><div class="legend-row"><span class="swatch six"></span> Igual a 6</div></div><button class="action" id="toggleClassRods" style="width:100%;margin-top:13px">👁 Ver regletas</button><button class="action" id="newClassify" style="width:100%;margin-top:7px">Otras 4</button><div class="feedback" id="feedback2"><span>🎨</span><div>Clasifica por el total, no por el orden de los sumandos.</div></div></div></div>
+ <div class="actions"><button class="action primary" data-next="3">Siguiente →</button></div>
+</section>
+
+<section class="step" id="step3">
+ <div class="step-head"><div class="step-title">3. Detective: encuentra el error</div><button class="speak" data-say="Dos afirmaciones son correctas y una está equivocada. Encuentra la equivocada.">🔈</button></div>
+ <div class="detective-layout"><div class="card"><div class="label">TOCA LA AFIRMACIÓN INCORRECTA</div><div class="claims" id="claimsGrid"></div></div><div class="card"><div class="label">PISTA</div><p style="font-weight:850;line-height:1.35;color:var(--muted)">Puedes comprobar cada afirmación juntando las dos regletas y comparando su longitud con 5 o 6.</p><div class="detect-reference"><div class="detect-reference-row"><span>TOTAL 5</span><div id="detectRef5"></div></div><div class="detect-reference-row"><span>TOTAL 6</span><div id="detectRef6"></div></div></div><button class="action" id="newClaims" style="width:100%">Otro reto</button><div class="feedback" id="feedback3"><span>🔎</span><div>No te fíes solo de la etiqueta: comprueba la cantidad.</div></div></div></div>
+ <div class="actions"><button class="action primary" data-next="4">Siguiente →</button></div>
+</section>
+
+<section class="step" id="step4">
+ <div class="step-head"><div class="step-title">4. Completo los diagramas</div><button class="speak" data-say="Mira el todo y las partes. Averigua el número que falta.">🔈</button></div>
+ <div class="diagram-layout"><div class="card tree-card"><div id="diagramTree"></div></div><div class="card"><div class="label">¿QUÉ NÚMERO FALTA?</div><div class="diagram-options" id="diagramOptions"></div><div class="diagram-check" id="diagramCheck" hidden></div><div class="feedback" id="feedback4"><span>🌳</span><div>Recuerda: las dos partes juntas forman el todo.</div></div></div></div>
+ <div class="actions"><button class="action" id="newDiagram">Otro diagrama</button><button class="action primary" data-next="5">Siguiente →</button></div>
+</section>
+
+<section class="step" id="step5">
+ <div class="step-head"><div class="step-title">5. Del diagrama a la suma</div><button class="speak" data-say="Lee el diagrama y elige la suma que lo representa.">🔈</button></div>
+ <div class="from-diagram"><div class="card"><div class="label">LEE EL DIAGRAMA</div><div id="sumTree"></div></div><div class="card"><div class="label">¿QUÉ SUMA LO REPRESENTA?</div><div class="sum-choices" id="diagramSumChoices"></div><div class="verbal-box" id="verbalBox" hidden></div><div class="feedback" id="feedback5"><span>💬</span><div>Primero identifica el todo y después las dos partes.</div></div></div></div>
+ <div class="actions"><button class="action" id="newDiagramSum">Otro diagrama</button><button class="action primary" data-next="6">Problema →</button></div>
+</section>
+
+<section class="step" id="step6">
+ <div class="step-head"><div class="step-title">6. Problema matemático</div><button class="speak" id="problemSpeak">🔈</button></div>
+ <div class="problem-layout"><div class="problem-left"><div class="problem-card"><div class="problem-text" id="problemText"></div></div><div class="problem-card problem-visual" id="problemVisual"></div></div><div class="problem-right"><div class="problem-stage" id="problemStage1"><div class="label">1. ¿CUÁNTOS HAY EN TOTAL?</div><div class="problem-options" id="problemOptions"></div></div><div class="problem-stage" id="problemStage2" hidden><div class="label">2. COMPLETA EL DIAGRAMA</div><div class="problem-diagram" id="problemDiagram"></div><div class="problem-options" id="problemDiagramOptions"></div></div><div class="problem-reveal" id="problemReveal" hidden></div><div class="feedback" id="feedback6"><span>🧠</span><div>Representa la situación antes de escribir la suma.</div></div><div class="actions"><button class="action" id="newProblem">Otro problema</button><button class="action primary" data-next="7">Ver la ficha →</button></div></div></div>
+</section>
+
+<section class="step" id="step7">
+ <div class="step-head"><div class="step-title">7. Ver la ficha original</div><button class="speak" data-say="Usa las herramientas para explicar y resolver la ficha en la pizarra.">🔈</button></div>
+ <div class="sheet-stage"><div class="sheet-viewer" id="sheetViewer"><div class="sheet-transform" id="sheetTransform"><img id="sheetImg" class="sheet-img" src="pag14_ficha.png" alt="Ficha original página 14"><canvas id="annotCanvas"></canvas></div></div><aside class="sheet-tools" id="sheetTools"><h3>Herramientas</h3><div class="tool-grid"><button class="toolbtn active" data-tool="pen">✏️ Lápiz</button><button class="toolbtn" data-tool="highlight">🖍️ Subrayar</button><button class="toolbtn" data-tool="circle">⭕ Rodear</button><button class="toolbtn" data-tool="check">✓ Correcto</button><button class="toolbtn" data-tool="eraser">🧽 Borrador</button><button class="toolbtn" id="undoBtn">↶ Deshacer</button><button class="toolbtn" id="clearBtn">🗑 Limpiar</button><button class="toolbtn" id="fitBtn">↔ Ajustar</button></div><div class="color-row"><button class="color active" data-color="#e53935" style="background:#e53935"></button><button class="color" data-color="#1565c0" style="background:#1565c0"></button><button class="color" data-color="#2e7d32" style="background:#2e7d32"></button><button class="color" data-color="#f9a825" style="background:#f9a825"></button></div><label style="font-size:.75rem;font-weight:900">Grosor <input id="widthRange" type="range" min="2" max="18" value="5" style="width:100%"></label><div class="zoom-row"><button class="toolbtn" id="zoomOut">− Zoom</button><button class="toolbtn" id="zoomIn">+ Zoom</button></div><button class="action primary" id="explainBtn">⛶ Modo explicación</button><button class="action" id="hideToolsBtn" hidden>Ocultar herramientas</button></aside></div>
+</section>
+
+<section class="step" id="step8">
+ <div class="step-head"><div class="step-title">8. Fichas PDF</div><button class="speak" data-say="Elige una ficha, genera otra versión o descarga el PDF.">🔈</button></div>
+ <div class="pdf-layout"><aside class="pdf-selector"><h3>Tipo de ficha</h3><button class="pdf-type selected" data-sheet="ampliacion">🚀 Ampliación</button><button class="pdf-type" data-sheet="refuerzo">🧩 Refuerzo</button><button class="pdf-type" data-sheet="tarea">🏠 Tarea</button><button class="pdf-type" data-sheet="tea">🪜 Trabajo paso a paso</button><button class="pdf-type" data-sheet="pictogramas">👁️ Pictogramas</button><div class="pdf-status" id="pdfStatus">Versión 1 lista.</div></aside><div class="pdf-preview-panel"><div class="pdf-preview-title" id="pdfTitle">Ampliación · versión 1</div><div class="pdf-preview" id="pdfPreview"></div><div class="pdf-actions"><button class="action" id="regenPdf">🔄 Otra versión</button><button class="action primary" id="downloadPdf">⬇ Descargar PDF</button></div></div></div>
+</section>
+
+<section class="step" id="step9"><div class="finish"><h2>¡Página 14 lista! 🎉</h2><p>Has clasificado sumas y completado diagramas parte-parte-todo.</p><button class="action primary" id="againBtn">Volver a empezar</button></div></section>
+</main></div>
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+let soundOn=true,calm=false,currentStep=1;
+function good(){if(soundOn){try{const a=new AudioContext(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.frequency.value=650;g.gain.setValueAtTime(.06,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.18);o.start();o.stop(a.currentTime+.18)}catch(e){}}}
+function bad(){if(soundOn){try{const a=new AudioContext(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.frequency.value=190;g.gain.setValueAtTime(.045,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.18);o.start();o.stop(a.currentTime+.18)}catch(e){}}}
+function speak(t){if(!soundOn||!('speechSynthesis'in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='es-ES';u.rate=.86;speechSynthesis.speak(u)}
+function feedback(sel,type,icon,msg){const e=$(sel);e.className='feedback'+(type?' '+type:'');e.innerHTML=`<span>${icon}</span><div>${msg}</div>`}
+function rod(n){const d=document.createElement('div');d.className='rod';d.dataset.n=n;d.style.setProperty('--n',n);d.textContent=n;return d}
+function rodsInto(host,a,b){host.innerHTML='';host.appendChild(rod(a));const p=document.createElement('b');p.textContent='+';host.append(p,rod(b))}
+function oneRodInto(host,n){host.innerHTML='';host.appendChild(rod(n))}
+function shuffle(a){const x=[...a];for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x}
+function goStep(n){if(n>8)n=9;currentStep=n;$$('.step').forEach(x=>x.classList.toggle('active',x.id===`step${n}`));$$('.tab').forEach(t=>{const k=+t.dataset.step;t.classList.toggle('active',k===n);if(k<n)t.classList.add('done')});$('#badge').textContent=n<=8?`Actividad ${n} de 8`:'Final';if(n===7)setTimeout(fitSheet,80);if(n===8)setTimeout(renderPdfPreview,80);location.hash=n<=8?`step${n}`:''}
+$$('[data-next]').forEach(b=>b.onclick=()=>goStep(+b.dataset.next));$$('.tab').forEach(b=>b.onclick=()=>goStep(+b.dataset.step));$$('[data-say]').forEach(b=>b.onclick=()=>speak(b.dataset.say));
+
+/* 1. 5 o 6 */
+oneRodInto($('#target5'),5);oneRodInto($('#target6'),6);
+const warmBank=[[0,5],[2,3],[1,5],[3,2],[3,3],[6,0],[2,4],[5,1],[4,1],[1,4],[4,2]];let warmIndex=0;
+function zeroRod(){
+ const z=document.createElement('div');z.className='zero-rod';
+ z.innerHTML='<span class="zero-number">0</span><span class="zero-label">ninguna regleta</span>';
+ return z;
+}
+function sumRodsInto(host,a,b){
+ host.innerHTML='';
+ const plus=document.createElement('b');plus.textContent='+';
+ host.append(a===0?zeroRod():rod(a),plus,b===0?zeroRod():rod(b));
+}
+function loadWarm(){
+ const p=warmBank[warmIndex%warmBank.length],t=p[0]+p[1];
+ sumRodsInto($('#warmRods'),p[0],p[1]);
+ $('#warmEq').textContent=`${p[0]} + ${p[1]} = ?`;
+ $('#warm5').classList.remove('correct','wrong');$('#warm6').classList.remove('correct','wrong');
+ $('#warmCheck').hidden=true;$('#warmCheck').innerHTML='';
+ feedback('#feedback1','','👀','Compara la construcción con las regletas de referencia 5 y 6.');
+ $('#warm5').onclick=()=>answerWarm(5,t,p);$('#warm6').onclick=()=>answerWarm(6,t,p)
+}
+function answerWarm(ans,t,p){
+ const b=ans===5?$('#warm5'):$('#warm6');
+ $('#warm5').classList.remove('correct','wrong');$('#warm6').classList.remove('correct','wrong');
+ if(ans===t){
+   good();b.classList.add('correct');
+   const check=$('#warmCheck');check.hidden=false;check.innerHTML='<span>COMPROBACIÓN:</span>';
+   check.appendChild(rod(t));
+   const eq=document.createElement('span');eq.textContent=`${p[0]} + ${p[1]} = ${t}`;check.appendChild(eq);
+   if(p[0]===0||p[1]===0){
+     feedback('#feedback1','ok','✅',`${p[0]} + ${p[1]} = ${t}. Añadir 0 no cambia la cantidad.`)
+   }else{
+     feedback('#feedback1','ok','✅',`${p[0]} + ${p[1]} = ${t}. La construcción tiene la misma longitud que la regleta ${t}.`)
+   }
+ }else{
+   bad();b.classList.add('wrong');
+   feedback('#feedback1','err','🔎',`Compara otra vez la longitud de la construcción con 5 y 6.`)
+ }
+}
+$('#newWarm').onclick=()=>{warmIndex=(warmIndex+1)%warmBank.length;loadWarm()};loadWarm();
+
+/* 2. Clasifico */
+const sums5=[[0,5],[1,4],[2,3],[3,2],[4,1],[5,0]],sums6=[[0,6],[1,5],[2,4],[3,3],[4,2],[5,1],[6,0]];let classRound=0,classRods=false;
+function loadClassify(){const a5=shuffle(sums5),a6=shuffle(sums6),picks=shuffle([a5[0],a5[1],a6[0],a6[1]]);const host=$('#classifyGrid');host.innerHTML='';picks.forEach((p,i)=>{const t=p[0]+p[1],card=document.createElement('div');card.className='sum-card';const op=document.createElement('div');op.className='op';op.textContent=`${p[0]} + ${p[1]}`;const acts=document.createElement('div');acts.className='mini-actions';[5,6].forEach(n=>{const b=document.createElement('button');b.className='sum-btn';b.textContent=n;b.onclick=()=>{card.querySelectorAll('.sum-btn').forEach(x=>x.classList.remove('correct','wrong'));if(n===t){good();b.classList.add('correct');feedback('#feedback2','ok','✅',`${p[0]} + ${p[1]} es igual a ${t}.`)}else{bad();b.classList.add('wrong');feedback('#feedback2','err','🎨',`Revisa el total de ${p[0]} + ${p[1]}.`)}};acts.appendChild(b)});const rr=document.createElement('div');rr.className='sum-rods'+(classRods?' show':'');sumRodsInto(rr,p[0],p[1]);card.append(op,acts,rr);host.appendChild(card)});feedback('#feedback2','','🎨','Clasifica por el total, no por el orden de los sumandos.')}
+$('#toggleClassRods').onclick=()=>{classRods=!classRods;$$('#classifyGrid .sum-rods').forEach(x=>x.classList.toggle('show',classRods));$('#toggleClassRods').textContent=classRods?'🙈 Ocultar regletas':'👁 Ver regletas'};$('#newClassify').onclick=()=>{classRound++;loadClassify()};loadClassify();
+
+/* 3. Detective */
+const claimSets=[
+  [
+    {a:2,b:3,says:5},
+    {a:1,b:5,says:6},
+    {a:3,b:3,says:5}
+  ],
+  [
+    {a:4,b:1,says:5},
+    {a:4,b:2,says:6},
+    {a:5,b:1,says:5}
+  ],
+  [
+    {a:0,b:5,says:5},
+    {a:6,b:0,says:6},
+    {a:3,b:2,says:6}
+  ],
+  [
+    {a:1,b:4,says:5},
+    {a:2,b:4,says:6},
+    {a:3,b:2,says:6}
+  ],
+  [
+    {a:5,b:0,says:5},
+    {a:3,b:3,says:6},
+    {a:2,b:3,says:6}
+  ]
+];
+let claimIndex=0;
+
+/* La corrección se CALCULA siempre a partir de a+b.
+   No guardamos un booleano manual que pueda quedar desincronizado. */
+function claimIsCorrect(q){
+  return (q.a + q.b) === q.says;
+}
+function validateClaimSet(set){
+  const correctCount=set.filter(claimIsCorrect).length;
+  return correctCount===2 && set.length===3;
+}
+
+function loadClaims(){
+ const source=claimSets[claimIndex%claimSets.length];
+ if(!validateClaimSet(source)){
+   console.error('Reto Detective inválido:',source);
+ }
+ const set=shuffle(source.map(q=>({...q})));
+
+ oneRodInto($('#detectRef5'),5);
+ oneRodInto($('#detectRef6'),6);
+
+ const host=$('#claimsGrid');
+ host.innerHTML='';
+
+ set.forEach(q=>{
+   const {a,b,says}=q;
+   const actual=a+b;
+   const isCorrect=claimIsCorrect(q);
+
+   const bt=document.createElement('button');
+   bt.className='choice';
+   bt.type='button';
+
+   const op=document.createElement('b');
+   op.className='claim-op';
+   op.textContent=`${a} + ${b}`;
+
+   const tag=document.createElement('div');
+   tag.className='claim-tag';
+   tag.textContent=`Dice: “igual a ${says}”`;
+
+   const rr=document.createElement('div');
+   rr.className='claim-rods';
+   sumRodsInto(rr,a,b);
+
+   bt.append(op,tag,rr);
+
+   bt.onclick=()=>{
+     if(!isCorrect){
+       good();
+       host.querySelectorAll('.choice').forEach(x=>x.classList.remove('error-found'));
+       bt.classList.remove('wrong','checked-correct');
+       bt.classList.add('error-found');
+
+       feedback(
+         '#feedback3','ok','🔎',
+         `Error encontrado: ${a} + ${b} = ${actual}. La tarjeta decía ${says}.`
+       );
+     }else{
+       bad();
+       bt.classList.remove('error-found');
+       bt.classList.add('checked-correct');
+
+       feedback(
+         '#feedback3','','✓',
+         `Esta afirmación es correcta: ${a} + ${b} = ${actual}. Sigue buscando la que tiene el resultado equivocado.`
+       );
+     }
+   };
+
+   host.appendChild(bt);
+ });
+
+ feedback(
+   '#feedback3','','🔎',
+   'Hay exactamente 2 afirmaciones correctas y 1 incorrecta. Comprueba cada suma con las regletas.'
+ );
+}
+
+$('#newClaims').onclick=()=>{
+  claimIndex=(claimIndex+1)%claimSets.length;
+  loadClaims()
+};
+loadClaims();
+
+/* diagram helpers */
+function treeHtml(whole,left,right,blank){return `<div class="tree"><svg viewBox="0 0 430 245"><line x1="215" y1="84" x2="117" y2="172" stroke="#9a6a45" stroke-width="4"/><line x1="215" y1="84" x2="313" y2="172" stroke="#9a6a45" stroke-width="4"/></svg><div class="node top ${blank==='whole'?'blank':''}">${blank==='whole'?'?':whole}</div><div class="node left ${blank==='left'?'blank':''}">${blank==='left'?'?':left}</div><div class="node right ${blank==='right'?'blank':''}">${blank==='right'?'?':right}</div></div>`}
+/* 4. Diagramas */
+const diagrams=[{w:3,l:2,r:1,b:'left'},{w:4,l:2,r:2,b:'whole'},{w:6,l:2,r:4,b:'right'},{w:5,l:2,r:3,b:'right'},{w:6,l:1,r:5,b:'right'},{w:5,l:1,r:4,b:'left'}];let diagramIndex=0;
+function diagramAnswer(d){return d.b==='whole'?d.l+d.r:d.b==='left'?d.w-d.r:d.w-d.l}
+function loadDiagram(){const d=diagrams[diagramIndex%diagrams.length],ans=diagramAnswer(d);$('#diagramTree').innerHTML=treeHtml(d.w,d.l,d.r,d.b);$('#diagramCheck').hidden=true;const opts=shuffle([...new Set([ans,Math.max(1,ans-1),Math.min(6,ans+1),ans===2?4:2])]).slice(0,4);if(!opts.includes(ans))opts[0]=ans;const host=$('#diagramOptions');host.innerHTML='';shuffle(opts).forEach(n=>{const b=document.createElement('button');b.className='diagram-option';b.textContent=n;b.onclick=()=>{if(n===ans){good();b.classList.add('correct');$('#diagramTree').innerHTML=treeHtml(d.w,d.l,d.r,'');const w=d.b==='whole'?ans:d.w,l=d.b==='left'?ans:d.l,r=d.b==='right'?ans:d.r;const chk=$('#diagramCheck');chk.hidden=false;chk.innerHTML=`<b>Comprobación:</b><div class="rod-chain" id="diagRods"></div><div style="text-align:center;font-weight:1000">${l} + ${r} = ${w}</div>`;rodsInto($('#diagRods'),l,r);feedback('#feedback4','ok','✅','Las dos partes juntas forman el todo.')}else{bad();b.classList.add('wrong');feedback('#feedback4','err','🌳','Comprueba qué deben sumar las dos partes.') }};host.appendChild(b)});feedback('#feedback4','','🌳','Recuerda: las dos partes juntas forman el todo.')}
+$('#newDiagram').onclick=()=>{diagramIndex=(diagramIndex+1)%diagrams.length;loadDiagram()};loadDiagram();
+
+/* 5. Del diagrama a suma */
+const sumDiagrams=[{w:6,l:2,r:4},{w:5,l:2,r:3},{w:6,l:3,r:3},{w:5,l:1,r:4},{w:6,l:5,r:1},{w:4,l:2,r:2}];let sumDiagIndex=0;
+function loadDiagramSum(){const d=sumDiagrams[sumDiagIndex%sumDiagrams.length];$('#sumTree').innerHTML=treeHtml(d.w,d.l,d.r,'');$('#sumTree .tree').classList.add('small-tree');const correct=`${d.l} + ${d.r} = ${d.w}`,opts=shuffle([correct,`${d.l} + ${d.r} = ${d.w===6?5:6}`,`${d.w} + ${d.l} = ${d.r}`]);const host=$('#diagramSumChoices');host.innerHTML='';$('#verbalBox').hidden=true;opts.forEach(s=>{const b=document.createElement('button');b.className='sum-choice choice';b.textContent=s;b.onclick=()=>{if(s===correct){good();b.classList.add('correct');$('#verbalBox').hidden=false;$('#verbalBox').textContent=`El todo es ${d.w}. Sus partes son ${d.l} y ${d.r}. Por eso ${correct}.`;feedback('#feedback5','ok','✅','Has leído correctamente el diagrama.')}else{bad();b.classList.add('wrong');feedback('#feedback5','err','💬','Mira cuál es el todo y cuáles son las dos partes.') }};host.appendChild(b)});feedback('#feedback5','','💬','Primero identifica el todo y después las dos partes.')}
+$('#newDiagramSum').onclick=()=>{sumDiagIndex=(sumDiagIndex+1)%sumDiagrams.length;loadDiagramSum()};loadDiagramSum();
+
+/* 6. Problemas */
+const problems=[{a:3,b:2,noun:'manzanas',item:'apple',text:'En una cesta hay 3 manzanas. Añadimos 2 más. ¿Cuántas manzanas hay en total?'},{a:4,b:2,noun:'lápices',item:'pencil',text:'En un estuche hay 4 lápices y guardamos 2 más. ¿Cuántos lápices hay ahora?'},{a:2,b:3,noun:'flores',item:'flower',text:'Hay 2 flores en un jarrón y ponemos 3 más. ¿Cuántas flores hay en total?'},{a:5,b:1,noun:'pelotas',item:'ball',text:'Hay 5 pelotas en una caja y añadimos 1. ¿Cuántas pelotas hay ahora?'}];let problemIndex=0;
+function visualSvg(p){const total=p.a+p.b,xs=[75,155,235,315,395,475];let body='';for(let i=0;i<total;i++){const x=xs[i],y=95; if(p.item==='apple')body+=`<g transform="translate(${x},${y})"><circle r="20" fill="#fff" stroke="#d85b5b" stroke-width="5"/><path d="M0 -20 q6 -12 15 -15" fill="none" stroke="#2f6f42" stroke-width="4"/></g>`;else if(p.item==='pencil')body+=`<g transform="translate(${x},${y}) rotate(-8)"><rect x="-7" y="-28" width="14" height="42" rx="3" fill="#fff" stroke="#3179bd" stroke-width="5"/><path d="M-7 14 L0 28 L7 14 Z" fill="#fff" stroke="#333" stroke-width="3"/></g>`;else if(p.item==='flower')body+=`<g transform="translate(${x},${y})"><circle r="7" fill="#f3c84a"/><circle cx="0" cy="-15" r="10" fill="#fff" stroke="#b978b5" stroke-width="3"/><circle cx="14" cy="0" r="10" fill="#fff" stroke="#b978b5" stroke-width="3"/><circle cx="0" cy="15" r="10" fill="#fff" stroke="#b978b5" stroke-width="3"/><circle cx="-14" cy="0" r="10" fill="#fff" stroke="#b978b5" stroke-width="3"/></g>`;else body+=`<circle cx="${x}" cy="${y}" r="21" fill="#fff" stroke="#e9a54b" stroke-width="5"/>`}return `<svg viewBox="0 0 550 180"><rect width="550" height="180" fill="#fff"/>${body}<text x="275" y="160" text-anchor="middle" font-size="15" font-weight="700" fill="#60798b">Representa los dos grupos.</text></svg>`}
+function fillNums(host,correct,onOk){host.innerHTML='';shuffle([...new Set([correct,Math.max(2,correct-1),Math.min(6,correct+1)])]).forEach(n=>{const b=document.createElement('button');b.className='answer';b.textContent=n;b.onclick=()=>{if(n===correct){good();b.classList.add('correct');onOk()}else{bad();b.classList.add('wrong');feedback('#feedback6','err','🧠','Vuelve a representar los dos grupos.') }};host.appendChild(b)})}
+function loadProblem(){const p=problems[problemIndex%problems.length],t=p.a+p.b;$('#problemText').textContent=p.text;$('#problemVisual').innerHTML=visualSvg(p);$('#problemStage1').hidden=false;$('#problemStage2').hidden=true;$('#problemReveal').hidden=true;fillNums($('#problemOptions'),t,()=>{$('#problemStage1').hidden=true;$('#problemStage2').hidden=false;$('#problemDiagram').innerHTML=treeHtml(t,p.a,p.b,'right');fillNums($('#problemDiagramOptions'),p.b,()=>{$('#problemDiagram').innerHTML=treeHtml(t,p.a,p.b,'');$('#problemReveal').hidden=false;$('#problemReveal').textContent=`${p.a} + ${p.b} = ${t}. Las dos partes forman el todo ${t}.`;feedback('#feedback6','ok','✅','Has pasado del problema al diagrama y a la suma.')})});feedback('#feedback6','','🧠','Resuelve primero la situación. Después completa su diagrama.');$('#problemSpeak').onclick=()=>speak(p.text)}
+$('#newProblem').onclick=()=>{problemIndex=(problemIndex+1)%problems.length;loadProblem()};loadProblem();
+
+/* 7. Anotación */
+const img=$('#sheetImg'),canvas=$('#annotCanvas'),ctx=canvas.getContext('2d');let tool='pen',drawColor='#e53935',drawWidth=5,drawing=false,start=null,zoom=1,snapshots=[];
+function setupCanvas(){if(!img.naturalWidth)return;canvas.width=img.naturalWidth;canvas.height=img.naturalHeight}
+if(img.complete)setupCanvas();else img.onload=()=>{setupCanvas();fitSheet()};
+function pos(ev){const r=canvas.getBoundingClientRect();return {x:(ev.clientX-r.left)*canvas.width/r.width,y:(ev.clientY-r.top)*canvas.height/r.height}}
+function saveSnap(){if(snapshots.length>18)snapshots.shift();snapshots.push(ctx.getImageData(0,0,canvas.width,canvas.height))}
+canvas.addEventListener('pointerdown',e=>{drawing=true;start=pos(e);saveSnap();canvas.setPointerCapture(e.pointerId);if(tool==='check'){drawCheck(start.x,start.y);drawing=false}});
+canvas.addEventListener('pointermove',e=>{if(!drawing)return;const p=pos(e);if(tool==='pen'||tool==='highlight'||tool==='eraser'){ctx.lineCap='round';ctx.lineJoin='round';if(tool==='eraser'){ctx.globalCompositeOperation='destination-out';ctx.lineWidth=drawWidth*4;ctx.strokeStyle='rgba(0,0,0,1)'}else{ctx.globalCompositeOperation='source-over';ctx.lineWidth=tool==='highlight'?drawWidth*3:drawWidth;ctx.strokeStyle=drawColor;ctx.globalAlpha=tool==='highlight'?.28:1}ctx.beginPath();ctx.moveTo(start.x,start.y);ctx.lineTo(p.x,p.y);ctx.stroke();ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';start=p}});
+canvas.addEventListener('pointerup',e=>{if(!drawing)return;const p=pos(e);if(tool==='circle'){ctx.globalCompositeOperation='source-over';ctx.globalAlpha=1;ctx.strokeStyle=drawColor;ctx.lineWidth=drawWidth;ctx.beginPath();ctx.ellipse((start.x+p.x)/2,(start.y+p.y)/2,Math.abs(p.x-start.x)/2,Math.abs(p.y-start.y)/2,0,0,Math.PI*2);ctx.stroke()}drawing=false});
+function drawCheck(x,y){ctx.save();ctx.strokeStyle=drawColor;ctx.lineWidth=drawWidth*1.4;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(x-18,y);ctx.lineTo(x-4,y+15);ctx.lineTo(x+25,y-22);ctx.stroke();ctx.restore()}
+$$('[data-tool]').forEach(b=>b.onclick=()=>{tool=b.dataset.tool;$$('[data-tool]').forEach(x=>x.classList.toggle('active',x===b))});$$('[data-color]').forEach(b=>b.onclick=()=>{drawColor=b.dataset.color;$$('[data-color]').forEach(x=>x.classList.toggle('active',x===b))});$('#widthRange').oninput=e=>drawWidth=+e.target.value;$('#undoBtn').onclick=()=>{const s=snapshots.pop();if(s)ctx.putImageData(s,0,0)};$('#clearBtn').onclick=()=>{saveSnap();ctx.clearRect(0,0,canvas.width,canvas.height)};
+function applyZoom(){const tr=$('#sheetTransform');tr.style.transform=`scale(${zoom})`;tr.style.marginBottom=`${Math.max(0,(zoom-1)*tr.offsetHeight)}px`}
+function fitSheet(){zoom=1;applyZoom();const v=$('#sheetViewer'),tr=$('#sheetTransform');if(!v||!tr)return;const availH=Math.max(200,v.clientHeight-20),availW=Math.max(200,v.clientWidth-20),z=Math.min(1,availH/tr.offsetHeight,availW/tr.offsetWidth);zoom=Math.max(.35,z);applyZoom()}
+$('#zoomIn').onclick=()=>{zoom=Math.min(2.2,zoom+.15);applyZoom()};$('#zoomOut').onclick=()=>{zoom=Math.max(.35,zoom-.15);applyZoom()};$('#fitBtn').onclick=fitSheet;$('#explainBtn').onclick=()=>{document.body.classList.toggle('explain-mode');$('#hideToolsBtn').hidden=!document.body.classList.contains('explain-mode');setTimeout(fitSheet,80)};$('#hideToolsBtn').onclick=()=>$('#sheetTools').style.display=$('#sheetTools').style.display==='none'?'flex':'none';
+
+/* 8. PDF */
+let pdfType='ampliacion',pdfVersion=1,pdfData=null;const pdfNames={ampliacion:'Ampliación',refuerzo:'Refuerzo',tarea:'Tarea',tea:'Trabajo paso a paso',pictogramas:'Pictogramas'};
+function drawWorksheet(type,version){const c=document.createElement('canvas');c.width=1240;c.height=1754;const g=c.getContext('2d'),C={paper:'#fffef8',ink:'#5c554d',blue:'#5b98bf',ochre:'#8c7623',pale:'#fff8b8',green:'#3f7d4e',yellow:'#f0d950'};g.fillStyle=C.paper;g.fillRect(0,0,c.width,c.height);const script="'Segoe Print','Comic Sans MS',cursive",num="'Comic Sans MS','Arial Rounded MT Bold',sans-serif";const rr=(x,y,w,h,r=16,stroke=C.blue,fill='#fff',lw=3)=>{g.beginPath();g.roundRect(x,y,w,h,r);g.fillStyle=fill;g.fill();g.lineWidth=lw;g.strokeStyle=stroke;g.stroke()};const text=(t,x,y,s=34,opt={})=>{g.save();g.fillStyle=opt.color||C.ink;g.font=`${opt.bold?'700 ':'400 '}${s}px ${opt.font==='num'?num:script}`;g.textAlign=opt.align||'left';g.textBaseline='alphabetic';g.fillText(t,x,y);g.restore()};const line=(x1,y1,x2,y2,col=C.ink,lw=2)=>{g.beginPath();g.moveTo(x1,y1);g.lineTo(x2,y2);g.strokeStyle=col;g.lineWidth=lw;g.stroke()};const op=(x,y,a,b,blank=false)=>{rr(x,y,390,86,7,C.blue,'#fff',3);text(`${a} + ${b} = ${blank?'___':a+b}`,x+42,y+57,43,{font:'num'})};const sec=(n,y,t)=>{text(`${n}.-`,90,y,39,{font:'num'});text(t,185,y,36)};const node=(x,y,val,blank=false)=>{rr(x,y,150,72,2,C.green,'#fff',4);text(blank?'':String(val),x+75,y+50,43,{font:'num',align:'center'})};const tree=(cx,y,w,l,r,blank='')=>{node(cx-75,y,w,blank==='w');node(cx-205,y+145,l,blank==='l');node(cx+55,y+145,r,blank==='r');line(cx,y+72,cx-130,y+145,'#9a6a45',4);line(cx,y+72,cx+130,y+145,'#9a6a45',4)};line(450,75,820,75,'#7e786f',2);text('Número 6',620,152,58,{align:'center'});text('NOMBRE',90,95,21,{font:'num',color:'#817a72'});line(180,92,390,92,'#817a72',2);text(`v${version}`,1145,1700,18,{font:'num',color:'#9a938a',align:'right'});
+ const banks=[{a:[[0,5],[2,3],[1,5],[3,3],[4,2],[1,4]],d:[{w:3,l:2,r:1,b:'l'},{w:4,l:2,r:2,b:'w'},{w:6,l:2,r:4,b:'r'},{w:5,l:2,r:3,b:'r'}]},{a:[[5,0],[3,2],[2,4],[1,5],[4,1],[5,1]],d:[{w:5,l:1,r:4,b:'r'},{w:6,l:1,r:5,b:'r'},{w:4,l:2,r:2,b:'w'},{w:6,l:3,r:3,b:'l'}]},{a:[[1,4],[4,1],[3,3],[2,4],[0,5],[6,0]],d:[{w:5,l:2,r:3,b:'l'},{w:6,l:4,r:2,b:'r'},{w:3,l:1,r:2,b:'w'},{w:6,l:5,r:1,b:'r'}]},{a:[[2,3],[1,5],[5,0],[4,2],[3,2],[5,1]],d:[{w:6,l:2,r:4,b:'r'},{w:5,l:1,r:4,b:'l'},{w:4,l:2,r:2,b:'w'},{w:5,l:2,r:3,b:'r'}]},{a:[[3,2],[2,4],[4,1],[3,3],[1,4],[5,1]],d:[{w:6,l:1,r:5,b:'r'},{w:5,l:2,r:3,b:'r'},{w:3,l:2,r:1,b:'l'},{w:6,l:3,r:3,b:'w'}]}],B=banks[(version-1)%banks.length];
+ if(type==='ampliacion'){sec(1,255,'Clasifica las sumas: igual a 5 o igual a 6.');B.a.forEach((p,i)=>{const x=130+(i%3)*350,y=325+Math.floor(i/3)*120;text(`${p[0]} + ${p[1]}`,x,y,47,{font:'num'});line(x-12,y+18,x+155,y+18,p[0]+p[1]===5?C.yellow:C.green,10)});sec(2,650,'Completa los diagramas.');B.d.slice(0,3).forEach((d,i)=>{tree(230+i*400,720,d.w,d.l,d.r,d.b)});sec(3,1120,'Escribe una suma para cada diagrama.');op(150,1180,2,3,true);op(700,1180,2,4,true);sec(4,1410,'Explica cómo sabes si una suma da 5 o 6.');line(150,1475,1080,1475);line(150,1545,1080,1545)}
+ else if(type==='refuerzo'){sec(1,255,'Mira y elige el total.');B.a.slice(0,4).forEach((p,i)=>{op(115+(i%2)*520,315+Math.floor(i/2)*145,p[0],p[1],true);text('5     6',240+(i%2)*520,422+Math.floor(i/2)*145,28,{font:'num'})});sec(2,700,'Completa el número que falta.');B.d.slice(0,3).forEach((d,i)=>tree(220+i*405,770,d.w,d.l,d.r,d.b));rr(250,1190,740,90,18,C.ochre,C.pale,3);text('Las dos partes juntas forman el todo.',620,1248,31,{align:'center'});sec(3,1400,'Completa.');op(180,1450,3,2,true);op(670,1450,4,2,true)}
+ else if(type==='tarea'){sec(1,255,'Colorea según el resultado.');text('Igual a 5',220,320,30);line(150,335,195,335,C.yellow,12);text('Igual a 6',740,320,30);line(670,335,715,335,C.green,12);B.a.forEach((p,i)=>text(`${p[0]} + ${p[1]}`,170+(i%3)*350,430+Math.floor(i/3)*125,48,{font:'num'}));sec(2,720,'Completa los diagramas.');B.d.forEach((d,i)=>tree(220+(i%2)*600,790+Math.floor(i/2)*350,d.w,d.l,d.r,d.b))}
+ else if(type==='tea'){text('Trabajo paso a paso',620,240,42,{align:'center'});rr(120,290,220,72,18,C.ochre,C.pale,3);text('1  MIRA',230,338,29,{align:'center'});rr(370,290,220,72,18,C.ochre,C.pale,3);text('2  SUMA',480,338,29,{align:'center'});rr(620,290,220,72,18,C.ochre,C.pale,3);text('3  ELIGE',730,338,29,{align:'center'});rr(870,290,220,72,18,C.ochre,C.pale,3);text('4  REVISA',980,338,29,{align:'center'});sec(1,470,'MIRA Y SUMA.');op(260,515,B.a[0][0],B.a[0][1],true);rr(730,515,180,86,12,C.blue,'#fff',3);text('5   6',820,570,36,{font:'num',align:'center'});sec(2,760,'COMPLETA EL DIAGRAMA.');const d=B.d[0];tree(620,810,d.w,d.l,d.r,d.b);sec(3,1245,'REVISA.');[['He sumado las dos partes.'],['He mirado si da 5 o 6.'],['En el árbol, las partes forman el todo.']].forEach((x,i)=>{rr(200,1295+i*90,34,34,2,'#777','#fff',2);text(x[0],270,1323+i*90,28)})}
+ else {sec(1,255,'MIRA.');text('5',280,355,65,{font:'num',bold:true,align:'center'});line(200,385,360,385,C.yellow,14);text('6',930,355,65,{font:'num',bold:true,align:'center'});line(850,385,1010,385,C.green,14);sec(2,520,'SUMA Y MARCA.');op(165,575,B.a[0][0],B.a[0][1],true);op(685,575,B.a[1][0],B.a[1][1],true);sec(3,820,'MIRA EL ÁRBOL.');const d=B.d[0];tree(620,865,d.w,d.l,d.r,d.b);sec(4,1295,'ESCRIBE.');op(420,1340,2,4,true);rr(255,1510,730,90,18,C.ochre,C.pale,3);text('MIRA  →  SUMA  →  ELIGE  →  REVISA',620,1568,30,{align:'center'})}
+ return c}
+function canvasToPdfBytes(c){const jpeg=c.toDataURL('image/jpeg',.94).split(',')[1],bin=atob(jpeg),imgBytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)imgBytes[i]=bin.charCodeAt(i);const enc=new TextEncoder(),parts=[],offsets=[0];let len=0;const push=b=>{parts.push(b);len+=b.length},asc=s=>enc.encode(s);push(asc('%PDF-1.4\n%PDFIMAGE\n'));function obj(n,chunks){offsets[n]=len;push(asc(`${n} 0 obj\n`));chunks.forEach(push);push(asc('\nendobj\n'))}obj(1,[asc('<< /Type /Catalog /Pages 2 0 R >>')]);obj(2,[asc('<< /Type /Pages /Kids [3 0 R] /Count 1 >>')]);obj(3,[asc('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>')]);obj(4,[asc(`<< /Type /XObject /Subtype /Image /Width ${c.width} /Height ${c.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${imgBytes.length} >>\nstream\n`),imgBytes,asc('\nendstream')]);const content='q\n595 0 0 842 0 0 cm\n/Im0 Do\nQ\n';obj(5,[asc(`<< /Length ${content.length} >>\nstream\n${content}endstream`)]);const xref=len;let xr='xref\n0 6\n0000000000 65535 f \n';for(let i=1;i<=5;i++)xr+=String(offsets[i]).padStart(10,'0')+' 00000 n \n';push(asc(xr+`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`));const out=new Uint8Array(len);let at=0;for(const p of parts){out.set(p,at);at+=p.length}return out}
+function renderPdfPreview(){const src=drawWorksheet(pdfType,pdfVersion);pdfData=canvasToPdfBytes(src);const host=$('#pdfPreview');host.innerHTML='';const prev=document.createElement('canvas'),maxH=Math.max(300,host.clientHeight||540),scale=Math.min(.52,maxH/src.height);prev.width=Math.round(src.width*scale);prev.height=Math.round(src.height*scale);prev.getContext('2d').drawImage(src,0,0,prev.width,prev.height);host.appendChild(prev);$('#pdfTitle').textContent=`${pdfNames[pdfType]} · versión ${pdfVersion}`;$('#pdfStatus').textContent=`Versión ${pdfVersion} lista. Vista previa y descarga corresponden a la misma ficha.`}
+$$('.pdf-type').forEach(b=>b.onclick=()=>{pdfType=b.dataset.sheet;pdfVersion=1;$$('.pdf-type').forEach(x=>x.classList.toggle('selected',x===b));renderPdfPreview()});$('#regenPdf').onclick=()=>{pdfVersion++;renderPdfPreview()};$('#downloadPdf').onclick=()=>{if(!(pdfData instanceof Uint8Array))renderPdfPreview();const blob=new Blob([pdfData],{type:'application/pdf'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`${pdfType}_numero6_pag14_v${pdfVersion}.pdf`;document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(url)},900)};
+
+/* controles */
+$('#soundBtn').onclick=()=>{soundOn=!soundOn;$('#soundBtn').textContent=soundOn?'🔊 Sonido ON':'🔇 Sonido OFF'};$('#calmBtn').onclick=()=>{calm=!calm;document.body.classList.toggle('calm',calm);$('#calmBtn').textContent=calm?'🌿 Modo calma ON':'🌿 Modo calma'};$('#fullscreenBtn').onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
+function resetAll(){warmIndex=claimIndex=diagramIndex=sumDiagIndex=problemIndex=classRound=0;classRods=false;snapshots=[];ctx.clearRect(0,0,canvas.width,canvas.height);pdfType='ampliacion';pdfVersion=1;$$('.pdf-type').forEach((x,i)=>x.classList.toggle('selected',i===0));loadWarm();loadClassify();loadClaims();loadDiagram();loadDiagramSum();loadProblem();renderPdfPreview();goStep(1)}$('#resetBtn').onclick=resetAll;$('#againBtn').onclick=resetAll;
+const h=location.hash.match(/step(\d+)/);if(h)goStep(Math.min(8,Math.max(1,+h[1])));
+})();
+</script>
+<script src="../assets/fullscreen-persistent.js"></script>
+</body></html>

@@ -1,0 +1,2856 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Regletas al vuelo · 1.º Primaria</title>
+<style>
+  :root{
+    --bg:#0f2034;
+    --panel:#172b43;
+    --panel2:#203a58;
+    --paper:#f7fbff;
+    --ink:#10253c;
+    --muted:#59728d;
+    --accent:#44b57b;
+    --accent2:#58a8e7;
+    --warn:#f0b84f;
+    --bad:#df615a;
+    --good:#42ad73;
+    --white:#f6f2e9;
+    --red:#e25b4f;
+    --green:#8ecb5a;
+    --purple:#b86aa6;
+    --yellow:#f3cf4f;
+    --darkgreen:#3f8d55;
+    --blackrod:#25272b;
+    --brown:#8b5a3c;
+    --bluerod:#3f7fc4;
+    --orange:#ef8b3a;
+    --shadow:0 18px 40px rgba(0,0,0,.18);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;width:100%;height:100%;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  body{
+    color:#eef7ff;
+    background:
+      radial-gradient(circle at 20% 0%, rgba(72,145,204,.25), transparent 32%),
+      radial-gradient(circle at 100% 15%, rgba(68,181,123,.20), transparent 28%),
+      linear-gradient(180deg,#0b1b2d,#11263d 55%,#0a1b2b);
+    overflow:hidden;
+  }
+  button{font:inherit}
+  .app{max-width:1500px;height:100vh;margin:auto;padding:8px;display:flex;flex-direction:column;overflow:hidden}
+  .topbar{
+    display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+    background:rgba(23,43,67,.92);border:1px solid rgba(255,255,255,.09);
+    border-radius:18px;padding:8px 12px;box-shadow:var(--shadow);flex:0 0 auto
+  }
+  .title-wrap{display:flex;align-items:center;gap:12px}
+  .logo{
+    width:44px;height:44px;border-radius:16px;background:linear-gradient(145deg,#5cb8ef,#50c88b);
+    display:grid;place-items:center;font-size:24px;box-shadow:0 8px 18px rgba(0,0,0,.2)
+  }
+  h1{font-size:clamp(1.25rem,2.5vw,2rem);margin:0}
+  .subtitle{color:#bcd0e3;font-size:.92rem}
+  .controls{display:flex;gap:8px;flex-wrap:wrap}
+  .control{
+    min-height:44px;border:1px solid rgba(255,255,255,.14);border-radius:14px;
+    background:#213d5d;color:#fff;padding:9px 12px;cursor:pointer;font-weight:800
+  }
+  .control.primary{background:var(--accent);border-color:var(--accent)}
+  .control.warn{background:#a66f1f}
+  .control:focus-visible,.avatar-btn:focus-visible,.falling-rod:focus-visible{
+    outline:4px solid rgba(110,190,255,.34);outline-offset:3px
+  }
+
+  .main-grid{
+    display:flex;flex-direction:column;gap:8px;margin-top:8px;
+    flex:1 1 auto;min-height:0;overflow:hidden
+  }
+  .game-card{
+    background:rgba(20,41,64,.92);border:1px solid rgba(255,255,255,.09);
+    border-radius:20px;padding:9px;box-shadow:var(--shadow);min-width:0;min-height:0;
+    display:flex;flex:1 1 auto;flex-direction:column;overflow:hidden
+  }
+  .game-header{
+    display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;margin-bottom:5px;flex:0 0 auto
+  }
+  .player-now{
+    justify-self:start;display:flex;align-items:center;gap:8px;padding:7px 10px;
+    background:#1d3855;border-radius:16px;border:1px solid rgba(255,255,255,.08)
+  }
+  .player-now .face{font-size:28px}
+  .player-now strong{display:block}
+  .player-now small{color:#b8cee2}
+  .target-box{
+    justify-self:center;text-align:center;background:#fff;color:var(--ink);
+    border-radius:18px;padding:6px 16px;min-width:180px;box-shadow:0 10px 20px rgba(0,0,0,.18)
+  }
+  .target-box span{display:block;font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:900}
+  .target-number{font-size:2.7rem;font-weight:1000;line-height:1}
+  .score-now{
+    justify-self:end;text-align:right;padding:7px 10px;border-radius:16px;background:#1d3855;border:1px solid rgba(255,255,255,.08)
+  }
+  .score-now strong{font-size:1.35rem}
+  .score-now small{display:block;color:#b8cee2}
+
+  .game-zone{
+    position:relative;flex:1 1 auto;min-height:360px;height:auto;
+    background:
+      linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px),
+      linear-gradient(180deg,#173553,#102840);
+    background-size:38px 38px,38px 38px,auto;
+    border-radius:22px;overflow:hidden;border:2px solid rgba(255,255,255,.08)
+  }
+  .sky-label{
+    position:absolute;left:16px;top:14px;z-index:3;
+    background:rgba(5,21,35,.5);padding:7px 10px;border-radius:12px;color:#bcd3e8;font-weight:800;font-size:.86rem
+  }
+  .floor{
+    position:absolute;left:0;right:0;bottom:0;height:54px;
+    background:linear-gradient(180deg,#46647e,#324c63);
+    border-top:4px solid #8fa8bc;z-index:2
+  }
+  .floor::before{
+    content:"SUELO";position:absolute;right:16px;top:11px;color:#dce9f4;font-weight:1000;letter-spacing:.08em
+  }
+  .falling-layer{position:absolute;inset:0 0 54px 0;z-index:4;overflow:hidden}
+  .falling-rod{
+    --unit:48px;--len:1;
+    position:absolute;top:-70px;
+    width:calc(var(--unit) * var(--len));height:42px;border-radius:13px;
+    border:3px solid rgba(0,0,0,.20);display:flex;align-items:center;justify-content:center;
+    font-size:1.25rem;font-weight:1000;color:#173049;cursor:pointer;
+    box-shadow:0 10px 18px rgba(0,0,0,.22);user-select:none;touch-action:manipulation;
+    will-change:transform
+  }
+  .falling-rod[data-n="1"]{background:var(--white)}
+  .falling-rod[data-n="2"]{background:var(--red);color:#fff}
+  .falling-rod[data-n="3"]{background:var(--green)}
+  .falling-rod[data-n="4"]{background:var(--purple);color:#fff}
+
+  .falling-rod[data-n="5"]{background:var(--yellow);color:#173049}
+  .falling-rod[data-n="6"]{background:var(--darkgreen);color:#fff}
+  .falling-rod[data-n="7"]{background:var(--blackrod);color:#fff}
+  .falling-rod[data-n="8"]{background:var(--brown);color:#fff}
+  .falling-rod[data-n="9"]{background:var(--bluerod);color:#fff}
+  .falling-rod[data-n="10"]{background:var(--orange);color:#173049}
+  .falling-rod::after{
+    content:attr(data-n);background:rgba(255,255,255,.87);color:#173049;min-width:28px;height:28px;border-radius:999px;
+    display:grid;place-items:center
+  }
+  .build-tray{
+    position:absolute;left:50%;bottom:68px;transform:translateX(-50%);
+    width:min(82%,720px);min-height:86px;padding:10px 14px;
+    border:3px dashed rgba(255,255,255,.32);border-radius:20px;background:rgba(10,30,48,.76);z-index:6
+  }
+  .build-tray-title{text-align:center;color:#bcd3e8;font-size:.78rem;font-weight:900;letter-spacing:.06em}
+  .tray-row{
+    min-height:50px;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:6px
+  }
+  .tray-rod{
+    --unit:38px;--len:1;width:calc(var(--unit)*var(--len));height:32px;border-radius:10px;border:2px solid rgba(0,0,0,.18);
+    display:grid;place-items:center;font-weight:1000
+  }
+  .tray-rod[data-n="1"]{background:var(--white);color:#173049}
+  .tray-rod[data-n="2"]{background:var(--red);color:#fff}
+  .tray-rod[data-n="3"]{background:var(--green);color:#173049}
+  .tray-rod[data-n="4"]{background:var(--purple);color:#fff}
+
+  .tray-rod[data-n="5"]{background:var(--yellow);color:#173049}
+  .tray-rod[data-n="6"]{background:var(--darkgreen);color:#fff}
+  .tray-rod[data-n="7"]{background:var(--blackrod);color:#fff}
+  .tray-rod[data-n="8"]{background:var(--brown);color:#fff}
+  .tray-rod[data-n="9"]{background:var(--bluerod);color:#fff}
+  .tray-rod[data-n="10"]{background:var(--orange);color:#173049}
+  .tray-total{
+    position:absolute;right:10px;top:10px;background:#fff;color:var(--ink);border-radius:999px;
+    padding:6px 10px;font-weight:1000
+  }
+
+  .message{
+    min-height:38px;margin-top:5px;padding:6px 9px;border-radius:16px;
+    display:flex;align-items:center;gap:10px;font-weight:900;background:#1a3552;border:1px solid rgba(255,255,255,.08)
+  }
+  .message.ok{background:#164a34;border-color:#2d7656}
+  .message.no{background:#5a2d2d;border-color:#8b4848}
+  .message .big{font-size:24px}
+
+  .side{
+    background:rgba(20,41,64,.96);
+    border:1px solid rgba(255,255,255,.09);
+    border-radius:18px;padding:8px 10px;
+    box-shadow:var(--shadow);
+    flex:0 0 auto;
+    min-height:0;
+    overflow:visible;
+  }
+  .players-head{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    margin-bottom:6px
+  }
+  .players-copy{min-width:0}
+  .side h2{margin:0;font-size:1.02rem}
+  .side p{
+    margin:2px 0 0;color:#bcd0e3;font-size:.72rem;line-height:1.2
+  }
+  .add-avatar{
+    min-height:42px;min-width:145px;
+    border:2px dashed #6d8aa5;border-radius:13px;
+    background:rgba(255,255,255,.045);color:#d7e7f4;
+    cursor:pointer;font-weight:900;font-size:.77rem;padding:5px 9px
+  }
+  .add-avatar[disabled]{opacity:.4;cursor:not-allowed}
+
+  /* Siempre conservamos el pictograma.
+     Hasta 10: una fila. Más de 10: exactamente dos filas de hasta 10. */
+  .avatars{
+    display:grid;
+    grid-template-columns:repeat(10,minmax(0,1fr));
+    gap:6px;
+    align-items:stretch;
+    width:100%;
+  }
+  .avatar-btn{
+    position:relative;
+    border:2px solid transparent;
+    border-radius:14px;
+    background:#1c3856;color:#fff;
+    height:66px;
+    min-width:0;
+    padding:5px 3px 4px;
+    cursor:pointer;
+    display:grid;
+    grid-template-rows:30px auto auto;
+    align-items:center;
+    justify-items:center;
+    transition:.15s opacity,.15s border-color,.15s background;
+    overflow:visible;
+  }
+  .avatar-btn:hover{background:#234665}
+  .avatar-btn.inactive{opacity:.42;filter:saturate(.60)}
+  .avatar-btn.active{border-color:#4ba57a}
+  .avatar-btn.current{
+    border-color:#ffd66e;
+    box-shadow:0 0 0 3px rgba(255,214,110,.18)
+  }
+  .avatar-btn.played::after{
+    content:"✓";
+    position:absolute;right:4px;bottom:4px;
+    width:17px;height:17px;border-radius:50%;
+    background:#4ba57a;
+    display:grid;place-items:center;
+    font-weight:1000;font-size:.58rem
+  }
+  .avatar-face{
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    font-size:28px !important;
+    line-height:1;
+    height:30px;
+  }
+  .avatar-name{
+    display:block;
+    width:100%;
+    font-size:.63rem;
+    line-height:1.05;
+    font-weight:900;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    margin-top:2px
+  }
+  .avatar-state{
+    display:block;
+    font-size:.49rem;
+    line-height:1;
+    color:#b8cee2;
+    margin-top:1px
+  }
+  .avatar-score{
+    position:absolute;top:-7px;left:50%;transform:translateX(-50%);
+    min-width:39px;padding:2px 5px;border-radius:999px;
+    background:#fff;color:#173049;
+    border:2px solid #b8c9d7;
+    font-weight:1000;font-size:.67rem;
+    z-index:3
+  }
+
+  .roulette-overlay{
+    position:absolute;inset:0;background:rgba(5,15,25,.82);z-index:20;display:none;place-items:center;padding:20px
+  }
+  .roulette-overlay.show{display:grid}
+  .roulette-card{
+    width:min(560px,92%);background:#f8fbff;color:var(--ink);border-radius:28px;padding:24px;text-align:center;box-shadow:var(--shadow)
+  }
+  .roulette-title{font-size:1rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:900}
+  .roulette-face{font-size:92px;line-height:1.1;margin:10px 0}
+  .roulette-name{font-size:2rem;font-weight:1000}
+  .roulette-sub{color:var(--muted);margin-top:6px}
+  .roulette-track{
+    margin:18px auto 4px;height:14px;border-radius:999px;background:#e3eaf0;overflow:hidden
+  }
+  .roulette-track span{display:block;height:100%;width:0;background:linear-gradient(90deg,#5ba9e5,#49ba7c)}
+
+  @media(max-width:470px){
+    .app{padding:8px}
+    .topbar,.game-card,.side{border-radius:18px}
+    .avatars{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .game-zone{min-height:390px}
+    .falling-rod{--unit:36px}
+    .build-tray{width:94%}
+  }
+
+  .start-overlay{
+    position:absolute;inset:0;z-index:30;
+    display:none;place-items:center;padding:20px;
+    background:rgba(5,16,28,.88);
+    backdrop-filter:blur(4px);
+  }
+  .start-overlay.show{display:grid}
+  .start-card{
+    width:min(620px,94%);text-align:center;
+    background:linear-gradient(180deg,#f8fbff,#eef7ff);
+    color:var(--ink);border-radius:30px;padding:28px 24px;
+    box-shadow:0 22px 50px rgba(0,0,0,.28);
+    border:3px solid rgba(88,168,231,.30)
+  }
+  .start-icon{font-size:70px;line-height:1}
+  .start-title{font-size:clamp(1.8rem,5vw,3rem);font-weight:1000;margin-top:10px}
+  .start-sub{font-size:1.1rem;color:var(--muted);line-height:1.5;margin:10px 0 20px}
+  .big-start{
+    width:min(430px,90%);min-height:92px;border:0;border-radius:24px;
+    background:linear-gradient(180deg,#55c486,#399d68);color:white;
+    font-size:clamp(1.8rem,5vw,2.6rem);font-weight:1000;letter-spacing:.04em;
+    cursor:pointer;box-shadow:0 14px 28px rgba(40,130,85,.28);
+  }
+  .big-start:hover{transform:translateY(-2px)}
+  .big-start:focus-visible{outline:5px solid rgba(88,168,231,.42);outline-offset:4px}
+
+
+  .roulette-start-btn{
+    width:min(390px,92%);
+    min-height:76px;
+    margin:20px auto 0;
+    border:0;
+    border-radius:22px;
+    background:linear-gradient(180deg,#55c486,#399d68);
+    color:#fff;
+    font-size:clamp(1.35rem,4vw,2rem);
+    font-weight:1000;
+    letter-spacing:.035em;
+    cursor:pointer;
+    box-shadow:0 12px 25px rgba(40,130,85,.25);
+  }
+  .roulette-start-btn:hover{transform:translateY(-2px)}
+  .roulette-start-btn:focus-visible{
+    outline:5px solid rgba(88,168,231,.42);
+    outline-offset:4px
+  }
+
+
+
+
+  @media (min-width:1051px) and (max-height:760px){
+    .subtitle{font-size:.78rem}
+    h1{font-size:1.25rem}
+    .control{min-height:36px;padding:6px 9px;font-size:.82rem}
+    .game-zone{min-height:260px}
+    .sky-label{top:8px;left:10px;font-size:.72rem;padding:5px 7px}
+    .build-tray{bottom:60px;min-height:72px;padding:7px 10px}
+    .tray-row{min-height:40px}
+    .message{font-size:.82rem}
+  }
+  @media (max-width:1050px){
+    body{overflow:auto}
+    .app{height:auto;min-height:100vh;overflow:visible}
+    .main-grid{overflow:visible}
+    .game-card,.side{overflow:visible}
+    .game-zone{height:56vh;min-height:400px;flex:none}
+    .avatars{grid-template-columns:repeat(5,minmax(0,1fr))}
+    .avatar-btn{height:66px}
+  }
+
+
+  /* Pizarra digital: todo visible sin sacrificar los pictogramas */
+  @media (min-width:1051px) and (max-height:850px){
+    .side{padding:6px 8px}
+    .players-head{margin-bottom:4px}
+    .side p{display:none}
+    .avatar-btn{height:58px;grid-template-rows:27px auto auto}
+    .avatar-face{font-size:25px !important;height:27px}
+    .avatar-name{font-size:.58rem}
+    .avatar-state{font-size:.45rem}
+    .avatar-score{font-size:.61rem;min-width:35px}
+    .message{min-height:38px;padding:5px 8px;font-size:.78rem}
+    .game-header{margin-bottom:5px}
+  }
+  @media (min-width:1051px) and (max-height:700px){
+    .topbar{padding-top:4px;padding-bottom:4px}
+    .subtitle{display:none}
+    .logo{width:38px;height:38px;font-size:21px}
+    .control{min-height:32px;padding:4px 8px;font-size:.76rem}
+    .player-now,.score-now{padding:4px 8px}
+    .target-box{padding:3px 12px}
+    .target-number{font-size:2.25rem}
+    .avatar-btn{height:54px;grid-template-rows:25px auto auto}
+    .avatar-face{font-size:23px !important;height:25px}
+  }
+
+
+  .tray-rod{
+    cursor:pointer;
+    transition:transform .12s ease, opacity .12s ease;
+  }
+  .tray-rod:hover{
+    transform:translateY(-2px);
+  }
+  .tray-rod:focus-visible{
+    outline:4px solid rgba(88,168,231,.38);
+    outline-offset:3px;
+  }
+  .build-tray.correctable{
+    border-color:rgba(88,168,231,.55);
+  }
+  .build-tray-hint{
+    text-align:center;
+    color:#c6d8e8;
+    font-size:.68rem;
+    margin-top:2px;
+  }
+
+
+  /* ==========================================================
+     AJUSTE FINAL PARA PIZARRA DIGITAL A 100 %
+     Mantiene juego, ruleta y pictogramas dentro de la pantalla.
+     ========================================================== */
+
+  .volume-control{
+    display:flex;
+    align-items:center;
+    gap:3px;
+    height:36px;
+    padding:2px 4px;
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:12px;
+    background:#213d5d;
+  }
+  .volume-btn{
+    width:30px;
+    height:30px;
+    border:0;
+    border-radius:9px;
+    background:#315274;
+    color:#fff;
+    font-size:1.25rem;
+    line-height:1;
+    font-weight:1000;
+    cursor:pointer;
+  }
+  .volume-btn:hover{background:#3c6389}
+  .volume-label{
+    min-width:68px;
+    text-align:center;
+    font-size:.75rem;
+    font-weight:900;
+    color:#fff;
+  }
+
+  @media (min-width:900px){
+    html,body{
+      width:100%;
+      height:100%;
+      overflow:hidden;
+    }
+
+    .app{
+      width:100%;
+      max-width:none;
+      height:100dvh;
+      min-height:0;
+      padding:5px;
+      overflow:hidden;
+    }
+
+    .topbar{
+      min-height:50px;
+      padding:4px 9px;
+      border-radius:15px;
+      gap:7px;
+      flex-wrap:nowrap;
+    }
+    .title-wrap{gap:8px;min-width:200px}
+    .logo{
+      width:38px;
+      height:38px;
+      border-radius:13px;
+      font-size:21px;
+    }
+    h1{font-size:1.25rem}
+    .subtitle{
+      font-size:.68rem;
+      line-height:1.05;
+      white-space:nowrap;
+    }
+    .controls{
+      gap:5px;
+      flex-wrap:nowrap;
+      justify-content:flex-end;
+    }
+    .control{
+      min-height:36px;
+      padding:5px 9px;
+      border-radius:11px;
+      font-size:.75rem;
+      white-space:nowrap;
+    }
+
+    .main-grid{
+      flex:1 1 auto;
+      min-height:0;
+      gap:5px;
+      margin-top:5px;
+      overflow:hidden;
+    }
+
+    .game-card{
+      flex:1 1 auto;
+      min-height:0;
+      padding:6px;
+      border-radius:17px;
+      overflow:hidden;
+    }
+
+    .game-header{
+      min-height:56px;
+      max-height:64px;
+      gap:6px;
+      margin-bottom:4px;
+    }
+    .player-now{
+      padding:4px 8px;
+      gap:6px;
+      border-radius:13px;
+    }
+    .player-now .face{font-size:24px}
+    .player-now strong{font-size:.88rem}
+    .player-now small{font-size:.68rem}
+
+    .target-box{
+      min-width:170px;
+      padding:3px 14px;
+      border-radius:15px;
+    }
+    .target-box span{font-size:.66rem}
+    .target-number{font-size:2.3rem}
+
+    .score-now{
+      padding:4px 8px;
+      border-radius:13px;
+    }
+    .score-now small{font-size:.66rem}
+    .score-now strong{font-size:1.25rem}
+
+    .game-zone{
+      flex:1 1 auto;
+      min-height:0 !important;
+      height:auto !important;
+      border-radius:18px;
+    }
+
+    .sky-label{
+      left:10px;
+      top:8px;
+      max-width:72%;
+      padding:4px 7px;
+      border-radius:9px;
+      font-size:.66rem;
+      line-height:1.1;
+    }
+
+    .floor{height:42px}
+    .floor::before{
+      right:12px;
+      top:8px;
+      font-size:.75rem;
+    }
+    .falling-layer{inset:0 0 42px 0}
+
+    .build-tray{
+      bottom:50px;
+      width:min(72%,650px);
+      min-height:66px;
+      padding:6px 10px;
+      border-radius:16px;
+    }
+    .build-tray-title{font-size:.68rem}
+    .build-tray-hint{font-size:.57rem;margin-top:0}
+    .tray-row{
+      min-height:34px;
+      margin-top:2px;
+      gap:5px;
+    }
+    .tray-total{
+      right:7px;
+      top:7px;
+      padding:4px 8px;
+      font-size:.75rem;
+    }
+
+    .message{
+      min-height:34px;
+      max-height:38px;
+      margin-top:4px;
+      padding:4px 8px;
+      border-radius:12px;
+      font-size:.74rem;
+      line-height:1.05;
+      overflow:hidden;
+    }
+    .message .big{font-size:18px}
+
+    /* Panel inferior de jugadores: 10 por fila, máximo dos filas. */
+    .side{
+      flex:0 0 auto;
+      padding:5px 7px 6px;
+      border-radius:16px;
+      overflow:visible;
+    }
+    .players-head{
+      min-height:30px;
+      margin-bottom:4px;
+      gap:8px;
+    }
+    .side h2{font-size:.88rem}
+    .side p{display:none}
+    .add-avatar{
+      min-height:30px;
+      min-width:145px;
+      padding:3px 8px;
+      border-radius:10px;
+      font-size:.67rem;
+    }
+    .avatars{
+      grid-template-columns:repeat(10,minmax(0,1fr)) !important;
+      gap:4px;
+    }
+    .avatar-btn{
+      height:54px !important;
+      min-height:54px !important;
+      border-radius:11px;
+      padding:3px 2px 2px;
+      grid-template-rows:25px auto auto !important;
+    }
+    .avatar-face{
+      display:block !important;
+      visibility:visible !important;
+      opacity:1 !important;
+      font-size:23px !important;
+      height:25px !important;
+    }
+    .avatar-name{
+      font-size:.54rem !important;
+      margin-top:1px;
+    }
+    .avatar-state{
+      font-size:.42rem !important;
+    }
+    .avatar-score{
+      top:-6px;
+      min-width:34px;
+      padding:1px 4px;
+      font-size:.58rem !important;
+    }
+
+    /* Ruleta: todo el contenido y el botón quedan visibles. */
+    .roulette-overlay{
+      padding:8px;
+      overflow:hidden;
+    }
+    .roulette-card{
+      width:min(470px,88%);
+      max-height:calc(100% - 12px);
+      padding:12px 18px;
+      border-radius:22px;
+      overflow:hidden;
+    }
+    .roulette-title{font-size:.78rem}
+    .roulette-face{
+      font-size:58px;
+      margin:3px 0;
+    }
+    .roulette-name{font-size:1.45rem}
+    .roulette-sub{
+      margin-top:3px;
+      font-size:.82rem;
+    }
+    .roulette-track{
+      margin:9px auto 2px;
+      height:10px;
+    }
+    .roulette-start-btn{
+      min-height:52px;
+      margin:10px auto 0;
+      border-radius:16px;
+      font-size:1.15rem;
+    }
+
+    /* Pantalla inicial también compacta. */
+    .start-overlay{padding:8px}
+    .start-card{
+      width:min(510px,90%);
+      max-height:calc(100% - 12px);
+      padding:16px 18px;
+      border-radius:22px;
+    }
+    .start-icon{font-size:48px}
+    .start-title{
+      margin-top:5px;
+      font-size:2rem;
+    }
+    .start-sub{
+      margin:6px 0 12px;
+      font-size:.9rem;
+      line-height:1.3;
+    }
+    .big-start{
+      min-height:62px;
+      border-radius:18px;
+      font-size:1.55rem;
+    }
+  }
+
+  /* Pantallas de pizarra especialmente bajas. No se ocultan pictogramas. */
+  @media (min-width:900px) and (max-height:720px){
+    .subtitle{display:none}
+    .topbar{min-height:44px}
+    .logo{width:34px;height:34px;font-size:19px}
+    .control{min-height:31px;padding:3px 7px;font-size:.68rem}
+    .volume-control{height:31px}
+    .volume-btn{width:25px;height:25px;font-size:1rem}
+    .volume-label{min-width:58px;font-size:.66rem}
+
+    .game-header{min-height:48px;max-height:52px}
+    .target-number{font-size:2rem}
+    .player-now .face{font-size:21px}
+
+    .side{padding-top:4px;padding-bottom:4px}
+    .players-head{min-height:26px}
+    .avatar-btn{
+      height:49px !important;
+      min-height:49px !important;
+      grid-template-rows:23px auto auto !important;
+    }
+    .avatar-face{
+      font-size:21px !important;
+      height:23px !important;
+    }
+    .avatar-name{font-size:.50rem !important}
+    .avatar-state{font-size:.39rem !important}
+
+    .message{
+      min-height:30px;
+      max-height:32px;
+      font-size:.68rem;
+    }
+
+    .build-tray{
+      bottom:46px;
+      min-height:58px;
+    }
+
+    .roulette-face{font-size:50px}
+    .roulette-start-btn{
+      min-height:46px;
+      margin-top:7px;
+      font-size:1rem;
+    }
+  }
+
+
+  .exit-fullscreen-btn{
+    position:fixed;
+    top:10px;
+    left:10px;
+    z-index:9999;
+    min-height:44px;
+    padding:8px 14px;
+    border:2px solid rgba(255,255,255,.35);
+    border-radius:14px;
+    background:rgba(13,36,58,.94);
+    color:#fff;
+    font-weight:1000;
+    font-size:.9rem;
+    cursor:pointer;
+    box-shadow:0 8px 20px rgba(0,0,0,.25);
+    backdrop-filter:blur(8px);
+  }
+  .exit-fullscreen-btn:hover{
+    background:#244b6d;
+    transform:translateY(-1px);
+  }
+  .exit-fullscreen-btn:focus-visible{
+    outline:4px solid rgba(88,168,231,.42);
+    outline-offset:3px;
+  }
+
+  body.is-fullscreen .topbar{
+    padding-left:112px;
+  }
+
+  body.is-fullscreen .app{
+    height:100vh;
+    max-width:none;
+    width:100%;
+    margin:0;
+  }
+
+  @media (max-width:760px){
+    body.is-fullscreen .topbar{
+      padding-left:8px;
+      padding-top:58px;
+    }
+    .exit-fullscreen-btn{
+      top:8px;
+      left:8px;
+    }
+  }
+
+
+  /* ==========================================================
+     v13 · DOS TERCIOS JUEGO + UN TERCIO INFORMACIÓN
+     ========================================================== */
+
+  .game-card{
+    display:flex !important;
+    flex-direction:column !important;
+    min-height:0 !important;
+  }
+
+  .game-layout{
+    display:grid;
+    grid-template-columns:minmax(0,2fr) minmax(260px,1fr);
+    gap:8px;
+    flex:1 1 auto;
+    min-height:0;
+    width:100%;
+    overflow:hidden;
+  }
+
+  .play-column{
+    min-width:0;
+    min-height:0;
+    display:flex;
+  }
+
+  .play-column .game-zone{
+    width:100%;
+    height:auto !important;
+    flex:1 1 auto;
+    min-height:0 !important;
+  }
+
+  .info-column{
+    min-width:0;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+    padding:8px;
+    border-radius:18px;
+    background:linear-gradient(180deg,#142d47,#10263d);
+    border:1px solid rgba(255,255,255,.10);
+    overflow:hidden;
+  }
+
+  .info-title{
+    flex:0 0 auto;
+    text-align:center;
+    font-size:.72rem;
+    letter-spacing:.10em;
+    font-weight:1000;
+    color:#aecaDF;
+    padding:2px 4px 4px;
+  }
+
+  .info-card{
+    flex:0 0 auto;
+    border-radius:16px;
+    padding:9px 10px;
+    background:#1d3b5b;
+    border:1px solid rgba(255,255,255,.09);
+    box-shadow:0 7px 16px rgba(0,0,0,.12);
+  }
+
+  .info-label{
+    color:#a9c3da;
+    font-size:.62rem;
+    letter-spacing:.08em;
+    font-weight:1000;
+    margin-bottom:5px;
+  }
+
+  .info-player-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    min-width:0;
+  }
+
+  .info-face{
+    font-size:34px;
+    line-height:1;
+    flex:0 0 auto;
+  }
+
+  .info-player-row strong{
+    font-size:1.05rem;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .target-info{
+    text-align:center;
+    background:linear-gradient(180deg,#ffffff,#edf5fb);
+    color:var(--ink);
+    border:2px solid rgba(255,255,255,.6);
+  }
+
+  .target-info .info-label{
+    color:#667e94;
+  }
+
+  .target-info .target-number{
+    font-size:clamp(3.4rem,8vh,5.8rem) !important;
+    line-height:.92;
+    font-weight:1000;
+  }
+
+  .points-info{
+    display:grid;
+    grid-template-columns:1fr auto;
+    align-items:center;
+    gap:8px;
+  }
+
+  .points-info .info-label{margin:0}
+
+  .info-big-number{
+    min-width:56px;
+    text-align:center;
+    font-size:2rem;
+    line-height:1;
+    font-weight:1000;
+    color:#ffe08a;
+  }
+
+  .rhythm-info{
+    display:grid;
+    grid-template-columns:1fr auto;
+    align-items:center;
+    gap:8px;
+  }
+
+  .rhythm-info .info-label{margin:0}
+
+  #speedIndicator{
+    white-space:nowrap;
+    font-size:.82rem;
+    font-weight:900;
+  }
+
+  .status-info{
+    flex:1 1 auto;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .status-info .message{
+    flex:1 1 auto;
+    min-height:0 !important;
+    max-height:none !important;
+    margin:0 !important;
+    padding:8px 9px !important;
+    overflow:auto !important;
+    font-size:.84rem !important;
+    line-height:1.25 !important;
+    background:#18334f;
+  }
+
+  .status-info .message.ok{background:#164a34}
+  .status-info .message.no{background:#5a2d2d}
+
+  .info-reminder{
+    flex:0 0 auto;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 9px;
+    border-radius:14px;
+    background:#11263c;
+    border:1px solid rgba(255,255,255,.08);
+    color:#cbddeb;
+    font-size:.73rem;
+    line-height:1.2;
+  }
+
+  .info-reminder > span{
+    font-size:1.45rem;
+    flex:0 0 auto;
+  }
+
+  /* La banda inferior de jugadores conserva todo el ancho */
+  .side{
+    width:100%;
+  }
+
+  /* Pizarra digital típica */
+  @media (min-width:1051px){
+    .game-layout{
+      grid-template-columns:minmax(0,2fr) minmax(270px,1fr) !important;
+    }
+
+    .game-card{
+      padding:6px !important;
+    }
+
+    .sky-label{
+      max-width:88% !important;
+    }
+
+    .build-tray{
+      width:min(82%,680px) !important;
+    }
+  }
+
+  /* Alturas reducidas: simplificamos sin quitar la información esencial */
+  @media (min-width:1051px) and (max-height:760px){
+    .info-column{
+      gap:5px;
+      padding:6px;
+    }
+
+    .info-title{
+      font-size:.62rem;
+      padding-bottom:1px;
+    }
+
+    .info-card{
+      padding:6px 8px;
+      border-radius:13px;
+    }
+
+    .info-label{
+      font-size:.53rem;
+      margin-bottom:3px;
+    }
+
+    .info-face{
+      font-size:27px;
+    }
+
+    .info-player-row strong{
+      font-size:.88rem;
+    }
+
+    .target-info .target-number{
+      font-size:3.6rem !important;
+    }
+
+    .info-big-number{
+      font-size:1.6rem;
+    }
+
+    #speedIndicator{
+      font-size:.70rem;
+    }
+
+    .status-info .message{
+      font-size:.72rem !important;
+      padding:6px 7px !important;
+    }
+
+    .info-reminder{
+      font-size:.62rem;
+      padding:5px 7px;
+    }
+
+    .info-reminder > span{
+      font-size:1.1rem;
+    }
+  }
+
+  /* En pantallas estrechas dejamos de forzar las tres columnas visuales */
+  @media (max-width:900px){
+    .game-layout{
+      grid-template-columns:1fr;
+      overflow:visible;
+    }
+
+    .play-column .game-zone{
+      min-height:430px !important;
+    }
+
+    .info-column{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      overflow:visible;
+    }
+
+    .info-title,
+    .status-info,
+    .info-reminder{
+      grid-column:1 / -1;
+    }
+  }
+
+
+  /* ==========================================================
+     v14 · COLUMNA DERECHA DIVIDIDA EN DOS MITADES
+     mitad superior: información · mitad inferior: avatares
+     ========================================================== */
+
+  .info-column{
+    display:grid !important;
+    grid-template-rows:minmax(0,1fr) minmax(0,1fr);
+    gap:7px !important;
+    padding:7px !important;
+    overflow:hidden !important;
+  }
+
+  .right-half{
+    min-height:0;
+    overflow:hidden;
+    border-radius:16px;
+    background:linear-gradient(180deg,#16314d,#122943);
+    border:1px solid rgba(255,255,255,.08);
+  }
+
+  .info-half{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+    padding:7px;
+  }
+
+  .info-half .info-title{
+    padding:0 2px 2px;
+  }
+
+  .info-half .info-card{
+    padding:6px 8px;
+    border-radius:13px;
+  }
+
+  .info-half .player-info{
+    flex:0 0 auto;
+  }
+
+  .info-half .target-info{
+    flex:0 0 auto;
+    padding:5px 8px;
+  }
+
+  .info-half .target-info .target-number{
+    font-size:clamp(2.9rem,6vh,4.5rem) !important;
+    line-height:.9;
+  }
+
+  .info-row-two{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:5px;
+    flex:0 0 auto;
+  }
+
+  .info-row-two .points-info,
+  .info-row-two .rhythm-info{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    min-width:0;
+  }
+
+  .info-row-two .info-label{
+    margin-bottom:3px;
+  }
+
+  .info-row-two .info-big-number{
+    font-size:1.55rem;
+  }
+
+  .info-row-two #speedIndicator{
+    font-size:.66rem;
+    white-space:normal;
+    line-height:1.05;
+  }
+
+  .info-half .status-info{
+    flex:1 1 auto;
+    min-height:0;
+  }
+
+  .info-half .status-info .message{
+    font-size:.70rem !important;
+    line-height:1.14 !important;
+    padding:5px 6px !important;
+  }
+
+  /* Mitad inferior: jugadores */
+  .players-half{
+    display:flex;
+    flex-direction:column;
+    padding:6px;
+  }
+
+  .players-half-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:6px;
+    flex:0 0 auto;
+    margin-bottom:5px;
+  }
+
+  .players-title{
+    text-align:left !important;
+    padding:0 !important;
+  }
+
+  .players-count-note{
+    color:#a9c3da;
+    font-size:.52rem;
+    line-height:1.1;
+    margin-top:2px;
+  }
+
+  .players-half .add-avatar{
+    min-width:102px !important;
+    min-height:30px !important;
+    padding:3px 6px !important;
+    font-size:.60rem !important;
+    flex:0 0 auto;
+  }
+
+  .players-half .avatars{
+    flex:1 1 auto;
+    min-height:0;
+    display:grid !important;
+    grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+    grid-auto-rows:minmax(42px,1fr);
+    gap:4px !important;
+    align-content:stretch;
+  }
+
+  /* Hasta 10: 5 x 2. De 11 a 20: 5 x 4.
+     Los pictogramas se mantienen visibles. */
+  .players-half .avatar-btn{
+    height:auto !important;
+    min-height:42px !important;
+    max-height:none !important;
+    border-radius:10px !important;
+    padding:2px 1px 1px !important;
+    grid-template-rows:minmax(20px,1fr) auto auto !important;
+  }
+
+  .players-half .avatar-face{
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    font-size:clamp(18px,2.6vh,25px) !important;
+    height:auto !important;
+    align-self:center;
+  }
+
+  .players-half .avatar-name{
+    font-size:.48rem !important;
+    line-height:1 !important;
+    margin-top:0 !important;
+  }
+
+  .players-half .avatar-state{
+    font-size:.36rem !important;
+    line-height:1 !important;
+  }
+
+  .players-half .avatar-score{
+    top:-5px !important;
+    min-width:30px !important;
+    padding:1px 3px !important;
+    font-size:.52rem !important;
+  }
+
+  .players-half .avatar-btn.played::after{
+    width:14px !important;
+    height:14px !important;
+    right:2px !important;
+    bottom:2px !important;
+    font-size:.48rem !important;
+  }
+
+  /* Ya no existe panel inferior: el juego usa toda la altura disponible. */
+  .main-grid{
+    grid-template-rows:1fr !important;
+  }
+
+  /* Pantallas bajas */
+  @media (min-width:1051px) and (max-height:760px){
+    .info-column{
+      gap:5px !important;
+      padding:5px !important;
+    }
+
+    .info-half{
+      gap:3px;
+      padding:5px;
+    }
+
+    .info-half .info-card{
+      padding:4px 6px;
+    }
+
+    .info-half .target-info .target-number{
+      font-size:2.8rem !important;
+    }
+
+    .players-half{
+      padding:5px;
+    }
+
+    .players-half-head{
+      margin-bottom:3px;
+    }
+
+    .players-count-note{
+      display:none;
+    }
+
+    .players-half .avatars{
+      gap:3px !important;
+      grid-auto-rows:minmax(35px,1fr);
+    }
+
+    .players-half .avatar-btn{
+      min-height:35px !important;
+    }
+
+    .players-half .avatar-face{
+      font-size:18px !important;
+    }
+
+    .players-half .avatar-name{
+      font-size:.42rem !important;
+    }
+
+    .players-half .avatar-state{
+      display:none !important;
+    }
+  }
+
+  /* En pantallas estrechas la columna derecha pasa debajo del juego,
+     pero conserva sus dos mitades. */
+  @media (max-width:900px){
+    .info-column{
+      grid-template-rows:auto auto !important;
+      overflow:visible !important;
+    }
+
+    .right-half{
+      overflow:visible;
+    }
+
+    .players-half .avatars{
+      grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+      grid-auto-rows:58px;
+    }
+  }
+
+
+  /* ==========================================================
+     v15 · ELECCIÓN DE NIVEL POR EL MAESTRO
+     ========================================================== */
+  .setup-overlay{
+    position:absolute;
+    inset:0;
+    z-index:40;
+    display:none;
+    place-items:center;
+    padding:14px;
+    background:rgba(5,16,28,.94);
+    backdrop-filter:blur(5px);
+  }
+  .setup-overlay.show{display:grid}
+
+  .setup-card{
+    width:min(760px,96%);
+    max-height:calc(100% - 8px);
+    overflow:auto;
+    background:linear-gradient(180deg,#f8fbff,#eaf4fb);
+    color:var(--ink);
+    border-radius:26px;
+    padding:20px 22px;
+    box-shadow:0 24px 60px rgba(0,0,0,.34);
+    border:3px solid rgba(88,168,231,.28);
+    text-align:center;
+  }
+
+  .setup-kicker{
+    color:#5c7992;
+    font-size:.72rem;
+    font-weight:1000;
+    letter-spacing:.12em;
+  }
+
+  .setup-title{
+    font-size:clamp(1.55rem,4vw,2.35rem);
+    line-height:1.05;
+    font-weight:1000;
+    margin:5px 0 7px;
+  }
+
+  .setup-sub{
+    max-width:650px;
+    margin:0 auto 14px;
+    color:#5d7388;
+    font-size:.92rem;
+    line-height:1.35;
+  }
+
+  .target-selector{
+    display:grid;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:9px;
+    max-width:650px;
+    margin:0 auto;
+  }
+
+  .target-choice{
+    --rod-bg:#f6f2e9;
+    --rod-fg:#173049;
+    position:relative;
+    min-height:62px;
+    border:3px solid transparent;
+    border-radius:15px;
+    background:var(--rod-bg);
+    color:var(--rod-fg);
+    font-size:1.45rem;
+    font-weight:1000;
+    cursor:pointer;
+    box-shadow:0 5px 12px rgba(0,0,0,.12);
+    opacity:.55;
+    transform:scale(.98);
+    transition:.12s ease;
+  }
+
+  .target-choice::after{
+    content:"";
+    position:absolute;
+    left:10px;
+    right:10px;
+    bottom:7px;
+    height:5px;
+    border-radius:999px;
+    background:rgba(255,255,255,.6);
+    opacity:.7;
+  }
+
+  .target-choice:hover{opacity:.82;transform:scale(1)}
+  .target-choice.selected{
+    opacity:1;
+    border-color:#173049;
+    transform:scale(1);
+    box-shadow:0 0 0 4px rgba(73,186,124,.22),0 7px 16px rgba(0,0,0,.14);
+  }
+
+  .target-choice[data-value="1"]{--rod-bg:var(--white);--rod-fg:#173049}
+  .target-choice[data-value="2"]{--rod-bg:var(--red);--rod-fg:#fff}
+  .target-choice[data-value="3"]{--rod-bg:var(--green);--rod-fg:#173049}
+  .target-choice[data-value="4"]{--rod-bg:var(--purple);--rod-fg:#fff}
+  .target-choice[data-value="5"]{--rod-bg:var(--yellow);--rod-fg:#173049}
+  .target-choice[data-value="6"]{--rod-bg:var(--darkgreen);--rod-fg:#fff}
+  .target-choice[data-value="7"]{--rod-bg:var(--blackrod);--rod-fg:#fff}
+  .target-choice[data-value="8"]{--rod-bg:var(--brown);--rod-fg:#fff}
+  .target-choice[data-value="9"]{--rod-bg:var(--bluerod);--rod-fg:#fff}
+  .target-choice[data-value="10"]{--rod-bg:var(--orange);--rod-fg:#173049}
+
+  .preset-row{
+    display:flex;
+    justify-content:center;
+    gap:7px;
+    flex-wrap:wrap;
+    margin:12px auto 8px;
+  }
+
+  .preset-btn{
+    min-height:34px;
+    border:0;
+    border-radius:10px;
+    padding:5px 11px;
+    background:#d9e9f5;
+    color:#173049;
+    font-weight:900;
+    cursor:pointer;
+  }
+
+  .preset-btn.ghost{
+    background:#eef2f5;
+    color:#677c8f;
+  }
+
+  .setup-note{
+    max-width:620px;
+    margin:6px auto 0;
+    padding:7px 9px;
+    border-radius:11px;
+    background:#edf5fa;
+    color:#587086;
+    font-size:.76rem;
+    line-height:1.3;
+  }
+
+  .setup-error{
+    min-height:20px;
+    margin-top:4px;
+    color:#b13737;
+    font-size:.78rem;
+    font-weight:900;
+  }
+
+  .setup-confirm{
+    width:min(460px,94%);
+    min-height:58px;
+    border:0;
+    border-radius:18px;
+    background:linear-gradient(180deg,#55c486,#399d68);
+    color:white;
+    font-size:1.18rem;
+    font-weight:1000;
+    letter-spacing:.025em;
+    cursor:pointer;
+    box-shadow:0 10px 22px rgba(40,130,85,.24);
+  }
+
+  .level-summary{
+    margin:-2px 0 3px;
+    text-align:center;
+    color:#aac5dc;
+    font-size:.60rem;
+    line-height:1.15;
+  }
+
+  @media (min-width:1051px) and (max-height:760px){
+    .setup-card{padding:12px 16px;border-radius:20px}
+    .setup-title{font-size:1.55rem;margin:3px 0 4px}
+    .setup-sub{font-size:.76rem;margin-bottom:8px}
+    .target-selector{gap:6px}
+    .target-choice{min-height:48px;font-size:1.12rem;border-radius:11px}
+    .preset-row{margin:7px auto 4px}
+    .setup-note{font-size:.66rem;padding:5px 7px}
+    .setup-error{min-height:15px;font-size:.68rem}
+    .setup-confirm{min-height:44px;font-size:.96rem}
+  }
+
+  @media (max-width:600px){
+    .target-selector{grid-template-columns:repeat(5,1fr);gap:5px}
+    .target-choice{min-height:48px;font-size:1rem}
+    .setup-card{padding:14px 10px}
+  }
+
+
+  .info-row-three{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:5px;
+    flex:0 0 auto;
+  }
+
+  .info-row-three .info-card{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    min-width:0;
+  }
+
+  .info-row-three .info-label{
+    margin-bottom:3px;
+  }
+
+  .mistake-count{
+    font-size:1.18rem;
+    font-weight:1000;
+    color:#ffb4b4;
+    white-space:nowrap;
+  }
+
+  .mistakes-info.danger{
+    background:#5b2a2a !important;
+    border-color:#d95f5f !important;
+    box-shadow:0 0 0 3px rgba(217,95,95,.18);
+  }
+
+  .gameover-overlay{
+    position:absolute;
+    inset:0;
+    z-index:45;
+    display:none;
+    place-items:center;
+    padding:14px;
+    background:rgba(5,16,28,.94);
+    backdrop-filter:blur(5px);
+  }
+
+  .gameover-overlay.show{display:grid}
+
+  .gameover-card{
+    width:min(520px,92%);
+    text-align:center;
+    background:linear-gradient(180deg,#fff,#f3f7fa);
+    color:#173049;
+    border-radius:26px;
+    padding:24px 22px;
+    border:3px solid rgba(88,168,231,.28);
+    box-shadow:0 24px 60px rgba(0,0,0,.34);
+  }
+
+  .gameover-icon{font-size:58px;line-height:1}
+  .gameover-title{
+    font-size:2rem;
+    font-weight:1000;
+    margin-top:7px;
+  }
+  .gameover-text{
+    margin-top:6px;
+    color:#61788c;
+    font-size:1rem;
+  }
+  .gameover-score{
+    margin:14px 0;
+    font-size:1.05rem;
+    font-weight:900;
+  }
+  .gameover-score strong{
+    font-size:1.8rem;
+    color:#173049;
+  }
+  .gameover-btn{
+    width:min(360px,92%);
+    min-height:56px;
+    border:0;
+    border-radius:18px;
+    background:linear-gradient(180deg,#55c486,#399d68);
+    color:#fff;
+    font-size:1.12rem;
+    font-weight:1000;
+    cursor:pointer;
+  }
+
+  @media (min-width:1051px) and (max-height:760px){
+    .mistake-count{font-size:.95rem}
+    .gameover-card{padding:16px 18px}
+    .gameover-icon{font-size:46px}
+    .gameover-title{font-size:1.55rem}
+    .gameover-btn{min-height:46px;font-size:.98rem}
+  }
+
+</style>
+</head>
+<body>
+<div class="app">
+
+  <button type="button" id="exitFullscreenBtn" class="exit-fullscreen-btn" hidden>
+    ← VOLVER
+  </button>
+
+  <header class="topbar">
+    <div class="title-wrap">
+      <div class="logo">🧩</div>
+      <div>
+        <h1>Regletas al vuelo</h1>
+        <div class="subtitle">Atrapa regletas y construye el mismo número durante todo tu turno.</div>
+      </div>
+    </div>
+    <div class="controls">
+      <a class="control" href="../" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center">← Juegos</a>
+      <button class="control" id="pauseBtn" type="button">⏸ Pausa</button>
+      <button class="control" id="soundBtn" type="button">🔊 Efectos ON</button>
+      <button class="control" id="musicBtn" type="button">🎵 Música ON</button>
+      <div class="volume-control" aria-label="Control de volumen">
+        <button type="button" class="volume-btn" id="volumeDown" aria-label="Bajar volumen">−</button>
+        <div class="volume-label" id="volumeLabel">🔊 120%</div>
+        <button type="button" class="volume-btn" id="volumeUp" aria-label="Subir volumen">+</button>
+      </div>
+      <button class="control" id="fullscreenBtn" type="button">⛶ Pantalla completa</button>
+      <button class="control warn" id="resetBtn" type="button">↻ Reiniciar juego</button>
+    </div>
+  </header>
+
+  <div class="main-grid">
+    <section class="game-card">
+      <div class="game-layout">
+        <div class="play-column">
+          <div class="game-zone" id="gameZone">
+            <div class="sky-label">👆 Atrapa las regletas que te sirven · las demasiado grandes pueden caer</div>
+            <div class="falling-layer" id="fallingLayer"></div>
+
+            <div class="build-tray" id="buildTray">
+              <div class="build-tray-title">TU CONSTRUCCIÓN</div>
+              <div class="build-tray-hint">Toca una regleta para devolverla arriba y corregir</div>
+              <div class="tray-total" id="trayTotal">0 / 3</div>
+              <div class="tray-row" id="trayRow"></div>
+            </div>
+
+            <div class="floor"></div>
+
+
+            <div class="setup-overlay show" id="setupOverlay">
+              <div class="setup-card">
+                <div class="setup-kicker">CONFIGURACIÓN DEL MAESTRO</div>
+                <div class="setup-title">¿Qué números quieres trabajar?</div>
+                <div class="setup-sub">
+                  Selecciona uno o varios objetivos del 1 al 10.
+                  Cada jugador recibirá uno de ellos y lo mantendrá durante todo su turno.
+                </div>
+
+                <div class="target-selector" id="targetSelector" aria-label="Números objetivo">
+                  <button type="button" class="target-choice" data-value="1">1</button>
+                  <button type="button" class="target-choice selected" data-value="2">2</button>
+                  <button type="button" class="target-choice selected" data-value="3">3</button>
+                  <button type="button" class="target-choice" data-value="4">4</button>
+                  <button type="button" class="target-choice" data-value="5">5</button>
+                  <button type="button" class="target-choice" data-value="6">6</button>
+                  <button type="button" class="target-choice" data-value="7">7</button>
+                  <button type="button" class="target-choice" data-value="8">8</button>
+                  <button type="button" class="target-choice" data-value="9">9</button>
+                  <button type="button" class="target-choice" data-value="10">10</button>
+                </div>
+
+                <div class="preset-row">
+                  <button type="button" class="preset-btn" data-preset="1,2,3">1–3</button>
+                  <button type="button" class="preset-btn" data-preset="1,2,3,4,5">1–5</button>
+                  <button type="button" class="preset-btn" data-preset="1,2,3,4,5,6,7,8,9,10">1–10</button>
+                  <button type="button" class="preset-btn ghost" id="clearTargetsBtn">Limpiar</button>
+                </div>
+
+                <div class="setup-note">
+                  <b>Ejemplo:</b> si marcas 3, 5 y 8, la ruleta asignará a cada jugador uno de esos tres números.
+                </div>
+
+                <div class="setup-error" id="setupError" aria-live="polite"></div>
+
+                <button type="button" class="setup-confirm" id="confirmLevelBtn">
+                  JUGAR CON ESTOS NÚMEROS
+                </button>
+              </div>
+            </div>
+
+            <div class="start-overlay" id="startOverlay">
+              <div class="start-card">
+                <div class="start-icon">🧩</div>
+                <div class="start-title">REGLETAS AL VUELO</div>
+                <div class="start-sub">Colócate delante de la pizarra.<br>Mira el número, atrapa las regletas que te sirven y pulsa:</div>
+                <button type="button" class="big-start" id="bigStartBtn">EMPEZAR</button>
+              </div>
+            </div>
+
+
+            <div class="gameover-overlay" id="gameoverOverlay">
+              <div class="gameover-card">
+                <div class="gameover-icon">🏁</div>
+                <div class="gameover-title">FIN DEL JUEGO</div>
+                <div class="gameover-text">Has llegado a <b>5 fallos</b>.</div>
+                <div class="gameover-score">Puntuación: <strong id="gameoverScore">0</strong></div>
+                <button type="button" class="gameover-btn" id="gameoverRestartBtn">VOLVER A EMPEZAR</button>
+              </div>
+            </div>
+
+            <div class="roulette-overlay" id="rouletteOverlay">
+              <div class="roulette-card">
+                <div class="roulette-title">🎡 La ruleta elige...</div>
+                <div class="roulette-face" id="rouletteFace">🦊</div>
+                <div class="roulette-name" id="rouletteName">Jugador</div>
+                <div class="roulette-sub" id="rouletteSub">Buscando quién sigue...</div>
+                <div class="roulette-track"><span id="rouletteBar"></span></div>
+                <button type="button" class="roulette-start-btn" id="rouletteStartBtn" hidden>COMENZAR A JUGAR</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="info-column" aria-label="Información y jugadores">
+          <section class="right-half info-half" aria-label="Información del juego">
+            <div class="info-title">INFORMACIÓN DEL JUEGO</div>
+            <div class="level-summary">Objetivos elegidos: <strong id="levelSummary">2 · 3</strong></div>
+
+            <div class="info-card player-info">
+              <div class="info-label">JUEGA AHORA</div>
+              <div class="info-player-row">
+                <div class="info-face" id="currentFace">👦</div>
+                <strong id="currentName">Elige jugadores</strong>
+              </div>
+            </div>
+
+            <div class="info-card target-info" id="targetBox">
+              <div class="info-label">CONSTRUYE DURANTE TODO TU TURNO</div>
+              <div class="target-number" id="targetNumber">3</div>
+            </div>
+
+            <div class="info-row-three">
+              <div class="info-card points-info">
+                <div class="info-label">PUNTOS</div>
+                <div class="info-big-number" id="currentScore">0</div>
+              </div>
+
+              <div class="info-card rhythm-info">
+                <div class="info-label">RITMO</div>
+                <div id="speedIndicator" aria-live="polite">🐢 Ritmo inicial</div>
+              </div>
+
+              <div class="info-card mistakes-info">
+                <div class="info-label">FALLOS</div>
+                <div class="mistake-count" id="mistakeCount">0 / 5</div>
+              </div>
+            </div>
+
+            <div class="info-card status-info">
+              <div class="info-label">¿QUÉ ESTÁ PASANDO?</div>
+              <div class="message" id="message">
+                <div class="big">ℹ️</div>
+                <div>Activa al menos un avatar y pulsa <b>Empezar</b>. Si eliges una regleta por error, tócala dentro de la caja para quitarla.</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="right-half players-half" id="playersPanel" aria-label="Jugadores">
+            <div class="players-half-head">
+              <div>
+                <div class="info-title players-title">JUGADORES</div>
+                <div class="players-count-note">Toca un avatar para activarlo o desactivarlo</div>
+              </div>
+              <button type="button" class="add-avatar" id="addPlayerBtn">➕ Añadir · 10/20</button>
+            </div>
+            <div class="avatars" id="avatars"></div>
+          </section>
+        </aside>
+      </div>
+    </section>
+
+
+  </div>
+</div>
+
+<script>
+(function(){
+  const $ = (s,r=document)=>r.querySelector(s);
+  const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
+
+  const avatarPool = [
+    {face:'🦊',name:'Zorro'},
+    {face:'🐼',name:'Panda'},
+    {face:'🐯',name:'Tigre'},
+    {face:'🦁',name:'León'},
+    {face:'🐸',name:'Rana'},
+    {face:'🐧',name:'Pingüino'},
+    {face:'🐨',name:'Koala'},
+    {face:'🦄',name:'Unicornio'},
+    {face:'🐙',name:'Pulpo'},
+    {face:'🐵',name:'Mono'},
+    {face:'🐬',name:'Delfín'},
+    {face:'🐰',name:'Conejo'},
+    {face:'🐻',name:'Oso'},
+    {face:'🦋',name:'Mariposa'},
+    {face:'🐢',name:'Tortuga'},
+    {face:'🦖',name:'Dino'},
+    {face:'🐝',name:'Abeja'},
+    {face:'🐳',name:'Ballena'},
+    {face:'🦉',name:'Búho'},
+    {face:'🐱',name:'Gato'}
+  ];
+
+  // Comenzamos mostrando 10 avatares. Se pueden añadir, uno a uno, hasta 20.
+  const players = avatarPool.slice(0,10).map((a,i)=>({
+    id:i,face:a.face,name:a.name,active:false,score:0,played:false
+  }));
+
+  let currentPlayerId=null;
+  let target=3;
+  let selectedTargets=[2,3];
+  let tray=[];
+  let running=false;
+  let paused=false;
+  let soundOn=true;
+  let volumeLevel=1.20;
+  let musicOn=true;
+  let musicTimer=null;
+  let musicStep=0;
+  let spawnTimer=null;
+  let animationId=null;
+  let rods=[];
+  let lastTs=0;
+  let switching=false;
+  let audioCtx=null;
+  let spawnSeq=0;
+
+  // Ritmo automático pensado para 1.º de Primaria.
+  // Cada jugador empieza muy despacio y el ritmo aumenta poco a poco
+  // con cada construcción correcta durante su turno.
+  let turnHits=0;
+  let mistakeCount=0;
+  const MAX_MISTAKES=5;
+  const START_FALL_SPEED=34;       // px/s: mucho más lento que antes
+  const SPEED_PER_HIT=5;           // aumento suave por acierto
+  const MAX_FALL_SPEED=92;         // límite para que siga siendo manejable
+  const START_SPAWN_RATE=2400;     // ms entre regletas al comenzar
+  const SPAWN_REDUCTION_PER_HIT=90;
+  const MIN_SPAWN_RATE=1250;
+
+
+  function fullscreenElement(){
+    return document.fullscreenElement ||
+           document.webkitFullscreenElement ||
+           document.msFullscreenElement ||
+           null;
+  }
+
+  async function enterFullscreen(){
+    const target=document.documentElement;
+
+    try{
+      if(target.requestFullscreen){
+        await target.requestFullscreen();
+      }else if(target.webkitRequestFullscreen){
+        target.webkitRequestFullscreen();
+      }else if(target.msRequestFullscreen){
+        target.msRequestFullscreen();
+      }else{
+        setMessage('no','⚠️','Este navegador no permite pantalla completa.');
+      }
+    }catch(e){
+      setMessage('no','⚠️','No se pudo activar la pantalla completa.');
+    }
+  }
+
+  async function exitFullscreen(){
+    try{
+      if(document.exitFullscreen){
+        await document.exitFullscreen();
+      }else if(document.webkitExitFullscreen){
+        document.webkitExitFullscreen();
+      }else if(document.msExitFullscreen){
+        document.msExitFullscreen();
+      }
+    }catch(e){}
+  }
+
+  function updateFullscreenUI(){
+    const active=!!fullscreenElement();
+    document.body.classList.toggle('is-fullscreen',active);
+
+    const back=$('#exitFullscreenBtn');
+    const fullBtn=$('#fullscreenBtn');
+
+    if(back) back.hidden=!active;
+    if(fullBtn){
+      fullBtn.textContent=active?'⛶ En pantalla completa':'⛶ Pantalla completa';
+      fullBtn.disabled=active;
+    }
+  }
+
+  function getAudio(){
+    if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    return audioCtx;
+  }
+  function tone(freq,dur=.08,type='sine',vol=.16){
+    if(!soundOn) return;
+    const ctx=getAudio();
+    if(ctx.state==='suspended') ctx.resume();
+
+    const master=ctx.createGain();
+    const compressor=ctx.createDynamicsCompressor();
+
+    compressor.threshold.value=-18;
+    compressor.knee.value=18;
+    compressor.ratio.value=4;
+    compressor.attack.value=.003;
+    compressor.release.value=.20;
+
+    master.connect(compressor);
+    compressor.connect(ctx.destination);
+
+    const o=ctx.createOscillator();
+    const g=ctx.createGain();
+    o.type=type;
+    o.frequency.value=freq;
+    o.connect(g);
+    g.connect(master);
+
+    const now=ctx.currentTime;
+    const finalVol=Math.max(.01,Math.min(.65,vol*volumeLevel));
+
+    g.gain.setValueAtTime(.0001,now);
+    g.gain.exponentialRampToValueAtTime(finalVol,now+.008);
+    g.gain.exponentialRampToValueAtTime(.0001,now+dur);
+
+    o.start(now);
+    o.stop(now+dur+.03);
+  }
+  function clickSound(){tone(480,.06,'triangle',.14)}
+  function catchSound(){tone(620,.08,'triangle',.22)}
+  function goodSound(){tone(690,.10,'sine',.28);setTimeout(()=>tone(880,.16,'sine',.34),90)}
+  function badSound(){tone(240,.16,'square',.24);setTimeout(()=>tone(190,.13,'square',.20),90)}
+  function spinSound(i){tone(330+(i%5)*55,.055,'triangle',.10)}
+  function startSound(){[460,590,720].forEach((f,i)=>setTimeout(()=>tone(f,.11,'triangle',.22),i*90))}
+
+  function musicTone(freq,dur=1.1,vol=.075){
+    if(!musicOn||!running) return;
+    const ctx=getAudio();
+    if(ctx.state==='suspended') ctx.resume();
+
+    const compressor=ctx.createDynamicsCompressor();
+    const g=ctx.createGain();
+    const o=ctx.createOscillator();
+
+    compressor.threshold.value=-20;
+    compressor.knee.value=20;
+    compressor.ratio.value=3;
+    compressor.attack.value=.01;
+    compressor.release.value=.25;
+
+    o.type='sine';
+    o.frequency.value=freq;
+    o.connect(g);
+    g.connect(compressor);
+    compressor.connect(ctx.destination);
+
+    const now=ctx.currentTime;
+    const finalVol=Math.max(.008,Math.min(.30,vol*volumeLevel));
+
+    g.gain.setValueAtTime(.0001,now);
+    g.gain.exponentialRampToValueAtTime(finalVol,now+.10);
+    g.gain.exponentialRampToValueAtTime(.0001,now+dur);
+
+    o.start(now);
+    o.stop(now+dur+.06);
+  }
+  function startMusic(){
+    clearTimeout(musicTimer);
+    if(!musicOn||!running) return;
+    const notes=[261.63,329.63,392.00,329.63,293.66,349.23,440.00,349.23];
+    function loop(){
+      if(!running||!musicOn) return;
+      musicTone(notes[musicStep%notes.length],1.15,.075);
+      musicStep++;
+      musicTimer=setTimeout(loop,1450);
+    }
+    loop();
+  }
+  function stopMusic(){
+    clearTimeout(musicTimer);
+    musicTimer=null;
+  }
+
+
+  function updateVolumeUI(){
+    const label=$('#volumeLabel');
+    if(label) label.textContent=`🔊 ${Math.round(volumeLevel*100)}%`;
+  }
+
+
+  function updateLevelSummary(){
+    const el=$('#levelSummary');
+    if(el) el.textContent=selectedTargets.join(' · ');
+  }
+
+  function syncTargetChoiceUI(){
+    document.querySelectorAll('.target-choice').forEach(btn=>{
+      const n=Number(btn.dataset.value);
+      const selected=selectedTargets.includes(n);
+      btn.classList.toggle('selected',selected);
+      btn.setAttribute('aria-pressed',selected?'true':'false');
+    });
+    updateLevelSummary();
+  }
+
+  function setSelectedTargets(values){
+    selectedTargets=[...new Set(values.map(Number))]
+      .filter(n=>Number.isInteger(n) && n>=1 && n<=10)
+      .sort((a,b)=>a-b);
+    syncTargetChoiceUI();
+  updateMistakeUI();
+  }
+
+  function openLevelSetup(){
+    $('#setupError').textContent='';
+    syncTargetChoiceUI();
+    $('#startOverlay').classList.remove('show');
+    $('#setupOverlay').classList.add('show');
+  }
+
+  function confirmLevelSetup(){
+    if(!selectedTargets.length){
+      $('#setupError').textContent='Selecciona al menos un número.';
+      badSound();
+      return;
+    }
+
+    $('#setupError').textContent='';
+    target=selectedTargets[0];
+    tray=[];
+    $('#targetNumber').textContent=target;
+    $('#trayTotal').textContent=`0 / ${target}`;
+    $('#trayRow').innerHTML='';
+    updateLevelSummary();
+
+    clickSound();
+    $('#setupOverlay').classList.remove('show');
+    $('#startOverlay').classList.add('show');
+
+    setMessage(
+      '',
+      '🎯',
+      `Nivel preparado. Los objetivos posibles son <b>${selectedTargets.join(', ')}</b>.`
+    );
+  }
+
+  function sumTray(){return tray.reduce((a,b)=>a+b,0)}
+  function visibleTarget(){
+    const n=Number($('#targetNumber').textContent);
+    return Number.isFinite(n)?n:target;
+  }
+  function activePlayers(){return players.filter(p=>p.active)}
+  function currentPlayer(){return players.find(p=>p.id===currentPlayerId)||null}
+  function currentFallSpeed(){
+    return Math.min(MAX_FALL_SPEED, START_FALL_SPEED + turnHits*SPEED_PER_HIT);
+  }
+  function currentSpawnRate(){
+    return Math.max(MIN_SPAWN_RATE, START_SPAWN_RATE - turnHits*SPAWN_REDUCTION_PER_HIT);
+  }
+  function updateSpeedIndicator(){
+    const el=$('#speedIndicator');
+    if(!el) return;
+    if(turnHits===0){
+      el.textContent='🐢 Ritmo inicial';
+    }else if(turnHits<=2){
+      el.textContent=`🐢 Ritmo suave · nivel ${turnHits+1}`;
+    }else if(turnHits<=5){
+      el.textContent=`🚶 Ritmo medio · nivel ${turnHits+1}`;
+    }else{
+      el.textContent=`⚡ Ritmo reto · nivel ${turnHits+1}`;
+    }
+  }
+
+  function setMessage(type,icon,html){
+    const el=$('#message');
+    el.className='message'+(type?' '+type:'');
+    el.innerHTML=`<div class="big">${icon}</div><div>${html}</div>`;
+  }
+
+  function updateAddPlayerButton(){
+    const add=$('#addPlayerBtn');
+    if(!add) return;
+    add.disabled=players.length>=20;
+    add.textContent=players.length>=20
+      ? 'Máximo 20'
+      : `➕ Añadir · ${players.length}/20`;
+  }
+
+  function renderAvatars(){
+    const wrap=$('#avatars');
+    wrap.innerHTML='';
+
+    players.forEach(p=>{
+      const b=document.createElement('button');
+      b.type='button';
+      b.className='avatar-btn '+(p.active?'active':'inactive')+(p.id===currentPlayerId?' current':'')+(p.played?' played':'');
+      b.dataset.id=p.id;
+      b.innerHTML=`
+        <div class="avatar-score">⭐ ${p.score}</div>
+        <div class="avatar-face" aria-hidden="true">${p.face}</div>
+        <div class="avatar-name">${p.name}</div>
+        <div class="avatar-state">${p.active?'EN JUEGO':'FUERA'}</div>`;
+      b.setAttribute('aria-label',`${p.name}. ${p.active?'En juego':'Fuera'}. ${p.score} puntos.`);
+      b.addEventListener('click',()=>togglePlayer(p.id));
+      wrap.appendChild(b);
+    });
+
+    updateAddPlayerButton();
+  }
+
+  function addExtraPlayer(){
+    if(players.length>=20) return;
+    const index=players.length;
+    const a=avatarPool[index];
+    players.push({id:index,face:a.face,name:a.name,active:true,score:0,played:false});
+    clickSound();
+    renderAvatars();
+    setMessage('', '➕', `<b>${a.name}</b> se ha incorporado al juego. Ya hay ${players.length} avatares disponibles.`);
+    if(running && currentPlayerId===null) chooseNextPlayer();
+  }
+
+  function togglePlayer(id){
+    const p=players.find(x=>x.id===id);
+    if(!p) return;
+    p.active=!p.active;
+    clickSound();
+
+    if(!p.active && currentPlayerId===id){
+      p.played=false;
+      currentPlayerId=null;
+      stopTurn();
+      renderAvatars();
+      setMessage('', '👋', `${p.name} sale del juego. Buscando nuevo jugador...`);
+      setTimeout(()=>chooseNextPlayer(),400);
+      return;
+    }
+
+    if(p.active){
+      p.played=false; // joins current round as eligible
+      setMessage('', '🙋', `<b>${p.name}</b> se incorpora al juego.`);
+    }else{
+      p.played=false;
+      setMessage('', '👋', `<b>${p.name}</b> sale del juego.`);
+    }
+    renderAvatars();
+  }
+
+  function updateCurrentUI(){
+    const p=currentPlayer();
+    if(!p){
+      $('#currentFace').textContent='🙂';
+      $('#currentName').textContent='Elige jugadores';
+      $('#currentScore').textContent='0';
+      return;
+    }
+    $('#currentFace').textContent=p.face;
+    $('#currentName').textContent=p.name;
+    $('#currentScore').textContent=p.score;
+  }
+
+  function newTarget(){
+    const pool=selectedTargets.length ? selectedTargets : [2,3];
+    target=pool[Math.floor(Math.random()*pool.length)];
+    tray=[];
+    $('#targetNumber').textContent=target;
+    $('#trayTotal').textContent=`0 / ${target}`;
+    $('#trayRow').innerHTML='';
+    $('#targetBox').classList.remove('success');
+  }
+
+  function updateTray(){
+    const row=$('#trayRow');
+    row.innerHTML='';
+
+    tray.forEach((n,index)=>{
+      const r=document.createElement('button');
+      r.type='button';
+      r.className='tray-rod';
+      r.dataset.n=n;
+      r.style.setProperty('--len',n);
+      const trayUnit = target>=8 ? 27 : target>=6 ? 31 : 38;
+      r.style.setProperty('--unit',trayUnit+'px');
+      r.textContent=n;
+      r.setAttribute('aria-label',`Quitar regleta ${n} de la construcción`);
+      r.title='Toca para quitar esta regleta';
+
+      r.addEventListener('click',()=>{
+        const removedValue=n;
+
+        tray.splice(index,1);
+        clickSound();
+        updateTray();
+
+        // La regleta retirada no desaparece: vuelve a entrar por arriba
+        // y cae de nuevo como una opción disponible en el juego.
+        setTimeout(()=>{
+          if(running&&!paused&&!switching&&currentPlayerId!==null){
+            spawnRod(removedValue);
+          }
+        },120);
+
+        const total=sumTray();
+        const objective=visibleTarget();
+
+        if(total===objective){
+          // Corregir bien también cuenta como acierto.
+          registerSuccess(objective,true);
+        }else if(total===0){
+          setMessage(
+            '',
+            '↩️',
+            `Has devuelto la regleta <b>${removedValue}</b>. Vuelve a construir el <b>${objective}</b>.`
+          );
+        }else if(total<objective){
+          setMessage(
+            '',
+            '🧩',
+            `La regleta <b>${removedValue}</b> vuelve a caer. Ahora llevas <b>${total}</b> y te falta <b>${objective-total}</b>.`
+          );
+        }else{
+          setMessage(
+            'no',
+            '✋',
+            `La regleta <b>${removedValue}</b> vuelve a caer. Aún llevas <b>${total}</b>: quita otra para llegar a ${objective}.`
+          );
+        }
+      });
+
+      row.appendChild(r);
+    });
+
+    $('#trayTotal').textContent=`${sumTray()} / ${target}`;
+    $('#buildTray').classList.toggle('correctable',tray.length>0);
+  }
+  function clearFalling(){
+    rods.forEach(r=>r.el.remove());
+    rods=[];
+  }
+
+  function makeRodValue(){
+    const objective=visibleTarget();
+    const total=sumTray();
+    const remaining=Math.max(1,objective-total);
+    const x=Math.random();
+
+    // Si existe dentro del material Cuisenaire, aparece también la
+    // regleta inmediatamente superior como distractor.
+    // Para 10 no generamos 11 porque las regletas trabajadas llegan a 10.
+    const superior=objective<10 ? objective+1 : null;
+    const decoyChance=superior ? Math.min(.12 + turnHits*.018,.30) : 0;
+
+    if(superior && x<decoyChance) return superior;
+
+    // La mayor parte del tiempo ofrecemos una regleta que todavía
+    // puede ayudar a completar exactamente lo que falta.
+    if(Math.random()<.68){
+      if(remaining===1) return 1;
+
+      // A veces aparece exactamente lo que falta; otras veces una parte.
+      if(Math.random()<.30) return Math.min(remaining,10);
+      return 1 + Math.floor(Math.random()*Math.min(remaining,10));
+    }
+
+    // El resto del tiempo aparecen alternativas entre 1 y el objetivo.
+    // Esto obliga a pensar antes de tocar, especialmente en niveles altos.
+    return 1 + Math.floor(Math.random()*Math.min(objective,10));
+  }
+
+  function spawnRod(forcedValue=null){
+    if(!running||paused||switching||currentPlayerId===null) return;
+    const layer=$('#fallingLayer');
+    const n=forcedValue ?? makeRodValue();
+    const el=document.createElement('button');
+    el.type='button';
+    el.className='falling-rod';
+    el.dataset.n=n;
+    el.setAttribute('aria-label',`Regleta ${n}`);
+    el.style.setProperty('--len',n);
+
+    const layerW=layer.clientWidth;
+    const baseUnit=window.innerWidth<470?30:44;
+    // Las regletas largas (8–10) se adaptan al ancho disponible sin
+    // perder la relación proporcional entre longitudes.
+    const fitUnit=Math.max(24,Math.floor((layerW-24)/Math.max(10,n)));
+    const unit=Math.min(baseUnit,fitUnit);
+    el.style.setProperty('--unit',unit+'px');
+    const rodW=Math.max(unit*n,unit);
+    const maxX=Math.max(6,layerW-rodW-10);
+    const x=6+Math.random()*maxX;
+
+    el.style.left=x+'px';
+    layer.appendChild(el);
+
+    const obj={
+      id:++spawnSeq,el,n,x,y:-65,
+      speed:currentFallSpeed()*(.90+Math.random()*.20)
+    };
+    rods.push(obj);
+
+    el.addEventListener('click',()=>{
+      if(!running||paused||switching) return;
+      catchRod(obj);
+    });
+  }
+
+  function updateMistakeUI(){
+    const el=$('#mistakeCount');
+    if(el) el.textContent=`${mistakeCount} / ${MAX_MISTAKES}`;
+
+    const card=document.querySelector('.mistakes-info');
+    if(card) card.classList.toggle('danger',mistakeCount>=4);
+  }
+
+  function endGameByMistakes(){
+    running=false;
+    paused=false;
+    switching=false;
+    clearTimeout(spawnTimer);
+    spawnTimer=null;
+    stopMusic();
+    clearFalling();
+
+    const p=currentPlayer();
+    const score=p ? p.score : 0;
+    $('#gameoverScore').textContent=score;
+    $('#gameoverOverlay').classList.add('show');
+
+    setMessage(
+      'no',
+      '🏁',
+      `Fin del juego: has llegado a <b>${MAX_MISTAKES} fallos</b>.`
+    );
+  }
+
+  function registerMistake(messageHtml){
+    mistakeCount++;
+    updateMistakeUI();
+
+    if(messageHtml){
+      setMessage('no','➖',messageHtml);
+    }
+
+    if(mistakeCount>=MAX_MISTAKES){
+      setTimeout(endGameByMistakes,350);
+      return true;
+    }
+    return false;
+  }
+
+  function registerSuccess(objective, corrected=false){
+    const p=currentPlayer();
+    if(p){
+      p.score++;
+      $('#currentScore').textContent=p.score;
+    }
+
+    turnHits++;
+    updateSpeedIndicator();
+    scheduleSpawns();
+
+    goodSound();
+    $('#targetBox').classList.add('success');
+    $('#gameZone').classList.add('flash-good');
+    setTimeout(()=>$('#gameZone').classList.remove('flash-good'),450);
+
+    setMessage(
+      'ok',
+      '✅',
+      corrected
+        ? `¡Bien corregido! Ahora has construido exactamente el <b>${objective}</b>. <b>+1 punto</b>.`
+        : `¡Bien! Has construido el <b>${objective}</b>. <b>+1 punto</b>. El juego irá un poquito más rápido.`
+    );
+
+    renderAvatars();
+
+    // El objetivo permanece fijo durante todo el turno.
+    // Solo vaciamos la bandeja para volver a construir el mismo número.
+    tray=[];
+    updateTray();
+
+    setTimeout(()=>{
+      if(running&&!switching){
+        $('#targetBox').classList.remove('success');
+        setMessage('', '🎯', `Sigue con el mismo objetivo: vuelve a construir el <b>${objective}</b> de otra manera.`);
+      }
+    },650);
+  }
+
+  function catchRod(obj){
+    const idx=rods.indexOf(obj);
+    if(idx<0) return;
+
+    rods.splice(idx,1);
+    obj.el.remove();
+
+    const objective=visibleTarget();
+
+    // Regleta demasiado grande para el objetivo:
+    // no puede formar parte de la construcción.
+    // Si el alumno la toca, pierde 1 punto, pero el turno continúa.
+    if(obj.n > objective){
+      const p=currentPlayer();
+      if(p){
+        p.score-=1;
+        $('#currentScore').textContent=p.score;
+      }
+      badSound();
+      renderAvatars();
+      const ended=registerMistake(`La regleta <b>${obj.n}</b> es mayor que ${objective}. No sirve para este objetivo: <b>−1 punto</b>. Sigue jugando.`);
+      if(ended) return;
+      return;
+    }
+
+    tray.push(obj.n);
+    catchSound();
+    updateTray();
+
+    const total=sumTray();
+
+    if(total===objective){
+      registerSuccess(objective,false);
+
+    }else if(total>objective){
+      const p=currentPlayer();
+      if(p){
+        p.score-=1;
+        $('#currentScore').textContent=p.score;
+      }
+
+      badSound();
+      renderAvatars();
+
+      const ended=registerMistake(
+        `Te has pasado: llevas <b>${total}</b>. Es un fallo: <b>−1 punto</b>. Toca una regleta de la caja para corregirlo.`
+      );
+
+      // No vaciamos la construcción. El alumno debe revisar su elección.
+      updateTray();
+
+      if(ended) return;
+
+    }else{
+      setMessage('', '🧩', `Llevas <b>${total}</b>. Te falta <b>${objective-total}</b>.`);
+    }
+  }
+
+  function animate(ts){
+    if(!running){animationId=null;return}
+    if(!lastTs) lastTs=ts;
+    const dt=Math.min(.04,(ts-lastTs)/1000);
+    lastTs=ts;
+
+    if(!paused&&!switching){
+      const layer=$('#fallingLayer');
+      const floorY=layer.clientHeight;
+      for(let i=rods.length-1;i>=0;i--){
+        const r=rods[i];
+        r.y+=r.speed*dt;
+        r.el.style.transform=`translateY(${r.y}px)`;
+        const h=r.el.offsetHeight||42;
+        if(r.y+h>=floorY){
+          rods.splice(i,1);
+          r.el.remove();
+
+          const objective=visibleTarget();
+
+          // REGLA CLAVE:
+          // si la regleta es mayor que el objetivo visible, el niño no podía usarla.
+          // Puede tocar el suelo y desaparecer SIN terminar el turno.
+          if(r.n > objective){
+            setMessage(
+              '',
+              '➡️',
+              `La regleta <b>${r.n}</b> es demasiado grande para construir ${objective}. Puede pasar sin penalización.`
+            );
+            continue;
+          }
+
+          // Solo una regleta que sí podía usarse para el objetivo termina el turno.
+          const ended=registerMistake(
+          `Una regleta útil ha llegado al suelo. Fallo <b>${mistakeCount+1} de ${MAX_MISTAKES}</b>.`
+        );
+        if(!ended) loseTurn();
+          break;
+        }
+      }
+    }
+    animationId=requestAnimationFrame(animate);
+  }
+
+  function scheduleSpawns(){
+    clearTimeout(spawnTimer);
+    function loop(){
+      if(running&&!paused&&!switching&&currentPlayerId!==null){
+        spawnRod();
+
+        // Con los aciertos empiezan a verse más alternativas a la vez.
+        // Nunca ocurre al comienzo: en 1.º primero damos tiempo para comprender.
+        if(turnHits>=3 && Math.random()<Math.min(.18+(turnHits-3)*.035,.45)){
+          setTimeout(()=>{
+            if(running&&!paused&&!switching&&currentPlayerId!==null) spawnRod();
+          },320);
+        }
+      }
+      spawnTimer=setTimeout(loop,currentSpawnRate());
+    }
+    // Tiempo inicial suficiente para colocarse y mirar el objetivo.
+    spawnTimer=setTimeout(loop,1500);
+  }
+
+  function startTurn(){
+    if(currentPlayerId===null) return;
+
+    // El objetivo se decide UNA SOLA VEZ al comenzar el turno.
+    // Se mantiene fijo hasta que cambie el jugador.
+    turnHits=0;
+    updateSpeedIndicator();
+    newTarget();
+    clearFalling();
+
+    paused=false;
+    $('#pauseBtn').textContent='⏸ Pausa';
+    $('#gameZone').classList.remove('paused');
+    updateCurrentUI();
+    renderAvatars();
+    setMessage('', '🎯', `Turno de <b>${currentPlayer().name}</b>. Tu número es <b>${target}</b> y no cambiará hasta que termine tu turno.`);
+
+    scheduleSpawns();
+  }
+
+  function stopTurn(){
+    clearFalling();
+    tray=[];
+    updateTray();
+  }
+
+  function loseTurn(){
+    if(switching||!running) return;
+    switching=true;
+    badSound();
+
+    const p=currentPlayer();
+    if(p) p.played=true;
+
+    stopTurn();
+    renderAvatars();
+    setMessage('no','💥',`Una regleta tocó el suelo. Termina el turno de <b>${p?p.name:'este jugador'}</b>.`);
+    setTimeout(()=>chooseNextPlayer(),650);
+  }
+
+  function eligiblePlayers(){
+    let act=activePlayers();
+    if(!act.length) return [];
+    let eligible=act.filter(p=>!p.played);
+
+    if(!eligible.length){
+      act.forEach(p=>p.played=false);
+      renderAvatars();
+      eligible=act.slice();
+    }
+    return eligible;
+  }
+
+  function chooseNextPlayer(){
+    const eligible=eligiblePlayers();
+    if(!eligible.length){
+      switching=false;
+      currentPlayerId=null;
+      updateCurrentUI();
+      setMessage('no','👥','No hay jugadores activos. Haz clic en uno o varios avatares.');
+      return;
+    }
+
+    switching=true;
+    clearFalling();
+    tray=[];
+    updateTray();
+
+    const overlay=$('#rouletteOverlay');
+    const face=$('#rouletteFace');
+    const name=$('#rouletteName');
+    const sub=$('#rouletteSub');
+    const bar=$('#rouletteBar');
+    overlay.classList.add('show');
+    $('#rouletteStartBtn').hidden=true;
+    bar.style.width='0%';
+
+    let tick=0;
+    const totalTicks=18;
+    let interval=70;
+
+    function spin(){
+      const cand=eligible[tick%eligible.length];
+      face.textContent=cand.face;
+      name.textContent=cand.name;
+      sub.textContent='La ruleta está eligiendo...';
+      bar.style.width=Math.min(95,(tick/totalTicks)*100)+'%';
+      spinSound(tick);
+      tick++;
+
+      if(tick<totalTicks){
+        setTimeout(spin,interval+tick*6);
+      }else{
+        const chosen=eligible[Math.floor(Math.random()*eligible.length)];
+        currentPlayerId=chosen.id;
+        chosen.played=false; // no se marca como jugado hasta que termine su turno
+        face.textContent=chosen.face;
+        name.textContent=chosen.name;
+        sub.textContent='¡Te toca! Colócate delante de la pizarra y pulsa el botón.';
+        bar.style.width='100%';
+        goodSound();
+        updateCurrentUI();
+        renderAvatars();
+
+        const startTurnBtn=$('#rouletteStartBtn');
+        startTurnBtn.hidden=false;
+        startTurnBtn.textContent='COMENZAR A JUGAR';
+      }
+    }
+    spin();
+  }
+
+  $('#rouletteStartBtn').addEventListener('click',()=>{
+    if(currentPlayerId===null) return;
+    clickSound();
+    $('#rouletteStartBtn').hidden=true;
+    $('#rouletteOverlay').classList.remove('show');
+    $('#rouletteStartBtn').hidden=true;
+    $('#gameoverOverlay').classList.remove('show');
+    switching=false;
+    startTurn();
+  });
+
+  function startGame(){
+    if(!activePlayers().length){
+      setMessage('no','👥','Primero activa al menos un avatar.');
+      return;
+    }
+    if(!running){
+      running=true;
+      paused=false;
+      lastTs=0;
+      $('#startOverlay').classList.remove('show');
+      startSound();
+      startMusic();
+      chooseNextPlayer();
+      if(!animationId) animationId=requestAnimationFrame(animate);
+    }else if(paused){
+      togglePause();
+    }
+  }
+
+  function togglePause(){
+    if(!running) return;
+    paused=!paused;
+    $('#pauseBtn').textContent=paused?'▶ Continuar':'⏸ Pausa';
+    $('#gameZone').classList.toggle('paused',paused);
+    setMessage('', paused?'⏸':'▶', paused?'Juego en pausa.':'Continuamos.');
+  }
+
+  function resetGame(){
+    running=false;
+    paused=false;
+    switching=false;
+    clearTimeout(spawnTimer);
+    spawnTimer=null;
+    clearFalling();
+    currentPlayerId=null;
+    tray=[];
+    target=selectedTargets.length ? selectedTargets[0] : 2;
+    turnHits=0;
+    mistakeCount=0;
+    updateMistakeUI();
+    updateSpeedIndicator();
+    players.forEach(p=>{p.score=0;p.played=false});
+    $('#targetNumber').textContent=target;
+    $('#trayTotal').textContent=`0 / ${target}`;
+    $('#trayRow').innerHTML='';
+    $('#pauseBtn').textContent='⏸ Pausa';
+    $('#gameZone').classList.remove('paused');
+    $('#rouletteOverlay').classList.remove('show');
+    $('#rouletteStartBtn').hidden=true;
+    $('#gameoverOverlay').classList.remove('show');
+    $('#startOverlay').classList.remove('show');
+    $('#setupOverlay').classList.add('show');
+    stopMusic();
+    updateCurrentUI();
+    renderAvatars();
+    setMessage('', '⚙️', 'Juego reiniciado. Elige de nuevo los números que quieres trabajar.');
+  }
+
+  document.querySelectorAll('.target-choice').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const value=Number(btn.dataset.value);
+      if(selectedTargets.includes(value)){
+        selectedTargets=selectedTargets.filter(n=>n!==value);
+      }else{
+        selectedTargets=[...selectedTargets,value].sort((a,b)=>a-b);
+      }
+      clickSound();
+      $('#setupError').textContent='';
+      syncTargetChoiceUI();
+    });
+  });
+
+  document.querySelectorAll('.preset-btn[data-preset]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const values=btn.dataset.preset.split(',').map(Number);
+      setSelectedTargets(values);
+      clickSound();
+      $('#setupError').textContent='';
+    });
+  });
+
+  $('#clearTargetsBtn').addEventListener('click',()=>{
+    setSelectedTargets([]);
+    clickSound();
+    $('#setupError').textContent='Selecciona al menos un número antes de continuar.';
+  });
+
+  $('#confirmLevelBtn').addEventListener('click',confirmLevelSetup);
+
+  $('#addPlayerBtn').addEventListener('click',addExtraPlayer);
+  $('#bigStartBtn').addEventListener('click',startGame);
+  $('#fullscreenBtn').addEventListener('click',()=>{
+    clickSound();
+    enterFullscreen();
+  });
+
+  $('#exitFullscreenBtn').addEventListener('click',()=>{
+    clickSound();
+    exitFullscreen();
+  });
+
+  document.addEventListener('fullscreenchange',updateFullscreenUI);
+  document.addEventListener('webkitfullscreenchange',updateFullscreenUI);
+  document.addEventListener('MSFullscreenChange',updateFullscreenUI);
+
+  $('#pauseBtn').addEventListener('click',togglePause);
+  $('#resetBtn').addEventListener('click',resetGame);
+  $('#gameoverRestartBtn').addEventListener('click',resetGame);
+  $('#volumeDown').addEventListener('click',()=>{
+    volumeLevel=Math.max(.20,Math.round((volumeLevel-.10)*10)/10);
+    updateVolumeUI();
+    if(soundOn) clickSound();
+  });
+
+  $('#volumeUp').addEventListener('click',()=>{
+    volumeLevel=Math.min(2.00,Math.round((volumeLevel+.10)*10)/10);
+    updateVolumeUI();
+    if(soundOn) goodSound();
+  });
+
+  $('#soundBtn').addEventListener('click',()=>{
+    soundOn=!soundOn;
+    $('#soundBtn').textContent=soundOn?'🔊 Efectos ON':'🔇 Efectos OFF';
+    if(soundOn) clickSound();
+  });
+
+  $('#musicBtn').addEventListener('click',()=>{
+    musicOn=!musicOn;
+    $('#musicBtn').textContent=musicOn?'🎵 Música ON':'🎵 Música OFF';
+    if(musicOn && running) startMusic();
+    else stopMusic();
+  });
+
+  updateVolumeUI();
+  updateFullscreenUI();
+  syncTargetChoiceUI();
+
+  // Por defecto solo hay un jugador seleccionado.
+  players[0].active=true;
+  updateSpeedIndicator();
+  renderAvatars();
+  updateCurrentUI();
+})();
+</script>
+<script src="../../assets/fullscreen-persistent.js"></script>
+</body>
+</html>

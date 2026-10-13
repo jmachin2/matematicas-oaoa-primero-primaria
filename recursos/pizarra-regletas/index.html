@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pizarra de Regletas</title>
+<style>
+  :root{
+    --bg:#f4f7fb;
+    --panel:#ffffff;
+    --ink:#183153;
+    --muted:#6b7a90;
+    --line:#d9e1ec;
+    --accent:#3b82f6;
+    --shadow:0 10px 30px rgba(24,49,83,.10);
+    --unit:42px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    overflow:hidden;
+  }
+  .app{
+    display:grid;
+    grid-template-rows:auto 1fr;
+    height:100vh;
+  }
+  header{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px 14px;
+    background:var(--panel);
+    border-bottom:1px solid var(--line);
+    box-shadow:0 2px 10px rgba(0,0,0,.04);
+    z-index:10;
+  }
+  .brand{
+    font-weight:800;
+    font-size:18px;
+    margin-right:auto;
+    white-space:nowrap;
+  }
+  .brand span{color:var(--accent)}
+  button, .toggle{
+    border:1px solid var(--line);
+    background:white;
+    color:var(--ink);
+    padding:9px 12px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:700;
+    transition:.15s ease;
+  }
+  button:hover{transform:translateY(-1px); box-shadow:0 4px 12px rgba(24,49,83,.08)}
+  button.primary{background:var(--accent); color:white; border-color:var(--accent)}
+  button.danger{color:#b91c1c}
+  .main{
+    display:grid;
+    grid-template-columns:180px 1fr;
+    min-height:0;
+  }
+  .palette{
+    background:var(--panel);
+    border-right:1px solid var(--line);
+    padding:12px;
+    overflow:auto;
+  }
+  .palette h3{
+    margin:4px 0 10px;
+    font-size:14px;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:.08em;
+  }
+  .rod-template{
+    height:38px;
+    border-radius:8px;
+    margin:8px 0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    box-shadow:inset 0 0 0 2px rgba(0,0,0,.08), 0 4px 10px rgba(0,0,0,.08);
+    cursor:grab;
+    user-select:none;
+  }
+  .rod-template:active{cursor:grabbing}
+  .workspace-wrap{
+    position:relative;
+    overflow:auto;
+    background:#eef3f9;
+  }
+  #workspace{
+    position:relative;
+    min-width:1100px;
+    min-height:760px;
+    width:100%;
+    height:100%;
+    background-color:#fff;
+    background-image:
+      linear-gradient(to right, rgba(100,116,139,.16) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(100,116,139,.16) 1px, transparent 1px);
+    background-size:var(--unit) var(--unit);
+    transform-origin:0 0;
+  }
+  #workspace.no-grid{background-image:none}
+  .rod{
+    position:absolute;
+    height:var(--unit);
+    border-radius:7px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    box-shadow:inset 0 0 0 2px rgba(0,0,0,.09), 0 5px 12px rgba(0,0,0,.14);
+    cursor:grab;
+    user-select:none;
+    touch-action:none;
+  }
+  .rod.vertical{
+    width:var(--unit)!important;
+  }
+  .rod.selected{
+    outline:4px solid rgba(59,130,246,.45);
+    outline-offset:3px;
+  }
+  .rod .label{
+    pointer-events:none;
+    font-size:18px;
+    text-shadow:0 1px 1px rgba(255,255,255,.35);
+  }
+  .floating-help{
+    position:absolute;
+    right:16px;
+    bottom:14px;
+    background:rgba(255,255,255,.92);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:10px 12px;
+    color:var(--muted);
+    font-size:12px;
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(8px);
+  }
+  .kbd{
+    border:1px solid var(--line);
+    background:#f8fafc;
+    border-radius:5px;
+    padding:1px 5px;
+    color:var(--ink);
+    font-weight:800;
+  }
+  .control-group{display:flex; gap:8px; align-items:center}
+  .zoom-label{font-size:13px; color:var(--muted); font-weight:700}
+  input[type="range"]{width:110px}
+  @media (max-width:800px){
+    .main{grid-template-columns:120px 1fr}
+    .brand{display:none}
+    header{gap:6px; overflow-x:auto}
+    button{padding:8px 9px; font-size:12px}
+    .palette{padding:8px}
+    .rod-template{height:34px}
+    .floating-help{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">Pizarra de <span>Regletas</span></div>
+    <div class="control-group">
+      <a href="../" style="text-decoration:none"><button type="button">← Recursos</button></a>
+      <button id="gridBtn">▦ Cuadrícula</button>
+      <button id="labelsBtn">123 Números</button>
+      <button id="rotateBtn">↻ Girar</button>
+      <button id="duplicateBtn">⧉ Duplicar</button>
+      <button id="deleteBtn" class="danger">⌫ Borrar</button>
+      <button id="clearBtn" class="danger">🗑 BORRAR TODO</button>
+    </div>
+    <div class="control-group">
+      <span class="zoom-label">Zoom</span>
+      <input id="zoom" type="range" min="60" max="140" value="100" />
+    </div>
+    <button id="printBtn" class="primary">🖨 Imprimir</button>
+  </header>
+
+  <div class="main">
+    <aside class="palette">
+      <h3>Regletas</h3>
+      <div id="palette"></div>
+    </aside>
+
+    <div class="workspace-wrap">
+      <div id="workspace"></div>
+      <div class="floating-help">
+        Arrastra una regleta al tablero · Selecciona y usa <span class="kbd">R</span> para girar ·
+        <span class="kbd">Supr</span> para borrar · <span class="kbd">Ctrl+D</span> para duplicar
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const UNIT = 42;
+const rods = [
+  {n:1, c:'#f8f8f8', t:'#1f2937'},
+  {n:2, c:'#ef4444', t:'#fff'},
+  {n:3, c:'#84cc16', t:'#17320a'},
+  {n:4, c:'#a855f7', t:'#fff'},
+  {n:5, c:'#facc15', t:'#3a3000'},
+  {n:6, c:'#22c55e', t:'#083a18'},
+  {n:7, c:'#111827', t:'#fff'},
+  {n:8, c:'#8b5e3c', t:'#fff'},
+  {n:9, c:'#2563eb', t:'#fff'},
+  {n:10,c:'#f97316', t:'#fff'}
+];
+
+const palette = document.getElementById('palette');
+const workspace = document.getElementById('workspace');
+let selected = null;
+let showLabels = true;
+let snap = true;
+let zoom = 1;
+
+function snapVal(v){ return snap ? Math.round(v / UNIT) * UNIT : v; }
+
+function makeTemplate(r){
+  const el = document.createElement('div');
+  el.className='rod-template';
+  el.draggable=true;
+  el.dataset.n=r.n;
+  el.style.background=r.c;
+  el.style.color=r.t;
+  el.style.width=Math.max(42, Math.min(148, r.n*14))+'px';
+  el.textContent=r.n;
+  el.addEventListener('dragstart', e=>{
+    e.dataTransfer.setData('text/plain', r.n);
+  });
+  el.addEventListener('click', ()=>{
+    createRod(r.n, 40, 40 + Math.random()*150);
+  });
+  return el;
+}
+rods.forEach(r=>palette.appendChild(makeTemplate(r)));
+
+workspace.addEventListener('dragover', e=>e.preventDefault());
+workspace.addEventListener('drop', e=>{
+  e.preventDefault();
+  const n = Number(e.dataTransfer.getData('text/plain'));
+  if(!n) return;
+  const rect = workspace.getBoundingClientRect();
+  createRod(n, (e.clientX-rect.left)/zoom, (e.clientY-rect.top)/zoom);
+});
+
+function createRod(n, x, y, vertical=false){
+  const data = rods.find(r=>r.n===n);
+  const el = document.createElement('div');
+  el.className='rod' + (vertical ? ' vertical' : '');
+  el.dataset.n=n;
+  el.dataset.vertical=vertical ? '1':'0';
+  el.style.background=data.c;
+  el.style.color=data.t;
+  el.style.left=snapVal(x)+'px';
+  el.style.top=snapVal(y)+'px';
+
+  if(vertical){
+    el.style.height=(n*UNIT)+'px';
+    el.style.width=UNIT+'px';
+  }else{
+    el.style.width=(n*UNIT)+'px';
+    el.style.height=UNIT+'px';
+  }
+
+  const label = document.createElement('span');
+  label.className='label';
+  label.textContent=n;
+  label.style.display=showLabels ? 'block':'none';
+  el.appendChild(label);
+
+  makeDraggable(el);
+  el.addEventListener('pointerdown', ()=>selectRod(el));
+  workspace.appendChild(el);
+  selectRod(el);
+  return el;
+}
+
+function selectRod(el){
+  document.querySelectorAll('.rod.selected').forEach(r=>r.classList.remove('selected'));
+  selected=el;
+  if(el) el.classList.add('selected');
+}
+
+workspace.addEventListener('pointerdown', e=>{
+  if(e.target===workspace) selectRod(null);
+});
+
+function makeDraggable(el){
+  let dragging=false, offX=0, offY=0;
+
+  el.addEventListener('pointerdown', e=>{
+    dragging=true;
+    selectRod(el);
+    const rect=el.getBoundingClientRect();
+    offX=(e.clientX-rect.left)/zoom;
+    offY=(e.clientY-rect.top)/zoom;
+    el.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  });
+
+  el.addEventListener('pointermove', e=>{
+    if(!dragging) return;
+    const wr=workspace.getBoundingClientRect();
+    const x=(e.clientX-wr.left)/zoom-offX;
+    const y=(e.clientY-wr.top)/zoom-offY;
+    el.style.left=Math.max(0, x)+'px';
+    el.style.top=Math.max(0, y)+'px';
+  });
+
+  el.addEventListener('pointerup', e=>{
+    if(!dragging) return;
+    dragging=false;
+    const x=parseFloat(el.style.left)||0;
+    const y=parseFloat(el.style.top)||0;
+    el.style.left=snapVal(x)+'px';
+    el.style.top=snapVal(y)+'px';
+    try{el.releasePointerCapture(e.pointerId)}catch{}
+  });
+}
+
+function rotateSelected(){
+  if(!selected) return;
+  const n=Number(selected.dataset.n);
+  const vertical=selected.dataset.vertical!=='1';
+  selected.dataset.vertical=vertical?'1':'0';
+  selected.classList.toggle('vertical', vertical);
+  if(vertical){
+    selected.style.width=UNIT+'px';
+    selected.style.height=(n*UNIT)+'px';
+  }else{
+    selected.style.width=(n*UNIT)+'px';
+    selected.style.height=UNIT+'px';
+  }
+}
+function duplicateSelected(){
+  if(!selected) return;
+  const n=Number(selected.dataset.n);
+  const x=(parseFloat(selected.style.left)||0)+UNIT;
+  const y=(parseFloat(selected.style.top)||0)+UNIT;
+  createRod(n,x,y,selected.dataset.vertical==='1');
+}
+function deleteSelected(){
+  if(selected){ selected.remove(); selected=null; }
+}
+
+document.getElementById('rotateBtn').onclick=rotateSelected;
+document.getElementById('duplicateBtn').onclick=duplicateSelected;
+document.getElementById('deleteBtn').onclick=deleteSelected;
+document.getElementById('clearBtn').onclick=()=>{
+  if(confirm('¿Seguro que quieres BORRAR TODO el tablero?')){
+    workspace.querySelectorAll('.rod').forEach(r=>r.remove());
+    selected=null;
+  }
+};
+document.getElementById('gridBtn').onclick=()=>{
+  snap=!snap;
+  workspace.classList.toggle('no-grid', !snap);
+  document.getElementById('gridBtn').textContent=snap?'▦ Cuadrícula':'□ Sin cuadrícula';
+};
+document.getElementById('labelsBtn').onclick=()=>{
+  showLabels=!showLabels;
+  document.querySelectorAll('.rod .label').forEach(l=>l.style.display=showLabels?'block':'none');
+  document.getElementById('labelsBtn').textContent=showLabels?'123 Números':'◌ Sin números';
+};
+document.getElementById('zoom').oninput=e=>{
+  zoom=Number(e.target.value)/100;
+  workspace.style.transform=`scale(${zoom})`;
+  workspace.style.width=(100/zoom)+'%';
+  workspace.style.height=(100/zoom)+'%';
+};
+document.getElementById('printBtn').onclick=()=>window.print();
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='Delete' || e.key==='Backspace') deleteSelected();
+  if(e.key.toLowerCase()==='r') rotateSelected();
+  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='d'){
+    e.preventDefault(); duplicateSelected();
+  }
+});
+
+for(let i=0;i<4;i++) createRod(i+1, 84, 84+i*UNIT);
+selectRod(null);
+</script>
+
+<style media="print">
+  body{overflow:visible;background:white}
+  header,.palette,.floating-help{display:none!important}
+  .main{display:block}
+  .workspace-wrap{overflow:visible;background:white}
+  #workspace{
+    min-width:0!important;
+    min-height:0!important;
+    width:100%!important;
+    height:100vh!important;
+    transform:none!important;
+  }
+  .rod.selected{outline:none}
+</style>
+<script src="../../assets/fullscreen-persistent.js"></script>
+</body>
+</html>

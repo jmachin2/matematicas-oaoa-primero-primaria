@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Página 19 · Descomposición sucesiva · Matemáticas OAOA</title>
+<style>
+:root{
+ --ink:#17384e;--muted:#60798a;--line:#bfd5e1;--bg:#eef7fb;--blue:#469ac7;
+ --ok:#e9f7ed;--bad:#fff1f1;--gold:#f5d65c;
+ --r1:#f7f4ec;--r2:#d95757;--r3:#9acb6a;--r4:#b978b5;--r5:#edda4a;--r6:#2d7b4d;--r7:#202020;
+ --unit:35px
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+button{font:inherit}
+.app{height:100%;display:grid;grid-template-rows:auto auto minmax(0,1fr)}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 10px;background:#fff;border-bottom:2px solid var(--line)}
+.brand{display:flex;align-items:center;gap:9px;min-width:0}
+.brand .icon{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#202020,#b978b5,#edda4a);color:#fff;display:grid;place-items:center;font-weight:1000}
+.brand h1{font-size:1.12rem;margin:0;white-space:nowrap}.brand small{display:block;color:var(--muted);font-weight:800;font-size:.72rem}
+.top-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.control,.action,.tab,.pick,.pair-btn,.toolbtn,.pdf-type,.video-btn,.node-btn{border:2px solid #b9cedb;background:#fff;color:var(--ink);border-radius:13px;font-weight:900;cursor:pointer}
+.control{padding:7px 10px;min-height:38px;text-decoration:none;display:inline-flex;align-items:center}.video-btn{padding:7px 10px;min-height:38px;background:#fff7e5;border-color:#e2b65c}
+.action{padding:8px 13px;min-height:42px}.action.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.tabs-wrap{padding:5px 7px;background:#fbfdff;border-bottom:2px solid var(--line)}
+.tabs{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:5px}.tab{padding:6px 2px;min-height:39px;font-size:.68rem}.tab.active{background:#dceff8;border-color:var(--blue)}.tab.done{background:#e9f6ed;border-color:#76ba8d;color:#326d46}
+.main{position:relative;min-height:0;overflow:hidden}.badge{position:absolute;right:9px;top:5px;z-index:20;background:#eef5f9;color:var(--muted);border-radius:999px;padding:4px 9px;font-size:.68rem;font-weight:1000}
+.step{display:none;position:absolute;inset:4px;padding:3px 8px;overflow:hidden}.step.active{display:block}
+.head{height:42px;display:flex;align-items:center;justify-content:center}.title{font-size:1.18rem;font-weight:1000}
+.card{background:#fff;border:2px solid var(--line);border-radius:18px;padding:11px}
+.feedback{max-width:980px;margin:7px auto 0;padding:8px 12px;border:2px solid #d4e1e9;border-radius:14px;background:#fff;display:flex;gap:9px;align-items:center;min-height:42px;font-weight:850}
+.feedback.ok{background:var(--ok);border-color:#7ac294}.feedback.err{background:var(--bad);border-color:#e5a1a1}
+.actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.prompt{font-size:1.08rem;font-weight:900;text-align:center;line-height:1.4}.sub{color:var(--muted);font-weight:800;text-align:center;line-height:1.4}
+.rule{padding:10px;background:#f7fbfd;border:2px solid #d3e3eb;border-radius:14px;font-weight:850;line-height:1.35}
+
+/* rods */
+.rod{--n:1;width:calc(var(--unit)*var(--n));height:38px;border-radius:7px;border:2px solid rgba(40,50,60,.3);display:grid;place-items:center;font-weight:1000;box-shadow:0 2px 4px rgba(0,0,0,.08);flex:0 0 auto}
+.rod[data-n="1"]{background:var(--r1);color:#333}.rod[data-n="2"]{background:var(--r2);color:#fff}.rod[data-n="3"]{background:var(--r3);color:#17384e}.rod[data-n="4"]{background:var(--r4);color:#fff}.rod[data-n="5"]{background:var(--r5);color:#333}.rod[data-n="6"]{background:var(--r6);color:#fff}.rod[data-n="7"]{background:var(--r7);color:#fff}
+.eq{font-size:1.25rem;font-weight:1000}.rodline{display:flex;align-items:center;justify-content:center;gap:4px}
+
+/* 1 */
+.review-grid{max-width:1080px;margin:auto;display:grid;grid-template-columns:1.2fr .8fr;gap:14px}
+.sum-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;align-content:center}.sum-card{min-height:92px;border:2px solid #c7d9e3;border-radius:14px;background:#fff;display:grid;grid-template-columns:1fr 100px;align-items:center;padding:10px 14px;font-size:1.65rem;font-weight:1000}
+.sum-card button{height:54px;border-radius:12px;border:2px solid #afc7d4;background:#f9fcfe;font-size:1.35rem;font-weight:1000;cursor:pointer}.sum-card button.ok{background:#e9f7ed;border-color:#71b588}.sum-card button.err{background:#fff1f1;border-color:#dc9393}
+.review-side{display:grid;gap:9px;align-content:start}
+
+/* 2 */
+.freewall{max-width:1100px;margin:auto;display:grid;grid-template-columns:.75fr 1.25fr;gap:14px}
+.target7{display:grid;place-items:center;padding:12px}.target7 .rod{--unit:48px;height:50px;font-size:1.2rem}
+.palette{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.pick{min-height:55px;display:grid;place-items:center}.pick .rod{--unit:23px;height:29px;font-size:.72rem}
+.buildline{min-height:88px;border:2px dashed #a9c2cf;border-radius:15px;background:#fbfdfe;display:flex;align-items:center;justify-content:center;gap:4px;flex-wrap:wrap;padding:10px}
+.totalbar{height:18px;border-radius:999px;background:#e6eef2;overflow:hidden;border:2px solid #c1d3dd}.totalfill{height:100%;width:0;background:#5da2c7;transition:.25s}
+.saved{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}.saved-row{min-height:48px;border:2px solid #d5e1e8;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;gap:4px;font-weight:900}
+.saved-row .rod{--unit:18px;height:25px;font-size:.65rem}
+
+/* 3 */
+.twowall{max-width:1040px;margin:auto;display:grid;grid-template-columns:1fr .75fr;gap:14px}
+.pair-stage{display:grid;align-content:center;gap:13px;min-height:330px}.pair-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.pair-btn{min-height:62px;font-size:1.2rem}.pair-btn.found{background:#e9f7ed;border-color:#78b88c}
+.miniwall{display:grid;gap:7px}.minirow{min-height:56px;border:2px solid #d4e1e8;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:5px;background:#fff}.minirow .rod{--unit:24px;height:29px;font-size:.72rem}
+
+/* 4 */
+.complete-layout{max-width:1020px;margin:auto;display:grid;grid-template-columns:1.05fr .95fr;gap:14px}.complete-stage{display:grid;align-content:center;gap:18px;min-height:330px}.equation{font-size:3rem;font-weight:1000;text-align:center}.complete-opts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.complete-opts button{min-height:66px;font-size:1.35rem}
+
+/* 5 Tree */
+.tree-layout{max-width:1120px;margin:auto;display:grid;grid-template-columns:1.35fr .65fr;gap:14px}
+.tree-card{min-height:390px;overflow:auto;display:grid;place-items:start center;padding:18px}
+.tree{padding:0;margin:0;display:flex;justify-content:center;min-width:max-content}
+.tree ul{padding-top:24px;position:relative;display:flex;justify-content:center;margin:0;padding-left:0}
+.tree li{list-style:none;text-align:center;position:relative;padding:24px 8px 0}
+.tree li::before,.tree li::after{content:'';position:absolute;top:0;right:50%;border-top:3px solid #9c775d;width:50%;height:24px}
+.tree li::after{right:auto;left:50%;border-left:3px solid #9c775d}
+.tree li:only-child::after,.tree li:only-child::before{display:none}.tree li:only-child{padding-top:0}
+.tree li:first-child::before,.tree li:last-child::after{border:0}.tree li:last-child::before{border-right:3px solid #9c775d;border-radius:0 8px 0 0}.tree li:first-child::after{border-radius:8px 0 0 0}
+.node-btn{width:64px;height:52px;font-size:1.45rem;background:#fff;border-color:#617e8d;box-shadow:0 2px 6px rgba(0,0,0,.08)}.node-btn.selected{background:#fff4c7;border-color:#d4aa2e}.node-btn.leaf{background:#f7fbfd}
+.decomp-panel{display:grid;gap:8px;align-content:start}.decomp-options{display:grid;grid-template-columns:1fr 1fr;gap:7px}.decomp-options button{min-height:48px}.tree-equation{padding:8px;border:2px solid #d6e3ea;border-radius:12px;background:#fbfdfe;font-weight:900;text-align:center}
+
+/* 6 */
+.problem{max-width:1040px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:14px}.problem-text{font-size:1.08rem;font-weight:900;line-height:1.5}.boxes{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:10px}.boxviz{border:3px solid #9fb6c3;border-radius:16px;min-height:130px;background:#fbfdfe;display:grid;place-items:center;font-size:2.2rem}.answer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.answer-grid button{min-height:62px;font-size:1.3rem}.reveal{margin-top:10px;padding:10px;border:2px solid #7fbd92;background:#eef9f1;border-radius:14px;font-weight:900}.reveal[hidden]{display:none}
+
+/* 7 */
+.sheet-stage{height:calc(100% - 44px);display:grid;grid-template-columns:minmax(0,1fr) 225px;gap:10px;min-height:0}.viewer{position:relative;min-height:0;background:#dfe8ee;border:2px solid var(--line);border-radius:18px;overflow:auto;display:grid;place-items:start center;padding:10px}.sheet-transform{position:relative;transform-origin:top center;max-width:760px;width:min(100%,700px)}.sheet-img{display:block;width:100%;height:auto;background:#fff;border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,.14);user-select:none;-webkit-user-drag:none}#annotCanvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}.tools{display:flex;flex-direction:column;gap:7px;background:#fff;border:2px solid var(--line);border-radius:17px;padding:8px;align-self:start;max-height:100%;overflow:auto}.tools h3{margin:0;text-align:center;font-size:.9rem}.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.toolbtn{min-height:40px;padding:6px;font-size:.76rem}.toolbtn.active{background:#dceff8;border-color:var(--blue)}.colors{display:flex;justify-content:center;gap:8px}.color{width:30px;height:30px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #b5c9d4;cursor:pointer}.color.active{box-shadow:0 0 0 4px #ffcf58}
+
+/* 8 */
+.pdf-layout{height:calc(100% - 44px);display:grid;grid-template-columns:220px minmax(0,1fr);gap:12px;max-width:1100px;margin:auto}.pdf-types{display:grid;gap:7px;align-content:start}.pdf-types h3{margin:3px;text-align:center}.pdf-type{padding:9px;min-height:45px;text-align:left}.pdf-type.selected{background:#dceff8;border-color:var(--blue)}.pdf-panel{background:#fff;border:2px solid var(--line);border-radius:18px;padding:10px;display:grid;grid-template-rows:auto minmax(0,1fr) auto;min-height:0}.pdf-title{text-align:center;font-weight:1000}.pdf-preview{display:grid;place-items:center;overflow:auto;background:#eef3f6;border-radius:12px;padding:8px;min-height:0}.pdf-preview canvas{max-height:100%;max-width:100%;width:auto;height:auto;box-shadow:0 3px 12px rgba(0,0,0,.16)}
+
+/* modal video */
+.modal{position:fixed;inset:0;background:rgba(10,30,42,.76);z-index:9999;display:none;place-items:center;padding:20px}.modal.open{display:grid}.modal-card{width:min(920px,96vw);background:#fff;border-radius:20px;padding:12px;border:2px solid #bfd5e1}.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}.modal iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:14px;background:#111}.offline-note{font-size:.76rem;color:var(--muted);font-weight:800;margin:7px 0 0;text-align:center}
+@media(max-width:920px){.brand small{display:none}.tabs{grid-template-columns:repeat(4,1fr)}.review-grid,.freewall,.twowall,.complete-layout,.tree-layout,.problem{grid-template-columns:1fr}.sheet-stage{grid-template-columns:1fr 180px}.pdf-layout{grid-template-columns:185px 1fr}.step{overflow:auto}.rod{--unit:30px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+ <div class="brand"><div class="icon">🌳</div><div><h1>Página 19 · Descomposición sucesiva</h1><small>Repaso hasta 7 · muro libre · completar · árbol que crece</small></div></div>
+ <div class="top-actions">
+  <a class="control" href="../fichas/">← Menú de fichas</a>
+  <button class="video-btn" id="videoBtn">🎬 Estrategia del vídeo</button>
+  <button class="control" id="soundBtn">🔊 Sonido</button>
+ </div>
+</header>
+
+<nav class="tabs-wrap"><div class="tabs">
+ <button class="tab active" data-step="1">1 · Repaso sumas</button>
+ <button class="tab" data-step="2">2 · Muro libre del 7</button>
+ <button class="tab" data-step="3">3 · Solo 2 regletas</button>
+ <button class="tab" data-step="4">4 · Completa el 7</button>
+ <button class="tab" data-step="5">5 · Árbol que crece</button>
+ <button class="tab" data-step="6">6 · Problema</button>
+ <button class="tab" data-step="7">7 · Ver la página</button>
+ <button class="tab" data-step="8">8 · Páginas imprimibles</button>
+</div></nav>
+
+<main class="main"><div class="badge">P19 · OAOA</div>
+
+<section class="step active" data-step="1">
+ <div class="head"><div class="title">1. Repaso de sumas hasta el 7</div></div>
+ <div class="review-grid">
+  <div class="card sum-grid" id="sumGrid"></div>
+  <div class="review-side">
+   <div class="card"><div class="prompt">Antes del árbol, recuperamos relaciones conocidas</div><div class="rule">Veo las partes → pienso el total → compruebo.</div></div>
+   <div class="card"><div class="prompt">Palabra matemática</div><div style="font-size:2rem;font-weight:1000;text-align:center;color:#17384e">DESCOMPONER</div><div class="sub">Separar un número en partes que siguen formando el mismo total.</div></div>
+  </div>
+ </div>
+ <div class="feedback" id="fb1"><span>➕</span><span>La ficha empieza repasando sumas. Después damos un paso nuevo: volver a partir una parte.</span></div>
+</section>
+
+<section class="step" data-step="2">
+ <div class="head"><div class="title">2. Estrategia del vídeo adaptada · Muro libre del 7</div></div>
+ <div class="freewall">
+  <div class="card">
+   <div class="prompt">Construye 7 de muchas maneras</div>
+   <div class="target7" id="freeTarget"></div>
+   <div class="sub">Puedes usar 2, 3, 4… regletas. Lo importante es conservar el total 7.</div>
+   <div class="palette" id="freePalette"></div>
+  </div>
+  <div class="card">
+   <div class="buildline" id="freeBuild"><span class="sub">Pulsa regletas para empezar</span></div>
+   <div style="margin:10px 0"><div class="totalbar"><div class="totalfill" id="totalFill"></div></div><div class="sub" id="totalText">Total: 0 de 7</div></div>
+   <div class="actions"><button class="action primary" id="saveBuild">Guardar esta forma</button><button class="action" id="clearBuild">Borrar</button></div>
+   <div class="prompt" style="margin-top:8px">Formas descubiertas</div>
+   <div class="saved" id="savedBuilds"></div>
+  </div>
+ </div>
+ <div class="feedback" id="fb2"><span>🧱</span><span>Como en el vídeo: el número puede descomponerse de muchas maneras, no solo en dos partes.</span></div>
+</section>
+
+<section class="step" data-step="3">
+ <div class="head"><div class="title">3. Ahora restringimos: solo dos regletas</div></div>
+ <div class="twowall">
+  <div class="card pair-stage">
+   <div class="target7" id="pairTarget"></div>
+   <div class="prompt">¿Qué parejas forman exactamente 7?</div>
+   <div class="pair-options" id="pairOptions"></div>
+  </div>
+  <div class="card">
+   <div class="prompt">Muro del 7</div>
+   <div class="miniwall" id="miniWall"></div>
+   <div class="rule">Cuando limitamos a dos regletas aparecen las parejas: 6+1, 5+2 y 4+3.</div>
+  </div>
+ </div>
+ <div class="feedback" id="fb3"><span>📏</span><span>Compara longitudes. No vale “casi 7”: debe ser exactamente equivalente.</span></div>
+</section>
+
+<section class="step" data-step="4">
+ <div class="head"><div class="title">4. Completa el 7 · una parte está escondida</div></div>
+ <div class="complete-layout">
+  <div class="card complete-stage">
+   <div class="equation" id="completeEq">7 = 6 + ?</div>
+   <div class="rodline" id="completeRods"></div>
+   <div class="prompt">¿Qué falta para completar 7?</div>
+  </div>
+  <div class="card">
+   <div class="complete-opts" id="completeOpts"></div>
+   <div class="actions"><button class="action primary" id="nextComplete">Otra ronda</button></div>
+   <div class="rule">Esta es la misma idea de “completar” del vídeo, pero aplicada al 7.</div>
+  </div>
+ </div>
+ <div class="feedback" id="fb4"><span>🧩</span><span>Todo = parte conocida + parte que falta.</span></div>
+</section>
+
+<section class="step" data-step="5">
+ <div class="head"><div class="title">5. Árbol que crece · descomposición sucesiva</div></div>
+ <div class="tree-layout">
+  <div class="card tree-card"><div class="tree" id="treeHost"></div></div>
+  <div class="card decomp-panel">
+   <div class="prompt">Toca un número del árbol</div>
+   <div class="sub">Si es mayor que 1 puedes volver a partirlo.</div>
+   <div class="tree-equation" id="treeEquation">Selecciona un nodo</div>
+   <div class="decomp-options" id="decompOptions"></div>
+   <button class="action primary" id="modelTree">🌳 Construir como la ficha</button>
+   <button class="action" id="resetTree">↻ Otro árbol</button>
+   <div class="rule">La idea nueva de esta página es que <strong>una parte también puede convertirse en un nuevo todo</strong> y volver a descomponerse.</div>
+  </div>
+ </div>
+ <div class="feedback" id="fb5"><span>🌳</span><span>El total no cambia: solo estamos mirando su estructura con más detalle.</span></div>
+</section>
+
+<section class="step" data-step="6">
+ <div class="head"><div class="title">6. Problema · uso dos niveles de descomposición</div></div>
+ <div class="problem">
+  <div class="card">
+   <div class="problem-text">Hay <strong>7 piezas</strong>. Guardamos <strong>5 en una caja grande</strong> y <strong>2 en una caja pequeña</strong>. Dentro de la caja grande, <strong>3 son azules</strong> y las demás son rojas. ¿Cuántas piezas rojas hay en la caja grande?</div>
+   <div class="boxes">
+    <div class="boxviz">🔵 🔵 🔵 🔴 🔴<br><small>caja grande = 5</small></div>
+    <div class="boxviz">⬜ ⬜<br><small>caja pequeña = 2</small></div>
+   </div>
+  </div>
+  <div class="card">
+   <div class="prompt">Primero: 7 = 5 + 2<br>Después: 5 = 3 + ?</div>
+   <div class="answer-grid" id="problemAnswers"></div>
+   <div class="reveal" id="problemReveal" hidden>✅ 5 = 3 + 2. Hay 2 piezas rojas. Hemos descompuesto primero el 7 y después una de sus partes.</div>
+  </div>
+ </div>
+ <div class="feedback" id="fb6"><span>💭</span><span>Un árbol ayuda cuando necesitamos mirar una cantidad por dentro, paso a paso.</span></div>
+</section>
+
+<section class="step" data-step="7">
+ <div class="head"><div class="title">7. Ver la página original · Página 19</div></div>
+ <div class="sheet-stage">
+  <div class="viewer"><div class="sheet-transform" id="sheetTransform">
+   <img class="sheet-img" id="sheetImg" src="../assets/pagina19-original.png" alt="Ficha original página 19">
+   <canvas id="annotCanvas"></canvas>
+  </div></div>
+  <aside class="tools">
+   <h3>Anotar sobre la ficha</h3>
+   <div class="tool-grid">
+    <button class="toolbtn active" data-tool="pen">✏️ Lápiz</button>
+    <button class="toolbtn" data-tool="highlight">🖍️ Resaltar</button>
+    <button class="toolbtn" data-tool="circle">⭕ Círculo</button>
+    <button class="toolbtn" data-tool="check">✓ Correcto</button>
+    <button class="toolbtn" data-tool="eraser">⌫ Goma</button>
+    <button class="toolbtn" id="undoBtn">↶ Deshacer</button>
+   </div>
+   <div class="colors">
+    <button class="color active" data-color="#e53935" style="background:#e53935"></button>
+    <button class="color" data-color="#1d74b7" style="background:#1d74b7"></button>
+    <button class="color" data-color="#27874a" style="background:#27874a"></button>
+   </div>
+   <label style="font-weight:850;font-size:.78rem">Grosor <input id="widthRange" type="range" min="2" max="12" value="5"></label>
+   <button class="toolbtn" id="zoomIn">＋ Zoom</button><button class="toolbtn" id="zoomOut">－ Zoom</button>
+   <button class="toolbtn" id="fitBtn">↔ Ajustar</button><button class="toolbtn" id="clearBtn">🧹 Limpiar</button>
+  </aside>
+ </div>
+</section>
+
+<section class="step" data-step="8">
+ <div class="head"><div class="title">8. Páginas imprimibles · Página 19</div></div>
+ <div class="pdf-layout">
+  <aside class="pdf-types">
+   <h3>Elige</h3>
+   <button class="pdf-type selected" data-pdf="ampliacion">Ampliación</button>
+   <button class="pdf-type" data-pdf="refuerzo">Refuerzo</button>
+   <button class="pdf-type" data-pdf="tarea">Tarea</button>
+   <button class="pdf-type" data-pdf="paso">Trabajo paso a paso</button>
+   <button class="pdf-type" data-pdf="pictogramas">Pictogramas</button>
+  </aside>
+  <div class="pdf-panel">
+   <div class="pdf-title" id="pdfTitle">Ampliación · Página 19</div>
+   <div class="pdf-preview" id="pdfPreview"></div>
+   <div class="actions"><button class="action" id="regenPdf">↻ Otra versión</button><button class="action primary" id="downloadPdf">⬇ Descargar PDF</button></div>
+  </div>
+ </div>
+</section>
+</main></div>
+
+<div class="modal" id="videoModal" aria-hidden="true">
+ <div class="modal-card">
+  <div class="modal-head"><strong>Vídeo de referencia · estrategia de muro, parejas y completar</strong><button class="control" id="closeVideo">✕ Cerrar</button></div>
+  <div id="videoHost"></div>
+  <p class="offline-note">En el vídeo la estrategia se muestra con el 8. En esta página la adaptamos al 7 para preparar la descomposición sucesiva de la ficha.</p>
+ </div>
+</div>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+let current=1,sound=true;
+function go(n){current=n;$$('.step').forEach(x=>x.classList.toggle('active',+x.dataset.step===n));$$('.tab').forEach(x=>{x.classList.toggle('active',+x.dataset.step===n);if(+x.dataset.step<n)x.classList.add('done')});location.hash='step'+n;if(n===7)setTimeout(resizeCanvas,100);if(n===8)setTimeout(renderPdf,50)}
+$$('.tab').forEach(b=>b.onclick=()=>go(+b.dataset.step));
+$('#soundBtn').onclick=()=>{sound=!sound;$('#soundBtn').textContent=sound?'🔊 Sonido':'🔇 Sonido'};
+function tone(ok=true){if(!sound)return;try{const A=new AudioContext(),o=A.createOscillator(),g=A.createGain();o.connect(g);g.connect(A.destination);o.frequency.value=ok?670:230;g.gain.setValueAtTime(.08,A.currentTime);g.gain.exponentialRampToValueAtTime(.001,A.currentTime+.18);o.start();o.stop(A.currentTime+.18)}catch(e){}}
+function fb(id,ok,icon,msg){const el=$(id);el.className='feedback '+(ok?'ok':'err');el.innerHTML=`<span>${icon}</span><span>${msg}</span>`}
+function rod(n){const d=document.createElement('div');d.className='rod';d.dataset.n=n;d.style.setProperty('--n',n);d.textContent=n;return d}
+function plus(host){const p=document.createElement('span');p.className='eq';p.textContent='+';host.append(p)}
+
+/* video */
+$('#videoBtn').onclick=()=>{$('#videoModal').classList.add('open');$('#videoHost').innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/wp7Ik8p8mnQ?rel=0" title="Vídeo modelo OAOA" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'};
+function closeVideo(){$('#videoModal').classList.remove('open');$('#videoHost').innerHTML=''}$('#closeVideo').onclick=closeVideo;$('#videoModal').onclick=e=>{if(e.target===$('#videoModal'))closeVideo()};
+
+/* 1 */
+const sums=[['4 + 1',5],['5 + 2',7],['3 + 3',6],['4 + 2',6],['1 + 1',2],['2 + 1',3]];
+function buildReview(){const h=$('#sumGrid');h.innerHTML='';sums.forEach(([s,r])=>{const c=document.createElement('div');c.className='sum-card';c.innerHTML=`<span>${s} =</span>`;const b=document.createElement('button');b.textContent='?';let shown=false;b.onclick=()=>{if(!shown){b.textContent=r;b.classList.add('ok');tone(true);shown=true;fb('#fb1',true,'✅',`${s} = ${r}. Relación recuperada.`)}else{b.textContent='?';b.className='';shown=false}};c.append(b);h.append(c)})}buildReview();
+
+/* 2 free wall */
+$('#freeTarget').append(rod(7));
+let currentBuild=[],saved=[];
+function renderFreePalette(){const h=$('#freePalette');h.innerHTML='';for(let n=1;n<=7;n++){const b=document.createElement('button');b.className='pick';b.append(rod(n));b.onclick=()=>{const t=currentBuild.reduce((a,b)=>a+b,0);if(t+n>7){tone(false);fb('#fb2',false,'📏',`Con ${n} te pasarías de 7.`);return}currentBuild.push(n);renderFreeBuild()};h.append(b)}}
+function renderFreeBuild(){const h=$('#freeBuild');h.innerHTML='';if(!currentBuild.length)h.innerHTML='<span class="sub">Pulsa regletas para empezar</span>';else currentBuild.forEach((n,i)=>{if(i)plus(h);h.append(rod(n))});const t=currentBuild.reduce((a,b)=>a+b,0);$('#totalFill').style.width=(t/7*100)+'%';$('#totalText').textContent=`Total: ${t} de 7`;if(t===7)fb('#fb2',true,'✅',`Has construido 7 como ${currentBuild.join(' + ')}.`)}
+function canonical(arr){return [...arr].sort((a,b)=>b-a).join('+')}
+function renderSaved(){const h=$('#savedBuilds');h.innerHTML='';saved.forEach(arr=>{const r=document.createElement('div');r.className='saved-row';arr.forEach((n,i)=>{if(i)plus(r);r.append(rod(n))});h.append(r)})}
+$('#saveBuild').onclick=()=>{const t=currentBuild.reduce((a,b)=>a+b,0);if(t!==7){fb('#fb2',false,'🧱','La construcción debe sumar exactamente 7.');return}const k=canonical(currentBuild);if(saved.some(a=>canonical(a)===k)){fb('#fb2',false,'🔁','Esa forma ya está guardada. Prueba otra.');return}saved.push([...currentBuild]);tone(true);renderSaved();currentBuild=[];renderFreeBuild()};
+$('#clearBuild').onclick=()=>{currentBuild=[];renderFreeBuild()};renderFreePalette();renderFreeBuild();
+
+/* 3 pair wall */
+$('#pairTarget').append(rod(7));
+const pairChoices=[[6,1],[5,2],[4,3],[5,1],[3,3],[4,2],[2,2],[6,2],[3,2]];
+let pairFound=new Set();
+function renderPairOptions(){const h=$('#pairOptions');h.innerHTML='';pairChoices.forEach(p=>{const b=document.createElement('button');b.className='pair-btn';b.textContent=p.join(' + ');const k=p.join('+');if(pairFound.has(k)){b.classList.add('found');b.disabled=true}b.onclick=()=>{if(p[0]+p[1]===7){pairFound.add(k);tone(true);fb('#fb3',true,'✅',`${p[0]} + ${p[1]} = 7.`);renderPairOptions();renderMiniWall()}else{tone(false);b.style.background='#fff1f1';fb('#fb3',false,'📏',`${p[0]} + ${p[1]} no mide 7.`)}};h.append(b)})}
+function renderMiniWall(){const h=$('#miniWall');h.innerHTML='';[[6,1],[5,2],[4,3]].forEach(p=>{const r=document.createElement('div');r.className='minirow';if(pairFound.has(p.join('+'))){r.append(rod(p[0]));plus(r);r.append(rod(p[1]))}else r.innerHTML='<span class="sub">pareja por descubrir</span>';h.append(r)})}
+renderPairOptions();renderMiniWall();
+
+/* 4 complete */
+const rounds=[{v:6,a:1},{v:5,a:2},{v:4,a:3},{v:3,a:4},{v:2,a:5},{v:1,a:6}];let ci=0;
+function renderComplete(){const r=rounds[ci];$('#completeEq').textContent=`7 = ${r.v} + ?`;const h=$('#completeRods');h.innerHTML='';h.append(rod(r.v));plus(h);const q=document.createElement('div');q.className='rod';q.style.width='110px';q.textContent='?';h.append(q);const opts=$('#completeOpts');opts.innerHTML='';[r.a,Math.max(1,r.a-1),Math.min(6,r.a+1)].filter((x,i,a)=>a.indexOf(x)===i).sort((a,b)=>a-b).forEach(n=>{const b=document.createElement('button');b.className='pick';b.textContent=n;b.onclick=()=>{if(n===r.a){tone(true);b.style.background='#e9f7ed';fb('#fb4',true,'✅',`${r.v} + ${r.a} = 7.`)}else{tone(false);b.style.background='#fff1f1';fb('#fb4',false,'🧩',`Necesitas completar 7 desde ${r.v}.`)}};opts.append(b)})}
+$('#nextComplete').onclick=()=>{ci=(ci+1)%rounds.length;renderComplete()};renderComplete();
+
+/* 5 dynamic tree */
+let nextId=2,treeRoot={id:1,v:7,children:null},selectedNode=null;
+function walk(node,fn){fn(node);(node.children||[]).forEach(c=>walk(c,fn))}
+function findNode(id){let out=null;walk(treeRoot,n=>{if(n.id===id)out=n});return out}
+function decomps(v){const out=[];for(let a=v-1;a>=Math.ceil(v/2);a--){const b=v-a;if(b>=1)out.push([a,b])}return out}
+function renderTree(){
+ const host=$('#treeHost');host.innerHTML='';
+ const ul=document.createElement('ul');
+ function liFor(n){const li=document.createElement('li'),b=document.createElement('button');b.className='node-btn'+(n===selectedNode?' selected':'')+(n.v===1?' leaf':'');b.textContent=n.v;b.onclick=()=>{selectedNode=n;renderTree();renderDecompPanel()};li.append(b);if(n.children){const u=document.createElement('ul');n.children.forEach(c=>u.append(liFor(c)));li.append(u)}return li}
+ ul.append(liFor(treeRoot));host.append(ul)
+}
+function renderDecompPanel(){const h=$('#decompOptions');h.innerHTML='';if(!selectedNode){$('#treeEquation').textContent='Selecciona un nodo';return}if(selectedNode.v<=1){$('#treeEquation').textContent='1 ya no se descompone';return}if(selectedNode.children){$('#treeEquation').textContent=`${selectedNode.v} ya está descompuesto`;return}
+ $('#treeEquation').textContent=`¿Cómo descomponemos ${selectedNode.v}?`;
+ decomps(selectedNode.v).forEach(p=>{const b=document.createElement('button');b.className='pick';b.textContent=p.join(' + ');b.onclick=()=>{selectedNode.children=[{id:nextId++,v:p[0],children:null},{id:nextId++,v:p[1],children:null}];tone(true);fb('#fb5',true,'🌳',`${selectedNode.v} se ha abierto en ${p[0]} + ${p[1]}. Ahora puedes volver a partir una de esas partes.`);selectedNode=null;renderTree();renderDecompPanel()};h.append(b)})
+}
+function modelTree(){nextId=10;treeRoot={id:1,v:7,children:[{id:2,v:5,children:[{id:3,v:2,children:null},{id:4,v:3,children:[{id:5,v:1,children:null},{id:6,v:2,children:null}]}]},{id:7,v:2,children:[{id:8,v:1,children:null},{id:9,v:1,children:null}]}]};selectedNode=null;renderTree();renderDecompPanel();fb('#fb5',true,'📘','Este árbol reproduce la lógica de la ficha: 7 → 5+2; 5 → 2+3; 3 → 1+2; 2 → 1+1.')}
+$('#modelTree').onclick=modelTree;$('#resetTree').onclick=()=>{nextId=2;treeRoot={id:1,v:7,children:null};selectedNode=null;renderTree();renderDecompPanel();fb('#fb5',true,'🌱','Árbol nuevo. Toca el 7 y elige cómo empezar.')};renderTree();renderDecompPanel();
+
+/* 6 problem */
+[1,2,3].forEach(n=>{const b=document.createElement('button');b.className='pick';b.textContent=n;b.onclick=()=>{if(n===2){tone(true);b.style.background='#e9f7ed';$('#problemReveal').hidden=false;fb('#fb6',true,'✅','Correcto. Primero 7 = 5 + 2; después 5 = 3 + 2.')}else{tone(false);b.style.background='#fff1f1';fb('#fb6',false,'🔍','No necesitas volver al 7 completo. Mira dentro de la parte 5.')}};$('#problemAnswers').append(b)});
+
+/* 7 annotate */
+let tool='pen',color='#e53935',lw=5,zoom=1,history=[],drawing=false,start=null;
+const canvas=$('#annotCanvas'),ctx=canvas.getContext('2d'),img=$('#sheetImg');
+function resizeCanvas(){const rect=img.getBoundingClientRect();const d=window.devicePixelRatio||1;canvas.width=Math.max(1,Math.round(rect.width*d));canvas.height=Math.max(1,Math.round(rect.height*d));canvas.style.width=rect.width+'px';canvas.style.height=rect.height+'px';ctx.setTransform(d,0,0,d,0,0);redraw()}
+function redraw(){ctx.clearRect(0,0,canvas.width,canvas.height);history.forEach(drawOp)}
+function drawOp(o){ctx.save();ctx.lineCap='round';ctx.lineJoin='round';if(['pen','highlight','eraser'].includes(o.tool)){ctx.globalAlpha=o.tool==='highlight'?.3:1;ctx.globalCompositeOperation=o.tool==='eraser'?'destination-out':'source-over';ctx.strokeStyle=o.color;ctx.lineWidth=o.tool==='highlight'?o.w*3:o.w;ctx.beginPath();o.pts.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke()}else if(o.tool==='circle'){ctx.strokeStyle=o.color;ctx.lineWidth=o.w;ctx.beginPath();ctx.ellipse((o.a.x+o.b.x)/2,(o.a.y+o.b.y)/2,Math.abs(o.b.x-o.a.x)/2,Math.abs(o.b.y-o.a.y)/2,0,0,Math.PI*2);ctx.stroke()}else if(o.tool==='check'){ctx.strokeStyle=o.color;ctx.lineWidth=o.w;ctx.beginPath();ctx.moveTo(o.a.x,o.a.y);ctx.lineTo(o.a.x+18,o.a.y+20);ctx.lineTo(o.a.x+55,o.a.y-22);ctx.stroke()}ctx.restore()}
+function pos(e){const r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
+canvas.addEventListener('pointerdown',e=>{drawing=true;start=pos(e);if(['pen','highlight','eraser'].includes(tool))history.push({tool,color,w:lw,pts:[start]})});
+canvas.addEventListener('pointermove',e=>{if(!drawing)return;const p=pos(e);if(['pen','highlight','eraser'].includes(tool)){history.at(-1).pts.push(p);redraw()}});
+canvas.addEventListener('pointerup',e=>{if(!drawing)return;const p=pos(e);if(tool==='circle')history.push({tool,color,w:lw,a:start,b:p});if(tool==='check')history.push({tool,color,w:lw,a:p});drawing=false;redraw()});
+$$('[data-tool]').forEach(b=>b.onclick=()=>{tool=b.dataset.tool;$$('[data-tool]').forEach(x=>x.classList.toggle('active',x===b))});$$('.color').forEach(b=>b.onclick=()=>{color=b.dataset.color;$$('.color').forEach(x=>x.classList.toggle('active',x===b))});
+$('#widthRange').oninput=e=>lw=+e.target.value;$('#undoBtn').onclick=()=>{history.pop();redraw()};$('#clearBtn').onclick=()=>{history=[];redraw()};
+function applyZoom(){$('#sheetTransform').style.transform=`scale(${zoom})`}$('#zoomIn').onclick=()=>{zoom=Math.min(2,zoom+.15);applyZoom()};$('#zoomOut').onclick=()=>{zoom=Math.max(.55,zoom-.15);applyZoom()};$('#fitBtn').onclick=()=>{zoom=1;$('#sheetTransform').style.transform='none';requestAnimationFrame(resizeCanvas)};
+img.onload=()=>setTimeout(resizeCanvas,50);window.addEventListener('resize',()=>{if(current===7)setTimeout(resizeCanvas,100)});
+
+/* 8 PDF */
+let pdfType='ampliacion',pdfVersion=1,pdfCanvas=null;const labels={ampliacion:'Ampliación',refuerzo:'Refuerzo',tarea:'Tarea',paso:'Trabajo paso a paso',pictogramas:'Pictogramas'};
+function rr(g,x,y,w,h,r=14,fill='#fff',stroke='#bfd5e1',sw=3){g.beginPath();g.roundRect(x,y,w,h,r);g.fillStyle=fill;g.fill();g.lineWidth=sw;g.strokeStyle=stroke;g.stroke()}
+function txt(g,t,x,y,s=28,b=true,align='left',col='#17384e'){g.fillStyle=col;g.font=`${b?'700':'400'} ${s}px Arial`;g.textAlign=align;g.textBaseline='alphabetic';g.fillText(t,x,y)}
+function line(g,x,y,w){g.strokeStyle='#718b99';g.lineWidth=2;g.setLineDash([8,6]);g.beginPath();g.moveTo(x,y);g.lineTo(x+w,y);g.stroke();g.setLineDash([])}
+function box(g,x,y,w=78,h=54,text=''){rr(g,x,y,w,h,8,'#fff','#667f8b',3);if(text!=='')txt(g,String(text),x+w/2,y+36,26,true,'center')}
+function treeLine(g,x1,y1,x2,y2){g.strokeStyle='#9c775d';g.lineWidth=4;g.beginPath();g.moveTo(x1,y1);g.lineTo(x2,y2);g.stroke()}
+function makeSheet(){
+ const c=document.createElement('canvas');c.width=1240;c.height=1754;const g=c.getContext('2d');g.fillStyle='#fffefa';g.fillRect(0,0,c.width,c.height);
+ txt(g,`${labels[pdfType].toUpperCase()} · DESCOMPONGO HASTA EL 7`,620,75,34,true,'center');txt(g,'Nombre:',70,130,22);line(g,160,133,430);txt(g,'Fecha:',730,130,22);line(g,805,133,300);txt(g,`Página 19 · versión ${pdfVersion}`,620,172,18,true,'center','#60798a');
+ let y=220;const task=(title,h)=>{rr(g,65,y,1110,h,18,'#fff','#c7dce7',3);txt(g,title,90,y+42,27,true);const yy=y;y+=h+24;return yy};
+ let yy=task('1. Repasa las sumas.',300);const ss=pdfVersion%2?['4 + 1','5 + 2','3 + 3','4 + 2','1 + 1','2 + 1']:['3 + 2','6 + 1','5 + 1','2 + 2','2 + 3','3 + 1'];ss.forEach((s,i)=>{const x=105+(i%2)*530,ry=yy+90+Math.floor(i/2)*70;txt(g,s+' =',x,ry,24,true);rr(g,x+145,ry-35,95,44,8,'#fff','#91a9b7',2)});
+ yy=task(pdfType==='pictogramas'?'2. 🌳 COMPLETA EL ÁRBOL':'2. Completa la descomposición sucesiva.',520);
+ box(g,581,yy+72,78,54,'7');treeLine(g,620,yy+126,420,yy+205);treeLine(g,620,yy+126,820,yy+205);box(g,381,yy+205,78,54,'5');box(g,781,yy+205,78,54,'');
+ treeLine(g,420,yy+259,315,yy+340);treeLine(g,420,yy+259,525,yy+340);box(g,276,yy+340,78,54,'');box(g,486,yy+340,78,54,'3');
+ treeLine(g,820,yy+259,735,yy+340);treeLine(g,820,yy+259,905,yy+340);box(g,696,yy+340,78,54,'1');box(g,866,yy+340,78,54,'');
+ treeLine(g,525,yy+394,460,yy+455);treeLine(g,525,yy+394,590,yy+455);box(g,421,yy+455,78,54,'');box(g,551,yy+455,78,54,'');
+ yy=task('3. Completa el 7.',245);['7 = 6 +','7 = 5 +','7 = 4 +'].forEach((s,i)=>{const x=110+i*360;txt(g,s,x,yy+110,23,true);rr(g,x+145,yy+76,80,44,8,'#fff','#91a9b7',2)});
+ yy=task(pdfType==='tarea'?'4. En casa: explica el árbol.':'4. Problema: descompón dos veces.',270);txt(g,'Hay 7 piezas: 5 en una caja y 2 en otra.',95,yy+75,23,true);txt(g,'De las 5, hay 3 azules. ¿Cuántas son rojas?',95,yy+118,23,true);txt(g,'7 = 5 + 2',95,yy+190,24,true);txt(g,'5 = 3 +',430,yy+190,24,true);rr(g,570,yy+157,90,44,8,'#fff','#91a9b7',2);txt(g,'Respuesta:',730,yy+190,21,true);line(g,840,yy+192,250);
+ txt(g,'Palabra matemática: DESCOMPONER = separar un número en partes sin cambiar el total.',620,1692,18,true,'center','#17384e');return c
+}
+function renderPdf(){pdfCanvas=makeSheet();$('#pdfPreview').innerHTML='';$('#pdfPreview').appendChild(pdfCanvas);$('#pdfTitle').textContent=`${labels[pdfType]} · Página 19 · versión ${pdfVersion}`}
+$$('.pdf-type').forEach(b=>b.onclick=()=>{$$('.pdf-type').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');pdfType=b.dataset.pdf;pdfVersion=1;renderPdf()});$('#regenPdf').onclick=()=>{pdfVersion++;renderPdf()};
+function ascii(s){return new TextEncoder().encode(s)}function concat(parts){let n=0;parts.forEach(p=>n+=p.length);const o=new Uint8Array(n);let k=0;parts.forEach(p=>{o.set(p,k);k+=p.length});return o}function b64bytes(u){const b=atob(u.split(',')[1]),a=new Uint8Array(b.length);for(let i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a}
+function canvasPdf(c){const jpg=b64bytes(c.toDataURL('image/jpeg',.92)),objs=[],catalog=1,pages=2,page=3,imgO=4,cont=5;objs[catalog]=ascii('<< /Type /Catalog /Pages 2 0 R >>');objs[pages]=ascii('<< /Type /Pages /Count 1 /Kids [3 0 R] >>');objs[page]=ascii('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Resources << /XObject << /Im 4 0 R >> >> /Contents 5 0 R >>');objs[imgO]=concat([ascii(`<< /Type /XObject /Subtype /Image /Width ${c.width} /Height ${c.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpg.length} >>\nstream\n`),jpg,ascii('\nendstream')]);const st=ascii('q\n595.28 0 0 841.89 0 0 cm\n/Im Do\nQ\n');objs[cont]=concat([ascii(`<< /Length ${st.length} >>\nstream\n`),st,ascii('endstream')]);const head=ascii('%PDF-1.4\n%âãÏÓ\n'),parts=[head],off=[0];let pos=head.length;for(let i=1;i<=5;i++){off[i]=pos;const bl=concat([ascii(`${i} 0 obj\n`),objs[i],ascii('\nendobj\n')]);parts.push(bl);pos+=bl.length}const xp=pos;let xr='xref\n0 6\n0000000000 65535 f \n';for(let i=1;i<=5;i++)xr+=String(off[i]).padStart(10,'0')+' 00000 n \n';xr+=`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xp}\n%%EOF`;parts.push(ascii(xr));return new Blob([concat(parts)],{type:'application/pdf'})}
+$('#downloadPdf').onclick=()=>{if(!pdfCanvas)renderPdf();const a=document.createElement('a');a.href=URL.createObjectURL(canvasPdf(pdfCanvas));a.download=`pagina19_${pdfType}_v${pdfVersion}.pdf`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},700)};
+const h=location.hash.match(/step(\d+)/);if(h&&+h[1]>=1&&+h[1]<=8)go(+h[1]);
+})();
+</script>
+<script src="../assets/fullscreen-persistent.js"></script>
+</body></html>

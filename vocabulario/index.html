@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vocabulario · Matemáticas OAOA · CEIP Camino Largo</title>
+<style>
+:root{
+  --ink:#17384e;--muted:#60798a;--line:#c8dce7;--bg:#eef7fb;
+  --blue:#469ac7;--green:#69aa7b;--white:#fff;--shadow:0 8px 22px rgba(35,69,90,.08)
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+.site-header{background:#fff;border-bottom:2px solid var(--line);position:sticky;top:0;z-index:20}
+.header-inner{max-width:1120px;margin:auto;padding:14px 20px 0}
+.brand-row{display:flex;align-items:end;justify-content:space-between;gap:16px}
+.brand h1{margin:0;font-size:clamp(1.35rem,2.4vw,2rem)}
+.brand p{margin:4px 0 0;color:var(--muted);font-weight:700}
+.main-tabs{display:flex;gap:8px;margin-top:14px}
+.main-tab{
+  min-width:150px;text-align:center;text-decoration:none;color:var(--ink);font-weight:900;
+  padding:11px 20px;border:2px solid var(--line);border-bottom:0;border-radius:16px 16px 0 0;
+  background:#f7fbfd;transform:translateY(2px)
+}
+.main-tab:hover{background:#edf7fb;border-color:#9cc7dc}
+.main-tab.active{background:var(--bg);border-color:var(--blue);color:#236f98}
+.page-main{max-width:1120px;margin:auto;padding:22px}
+.section-title{margin:0 0 6px;font-size:1.35rem}
+.section-lead{margin:0 0 18px;color:var(--muted);font-weight:700}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.card{
+  background:#fff;border:2px solid var(--line);border-radius:20px;padding:18px;
+  display:grid;grid-template-columns:58px 1fr auto;gap:14px;align-items:center;
+  text-decoration:none;color:inherit;box-shadow:var(--shadow);transition:.16s
+}
+.card:hover{transform:translateY(-2px);border-color:var(--blue)}
+.icon{width:58px;height:58px;border-radius:16px;background:#e6f4fa;display:grid;place-items:center;font-size:1.8rem}
+.card h2{margin:0;font-size:1.08rem}.card p{margin:5px 0 0;color:var(--muted);font-weight:700}
+.arrow{font-size:1.8rem;color:var(--blue);font-weight:900}
+.note{margin-top:16px;background:#fff9dd;border:2px solid #e2c873;border-radius:15px;padding:12px 15px;font-weight:800;color:#665421}
+@media(max-width:760px){
+  .header-inner{padding:12px 14px 0}.brand-row{align-items:flex-start}.page-main{padding:14px}
+  .main-tabs{gap:5px}.main-tab{min-width:0;flex:1;padding:10px 8px}
+  .cards{grid-template-columns:1fr}.card{padding:14px}
+}
+
+.vocab-resource{
+  background:#fff;border:2px solid var(--line);border-radius:22px;padding:18px;box-shadow:var(--shadow)
+}
+.resource-grid{display:grid;grid-template-columns:minmax(250px,360px) minmax(0,1fr);gap:22px;align-items:center}
+.poster-wrap{display:grid;gap:9px}.vocab-poster{width:100%;max-height:475px;object-fit:contain;border-radius:18px;border:2px solid #d5e3eb;background:#fafcfd}
+.poster-caption{text-align:center;color:var(--muted);font-weight:800;font-size:.82rem}
+.resource-info{display:grid;gap:14px}
+.resource-title{display:flex;align-items:center;gap:12px}.resource-title .icon{width:54px;height:54px}
+.resource-title h2{margin:0;font-size:1.25rem}.resource-title p{margin:4px 0 0;color:var(--muted);font-weight:700}
+.vocab-words{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.vocab-word{background:#f1f8fb;border:2px solid #c7dce7;border-radius:14px;padding:10px 12px;font-weight:1000;text-align:center}
+.audio-box{background:#f7fbfd;border:2px solid #d4e3eb;border-radius:16px;padding:13px}
+.audio-box strong{display:block;margin-bottom:9px}.audio-box audio{width:100%;display:block}
+.resource-note{margin:0;color:var(--muted);font-weight:700;line-height:1.45}
+.poster-link{display:inline-flex;align-items:center;justify-content:center;width:max-content;text-decoration:none;color:var(--ink);border:2px solid #b9cedb;background:#fff;border-radius:13px;font-weight:900;padding:9px 13px}
+.poster-link:hover{border-color:var(--blue);background:#eef8fc}
+
+.math-vocab-section{margin-top:22px;background:#fff;border:2px solid var(--line);border-radius:22px;padding:18px;box-shadow:var(--shadow)}
+.math-vocab-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.math-vocab-head .icon{width:54px;height:54px}
+.math-vocab-lead{margin:0 0 16px;color:var(--muted);font-weight:700;line-height:1.45}
+.vocab-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.vocab-card{background:#f9fcfe;border:2px solid #c9dde7;border-radius:20px;padding:14px;display:grid;gap:10px;min-height:350px}
+.vocab-card .mini{font-size:.78rem;font-weight:900;color:#5a7789;text-transform:uppercase;letter-spacing:.04em}
+.vocab-word-dark{font-size:1.55rem;line-height:1;font-weight:1000;color:#17384e;letter-spacing:.02em}
+.vocab-visual{height:150px;border:2px solid #d6e5ec;border-radius:16px;background:#fff;display:grid;place-items:center;overflow:hidden}
+.vocab-caption{color:#597284;font-weight:800;line-height:1.35;font-size:.92rem}
+.say-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.say-btn,.reveal-btn{border:2px solid #a8c7d8;background:#fff;border-radius:12px;padding:8px 12px;font-weight:900;color:#17384e;cursor:pointer}
+.say-btn:hover,.reveal-btn:hover{border-color:var(--blue);background:#eef8fc}
+.say-status{font-weight:900;color:#236f98;font-size:.9rem}
+.say-ready{display:none;background:#eef8f1;border:2px solid #98c6a4;border-radius:12px;padding:8px 12px;font-weight:1000;color:#245736}
+.math-note{margin-top:12px;background:#f7fbfd;border:2px dashed #bfd6e1;border-radius:15px;padding:12px 14px;font-weight:800;color:#4f6f80}
+@media(max-width:980px){.vocab-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){
+  .resource-grid{grid-template-columns:1fr}.vocab-words{grid-template-columns:1fr 1fr}
+  .vocab-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand-row">
+      <div class="brand">
+        <h1>Matemáticas OAOA</h1>
+        <p>1.º de Primaria · CEIP Camino Largo</p>
+      </div>
+    </div>
+    <nav class="main-tabs" aria-label="Secciones principales">
+      <a class="main-tab" href="../fichas/">📘 Fichas</a>
+      <a class="main-tab" href="../recursos/">🧰 Recursos</a>
+      <a class="main-tab active" href="../vocabulario/" aria-current="page">🎵 Vocabulario</a>
+      <a class="main-tab" href="../juegos/">🎮 Juegos</a>
+      <a class="main-tab" href="../examenes/">📝 Exámenes</a>
+    </nav>
+  </div>
+</header>
+
+<main class="page-main">
+  <h2 class="section-title">Vocabulario matemático</h2>
+  <p class="section-lead">Canciones, imágenes y otros recursos para aprender las palabras que utilizamos en clase.</p>
+
+  <section class="vocab-resource">
+    <div class="resource-grid">
+      <div class="poster-wrap">
+        <a href="../assets/vocabulario-4-palabras.png" target="_blank" rel="noopener">
+          <img class="vocab-poster" src="../assets/vocabulario-4-palabras.png" alt="Regletas, partes, todo y muro de regletas">
+        </a>
+        <div class="poster-caption">Las cuatro palabras clave de nuestras primeras lecciones.</div>
+      </div>
+
+      <div class="resource-info">
+        <div class="resource-title">
+          <div class="icon">🎶</div>
+          <div>
+            <h2>¿Lo sabes? ¡Ya lo sé!</h2>
+            <p>Canción de vocabulario matemático</p>
+          </div>
+        </div>
+
+        <div class="vocab-words">
+          <div class="vocab-word">REGLETAS</div>
+          <div class="vocab-word">PARTES</div>
+          <div class="vocab-word">TODO</div>
+          <div class="vocab-word">MURO</div>
+        </div>
+
+        <p class="resource-note">La canción presenta cada concepto mediante un diálogo y lo relaciona con ejemplos visuales de regletas.</p>
+
+        <div class="audio-box">
+          <strong>▶ Escuchar «¿Lo sabes? ¡Ya lo sé!»</strong>
+          <audio controls preload="metadata">
+            <source src="../assets/ya-lo-se.mp3" type="audio/mpeg">
+            Tu navegador no puede reproducir este audio.
+          </audio>
+        </div>
+
+        <a class="poster-link" href="../assets/vocabulario-4-palabras.png" target="_blank" rel="noopener">🖼️ Abrir imagen de vocabulario</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="math-vocab-section">
+    <div class="math-vocab-head">
+      <div class="icon">🧠</div>
+      <div>
+        <h2 style="margin:0">Palabras matemáticas que ayudan a pensar</h2>
+        <p class="section-lead" style="margin:4px 0 0">Además del vocabulario que tú añadas para cada ficha, aquí aparece una <strong>palabra matemática útil</strong> asociada a cada una. La palabra está en color oscuro, con mucho apoyo visual, y cada tarjeta permite dar un tiempo de observación antes de invitar al alumnado a decirla.</p>
+      </div>
+    </div>
+
+    <div class="vocab-grid">
+      <article class="vocab-card" data-word="cantidad">
+        <div class="mini">Ficha · Números hasta el 4</div>
+        <div class="vocab-word-dark">CANTIDAD</div>
+        <div class="vocab-visual">
+          <svg viewBox="0 0 240 150" width="100%" height="100%" aria-hidden="true">
+            <rect x="18" y="38" width="30" height="74" rx="6" fill="#ffffff" stroke="#17384e" stroke-width="3"/>
+            <rect x="58" y="20" width="55" height="92" rx="6" fill="#ffffff" stroke="#17384e" stroke-width="3"/>
+            <rect x="123" y="56" width="85" height="56" rx="6" fill="#ffffff" stroke="#17384e" stroke-width="3"/>
+            <circle cx="44" cy="124" r="8" fill="#17384e"/><circle cx="76" cy="124" r="8" fill="#17384e"/><circle cx="108" cy="124" r="8" fill="#17384e"/><circle cx="140" cy="124" r="8" fill="#17384e"/>
+          </svg>
+        </div>
+        <div class="vocab-caption">Miramos cuántos hay. Una cantidad nos dice “cuánto” sin necesidad de contar siempre desde el principio.</div>
+        <div class="say-row">
+          <button class="reveal-btn" type="button">⏱ Dar tiempo para pensar</button>
+          <span class="say-status"></span>
+          <button class="say-ready" type="button">🗣 Ahora di la palabra</button>
+        </div>
+      </article>
+
+      <article class="vocab-card" data-word="completar">
+        <div class="mini">Ficha · Número 5</div>
+        <div class="vocab-word-dark">COMPLETAR</div>
+        <div class="vocab-visual">
+          <svg viewBox="0 0 240 150" width="100%" height="100%" aria-hidden="true">
+            <rect x="18" y="54" width="60" height="36" rx="6" fill="#ffffff" stroke="#17384e" stroke-width="3"/>
+            <text x="48" y="78" text-anchor="middle" font-size="28" font-weight="900" fill="#17384e">2</text>
+            <text x="97" y="79" font-size="28" font-weight="900" fill="#17384e">+</text>
+            <rect x="122" y="54" width="60" height="36" rx="6" fill="#ffffff" stroke="#17384e" stroke-width="3" stroke-dasharray="6 5"/>
+            <text x="198" y="79" font-size="28" font-weight="900" fill="#17384e">= 5</text>
+            <rect x="18" y="103" width="164" height="18" rx="6" fill="#ffffff" stroke="#17384e" stroke-width="3"/>
+            <rect x="18" y="103" width="66" height="18" rx="6" fill="#dff0f8" stroke="#17384e" stroke-width="3"/>
+          </svg>
+        </div>
+        <div class="vocab-caption">Completar es averiguar qué falta para llegar a un total. Vemos una parte y pensamos la otra.</div>
+        <div class="say-row">
+          <button class="reveal-btn" type="button">⏱ Dar tiempo para pensar</button>
+          <span class="say-status"></span>
+          <button class="say-ready" type="button">🗣 Ahora di la palabra</button>
+        </div>
+      </article>
+
+      <article class="vocab-card" data-word="comparar">
+        <div class="mini">Ficha · 4 o 5</div>
+        <div class="vocab-word-dark">COMPARAR</div>
+        <div class="vocab-visual">
+          <svg viewBox="0 0 240 150" width="100%" height="100%" aria-hidden="true">
+            <rect x="25" y="32" width="70" height="70" rx="8" fill="#ffffff" stroke="#17384e" stroke-width="3"/>
+            <rect x="145" y="22" width="70" height="80" rx="8" fill="#ffffff" stroke="#17384e" stroke-width="3"/>
+            <text x="120" y="78" text-anchor="middle" font-size="42" font-weight="1000" fill="#17384e">≠</text>
+            <text x="60" y="76" text-anchor="middle" font-size="28" font-weight="1000" fill="#17384e">4</text>
+            <text x="180" y="72" text-anchor="middle" font-size="28" font-weight="1000" fill="#17384e">5</text>
+          </svg>
+        </div>
+        <div class="vocab-caption">Comparar es mirar dos cantidades o dos sumas para descubrir si son iguales, mayores o menores.</div>
+        <div class="say-row">
+          <button class="reveal-btn" type="button">⏱ Dar tiempo para pensar</button>
+          <span class="say-status"></span>
+          <button class="say-ready" type="button">🗣 Ahora di la palabra</button>
+        </div>
+      </article>
+
+      <article class="vocab-card" data-word="falta">
+        <div class="mini">Ficha · Complementarios 2, 3 y 4</div>
+        <div class="vocab-word-dark">FALTA</div>
+        <div class="vocab-visual">
+          <svg viewBox="0 0 240 150" width="100%" height="100%" aria-hidden="true">
+            <rect x="18" y="57" width="152" height="32" rx="6" fill="#ffffff" stroke="#17384e" stroke-width="3"/>
+            <rect x="18" y="57" width="88" height="32" rx="6" fill="#dff0f8" stroke="#17384e" stroke-width="3"/>
+            <rect x="109" y="57" width="61" height="32" rx="6" fill="#ffffff" stroke="#17384e" stroke-width="3" stroke-dasharray="6 5"/>
+            <text x="188" y="81" font-size="30" font-weight="1000" fill="#17384e">?</text>
+            <text x="33" y="47" font-size="18" font-weight="900" fill="#17384e">parte</text>
+            <text x="116" y="47" font-size="18" font-weight="900" fill="#17384e">falta</text>
+          </svg>
+        </div>
+        <div class="vocab-caption">Cuando algo falta, buscamos la parte que no se ve para poder completar el total.</div>
+        <div class="say-row">
+          <button class="reveal-btn" type="button">⏱ Dar tiempo para pensar</button>
+          <span class="say-status"></span>
+          <button class="say-ready" type="button">🗣 Ahora di la palabra</button>
+        </div>
+      </article>
+
+      <article class="vocab-card" data-word="parte">
+        <div class="mini">Ficha · Parte y todo</div>
+        <div class="vocab-word-dark">PARTE</div>
+        <div class="vocab-visual">
+          <svg viewBox="0 0 240 150" width="100%" height="100%" aria-hidden="true">
+            <rect x="86" y="18" width="68" height="38" rx="8" fill="#ffffff" stroke="#17384e" stroke-width="3"/>
+            <rect x="36" y="94" width="68" height="38" rx="8" fill="#ffffff" stroke="#17384e" stroke-width="3"/>
+            <rect x="136" y="94" width="68" height="38" rx="8" fill="#ffffff" stroke="#17384e" stroke-width="3"/>
+            <line x1="120" y1="56" x2="70" y2="94" stroke="#17384e" stroke-width="4"/>
+            <line x1="120" y1="56" x2="170" y2="94" stroke="#17384e" stroke-width="4"/>
+            <text x="70" y="119" text-anchor="middle" font-size="22" font-weight="900" fill="#17384e">parte</text>
+            <text x="170" y="119" text-anchor="middle" font-size="22" font-weight="900" fill="#17384e">parte</text>
+          </svg>
+        </div>
+        <div class="vocab-caption">Una parte es un trocito del todo. Dos o más partes pueden juntarse para formar la cantidad completa.</div>
+        <div class="say-row">
+          <button class="reveal-btn" type="button">⏱ Dar tiempo para pensar</button>
+          <span class="say-status"></span>
+          <button class="say-ready" type="button">🗣 Ahora di la palabra</button>
+        </div>
+      </article>
+
+      <article class="vocab-card" data-word="resultado">
+        <div class="mini">Ficha · Sumas y resultados</div>
+        <div class="vocab-word-dark">RESULTADO</div>
+        <div class="vocab-visual">
+          <svg viewBox="0 0 240 150" width="100%" height="100%" aria-hidden="true">
+            <text x="30" y="82" font-size="32" font-weight="1000" fill="#17384e">2 + 3 =</text>
+            <rect x="156" y="50" width="56" height="42" rx="8" fill="#ffffff" stroke="#17384e" stroke-width="3"/>
+            <text x="184" y="80" text-anchor="middle" font-size="28" font-weight="1000" fill="#17384e">5</text>
+            <circle cx="44" cy="118" r="8" fill="#17384e"/><circle cx="66" cy="118" r="8" fill="#17384e"/><circle cx="88" cy="118" r="8" fill="#17384e"/><circle cx="110" cy="118" r="8" fill="#17384e"/><circle cx="132" cy="118" r="8" fill="#17384e"/>
+          </svg>
+        </div>
+        <div class="vocab-caption">El resultado es la respuesta final de una suma o de un problema, después de pensar y comprobar.</div>
+        <div class="say-row">
+          <button class="reveal-btn" type="button">⏱ Dar tiempo para pensar</button>
+          <span class="say-status"></span>
+          <button class="say-ready" type="button">🗣 Ahora di la palabra</button>
+        </div>
+      </article>
+
+      <article class="vocab-card" data-word="igual">
+        <div class="mini">Ficha · Conmutativa</div>
+        <div class="vocab-word-dark">IGUAL</div>
+        <div class="vocab-visual">
+          <svg viewBox="0 0 240 150" width="100%" height="100%" aria-hidden="true">
+            <text x="44" y="68" font-size="28" font-weight="1000" fill="#17384e">2 + 3</text>
+            <text x="120" y="76" text-anchor="middle" font-size="42" font-weight="1000" fill="#17384e">=</text>
+            <text x="160" y="68" font-size="28" font-weight="1000" fill="#17384e">3 + 2</text>
+            <rect x="40" y="92" width="70" height="18" rx="6" fill="#ffffff" stroke="#17384e" stroke-width="3"/>
+            <rect x="150" y="92" width="70" height="18" rx="6" fill="#ffffff" stroke="#17384e" stroke-width="3"/>
+          </svg>
+        </div>
+        <div class="vocab-caption">Igual significa “lo mismo”. Aunque cambie el orden, el total puede seguir siendo igual.</div>
+        <div class="say-row">
+          <button class="reveal-btn" type="button">⏱ Dar tiempo para pensar</button>
+          <span class="say-status"></span>
+          <button class="say-ready" type="button">🗣 Ahora di la palabra</button>
+        </div>
+      </article>
+
+      <article class="vocab-card" data-word="descomponer">
+        <div class="mini">Ficha · Número 6</div>
+        <div class="vocab-word-dark">DESCOMPONER</div>
+        <div class="vocab-visual">
+          <svg viewBox="0 0 240 150" width="100%" height="100%" aria-hidden="true">
+            <rect x="24" y="58" width="122" height="24" rx="6" fill="#ffffff" stroke="#17384e" stroke-width="3"/>
+            <rect x="24" y="58" width="61" height="24" rx="6" fill="#dff0f8" stroke="#17384e" stroke-width="3"/>
+            <rect x="85" y="58" width="61" height="24" rx="6" fill="#ffffff" stroke="#17384e" stroke-width="3"/>
+            <text x="176" y="77" font-size="26" font-weight="1000" fill="#17384e">6 = 3 + 3</text>
+          </svg>
+        </div>
+        <div class="vocab-caption">Descomponer es separar una cantidad grande en partes más pequeñas para entenderla mejor.</div>
+        <div class="say-row">
+          <button class="reveal-btn" type="button">⏱ Dar tiempo para pensar</button>
+          <span class="say-status"></span>
+          <button class="say-ready" type="button">🗣 Ahora di la palabra</button>
+        </div>
+      </article>
+
+      <article class="vocab-card" data-word="comprobar">
+        <div class="mini">Ficha · Detective del 5 y del 6</div>
+        <div class="vocab-word-dark">COMPROBAR</div>
+        <div class="vocab-visual">
+          <svg viewBox="0 0 240 150" width="100%" height="100%" aria-hidden="true">
+            <circle cx="82" cy="68" r="30" fill="#ffffff" stroke="#17384e" stroke-width="3"/>
+            <line x1="104" y1="90" x2="135" y2="120" stroke="#17384e" stroke-width="8" stroke-linecap="round"/>
+            <text x="76" y="76" text-anchor="middle" font-size="30" font-weight="1000" fill="#17384e">5</text>
+            <path d="M160 70 l12 12 28 -32" fill="none" stroke="#17384e" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="vocab-caption">Comprobar es revisar si lo que hemos pensado tiene sentido y corregirlo si vemos un error.</div>
+        <div class="say-row">
+          <button class="reveal-btn" type="button">⏱ Dar tiempo para pensar</button>
+          <span class="say-status"></span>
+          <button class="say-ready" type="button">🗣 Ahora di la palabra</button>
+        </div>
+      </article>
+      <article class="vocab-card" data-word="completar">
+        <div class="mini">Ficha · Página 16 · Número 7</div>
+        <div class="vocab-word-dark">COMPLETAR</div>
+        <div class="vocab-visual">
+          <svg viewBox="0 0 240 150" width="100%" height="100%" aria-hidden="true">
+            <rect x="18" y="58" width="174" height="28" rx="6" fill="#202020" stroke="#17384e" stroke-width="3"/>
+            <rect x="18" y="103" width="145" height="22" rx="6" fill="#edda4a" stroke="#17384e" stroke-width="3"/>
+            <rect x="163" y="103" width="29" height="22" rx="6" fill="#fff" stroke="#17384e" stroke-width="3" stroke-dasharray="5 4"/>
+            <text x="208" y="121" font-size="30" font-weight="1000" fill="#17384e">?</text>
+          </svg>
+        </div>
+        <div class="vocab-caption">Completar es encontrar la parte que falta para llegar a un total. Aquí buscamos cuánto falta para formar 7.</div>
+        <div class="say-row"><button class="reveal-btn" type="button">⏱ Dar tiempo para pensar</button><span class="say-status"></span><button class="say-ready" type="button">🗣 Ahora di la palabra</button></div>
+      </article>
+    </div>
+
+      <article class="vocab-card" data-word="resultado">
+        <div class="mini">Ficha · Página 17 · Sumas hasta el 7</div>
+        <div class="vocab-word-dark">RESULTADO</div>
+        <div class="vocab-visual">
+          <svg viewBox="0 0 240 150" width="100%" height="100%" aria-hidden="true">
+            <text x="28" y="82" font-size="31" font-weight="1000" fill="#17384e">4 + 2 =</text>
+            <rect x="156" y="50" width="56" height="42" rx="8" fill="#ffffff" stroke="#17384e" stroke-width="3"/>
+            <text x="184" y="80" text-anchor="middle" font-size="28" font-weight="1000" fill="#17384e">6</text>
+            <path d="M28 113 H210" stroke="#17384e" stroke-width="3" stroke-dasharray="7 6"/>
+            <text x="120" y="139" text-anchor="middle" font-size="17" font-weight="900" fill="#17384e">la suma nos lleva al total</text>
+          </svg>
+        </div>
+        <div class="vocab-caption">El resultado es el total que obtenemos después de calcular y comprobar una suma.</div>
+        <div class="say-row">
+          <button class="reveal-btn" type="button">⏱ Dar tiempo para pensar</button>
+          <span class="say-status"></span>
+          <button class="say-ready" type="button">🗣 Ahora di la palabra</button>
+        </div>
+      </article>
+
+      <article class="vocab-card" data-word="pareja">
+        <div class="mini">Ficha · Página 18 · Parejas del 5, 6 y 7</div>
+        <div class="vocab-word-dark">PAREJA</div>
+        <div class="vocab-visual">
+          <svg viewBox="0 0 240 150" width="100%" height="100%" aria-hidden="true">
+            <rect x="22" y="58" width="112" height="28" rx="6" fill="#b978b5" stroke="#17384e" stroke-width="3"/>
+            <rect x="134" y="58" width="28" height="28" rx="6" fill="#f7f4ec" stroke="#17384e" stroke-width="3"/>
+            <rect x="22" y="101" width="140" height="22" rx="6" fill="#edda4a" stroke="#17384e" stroke-width="3"/>
+            <text x="192" y="80" text-anchor="middle" font-size="27" font-weight="1000" fill="#17384e">4 + 1</text>
+            <text x="192" y="118" text-anchor="middle" font-size="22" font-weight="900" fill="#17384e">= 5</text>
+          </svg>
+        </div>
+        <div class="vocab-caption">Una pareja son dos partes que, juntas, forman un total. Por ejemplo, 4 y 1 son pareja para formar 5.</div>
+        <div class="say-row">
+          <button class="reveal-btn" type="button">⏱ Dar tiempo para pensar</button>
+          <span class="say-status"></span>
+          <button class="say-ready" type="button">🗣 Ahora di la palabra</button>
+        </div>
+      </article>
+
+      <article class="vocab-card" data-word="descomponer">
+        <div class="mini">Ficha · Página 19 · Descomposición sucesiva</div>
+        <div class="vocab-word-dark">DESCOMPONER</div>
+        <div class="vocab-visual">
+          <svg viewBox="0 0 240 150" width="100%" height="100%" aria-hidden="true">
+            <rect x="86" y="12" width="68" height="38" rx="8" fill="#ffffff" stroke="#17384e" stroke-width="3"/>
+            <text x="120" y="39" text-anchor="middle" font-size="24" font-weight="1000" fill="#17384e">7</text>
+            <line x1="120" y1="50" x2="72" y2="91" stroke="#17384e" stroke-width="4"/>
+            <line x1="120" y1="50" x2="168" y2="91" stroke="#17384e" stroke-width="4"/>
+            <rect x="42" y="91" width="58" height="34" rx="8" fill="#edda4a" stroke="#17384e" stroke-width="3"/>
+            <rect x="140" y="91" width="58" height="34" rx="8" fill="#d95757" stroke="#17384e" stroke-width="3"/>
+            <text x="71" y="115" text-anchor="middle" font-size="21" font-weight="1000" fill="#17384e">5</text>
+            <text x="169" y="115" text-anchor="middle" font-size="21" font-weight="1000" fill="#ffffff">2</text>
+          </svg>
+        </div>
+        <div class="vocab-caption">Descomponer es separar un número en partes sin cambiar el total. Una de esas partes puede volver a descomponerse.</div>
+        <div class="say-row">
+          <button class="reveal-btn" type="button">⏱ Dar tiempo para pensar</button>
+          <span class="say-status"></span>
+          <button class="say-ready" type="button">🗣 Ahora di la palabra</button>
+        </div>
+      </article>
+
+      <article class="vocab-card" data-word="posterior">
+        <div class="mini">Ficha · Página 20 · El número posterior</div>
+        <div class="vocab-word-dark">POSTERIOR</div>
+        <div class="vocab-visual">
+          <svg viewBox="0 0 240 150" width="100%" height="100%" aria-hidden="true">
+            <rect x="26" y="54" width="48" height="42" rx="8" fill="#ffffff" stroke="#17384e" stroke-width="3"/>
+            <text x="50" y="83" text-anchor="middle" font-size="26" font-weight="1000" fill="#17384e">5</text>
+            <text x="96" y="82" text-anchor="middle" font-size="25" font-weight="1000" fill="#17384e">+1</text>
+            <path d="M118 75 H160" stroke="#17384e" stroke-width="4"/>
+            <path d="M153 66 L164 75 L153 84" fill="none" stroke="#17384e" stroke-width="4"/>
+            <rect x="168" y="54" width="48" height="42" rx="8" fill="#ffffff" stroke="#17384e" stroke-width="3"/>
+            <text x="192" y="83" text-anchor="middle" font-size="26" font-weight="1000" fill="#17384e">6</text>
+          </svg>
+        </div>
+        <div class="vocab-caption">Posterior es el número que viene justo después. Para encontrarlo añadimos una unidad: 5 + 1 = 6.</div>
+        <div class="say-row">
+          <button class="reveal-btn" type="button">⏱ Dar tiempo para pensar</button>
+          <span class="say-status"></span>
+          <button class="say-ready" type="button">🗣 Ahora di la palabra</button>
+        </div>
+      </article>
+
+      <article class="vocab-card" data-word="valor">
+        <div class="mini">Ficha · Página 21 · Billetes y monedas</div>
+        <div class="vocab-word-dark">VALOR</div>
+        <div class="vocab-visual">
+          <svg viewBox="0 0 240 150" width="100%" height="100%" aria-hidden="true">
+            <circle cx="62" cy="74" r="34" fill="#f4d259" stroke="#17384e" stroke-width="3"/>
+            <text x="62" y="83" text-anchor="middle" font-size="25" font-weight="1000" fill="#17384e">2 €</text>
+            <rect x="126" y="48" width="82" height="52" rx="8" fill="#e0f0df" stroke="#17384e" stroke-width="3"/>
+            <text x="167" y="81" text-anchor="middle" font-size="25" font-weight="1000" fill="#17384e">5 €</text>
+            <text x="120" y="130" text-anchor="middle" font-size="18" font-weight="900" fill="#17384e">¿cuánto representa?</text>
+          </svg>
+        </div>
+        <div class="vocab-caption">Valor es cuánto representa una moneda o un billete. No depende de cuántas piezas tengamos.</div>
+        <div class="say-row">
+          <button class="reveal-btn" type="button">⏱ Dar tiempo para pensar</button>
+          <span class="say-status"></span>
+          <button class="say-ready" type="button">🗣 Ahora di la palabra</button>
+        </div>
+      </article>
+
+    <div class="math-note">Sugerencia de uso en gran grupo: enseña una tarjeta, deja unos segundos para mirar la imagen y pensar, y después pulsa el botón para invitar al alumnado a <strong>decir la palabra</strong> en voz alta.</div>
+  </section>
+
+</main>
+
+<script>
+document.querySelectorAll('.vocab-card').forEach(card=>{
+  const btn=card.querySelector('.reveal-btn');
+  const status=card.querySelector('.say-status');
+  const ready=card.querySelector('.say-ready');
+  let timer=null;
+  btn.addEventListener('click',()=>{
+    if(timer) return;
+    let n=5;
+    status.textContent='Piensa… '+n;
+    btn.disabled=true;
+    timer=setInterval(()=>{
+      n--;
+      if(n>0){
+        status.textContent='Piensa… '+n;
+      }else{
+        clearInterval(timer);
+        timer=null;
+        status.textContent='¡Preparados!';
+        ready.style.display='inline-flex';
+        ready.focus();
+      }
+    },1000);
+  });
+  ready.addEventListener('click',()=>{
+    status.textContent='Di la palabra en voz alta.';
+    ready.textContent='✅ ¡Dicha!';
+  });
+});
+</script>
+<script src="../assets/fullscreen-persistent.js"></script>
+</body>
+</html>

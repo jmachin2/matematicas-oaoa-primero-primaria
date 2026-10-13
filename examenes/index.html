@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Exámenes · Matemáticas OAOA · CEIP Camino Largo</title>
+<style>
+
+:root{
+  --ink:#17384e;--muted:#60798a;--line:#c8dce7;--bg:#eef7fb;
+  --blue:#469ac7;--green:#69aa7b;--white:#fff;--shadow:0 8px 22px rgba(35,69,90,.08)
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+.site-header{background:#fff;border-bottom:2px solid var(--line);position:sticky;top:0;z-index:20}
+.header-inner{max-width:1120px;margin:auto;padding:14px 20px 0}
+.brand-row{display:flex;align-items:end;justify-content:space-between;gap:16px}
+.brand h1{margin:0;font-size:clamp(1.35rem,2.4vw,2rem)}
+.brand p{margin:4px 0 0;color:var(--muted);font-weight:700}
+.main-tabs{display:flex;gap:8px;margin-top:14px}
+.main-tab{
+  min-width:150px;text-align:center;text-decoration:none;color:var(--ink);font-weight:900;
+  padding:11px 20px;border:2px solid var(--line);border-bottom:0;border-radius:16px 16px 0 0;
+  background:#f7fbfd;transform:translateY(2px)
+}
+.main-tab:hover{background:#edf7fb;border-color:#9cc7dc}
+.main-tab.active{background:var(--bg);border-color:var(--blue);color:#236f98}
+.page-main{max-width:1120px;margin:auto;padding:22px}
+.section-title{margin:0 0 6px;font-size:1.35rem}
+.section-lead{margin:0 0 18px;color:var(--muted);font-weight:700}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.card{
+  background:#fff;border:2px solid var(--line);border-radius:20px;padding:18px;
+  display:grid;grid-template-columns:58px 1fr auto;gap:14px;align-items:center;
+  text-decoration:none;color:inherit;box-shadow:var(--shadow);transition:.16s
+}
+.card:hover{transform:translateY(-2px);border-color:var(--blue)}
+.icon{width:58px;height:58px;border-radius:16px;background:#e6f4fa;display:grid;place-items:center;font-size:1.8rem}
+.card h2{margin:0;font-size:1.08rem}.card p{margin:5px 0 0;color:var(--muted);font-weight:700}
+.arrow{font-size:1.8rem;color:var(--blue);font-weight:900}
+.note{margin-top:16px;background:#fff9dd;border:2px solid #e2c873;border-radius:15px;padding:12px 15px;font-weight:800;color:#665421}
+@media(max-width:760px){
+  .header-inner{padding:12px 14px 0}.brand-row{align-items:flex-start}.page-main{padding:14px}
+  .main-tabs{gap:5px}.main-tab{min-width:0;flex:1;padding:10px 8px}
+  .cards{grid-template-columns:1fr}.card{padding:14px}
+}
+
+
+.exam-layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(340px,.9fr);gap:18px;align-items:start}
+.panel{background:#fff;border:2px solid var(--line);border-radius:20px;padding:16px;box-shadow:var(--shadow)}
+.panel h2,.panel h3{margin:0 0 8px}.panel-lead{margin:0 0 14px;color:var(--muted);font-weight:700;line-height:1.4}
+.sheet-select{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.sheet-choice{position:relative;border:2px solid #cbdde7;border-radius:15px;background:#fbfdfe;padding:11px 11px 11px 42px;cursor:pointer;min-height:74px}
+.sheet-choice input{position:absolute;left:13px;top:18px;width:20px;height:20px;accent-color:#3b8fbb}
+.sheet-choice:has(input:checked){border-color:#4c9ec9;background:#eaf6fb;box-shadow:0 0 0 3px rgba(76,158,201,.12) inset}
+.sheet-choice strong{display:block;font-size:.95rem}.sheet-choice span{display:block;margin-top:4px;color:var(--muted);font-size:.78rem;font-weight:700;line-height:1.25}
+.select-actions{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0 0}
+.small-btn,.pdf-btn{border:2px solid #b9cedb;background:#fff;color:var(--ink);border-radius:12px;font-weight:900;cursor:pointer;padding:8px 11px}
+.small-btn:hover,.pdf-btn:hover{border-color:var(--blue);background:#eef8fc}
+.analysis-empty{padding:22px;border:2px dashed #c8dce7;border-radius:15px;text-align:center;color:var(--muted);font-weight:800}
+.summary-box{display:grid;gap:10px}.summary-line{padding:10px 11px;border:2px solid #d4e3eb;border-radius:14px;background:#fbfdfe}
+.summary-line strong{display:block;margin-bottom:5px}.tags{display:flex;gap:6px;flex-wrap:wrap}.tag{display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;background:#eef6fa;border:1px solid #bfd7e3;font-size:.73rem;font-weight:900}
+.warning{padding:11px 13px;border-radius:14px;border:2px solid #e2b867;background:#fff8e6;color:#705516;font-weight:850;line-height:1.38}
+.okbox{padding:11px 13px;border-radius:14px;border:2px solid #8cc49b;background:#eef9f1;color:#356d46;font-weight:850;line-height:1.38}
+.sessions{display:grid;gap:8px}.session-card{border:2px solid #d4e3eb;border-radius:14px;padding:10px;background:#fff}.session-card h4{margin:0 0 5px}.session-card p{margin:0;color:var(--muted);font-size:.82rem;font-weight:700;line-height:1.35}
+.curriculum-note{margin-top:12px;padding:10px;border-left:5px solid #75a9c8;background:#f3f9fc;border-radius:9px;color:#496879;font-size:.8rem;font-weight:700;line-height:1.38}
+.output-box{margin-top:16px;background:#fff;border:2px solid var(--line);border-radius:20px;padding:15px;box-shadow:var(--shadow)}
+.output-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.output-head h2{margin:0}
+.pdf-actions{display:flex;gap:8px;flex-wrap:wrap}.pdf-btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}.pdf-btn.rubric{background:#eef8f1;border-color:#89bd98}
+.pdf-btn:disabled{opacity:.45;cursor:not-allowed}
+.preview-plan{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.preview-card{border:2px solid #d4e3eb;border-radius:14px;padding:10px;background:#fafcfd}.preview-card h4{margin:0 0 6px}.preview-card ol{margin:0;padding-left:21px;color:#405c6d;font-weight:700;font-size:.82rem}.preview-card li{margin:4px 0}
+@media(max-width:900px){.exam-layout{grid-template-columns:1fr}.sheet-select{grid-template-columns:1fr}.preview-plan{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand-row">
+      <div class="brand">
+        <h1>Matemáticas OAOA</h1>
+        <p>1.º de Primaria · CEIP Camino Largo</p>
+      </div>
+    </div>
+    <nav class="main-tabs" aria-label="Secciones principales">
+      <a class="main-tab" href="../fichas/">📘 Fichas</a>
+      <a class="main-tab" href="../recursos/">🧰 Recursos</a>
+      <a class="main-tab" href="../vocabulario/">🎵 Vocabulario</a>
+      <a class="main-tab" href="../juegos/">🎮 Juegos</a>
+      <a class="main-tab active" href="../examenes/" aria-current="page">📝 Exámenes</a>
+    </nav>
+  </div>
+</header>
+
+<main class="page-main">
+  <h2 class="section-title">Generador de prueba competencial</h2>
+  <p class="section-lead">Selecciona las fichas trabajadas. La página analiza las estrategias OAOA, los aprendizajes curriculares del primer ciclo y la carga de evaluación antes de generar la prueba y su rúbrica.</p>
+
+  <div class="exam-layout">
+    <section class="panel">
+      <h2>1. Elige las fichas que quieres evaluar</h2>
+      <p class="panel-lead">No se copian literalmente las fichas. Se evalúan las destrezas y relaciones matemáticas que se han trabajado con ellas.</p>
+      <div class="sheet-select" id="sheetSelect"></div>
+      <div class="select-actions">
+        <button class="small-btn" id="allBtn" type="button">Seleccionar todas</button>
+        <button class="small-btn" id="noneBtn" type="button">Quitar selección</button>
+      </div>
+      <div class="curriculum-note">
+        <strong>Importante:</strong> el Decreto 211/2022 prescribe competencias, criterios y saberes para el <strong>primer ciclo (1.º-2.º)</strong>. Esta herramienta concreta la evaluación para 1.º a partir de las fichas realmente trabajadas; no presenta esa secuenciación como una distribución normativa cerrada por curso.
+      </div>
+    </section>
+
+    <aside class="panel">
+      <h2>2. Análisis de lo que se evaluará</h2>
+      <div id="analysis"><div class="analysis-empty">Selecciona al menos una ficha para ver el análisis.</div></div>
+    </aside>
+  </div>
+
+  <section class="output-box">
+    <div class="okbox" style="margin-bottom:14px">📄 <strong>Límite fijo para el alumnado:</strong> la prueba nunca ocupará más de <strong>2 folios</strong>. Si seleccionas muchas fichas, el generador integrará varias destrezas en tareas competenciales representativas y, cuando sea necesario, distribuirá la evaluación en <strong>dos sesiones de un folio cada una</strong>.</div>
+    <div class="output-head">
+      <div>
+        <h2>3. Genera los instrumentos</h2>
+        <p class="panel-lead" style="margin:4px 0 0">La prueba combina representación, estrategia, cálculo, resolución y explicación. La rúbrica valora cómo piensa el alumnado, no solo si acierta.</p>
+      </div>
+      <div class="pdf-actions">
+        <button class="pdf-btn primary" id="testPdfBtn" type="button" disabled>⬇ Prueba PDF</button>
+        <button class="pdf-btn rubric" id="rubricPdfBtn" type="button" disabled>⬇ Rúbrica PDF</button>
+      </div>
+    </div>
+    <div class="preview-plan" id="previewPlan"></div>
+  </section>
+</main>
+
+<script>
+const SHEETS = [
+  {
+    id:'n4', order:1, title:'Números hasta el 4', short:'Número 4, partes y composición', weight:1.0, group:'base',
+    strategies:['Manipular → representar → simbolizar','Composición y descomposición','Representaciones múltiples','Resolución de problemas'],
+    competences:['C1','C2','C3','C6'], criteria:['1.1','2.1','3.1','6.1','6.2'],
+    knowledge:['Conteo y cardinalidad','Representación de cantidades','Composición/descomposición de números pequeños'],
+    indicator:'Construye y representa 4 de más de una manera.'
+  },
+  {
+    id:'n5', order:2, title:'Número 5', short:'Construcción del 5 y sus partes', weight:1.0, group:'base',
+    strategies:['Manipular → representar → simbolizar','Composición y descomposición','Comparación de representaciones','Resolución de problemas'],
+    competences:['C1','C2','C3','C6'], criteria:['1.1','2.1','3.1','6.2'],
+    knowledge:['Representación del número 5','Composición/descomposición','Relaciones parte-todo'],
+    indicator:'Representa 5 y reconoce parejas que lo componen.'
+  },
+  {
+    id:'fourfive', order:3, title:'4 o 5 · Diferencias', short:'Comparar, clasificar y reconocer 4/5', weight:1.15, group:'base',
+    strategies:['Comparación de cantidades','Clasificación por resultado','Representaciones múltiples','Observación y argumentación'],
+    competences:['C1','C2','C3','C5','C6'], criteria:['1.1','2.1','3.1','5.1','6.2'],
+    knowledge:['Comparación de cantidades','Composición de 4 y 5','Conexión entre suma y cantidad'],
+    indicator:'Distingue y clasifica composiciones que forman 4 o 5.'
+  },
+  {
+    id:'comp', order:4, title:'Complementarios 2, 3 y 4', short:'¿Cuánto falta? Parejas complementarias', weight:1.25, group:'base',
+    strategies:['Buscar la parte que falta','Composición/descomposición','Cálculo mental relacional','Uso de regletas como modelo'],
+    competences:['C2','C3','C6'], criteria:['2.1','2.2','3.1','6.2'],
+    knowledge:['Complementos de pequeñas cantidades','Parte que falta','Relaciones aditivas tempranas'],
+    indicator:'Encuentra el complemento necesario para alcanzar un total.'
+  },
+  {
+    id:'partwhole', order:5, title:'Página 9 · Parte-todo', short:'Partes, todo y parte desconocida', weight:1.3, group:'base',
+    strategies:['Modelo parte-todo','Representar antes de operar','Buscar la parte desconocida','Verbalización matemática'],
+    competences:['C1','C2','C3','C6'], criteria:['1.1','2.1','2.2','3.1','6.2'],
+    knowledge:['Estructura parte-todo','Composición/descomposición','Problemas aditivos de parte desconocida'],
+    indicator:'Interpreta un esquema parte-todo y determina una parte desconocida.'
+  },
+  {
+    id:'sumresult', order:6, title:'Página 10 · Sumas y resultados', short:'Relacionar suma, partes y total', weight:1.25, group:'oper',
+    strategies:['Muro de regletas','Relacionar expresión y cantidad','Cálculo mental inicial','Comprobación de resultados'],
+    competences:['C2','C3','C6'], criteria:['2.1','2.2','2.3','3.1','6.2'],
+    knowledge:['Significado de la suma','Distintas sumas con el mismo total','Cálculo aditivo hasta 6'],
+    indicator:'Relaciona una suma con su total y comprueba la equivalencia.'
+  },
+  {
+    id:'comm', order:7, title:'Página 11 · Conmutatividad', short:'Cambiar el orden y conservar el total', weight:1.35, group:'oper',
+    strategies:['Comparar estrategias','Formular y comprobar conjeturas','Manipulación con regletas','Explicar qué cambia y qué permanece'],
+    competences:['C2','C3','C5','C6'], criteria:['2.3','3.1','3.2','5.1','6.2'],
+    knowledge:['Propiedades de la suma','Equivalencia de expresiones','Conexiones entre representaciones'],
+    indicator:'Comprueba que cambiar el orden de los sumandos no cambia el total.'
+  },
+  {
+    id:'n6', order:8, title:'Página 13 · Número 6', short:'Construcción, parejas y sumas del 6', weight:1.2, group:'oper',
+    strategies:['Composición/descomposición del 6','Cálculo mental','Buscar varias maneras','Justificación'],
+    competences:['C2','C3','C6'], criteria:['2.1','2.2','3.1','6.2'],
+    knowledge:['Representación del 6','Parejas que forman 6','Sumas hasta 6'],
+    indicator:'Compone y descompone 6 y reconoce sumas equivalentes.'
+  },
+  {
+    id:'diag56', order:9, title:'Página 14 · 5 o 6 y diagramas', short:'Clasificar, detectar errores y usar diagramas', weight:1.4, group:'oper',
+    strategies:['Clasificación por resultado','Detección y corrección del error','Diagramas parte-todo','Comprobación y explicación'],
+    competences:['C1','C2','C3','C6','C7'], criteria:['1.1','2.1','2.2','2.3','3.1','6.2','7.1'],
+    knowledge:['Composición de 5 y 6','Diagramas matemáticos','Validación de resultados'],
+    indicator:'Interpreta diagramas, distingue 5/6 y detecta resultados incoherentes.'
+  },
+  {
+    id:'n7', order:10, title:'Página 16 · Número 7', short:'Juego 2×1, parejas del 7 y parte–todo', weight:1.35, group:'oper',
+    strategies:['Manipular → representar → simbolizar','Juego 2×1 y equivalencia','Composición/descomposición del 7','Muro de regletas','Parte–todo','Verbalización y comprobación'],
+    competences:['C1','C2','C3','C5','C6'], criteria:['1.1','2.1','2.2','2.3','3.1','5.1','6.2'],
+    knowledge:['Representación del 7','Parejas que forman 7','Equivalencia de longitudes con regletas','Composición/descomposición','Diagramas parte–todo'],
+    indicator:'Construye 7 mediante equivalencias, reconoce sus parejas y completa una parte desconocida.'
+  },
+  {
+    id:'sums567', order:11, title:'Página 17 · Sumas hasta el 7', short:'Relacionar sumas con 5, 6 y 7; muros y complementarios', weight:1.45, group:'oper',
+    strategies:['Tarjetas rápidas suma → resultado','Muros de regletas 5, 6 y 7','Complementarios con cantidad oculta','Clasificación por resultado','Verbalización y comprobación'],
+    competences:['C1','C2','C3','C5','C6'], criteria:['1.1','2.1','2.2','2.3','3.1','5.1','6.2'],
+    knowledge:['Hechos aditivos hasta 7','Parejas que forman 5, 6 y 7','Relación suma–resultado','Composición/descomposición y complementarios'],
+    indicator:'Relaciona distintas sumas con 5, 6 o 7, completa una parte oculta y justifica el resultado.'
+  },
+  {
+    id:'pairs567', order:12, title:'Página 18 · Parejas del 5, 6 y 7', short:'Construir, ordenar y recuperar parejas numéricas', weight:1.35, group:'oper',
+    strategies:['Muros de regletas','Búsqueda sistemática de parejas','Complementarios y parte oculta','Recuperación rápida después de comprender','Verbalización y comprobación'],
+    competences:['C1','C2','C3','C5','C6'], criteria:['1.1','2.1','2.2','2.3','3.1','5.1','6.2'],
+    knowledge:['Composición y descomposición de 5, 6 y 7','Parejas numéricas','Complementarios','Organización sistemática de relaciones'],
+    indicator:'Construye y organiza todas las parejas de 5, 6 y 7, encuentra la parte que falta y explica la relación.'
+  },
+  {
+    id:'decomp7', order:13, title:'Página 19 · Descomposición sucesiva', short:'Descomponer 7 y volver a descomponer sus partes', weight:1.55, group:'oper',
+    strategies:['Muro libre de regletas','Restricción a dos regletas','Completar hasta 7','Árbol de descomposición sucesiva','Verbalización y comprobación'],
+    competences:['C1','C2','C3','C4','C5','C6'], criteria:['1.1','2.1','2.2','2.3','3.1','4.1','5.1','6.2'],
+    knowledge:['Composición y descomposición del 7','Descomposición sucesiva','Árboles numéricos','Relación parte–todo en varios niveles'],
+    indicator:'Descompone 7 de distintas maneras y vuelve a descomponer una de sus partes manteniendo el total.'
+  },
+  {
+    id:'successor', order:14, title:'Página 20 · El número posterior', short:'Comprender el posterior como uno más', weight:1.25, group:'oper',
+    strategies:['Añadir una unidad con regletas','Escalera numérica +1','Número posterior','Conexión con sumas equivalentes','Verbalización y comprobación'],
+    competences:['C1','C2','C3','C4','C5','C6'], criteria:['1.1','2.1','2.2','2.3','3.1','4.1','5.1','6.2'],
+    knowledge:['Número posterior','Estrategia +1','Secuencia numérica','Relaciones aditivas hasta 7','Conmutatividad como conexión'],
+    indicator:'Obtiene el posterior añadiendo una unidad, lo representa y distingue la estrategia +1 de otras sumas equivalentes.'
+  },
+  {
+    id:'money7', order:15, title:'Página 21 · Billetes y monedas', short:'Composición hasta 7 aplicada al dinero', weight:1.40, group:'problemas',
+    strategies:['Parte–todo con ladrillos','Valor de monedas y billetes','Composición de cantidades de dinero','Equivalencias de valor','Comparación en situaciones de compra'],
+    competences:['C1','C2','C5','C6'], criteria:['1.1','2.1','2.2','2.3','5.1','6.2'],
+    knowledge:['Monedas de 1 € y 2 €','Billete de 5 €','Composición de cantidades hasta 7 €','Equivalencias de valor','Resolución de problemas cotidianos con dinero'],
+    indicator:'Calcula cantidades sencillas de dinero, construye el mismo valor de formas diferentes y decide si una cantidad alcanza para una compra.'
+  }
+];
+
+const COMP_DESC={
+  C1:'Interpretar situaciones y representarlas matemáticamente.',
+  C2:'Resolver problemas aplicando estrategias y razonamiento.',
+  C3:'Explorar, formular y comprobar conjeturas sencillas.',
+  C5:'Reconocer conexiones entre ideas matemáticas y situaciones.',
+  C6:'Comunicar y representar conceptos y procesos matemáticos.',
+  C7:'Revisar, perseverar y utilizar el error como oportunidad.'
+};
+
+const CRIT_DESC={
+  '1.1':'Comprender situaciones y representarlas con dibujos, objetos o diagramas.',
+  '2.1':'Reconocer y aplicar una estrategia de resolución.',
+  '2.2':'Seleccionar operaciones/representaciones en problemas de estructura aditiva.',
+  '2.3':'Revisar la coherencia de la solución y explicar el proceso.',
+  '3.1':'Explorar relaciones, propiedades y conjeturas con apoyo manipulativo/gráfico.',
+  '3.2':'Reconocer situaciones matematizables y formular preguntas/conjeturas.',
+  '5.1':'Conectar ideas y representaciones matemáticas.',
+  '6.1':'Reconocer y utilizar lenguaje matemático básico.',
+  '6.2':'Explicar y representar procesos y resultados.',
+  '7.1':'Gestionar el error, revisar y mantener una actitud positiva.'
+};
+
+const $=s=>document.querySelector(s);
+const uniq=a=>[...new Set(a)];
+const byId=id=>SHEETS.find(x=>x.id===id);
+
+function renderChoices(){
+  const host=$('#sheetSelect');
+  host.innerHTML='';
+  SHEETS.forEach(s=>{
+    const lab=document.createElement('label');
+    lab.className='sheet-choice';
+    lab.innerHTML=`<input type="checkbox" value="${s.id}"><strong>${s.title}</strong><span>${s.short}</span>`;
+    lab.querySelector('input').addEventListener('change',update);
+    host.appendChild(lab);
+  });
+}
+function selected(){
+  return [...document.querySelectorAll('#sheetSelect input:checked')].map(x=>byId(x.value)).sort((a,b)=>a.order-b.order);
+}
+
+function selectedSheetLabel(sel){
+  return sel.map(x=>x.title).join(' · ');
+}
+
+
+function splitSessions(sel){
+  const total=sel.reduce((s,x)=>s+x.weight,0);
+  if(total<=5.2) return [sel];
+
+  const base=sel.filter(x=>x.group==='base');
+  const oper=sel.filter(x=>x.group==='oper');
+  if(base.length && oper.length && base.reduce((s,x)=>s+x.weight,0)<=6.1 && oper.reduce((s,x)=>s+x.weight,0)<=6.1){
+    return [base,oper];
+  }
+  const a=[],b=[];let wa=0,wb=0;
+  sel.forEach(x=>{ if(wa<=wb){a.push(x);wa+=x.weight} else {b.push(x);wb+=x.weight} });
+  return [a,b].filter(x=>x.length);
+}
+
+function analysisHtml(sel){
+  if(!sel.length) return '<div class="analysis-empty">Selecciona al menos una ficha para ver el análisis.</div>';
+  const strategies=uniq(sel.flatMap(x=>x.strategies));
+  const comps=uniq(sel.flatMap(x=>x.competences));
+  const criteria=uniq(sel.flatMap(x=>x.criteria));
+  const knowledge=uniq(sel.flatMap(x=>x.knowledge));
+  const sessions=splitSessions(sel);
+  const totalWeight=sel.reduce((s,x)=>s+x.weight,0);
+  const estimated=Math.round(totalWeight*5+7);
+  const warning=sessions.length>1
+    ? `<div class="warning">⚠️ <strong>Demasiado contenido para una sola sesión de 1.º.</strong> La selección reúne ${sel.length} fichas y varias destrezas diferentes. Propongo <strong>${sessions.length} sesiones</strong> de unos 25-30 minutos para evitar fatiga y obtener evidencias más fiables. La prueba del alumnado quedará en <strong>${sessions.length} folios</strong>: uno por sesión.</div>`
+    : `<div class="okbox">✓ La selección es razonable para <strong>una sesión</strong> de aproximadamente ${Math.max(25,estimated)} minutos, incluyendo un pequeño problema de transferencia y explicación oral. La prueba se generará en <strong>1 folio</strong>.</div>`;
+
+  return `<div class="summary-box">
+    ${warning}
+    <div class="summary-line"><strong>Estrategias OAOA / compatibles</strong><div class="tags">${strategies.map(x=>`<span class="tag">${x}</span>`).join('')}</div></div>
+    <div class="summary-line"><strong>Competencias específicas implicadas</strong><div class="tags">${comps.map(x=>`<span class="tag" title="${COMP_DESC[x]||''}">${x}</span>`).join('')}</div></div>
+    <div class="summary-line"><strong>Criterios prioritarios</strong><div class="tags">${criteria.map(x=>`<span class="tag" title="${CRIT_DESC[x]||''}">${x}</span>`).join('')}</div></div>
+    <div class="summary-line"><strong>Saberes y destrezas básicas</strong><div class="tags">${knowledge.map(x=>`<span class="tag">${x}</span>`).join('')}</div></div>
+    <div class="summary-line"><strong>Indicadores observables</strong>${sel.map(x=>`<div style="margin:5px 0;font-size:.84rem;font-weight:750">• ${x.indicator}</div>`).join('')}</div>
+    <div class="sessions">${sessions.map((ss,i)=>`<div class="session-card"><h4>Sesión ${i+1}</h4><p>${ss.map(x=>x.title).join(' · ')}</p></div>`).join('')}</div>
+  </div>`;
+}
+
+function buildTasks(sel){
+  const tasks=[];
+  sel.forEach(s=>{
+    const map={
+      n4:{title:'Construye el 4 de dos maneras',type:'twoWays',target:4,instruction:'Representa 4 de dos maneras diferentes. Puedes dibujar regletas y escribir las sumas.'},
+      n5:{title:'Completa el 5',type:'missingPairs',target:5,parts:[1,2,3],instruction:'Completa cada construcción para que mida exactamente 5.'},
+      fourfive:{title:'¿Forma 4 o forma 5?',type:'classify',items:['1 + 3','2 + 3','2 + 2','4 + 1'],instruction:'Clasifica cada suma en la casa del 4 o en la casa del 5.'},
+      comp:{title:'¿Cuánto falta?',type:'complements',targets:[[4,2],[3,1],[4,1]],instruction:'Mira la parte que tienes y escribe cuánto falta para llegar al total.'},
+      partwhole:{title:'Parte y todo',type:'partWhole',total:5,known:2,instruction:'En una caja hay 5 fichas. 2 son rojas. ¿Cuántas son de otro color? Completa el diagrama y explica cómo lo sabes.'},
+      sumresult:{title:'Suma y resultado',type:'matchSums',pairs:[['2 + 1',3],['1 + 3',4],['3 + 2',5]],instruction:'Une cada suma con su resultado. Después elige una y compruébala con un dibujo o regletas.'},
+      comm:{title:'¿Cambia el total?',type:'commute',a:2,b:3,instruction:'Compara 2 + 3 y 3 + 2. Representa las dos y explica qué cambia y qué permanece igual.'},
+      n6:{title:'Construimos el 6',type:'six',instruction:'Rodea las sumas que forman 6 y dibuja otra manera diferente de construir 6.'},
+      diag56:{title:'Detective del 5 y del 6',type:'detective',instruction:'Encuentra la afirmación incorrecta, corrígela y completa el diagrama.'},
+      n7:{title:'Construimos el 7',type:'seven',instruction:'Rodea las parejas que forman 7, completa la parte que falta y representa una pareja con regletas.'},
+      sums567:{title:'Sumas que forman 5, 6 y 7',type:'sum567',instruction:'Calcula cada suma y clasifícala según forme 5, 6 o 7. Después completa una cantidad escondida.'},
+      pairs567:{title:'Parejas del 5, 6 y 7',type:'pairs567',instruction:'Completa las parejas que faltan y escribe otra descomposición válida.'},
+      decomp7:{title:'Descomposición sucesiva del 7',type:'tree7',instruction:'Completa el árbol: descompón 7 y vuelve a descomponer una de sus partes.'},
+      successor:{title:'El número posterior',type:'successor',instruction:'Escribe el número posterior y calcula una suma de +1.'},
+      money7:{title:'Billetes y monedas',type:'money7',instruction:'Calcula el valor del dinero y decide si alcanza para una compra.'}
+    };
+    tasks.push({sheet:s,...map[s.id]});
+  });
+  const maxTarget=sel.some(x=>['n7','sums567','pairs567','decomp7','successor'].includes(x.id))?7:sel.some(x=>['n6','diag56'].includes(x.id))?6:sel.some(x=>['n5','fourfive','partwhole','sumresult','comm'].includes(x.id))?5:4;
+  const problem=maxTarget===7 ? {a:5,b:2,total:7} : maxTarget===6 ? {a:4,b:2,total:6} : maxTarget===5 ? {a:3,b:2,total:5} : {a:2,b:2,total:4};
+  tasks.push({title:'Reto final: resuelve y comprueba',type:'problem',...problem,instruction:`En una bandeja hay ${problem.a} lápices azules y ${problem.b} lápices verdes. ¿Cuántos lápices hay en total? Representa, calcula y comprueba.`});
+  return tasks;
+}
+
+function representativeTasksForSession(sessionSheets,isLastSession,fullSelection){
+  const all=buildTasks(sessionSheets).filter(t=>t.type!=='problem');
+
+  // Priorizamos tareas que recogen varias destrezas a la vez.
+  const priority=['partWhole','complements','classify','missingPairs','twoWays',
+                  'detective','commute','matchSums','six','seven','sum567','pairs567','tree7','successor','money7'];
+  const ordered=[...all].sort((a,b)=>priority.indexOf(a.type)-priority.indexOf(b.type));
+
+  // En un folio caben tres tareas competenciales con espacio suficiente.
+  // Si hay pocas fichas, conservamos sus tareas; si hay muchas, hacemos una muestra
+  // representativa evitando repetir destrezas muy próximas.
+  const chosen=[];
+  const families=new Set();
+  const family=t=>{
+    if(['twoWays','missingPairs'].includes(t.type)) return 'representacion';
+    if(['classify','complements','partWhole','pairs567','tree7'].includes(t.type)) return 'composicion';
+    if(['matchSums','six','seven','sum567','successor','money7'].includes(t.type)) return 'relaciones';
+    if(['commute','detective'].includes(t.type)) return 'razonamiento';
+    return t.type;
+  };
+
+  for(const t of ordered){
+    const fam=family(t);
+    if(!families.has(fam) || chosen.length===0){
+      chosen.push(t); families.add(fam);
+    }
+    if(chosen.length>=2) break;
+  }
+  if(chosen.length<2){
+    for(const t of ordered){
+      if(!chosen.includes(t)) chosen.push(t);
+      if(chosen.length>=2) break;
+    }
+  }
+
+  // Siempre incluimos una situación de transferencia. Si hay dos sesiones,
+  // aparece al final de cada una con rango numérico coherente con sus fichas.
+  const maxTarget=sessionSheets.some(x=>['n7','sums567','pairs567','decomp7','successor'].includes(x.id)) ? 7 :
+                  sessionSheets.some(x=>['n6','diag56'].includes(x.id)) ? 6 :
+                  sessionSheets.some(x=>['n5','fourfive','partwhole','sumresult','comm'].includes(x.id)) ? 5 : 4;
+  const problem=maxTarget===7 ? {a:5,b:2,total:7} :
+                maxTarget===6 ? {a:4,b:2,total:6} :
+                maxTarget===5 ? {a:3,b:2,total:5} : {a:2,b:2,total:4};
+  chosen.push({
+    title:'Reto final: resuelve y comprueba',
+    type:'problem',
+    ...problem,
+    instruction:`En una bandeja hay ${problem.a} lápices azules y ${problem.b} lápices verdes. ¿Cuántos lápices hay en total? Representa, calcula y comprueba.`
+  });
+
+  return chosen.slice(0,3);
+}
+
+function assessmentPlan(sel){
+  return splitSessions(sel).map((ss,i,arr)=>({
+    sheets:ss,
+    tasks:representativeTasksForSession(ss,i===arr.length-1,sel)
+  }));
+}
+
+function planHtml(sel){
+  if(!sel.length) return '';
+  const plan=assessmentPlan(sel);
+  return plan.map((p,i)=>`<div class="preview-card"><h4>Folio ${i+1} · Sesión ${i+1}</h4><ol>${p.tasks.map(t=>`<li>${t.title}</li>`).join('')}</ol><p style="margin:8px 0 0;color:#60798a;font-size:.76rem;font-weight:700">Las tareas integran las destrezas seleccionadas; no se repite una actividad por cada ficha.</p></div>`).join('');
+}
+
+function update(){
+  const sel=selected();
+  $('#analysis').innerHTML=analysisHtml(sel);
+  $('#previewPlan').innerHTML=planHtml(sel);
+  $('#testPdfBtn').disabled=!sel.length;
+  $('#rubricPdfBtn').disabled=!sel.length;
+}
+$('#allBtn').onclick=()=>{document.querySelectorAll('#sheetSelect input').forEach(x=>x.checked=true);update()};
+$('#noneBtn').onclick=()=>{document.querySelectorAll('#sheetSelect input').forEach(x=>x.checked=false);update()};
+
+// ----- Drawing helpers -----
+const C={ink:'#17384e',muted:'#627b8a',line:'#b9cedb',blue:'#469ac7',paper:'#fffefa',
+  rods:{1:'#f5f1e8',2:'#d95757',3:'#9acb6a',4:'#b978b5',5:'#edda4a',6:'#2d7b4d',7:'#202020'}};
+function rr(g,x,y,w,h,r=14,fill='#fff',stroke=C.line,lw=3){
+  g.beginPath();g.roundRect(x,y,w,h,r);g.fillStyle=fill;g.fill();g.lineWidth=lw;g.strokeStyle=stroke;g.stroke();
+}
+function txt(g,t,x,y,size=30,opt={}){
+  g.save();g.fillStyle=opt.color||C.ink;g.font=`${opt.bold?'700 ':'400 '}${size}px Arial`;g.textAlign=opt.align||'left';g.textBaseline='alphabetic';g.fillText(t,x,y);g.restore();
+}
+function wrap(g,t,x,y,maxW,lineH,size=28,opt={}){
+  g.save();g.fillStyle=opt.color||C.ink;g.font=`${opt.bold?'700 ':'400 '}${size}px Arial`;g.textAlign=opt.align||'left';
+  const words=t.split(/\s+/);let line='',yy=y;
+  for(const word of words){
+    const test=line?line+' '+word:word;
+    if(g.measureText(test).width>maxW && line){g.fillText(line,x,yy);line=word;yy+=lineH} else line=test;
+  }
+  if(line)g.fillText(line,x,yy);g.restore();return yy;
+}
+function rod(g,n,x,y,unit=34,h=42){
+  const w=n*unit;rr(g,x,y,w,h,5,C.rods[n]||'#ddd','#748694',2);txt(g,String(n),x+w/2,y+h*0.7,20,{bold:true,align:'center',color:[2,4,6,7].includes(n)?'#fff':'#25333d'});return w;
+}
+function blankLine(g,x,y,w){
+  g.strokeStyle='#728b99';g.lineWidth=2;g.setLineDash([8,6]);g.beginPath();g.moveTo(x,y);g.lineTo(x+w,y);g.stroke();g.setLineDash([]);
+}
+function tree(g,x,y,total,known){
+  const bw=130,bh=70;rr(g,x+120,y,bw,bh,5,'#fff','#6b8a71',4);txt(g,String(total),x+185,y+48,36,{bold:true,align:'center'});
+  g.strokeStyle='#6b8a71';g.lineWidth=4;g.beginPath();g.moveTo(x+185,y+bh);g.lineTo(x+95,y+140);g.moveTo(x+185,y+bh);g.lineTo(x+275,y+140);g.stroke();
+  rr(g,x+30,y+140,bw,bh,5,'#fff','#6b8a71',4);txt(g,String(known),x+95,y+188,36,{bold:true,align:'center'});
+  rr(g,x+210,y+140,bw,bh,5,'#fff','#6b8a71',4);txt(g,'?',x+275,y+188,36,{bold:true,align:'center'});
+}
+function drawTask(g,t,x,y,w,h,num){
+  rr(g,x,y,w,h,18,'#fff','#c7dce7',3);
+  txt(g,`${num}. ${t.title}`,x+22,y+38,28,{bold:true});
+  const yy=wrap(g,t.instruction,x+22,y+74,w-44,30,23,{color:C.muted,bold:true})+18;
+  const cx=x+25, avail=w-50;
+  if(t.type==='twoWays'){
+    txt(g,'OBJETIVO',cx,yy+20,18,{bold:true,color:C.muted});rod(g,t.target,cx+120,yy-12,29,36);
+    rr(g,cx,yy+48,avail,86,12,'#fbfdfe','#d7e4eb',2);txt(g,'1. Dibujo / suma:',cx+18,yy+80,20,{bold:true});blankLine(g,cx+205,yy+83,avail-230);
+    rr(g,cx,yy+148,avail,86,12,'#fbfdfe','#d7e4eb',2);txt(g,'2. Dibujo / suma:',cx+18,yy+180,20,{bold:true});blankLine(g,cx+205,yy+183,avail-230);
+  } else if(t.type==='missingPairs'){
+    let ry=yy+20;t.parts.forEach(p=>{txt(g,String(t.target),cx,ry+28,24,{bold:true});txt(g,'=',cx+42,ry+28,24,{bold:true});rod(g,p,cx+85,ry,25,34);txt(g,'+',cx+105+p*25,ry+27,25,{bold:true});rr(g,cx+145+p*25,ry,120,36,7,'#fff','#91a9b7',2);ry+=63;});
+  } else if(t.type==='classify'){
+    rr(g,cx,yy+16,avail/2-10,125,12,'#fff9d8','#d7bf54',3);txt(g,'FORMA 4',cx+(avail/2-10)/2,yy+48,24,{bold:true,align:'center'});
+    rr(g,cx+avail/2+10,yy+16,avail/2-10,125,12,'#eef8f1','#79b88a',3);txt(g,'FORMA 5',cx+avail/2+10+(avail/2-10)/2,yy+48,24,{bold:true,align:'center'});
+    t.items.forEach((it,i)=>rr(g,cx+(i%2)*(avail/2+10),yy+160+Math.floor(i/2)*58,avail/2-10,44,9,'#fff','#b9cedb',2));
+    t.items.forEach((it,i)=>txt(g,it,cx+(i%2)*(avail/2+10)+(avail/2-10)/2,yy+190+Math.floor(i/2)*58,24,{bold:true,align:'center'}));
+  } else if(t.type==='complements'){
+    let ry=yy+20;t.targets.forEach(([tot,p])=>{rod(g,tot,cx,ry,23,31);txt(g,'objetivo',cx+tot*23+12,ry+23,17,{color:C.muted,bold:true});rod(g,p,cx+250,ry,23,31);txt(g,'+ ?',cx+250+p*23+12,ry+24,24,{bold:true});txt(g,'Falta:',cx+470,ry+23,20,{bold:true});blankLine(g,cx+545,ry+25,100);ry+=62;});
+  } else if(t.type==='partWhole'){
+    tree(g,cx+80,yy+5,t.total,t.known);txt(g,'Respuesta:',cx+480,yy+78,22,{bold:true});blankLine(g,cx+590,yy+80,150);txt(g,'Lo sé porque...',cx+480,yy+135,20,{bold:true,color:C.muted});blankLine(g,cx+480,yy+165,260);
+  } else if(t.type==='matchSums'){
+    const left=cx+30,right=cx+avail-130; t.pairs.forEach((p,i)=>{rr(g,left,yy+20+i*65,180,46,9,'#fff','#b9cedb',2);txt(g,p[0],left+90,yy+51+i*65,24,{bold:true,align:'center'});rr(g,right,yy+20+i*65,90,46,9,'#fff','#b9cedb',2);txt(g,String(p[1]),right+45,yy+51+i*65,24,{bold:true,align:'center'});});
+    txt(g,'Comprobación:',cx+250,yy+230,20,{bold:true,color:C.muted});blankLine(g,cx+390,yy+232,260);
+  } else if(t.type==='commute'){
+    txt(g,`${t.a} + ${t.b}`,cx+110,yy+45,30,{bold:true,align:'center'});txt(g,`${t.b} + ${t.a}`,cx+avail-110,yy+45,30,{bold:true,align:'center'});
+    let w1=rod(g,t.a,cx+35,yy+66,23,31);rod(g,t.b,cx+35+w1,yy+66,23,31);
+    let w2=rod(g,t.b,cx+avail-190,yy+66,23,31);rod(g,t.a,cx+avail-190+w2,yy+66,23,31);
+    txt(g,'¿Tienen el mismo total?  SÍ / NO',cx+10,yy+145,22,{bold:true});
+    txt(g,'Cambia:',cx+10,yy+193,20,{bold:true});blankLine(g,cx+100,yy+195,220);
+    txt(g,'No cambia:',cx+360,yy+193,20,{bold:true});blankLine(g,cx+480,yy+195,220);
+  } else if(t.type==='six'){
+    const sums=['3 + 3','4 + 2','2 + 3','1 + 5'];sums.forEach((s,i)=>{rr(g,cx+(i%2)*(avail/2+8),yy+20+Math.floor(i/2)*62,avail/2-8,46,9,'#fff','#b9cedb',2);txt(g,s,cx+(i%2)*(avail/2+8)+(avail/2-8)/2,yy+51+Math.floor(i/2)*62,24,{bold:true,align:'center'});});
+    txt(g,'Otra manera de formar 6:',cx,yy+184,20,{bold:true});blankLine(g,cx+260,yy+186,300);
+  } else if(t.type==='seven'){
+    const sums=['6 + 1','5 + 2','4 + 3','3 + 3'];sums.forEach((s,i)=>{rr(g,cx+(i%2)*(avail/2+8),yy+15+Math.floor(i/2)*62,avail/2-8,46,9,'#fff','#b9cedb',2);txt(g,s,cx+(i%2)*(avail/2+8)+(avail/2-8)/2,yy+46+Math.floor(i/2)*62,24,{bold:true,align:'center'});});
+    txt(g,'7 = 5 +',cx,yy+185,21,{bold:true});rr(g,cx+125,yy+154,95,42,8,'#fff','#91a9b7',2);
+    txt(g,'Representa una pareja del 7:',cx+300,yy+185,20,{bold:true});blankLine(g,cx+570,yy+188,180);
+  } else if(t.type==='sum567'){
+    const sums=['4 + 1','3 + 3','5 + 2','2 + 3','4 + 2','6 + 1'];
+    sums.forEach((s,i)=>{rr(g,cx+(i%3)*(avail/3),yy+10+Math.floor(i/3)*58,avail/3-10,44,9,'#fff','#b9cedb',2);txt(g,s,cx+(i%3)*(avail/3)+(avail/3-10)/2,yy+40+Math.floor(i/3)*58,22,{bold:true,align:'center'});});
+    txt(g,'CLASIFICA:  5     6     7',cx,yy+163,21,{bold:true});
+    txt(g,'Tengo 7. Veo 3. Escondido:',cx,yy+215,20,{bold:true});rr(g,cx+335,yy+184,100,40,8,'#fff','#91a9b7',2);
+  } else if(t.type==='pairs567'){
+    const items=['5 = 4 +','6 = 2 +','7 = 3 +','7 = 5 +'];
+    items.forEach((s,i)=>{txt(g,s,cx+(i%2)*(avail/2),yy+52+Math.floor(i/2)*72,22,{bold:true});rr(g,cx+150+(i%2)*(avail/2),yy+20+Math.floor(i/2)*72,80,40,8,'#fff','#91a9b7',2);});
+    txt(g,'Escribe otra pareja del 7:',cx,yy+214,20,{bold:true});blankLine(g,cx+280,yy+216,250);
+  } else if(t.type==='tree7'){
+    txt(g,'7',cx+avail/2,yy+45,27,{bold:true,align:'center'});blankLine(g,cx+avail/2-120,yy+100,90);blankLine(g,cx+avail/2+30,yy+100,90);
+    txt(g,'5',cx+avail/2-75,yy+132,24,{bold:true,align:'center'});txt(g,'?',cx+avail/2+75,yy+132,24,{bold:true,align:'center'});
+    txt(g,'5 = 3 +',cx,yy+200,20,{bold:true});rr(g,cx+125,yy+168,80,40,8,'#fff','#91a9b7',2);
+    txt(g,'Explica qué parte has vuelto a descomponer.',cx+280,yy+200,18,{bold:true});
+  } else if(t.type==='successor'){
+    const ns=[2,3,4,5,6];ns.forEach((n,i)=>{const x=cx+(i%3)*(avail/3);const y=yy+38+Math.floor(i/3)*78;txt(g,`${n} + 1 =`,x,y,21,{bold:true});rr(g,x+115,y-31,72,38,7,'#fff','#91a9b7',2);});
+    txt(g,'Rodea la suma que muestra directamente “uno más”:',cx,yy+205,18,{bold:true});txt(g,'5+1     1+5     4+2',cx+440,yy+205,19,{bold:true});
+  } else if(t.type==='money7'){
+    txt(g,'5 € + 2 € =',cx,yy+50,22,{bold:true});rr(g,cx+180,yy+18,85,40,8,'#fff','#91a9b7',2);
+    txt(g,'2 € + 2 € + 2 € =',cx,yy+115,22,{bold:true});rr(g,cx+260,yy+83,85,40,8,'#fff','#91a9b7',2);
+    txt(g,'Tengo 7 €. Algo cuesta 6 €. ¿Me alcanza?',cx,yy+180,19,{bold:true});
+    txt(g,'Sí / No:',cx+515,yy+180,19,{bold:true});rr(g,cx+620,yy+148,110,40,8,'#fff','#91a9b7',2);
+  } else if(t.type==='detective'){
+    const claims=['2 + 3 = 5','3 + 3 = 6','2 + 3 = 6'];claims.forEach((s,i)=>{rr(g,cx,yy+12+i*52,260,40,8,'#fff','#b9cedb',2);txt(g,s,cx+130,yy+40+i*52,22,{bold:true,align:'center'});});
+    txt(g,'Corrige:',cx+320,yy+55,20,{bold:true});blankLine(g,cx+405,yy+58,245);
+    tree(g,cx+360,yy+100,6,2);
+  } else if(t.type==='problem'){
+    txt(g,'REPRESENTA',cx,yy+28,18,{bold:true,color:C.muted});rr(g,cx,yy+43,avail,95,12,'#fbfdfe','#d6e3eb',2);
+    txt(g,'OPERACIÓN',cx,yy+178,18,{bold:true,color:C.muted});blankLine(g,cx+120,yy+180,260);
+    txt(g,'RESPUESTA',cx,yy+226,18,{bold:true,color:C.muted});blankLine(g,cx+120,yy+228,420);
+    txt(g,'COMPRUEBO',cx,yy+274,18,{bold:true,color:C.muted});blankLine(g,cx+120,yy+276,420);
+  }
+}
+
+function testCanvases(sel){
+  const plan=assessmentPlan(sel);
+  const all=[];
+  let number=1;
+
+  plan.slice(0,2).forEach((session,si)=>{
+    const c=document.createElement('canvas');
+    c.width=1240;c.height=1754;
+    const g=c.getContext('2d');
+    g.fillStyle=C.paper;g.fillRect(0,0,c.width,c.height);
+
+    txt(g,'PRUEBA COMPETENCIAL · MATEMÁTICAS',620,74,34,{bold:true,align:'center'});
+    txt(g,`1.º de Primaria · Sesión ${si+1} de ${plan.length}`,620,111,22,{bold:true,align:'center',color:C.muted});
+    txt(g,'Nombre:',72,158,22,{bold:true});blankLine(g,165,161,510);
+    txt(g,'Fecha:',760,158,22,{bold:true});blankLine(g,835,161,300);
+    g.strokeStyle='#c8dce7';g.lineWidth=3;g.beginPath();g.moveTo(70,190);g.lineTo(1170,190);g.stroke();
+
+    // Tres bloques amplios en una sola cara A4.
+    const taskH=455, gap=28, startY=215;
+    session.tasks.slice(0,3).forEach((t,j)=>{
+      drawTask(g,t,70,startY+j*(taskH+gap),1100,taskH,number++);
+    });
+
+    txt(g,'Puedes usar regletas cuando te ayuden a pensar. Explica cómo lo sabes.',620,1690,18,{bold:true,align:'center',color:C.muted});
+    all.push(c);
+  });
+
+  // Regla dura: nunca más de dos páginas/folios para el alumnado.
+  return all.slice(0,2);
+}
+
+function rubricRows(sel){
+  const rows=[];
+  const ids=new Set(sel.map(x=>x.id));
+  if(sel.some(x=>['n4','n5','fourfive','n6','diag56','n7','sums567','pairs567','decomp7','successor'].includes(x.id))) rows.push({name:'Cantidad y representación',crit:'1.1 · 6.1 · 6.2',desc:'Representa cantidades con material, dibujo o símbolos y relaciona las representaciones.'});
+  if(sel.some(x=>['n4','n5','comp','partwhole','n6','diag56','n7','sums567','pairs567','decomp7'].includes(x.id))) rows.push({name:'Composición y descomposición',crit:'2.1 · 3.1',desc:'Compone, descompone y encuentra partes que faltan de forma comprensiva.'});
+  if(sel.some(x=>['fourfive','sumresult','comm','n6','diag56','n7','sums567','pairs567','decomp7','successor','money7'].includes(x.id))) rows.push({name:'Relaciones aditivas y cálculo',crit:'2.1 · 2.2',desc:'Relaciona sumas con cantidades y utiliza relaciones numéricas en lugar de contar mecánicamente.'});
+  if(ids.has('comm')) rows.push({name:'Propiedades y conjeturas',crit:'3.1 · 3.2 · 5.1',desc:'Compara expresiones, formula una conclusión y comprueba que el total se conserva.'});
+  if(ids.has('diag56')) rows.push({name:'Comprobación y error',crit:'2.3 · 7.1',desc:'Detecta resultados incoherentes, corrige y utiliza el error para revisar.'});
+  rows.push({name:'Resolución de problemas',crit:'1.1 · 2.1 · 2.2 · 2.3',desc:'Comprende la situación, representa, elige estrategia, responde y comprueba.'});
+  rows.push({name:'Comunicación matemática',crit:'2.3 · 6.2',desc:'Explica con palabras, dibujos, diagramas o símbolos cómo ha pensado.'});
+  return rows;
+}
+
+function rubricCanvases(sel){
+  const rows=rubricRows(sel),perPage=4,canvases=[];
+  const fichasTxt=selectedSheetLabel(sel);
+  for(let p=0;p<Math.ceil(rows.length/perPage);p++){
+    const c=document.createElement('canvas');c.width=1240;c.height=1754;const g=c.getContext('2d');g.fillStyle=C.paper;g.fillRect(0,0,c.width,c.height);
+    txt(g,'RÚBRICA · PRUEBA COMPETENCIAL',620,76,34,{bold:true,align:'center'});
+    txt(g,'Matemáticas · 1.º de Primaria',620,114,22,{bold:true,align:'center',color:C.muted});
+    txt(g,'Alumno/a:',72,160,22,{bold:true});blankLine(g,190,163,550);
+    txt(g,'Fichas evaluadas:',72,198,20,{bold:true});
+    wrap(g,fichasTxt,235,198,900,24,18,{color:C.muted,bold:true});
+    txt(g,'4 = Avanzado · 3 = Adecuado · 2 = En desarrollo · 1 = Inicial',72,235,20,{bold:true,color:C.muted});
+    const pageRows=rows.slice(p*perPage,p*perPage+perPage);
+    pageRows.forEach((r,i)=>{
+      const y=275+i*335;rr(g,70,y,1100,305,16,'#fff','#c7dce7',3);
+      txt(g,r.name,92,y+38,25,{bold:true});txt(g,`Criterios: ${r.crit}`,1148,y+38,18,{bold:true,align:'right',color:C.muted});
+      wrap(g,r.desc,92,y+75,1040,27,20,{color:C.muted,bold:true});
+      const levels=[
+        ['4 · Avanzado','Lo realiza con autonomía, flexibilidad y puede justificar o usar más de una representación.'],
+        ['3 · Adecuado','Lo realiza correctamente y explica la estrategia principal con poca o ninguna ayuda.'],
+        ['2 · En desarrollo','Lo consigue parcialmente o con apoyo, pistas, material o preguntas del adulto.'],
+        ['1 · Inicial','Aún no muestra comprensión estable; necesita modelado directo y apoyo continuado.']
+      ];
+      levels.forEach((lv,j)=>{
+        const yy=y+120+j*41;rr(g,92,yy,48,31,6,'#fff','#9eb6c3',2);txt(g,String(4-j),116,yy+23,18,{bold:true,align:'center'});
+        txt(g,lv[0],155,yy+22,18,{bold:true});wrap(g,lv[1],330,yy+21,800,22,16,{color:'#425f70'});
+      });
+      txt(g,'Puntuación:',930,y+283,18,{bold:true});rr(g,1040,y+257,82,34,7,'#fff','#91a9b7',2);
+    });
+    txt(g,'Observaciones:',72,1665,20,{bold:true});blankLine(g,205,1668,900);
+    canvases.push(c);
+  }
+  return canvases;
+}
+
+// Minimal offline PDF builder: each A4 canvas becomes one JPEG page.
+function ascii(s){return new TextEncoder().encode(s)}
+function concat(parts){let len=0;parts.forEach(p=>len+=p.length);const out=new Uint8Array(len);let o=0;parts.forEach(p=>{out.set(p,o);o+=p.length});return out}
+function dataUrlBytes(url){const b=atob(url.split(',')[1]);const a=new Uint8Array(b.length);for(let i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a}
+function canvasesToPdf(canvases){
+  const jpgs=canvases.map(c=>dataUrlBytes(c.toDataURL('image/jpeg',0.9)));
+  const objs=[];let objNum=1;
+  const catalog=objNum++, pages=objNum++;
+  const pageObjs=[], imgObjs=[], contentObjs=[];
+  jpgs.forEach(()=>{pageObjs.push(objNum++);imgObjs.push(objNum++);contentObjs.push(objNum++)});
+  objs[catalog]=ascii(`<< /Type /Catalog /Pages ${pages} 0 R >>`);
+  objs[pages]=ascii(`<< /Type /Pages /Count ${jpgs.length} /Kids [${pageObjs.map(n=>`${n} 0 R`).join(' ')}] >>`);
+  jpgs.forEach((jpg,i)=>{
+    const w=595.28,h=841.89;
+    objs[pageObjs[i]]=ascii(`<< /Type /Page /Parent ${pages} 0 R /MediaBox [0 0 ${w} ${h}] /Resources << /XObject << /Im${i} ${imgObjs[i]} 0 R >> >> /Contents ${contentObjs[i]} 0 R >>`);
+    objs[imgObjs[i]]=concat([ascii(`<< /Type /XObject /Subtype /Image /Width 1240 /Height 1754 /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpg.length} >>\nstream\n`),jpg,ascii('\nendstream')]);
+    const stream=ascii(`q\n${w} 0 0 ${h} 0 0 cm\n/Im${i} Do\nQ\n`);
+    objs[contentObjs[i]]=concat([ascii(`<< /Length ${stream.length} >>\nstream\n`),stream,ascii('endstream')]);
+  });
+  const head=ascii('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n');const parts=[head];const offsets=[0];let pos=head.length;
+  for(let n=1;n<objNum;n++){offsets[n]=pos;const block=concat([ascii(`${n} 0 obj\n`),objs[n],ascii('\nendobj\n')]);parts.push(block);pos+=block.length}
+  const xrefPos=pos;let xref=`xref\n0 ${objNum}\n0000000000 65535 f \n`;
+  for(let n=1;n<objNum;n++)xref+=String(offsets[n]).padStart(10,'0')+' 00000 n \n';
+  xref+=`trailer\n<< /Size ${objNum} /Root ${catalog} 0 R >>\nstartxref\n${xrefPos}\n%%EOF`;
+  parts.push(ascii(xref));return new Blob([concat(parts)],{type:'application/pdf'});
+}
+function downloadBlob(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},700)}
+
+$('#testPdfBtn').onclick=()=>{
+  const sel=selected();if(!sel.length)return;
+  downloadBlob(canvasesToPdf(testCanvases(sel)),'prueba_competencial_matematicas_1primaria.pdf');
+};
+$('#rubricPdfBtn').onclick=()=>{
+  const sel=selected();if(!sel.length)return;
+  downloadBlob(canvasesToPdf(rubricCanvases(sel)),'rubrica_prueba_competencial_matematicas_1primaria.pdf');
+};
+
+renderChoices();update();
+</script>
+<script src="../assets/fullscreen-persistent.js"></script>
+</body>
+</html>
