@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Página 22 · Número 8 · Matemáticas OAOA</title>
+<style>
+:root{--ink:#17384e;--muted:#60798a;--line:#bfd5e1;--bg:#eef7fb;--blue:#469ac7;--ok:#e9f7ed;--bad:#fff1f1;--wood:#f4e5c8}
+*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}button{font:inherit}
+.app{height:100%;display:grid;grid-template-rows:auto auto minmax(0,1fr)}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 10px;background:#fff;border-bottom:2px solid var(--line)}
+.brand{display:flex;align-items:center;gap:9px}.brand .icon{width:42px;height:42px;border-radius:12px;background:#8b5a35;color:#fff;display:grid;place-items:center;font-weight:1000;font-size:1.4rem}.brand h1{font-size:1.12rem;margin:0}.brand small{display:block;color:var(--muted);font-weight:800;font-size:.72rem}
+.top-actions{display:flex;gap:6px;align-items:center}.control,.action,.tab,.choice,.toolbtn,.pdf-type,.rod-btn{border:2px solid #b9cedb;background:#fff;color:var(--ink);border-radius:13px;font-weight:900;cursor:pointer}.control{padding:7px 10px;min-height:38px;text-decoration:none;display:inline-flex;align-items:center}.action{padding:8px 13px;min-height:42px}.action.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.tabs-wrap{padding:5px 7px;background:#fbfdff;border-bottom:2px solid var(--line)}.tabs{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:5px}.tab{padding:6px 2px;min-height:39px;font-size:.67rem}.tab.active{background:#dceff8;border-color:var(--blue)}.tab.done{background:#e9f6ed;border-color:#76ba8d;color:#326d46}
+.main{position:relative;min-height:0;overflow:hidden}.badge{position:absolute;right:9px;top:5px;z-index:20;background:#eef5f9;color:var(--muted);border-radius:999px;padding:4px 8px;font-size:.68rem;font-weight:900}
+.step{display:none;height:100%;overflow:auto;padding:12px}.step.active{display:block}.head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:9px}.title{font-size:1.18rem;font-weight:1000}.sub{color:var(--muted);font-weight:750;font-size:.82rem;line-height:1.35}.prompt{font-weight:1000;margin-bottom:7px}.card{background:#fff;border:2px solid var(--line);border-radius:17px;padding:12px;box-shadow:0 5px 14px rgba(34,70,91,.06)}.rule{background:#f2f8fb;border-left:5px solid var(--blue);padding:10px;border-radius:10px;font-weight:850;line-height:1.35}.feedback{margin-top:8px;border-radius:13px;padding:9px 11px;display:flex;gap:8px;align-items:center;font-weight:850;background:#f3f7f9}.feedback.ok{background:var(--ok);border:2px solid #84c69b}.feedback.err{background:var(--bad);border:2px solid #dfa2a2}
+.rod-layout,.missing-layout,.pairs-layout,.transfer-layout,.recall-layout,.problem{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(250px,.7fr);gap:12px;height:calc(100% - 36px);min-height:0}
+.tabletop{background:linear-gradient(90deg,rgba(255,255,255,.22),rgba(255,255,255,0)),repeating-linear-gradient(90deg,#efdcb8 0,#efdcb8 80px,#ead2a4 81px,#ead2a4 82px);border:4px solid #c59b63;border-radius:22px;padding:15px;min-height:360px;display:grid;grid-template-rows:auto auto 1fr auto;gap:10px}
+.target-wrap{text-align:center}.target-label{font-weight:1000;font-size:.95rem;margin-bottom:6px}.target-line{display:flex;justify-content:center}
+.rod{--u:43px;height:38px;width:calc(var(--n)*var(--u));min-width:43px;border:2px solid rgba(23,56,78,.75);border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:1000;box-shadow:inset 0 2px 0 rgba(255,255,255,.4),0 3px 5px rgba(0,0,0,.16);user-select:none;cursor:grab;color:#17384e}.rod[data-n="7"]{color:#fff}.rod[data-n="8"]{color:#fff}
+.workbench{background:rgba(255,255,255,.76);border:3px dashed #9fb9c5;border-radius:18px;padding:16px;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;min-height:120px}.workbench.good{border-color:#50a16d;background:#eef9f2}.workbench.bad{border-color:#c96d6d;background:#fff4f4}
+.tray{display:flex;gap:7px;align-items:flex-end;justify-content:center;flex-wrap:wrap;background:#fff8e8;border:2px solid #ddc597;border-radius:15px;padding:10px}.tray .rod{--u:28px;height:32px;cursor:pointer}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.side{display:grid;gap:10px;align-content:start}.word{font-size:2rem;font-weight:1000;text-align:center}.pair-log{display:grid;gap:7px}.pair-chip{border:2px solid #b9cedb;border-radius:12px;padding:8px;text-align:center;background:#fff;font-weight:1000}
+.bigq{text-align:center;font-size:clamp(2.6rem,7vw,5.8rem);font-weight:1000;margin:8px 0}.answer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.choice{padding:10px;font-size:1.15rem}.choice.good{background:#dff4e6;border-color:#55a26f}.choice.bad{background:#fde9e9;border-color:#c96b6b}
+.number-row{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;margin:10px 0}.number-card{width:92px;height:92px;border-radius:18px;border:3px solid #9fc1d1;background:#fff;display:grid;place-items:center;font-size:2.7rem;font-weight:1000}.arrow{font-size:2.1rem;font-weight:1000}
+.match-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}.match-col{display:grid;gap:8px}.match-item{border:2px solid #bfd5e1;background:#fff;border-radius:13px;padding:10px;text-align:center;font-weight:950;cursor:pointer}.match-item.sel{outline:4px solid #9fd1e6}.match-item.done{background:#e6f6ec;border-color:#67aa7d}
+.recall-card{display:grid;place-items:center;height:100%;min-height:280px}.recall-part{font-size:4rem;font-weight:1000}.reveal{font-size:2.2rem;font-weight:1000;margin-top:8px}
+.problem-text{font-size:1.25rem;line-height:1.55;font-weight:850}.problem-pic{font-size:4rem;text-align:center;padding:12px}
+.sheet-stage{display:grid;grid-template-columns:minmax(0,1fr) 210px;gap:10px;height:calc(100% - 36px)}.viewer{background:#dfe8ed;border-radius:15px;overflow:auto;display:grid;place-items:center;position:relative}.sheet-layer{width:min(760px,95%);height:96%;min-height:480px;position:relative;transform-origin:center}.sheet-layer iframe{width:100%;height:100%;border:0;background:#fff}.sheet-layer canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none}.tools{background:#fff;border:2px solid var(--line);border-radius:15px;padding:9px;display:grid;gap:7px;align-content:start}.tools h3{margin:0}.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.toolbtn{padding:7px;font-size:.75rem}.toolbtn.active{background:#dceff8;border-color:var(--blue)}
+.pdf-layout{display:grid;grid-template-columns:190px minmax(0,1fr);gap:12px;height:calc(100% - 36px)}.pdf-types{display:grid;gap:7px;align-content:start;background:#fff;border:2px solid var(--line);border-radius:15px;padding:10px}.pdf-type{padding:9px}.pdf-type.selected{background:#dceff8;border-color:var(--blue)}.pdf-panel{background:#fff;border:2px solid var(--line);border-radius:15px;padding:12px;display:grid;grid-template-rows:auto 1fr auto;gap:8px;min-height:0}.print-preview{overflow:auto;background:#eef3f6;border-radius:12px;padding:10px}.worksheet{max-width:760px;margin:auto;background:#fff;padding:22px;border:1px solid #ccd9df;min-height:700px}.worksheet h2{margin-top:0}.worksheet .q{border-bottom:1px solid #d2dfe5;padding:13px 0;font-size:1.05rem}.teacher-modal{position:fixed;inset:0;background:rgba(12,35,50,.7);z-index:100;display:none;place-items:center;padding:18px}.teacher-modal.open{display:grid}.teacher-box{max-width:780px;max-height:90vh;overflow:auto;background:#fff;border-radius:22px;padding:20px}.teacher-box h2{margin-top:0}.teacher-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.teacher-item{background:#f4f8fa;border:2px solid #d4e3ea;border-radius:14px;padding:12px}.teacher-item strong{display:block;margin-bottom:5px}
+@media(max-width:920px){.brand small{display:none}.tabs{grid-template-columns:repeat(4,1fr)}.rod-layout,.missing-layout,.pairs-layout,.transfer-layout,.recall-layout,.problem{grid-template-columns:1fr}.sheet-stage,.pdf-layout{grid-template-columns:1fr}.step{overflow:auto}.rod{--u:34px}.teacher-grid{grid-template-columns:1fr}}
+@media print{body{background:#fff}.app,.teacher-modal{display:none!important}#printArea{display:block!important}.worksheet{border:0;max-width:none;min-height:0}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar"><div class="brand"><div class="icon">8</div><div><h1>Página 22 · Número 8</h1><small>Parejas del 8 · complementos · regletas · representación</small></div></div><div class="top-actions"><a class="control" href="../fichas/">← Menú de fichas</a><button class="control" id="teacherBtn">👩‍🏫 Ayuda docente</button><button class="control" id="soundBtn">🔊 Sonido</button></div></header>
+<nav class="tabs-wrap"><div class="tabs">
+<button class="tab active" data-step="1">1 · Construyo 8</button><button class="tab" data-step="2">2 · Falta una</button><button class="tab" data-step="3">3 · Todas las parejas</button><button class="tab" data-step="4">4 · Une y relaciona</button><button class="tab" data-step="5">5 · Sin mirar</button><button class="tab" data-step="6">6 · Problema</button><button class="tab" data-step="7">7 · Ver la ficha</button><button class="tab" data-step="8">8 · Imprimibles</button>
+</div></nav>
+<main class="main"><div class="badge">P22 · OAOA</div>
+
+<section class="step active" data-step="1"><div class="head"><div class="title">1. Construyo el 8 con dos regletas</div></div><div class="rod-layout">
+<div class="tabletop"><div class="target-wrap"><div class="target-label">Esta regleta es nuestro TODO: 8</div><div class="target-line" id="target8"></div></div><div class="sub" style="text-align:center">Elige dos regletas. ¿Juntas miden exactamente lo mismo que la marrón?</div><div class="workbench" id="bench1"><span class="sub">Coloca aquí dos regletas</span></div><div><div class="tray" id="tray1"></div><div class="actions" style="margin-top:8px"><button class="action primary" id="check1">Comprobar</button><button class="action" id="clear1">Borrar</button><button class="action" id="save1">Guardar pareja</button></div></div></div>
+<div class="side"><div class="card"><div class="prompt">Palabra matemática</div><div class="word">PAREJA</div><div class="sub">Dos números forman una pareja del 8 cuando juntos completan 8.</div></div><div class="card"><div class="prompt">Parejas descubiertas</div><div class="pair-log" id="pairLog"></div></div><div class="rule">No buscamos la respuesta primero. <strong>Construimos, comparamos y después nombramos.</strong></div></div>
+</div><div class="feedback" id="fb1"><span>🟫</span><span>La regleta marrón permanece como referencia. Compara longitudes.</span></div></section>
+
+<section class="step" data-step="2"><div class="head"><div class="title">2. Encuentra la pareja que falta</div></div><div class="missing-layout">
+<div class="tabletop"><div class="target-wrap"><div class="target-label">Completa hasta 8</div><div class="target-line" id="target8b"></div></div><div class="number-row"><div id="givenRod"></div><div class="arrow">＋</div><div class="number-card">?</div></div><div class="workbench" id="bench2"><span class="sub">Pon aquí la regleta que falta</span></div><div><div class="tray" id="tray2"></div><div class="actions" style="margin-top:8px"><button class="action primary" id="check2">Comprobar</button><button class="action" id="new2">Otro reto</button></div></div></div>
+<div class="side"><div class="card"><div class="prompt">Pregunta clave</div><div class="rule">¿Qué longitud falta para que las dos juntas midan 8?</div></div><div class="card"><div class="prompt">Ayuda progresiva</div><div class="sub">1. Compara con la marrón.<br>2. Mira cuánto espacio queda.<br>3. Prueba una regleta, sin contar cuadrados primero.</div></div></div>
+</div><div class="feedback" id="fb2"><span>🧩</span><span>Encuentra la parte que falta sin empezar por la suma escrita.</span></div></section>
+
+<section class="step" data-step="3"><div class="head"><div class="title">3. Organizo todas las parejas del 8</div></div><div class="pairs-layout">
+<div class="card"><div class="prompt">Construye las cuatro parejas diferentes</div><div class="sub">El orden no crea una pareja nueva: 1+7 y 7+1 representan la misma descomposición.</div><div id="allPairs" style="display:grid;gap:10px;margin-top:12px"></div></div>
+<div class="side"><div class="card"><div class="prompt">¿Cuántas hemos encontrado?</div><div class="bigq"><span id="pairCount">0</span>/4</div></div><div class="rule">Busca de forma ordenada: una parte crece de uno en uno mientras la otra disminuye.</div><button class="action primary" id="revealPairs">Mostrar después de pensar</button></div>
+</div></section>
+
+<section class="step" data-step="4"><div class="head"><div class="title">4. De las regletas a los números</div></div><div class="transfer-layout">
+<div class="card"><div class="prompt">Une cada pareja con su expresión</div><div class="match-list"><div class="match-col" id="leftMatches"></div><div class="match-col" id="rightMatches"></div></div></div>
+<div class="side"><div class="card"><div class="prompt">Cambio de representación</div><div class="rule">Primero lo construyo → después lo veo → finalmente lo escribo.</div></div><div class="card"><div class="prompt">Pregunta</div><div class="sub">¿Qué información sigue siendo la misma cuando pasamos de regletas a números?</div></div></div>
+</div><div class="feedback" id="fb4"><span>🔁</span><span>Relaciona la construcción física con la expresión numérica.</span></div></section>
+
+<section class="step" data-step="5"><div class="head"><div class="title">5. Pienso la pareja antes de verla</div></div><div class="recall-layout">
+<div class="card recall-card"><div><div class="sub" style="text-align:center">Si una parte es...</div><div class="recall-part" id="recallPart">6</div><div class="sub" style="text-align:center">¿cuál es su pareja para formar 8?</div><div class="reveal" id="recallReveal" style="text-align:center">?</div><div class="actions" style="justify-content:center;margin-top:14px"><button class="action primary" id="showRecall">Mostrar</button><button class="action" id="nextRecall">Otro</button></div></div></div>
+<div class="side"><div class="card"><div class="prompt">Memoria con sentido</div><div class="rule">Recordamos después de haber construido y comparado las parejas.</div></div><div class="card"><div class="prompt">No buscamos velocidad todavía</div><div class="sub">Primero seguridad y explicación. La rapidez llegará con la práctica.</div></div></div>
+</div></section>
+
+<section class="step" data-step="6"><div class="head"><div class="title">6. Problema · una parte está escondida</div></div><div class="problem">
+<div class="card"><div class="problem-text">Hay <strong>8 piezas</strong> en total. <strong>5</strong> están dentro de una caja. ¿Cuántas piezas están fuera?</div><div class="problem-pic">📦 5 &nbsp;&nbsp; + &nbsp;&nbsp; ❓ = 8</div><div class="sub">Representa el total y busca la parte que falta.</div></div>
+<div class="card"><div class="prompt">Elige tu respuesta</div><div class="answer-grid" id="problemAnswers"></div><div id="problemReveal" class="rule" style="margin-top:10px;display:none">8 se puede formar con 5 y 3. Hay <strong>3 piezas fuera</strong>.</div></div>
+</div></section>
+
+<section class="step" data-step="7"><div class="head"><div class="title">7. Ver la ficha original · Página 22</div></div><div class="sheet-stage">
+<div class="viewer"><div class="sheet-layer" id="sheetLayer"><iframe title="Ficha original página 22" src="https://drive.google.com/uc?export=download&id=1kDDt6by7DsmGHHMrXVqcMUpFkual-RKB#page=22&toolbar=0&navpanes=0"></iframe><canvas id="annot"></canvas></div></div>
+<aside class="tools"><h3>Anotar</h3><div class="tool-grid"><button class="toolbtn active" data-tool="pen">✏️ Lápiz</button><button class="toolbtn" data-tool="highlight">🖍️ Resaltar</button><button class="toolbtn" data-tool="circle">⭕ Círculo</button><button class="toolbtn" data-tool="check">✓</button><button class="toolbtn" data-tool="eraser">⌫ Goma</button><button class="toolbtn" id="undoAnnot">↶ Deshacer</button></div><button class="toolbtn" id="clearAnnot">🧹 Limpiar</button><a class="control" target="_blank" rel="noopener" href="https://drive.google.com/file/d/1kDDt6by7DsmGHHMrXVqcMUpFkual-RKB/view">↗ Abrir PDF original</a><div class="sub">Si el visor abre al inicio del libro, ve a la página 22.</div></aside>
+</div></section>
+
+<section class="step" data-step="8"><div class="head"><div class="title">8. Páginas imprimibles · Página 22</div></div><div class="pdf-layout">
+<aside class="pdf-types"><h3>Elige</h3><button class="pdf-type selected" data-kind="ampliacion">Ampliación</button><button class="pdf-type" data-kind="refuerzo">Refuerzo</button><button class="pdf-type" data-kind="tarea">Tarea</button><button class="pdf-type" data-kind="paso">Trabajo paso a paso</button><button class="pdf-type" data-kind="pictogramas">Pictogramas</button></aside>
+<div class="pdf-panel"><div class="prompt" id="printTitle">Ampliación · Página 22</div><div class="print-preview"><div class="worksheet" id="worksheet"></div></div><div class="actions"><button class="action" id="otherVersion">↻ Otra versión</button><button class="action primary" id="printBtn">🖨 Imprimir / guardar PDF</button></div></div>
+</div></section>
+</main></div>
+
+<div class="teacher-modal" id="teacherModal"><div class="teacher-box"><div class="head"><h2>👩‍🏫 Ayuda docente · Página 22</h2><button class="action" id="closeTeacher">Cerrar</button></div><div class="teacher-grid">
+<div class="teacher-item"><strong>Objetivo</strong>Construir y reconocer las parejas que forman 8, pasando de la manipulación a la representación numérica.</div>
+<div class="teacher-item"><strong>Estrategia OAOA</strong>Manipular → comparar longitudes → verbalizar → representar → recordar.</div>
+<div class="teacher-item"><strong>Cómo empezar</strong>Mantén la regleta marrón de 8 fija. Pide: “Busca dos regletas que juntas midan exactamente lo mismo”.</div>
+<div class="teacher-item"><strong>Preguntas</strong>¿Cómo sabes que forman 8? ¿Qué parte falta? ¿Puedes encontrar otra pareja? ¿Qué cambia cuando una parte aumenta?</div>
+<div class="teacher-item"><strong>Ayudas progresivas</strong>1) Superponer/comparar. 2) Señalar el hueco. 3) Probar una regleta. 4) Nombrar los valores al final.</div>
+<div class="teacher-item"><strong>Error frecuente</strong>Contar colores o piezas en vez de comparar longitud. Devuelve la atención a la regleta marrón como referencia.</div>
+<div class="teacher-item"><strong>Cuándo simbolizar</strong>Cuando el alumno puede justificar con las regletas por qué dos partes completan 8.</div>
+<div class="teacher-item"><strong>Cierre</strong>“Hoy hemos descubierto que 8 puede construirse de varias maneras. ¿Qué pareja recuerdas sin mirar?”</div>
+</div></div></div>
+
+<div id="printArea" style="display:none"></div>
+<script>
+(function(){
+var $=function(s){return document.querySelector(s)}, $$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s))};
+var current=1,sound=true;
+function go(n){current=n;$$('.step').forEach(function(x){x.classList.toggle('active',Number(x.dataset.step)===n)});$$('.tab').forEach(function(x){x.classList.toggle('active',Number(x.dataset.step)===n);if(Number(x.dataset.step)<n)x.classList.add('done')});location.hash='step'+n;if(n===7)setTimeout(resizeAnnot,120);if(n===8)renderWorksheet()}
+$$('.tab').forEach(function(b){b.onclick=function(){go(Number(b.dataset.step))}});
+$('#soundBtn').onclick=function(){sound=!sound;$('#soundBtn').textContent=sound?'🔊 Sonido':'🔇 Sonido'};
+function tone(ok){if(!sound)return;try{var A=new AudioContext(),o=A.createOscillator(),g=A.createGain();o.connect(g);g.connect(A.destination);o.frequency.value=ok?680:230;g.gain.setValueAtTime(.07,A.currentTime);g.gain.exponentialRampToValueAtTime(.001,A.currentTime+.16);o.start();o.stop(A.currentTime+.16)}catch(e){}}
+function fb(id,ok,icon,msg){var el=$(id);el.className='feedback '+(ok?'ok':'err');el.innerHTML='<span>'+icon+'</span><span>'+msg+'</span>';tone(ok)}
+var COLORS={1:'#fff',2:'#e53d3d',3:'#7fc86c',4:'#8b4aa8',5:'#f1d34d',6:'#3f8d52',7:'#262626',8:'#8b5a35',9:'#2d75b9',10:'#e68b2c'};
+function rod(n,small){var d=document.createElement('div');d.className='rod';d.dataset.n=n;d.style.setProperty('--n',n);d.style.background=COLORS[n];d.textContent=n;if(small)d.style.setProperty('--u','28px');return d}
+function target(host){host.innerHTML='';host.appendChild(rod(8))}
+target($('#target8'));target($('#target8b'));
+function makeTray(host,handler){host.innerHTML='';for(var n=1;n<=7;n++){(function(v){var r=rod(v,true);r.draggable=true;r.onclick=function(){handler(v)};r.ondragstart=function(e){e.dataTransfer.setData('text/plain',String(v))};host.appendChild(r)})(n)}}
+function enableDrop(host,handler){host.ondragover=function(e){e.preventDefault()};host.ondrop=function(e){e.preventDefault();handler(Number(e.dataTransfer.getData('text/plain')))}}
+var build1=[],saved={};
+function renderBench1(){var h=$('#bench1');h.innerHTML='';h.className='workbench';if(!build1.length){h.innerHTML='<span class="sub">Coloca aquí dos regletas</span>';return}build1.forEach(function(n){var r=rod(n);r.title='Pulsa para quitar';r.onclick=function(){build1.splice(build1.indexOf(n),1);renderBench1()};h.appendChild(r)})}
+function add1(n){if(build1.length<2){build1.push(n);renderBench1()}}
+makeTray($('#tray1'),add1);enableDrop($('#bench1'),add1);renderBench1();
+$('#clear1').onclick=function(){build1=[];renderBench1();fb('#fb1',true,'🧹','Mesa limpia. Prueba otra combinación.')};
+$('#check1').onclick=function(){var sum=build1.reduce(function(a,b){return a+b},0),ok=build1.length===2&&sum===8;$('#bench1').classList.toggle('good',ok);$('#bench1').classList.toggle('bad',!ok);fb('#fb1',ok,ok?'✅':'🔎',ok?'Las dos regletas miden exactamente 8. ¿Cómo lo dirías con números?':'Todavía no coincide con la marrón. Compara la longitud que falta o sobra.')};
+$('#save1').onclick=function(){if(build1.length!==2||build1[0]+build1[1]!==8){fb('#fb1',false,'🔎','Primero construye una pareja que mida 8.');return}var a=Math.min(build1[0],build1[1]),b=Math.max(build1[0],build1[1]),k=a+'+'+b;saved[k]=[a,b];renderLog();renderAllPairs();fb('#fb1',true,'⭐','Pareja guardada: '+a+' + '+b+' = 8.')};
+function renderLog(){var h=$('#pairLog');h.innerHTML='';Object.keys(saved).forEach(function(k){var p=saved[k],d=document.createElement('div');d.className='pair-chip';d.textContent=p[0]+' + '+p[1]+' = 8';h.appendChild(d)});if(!Object.keys(saved).length)h.innerHTML='<div class="sub">Todavía ninguna. Descúbrelas con las regletas.</div>'}
+renderLog();
+
+var given=6,build2=[];
+function newMissing(){given=1+Math.floor(Math.random()*7);build2=[];$('#givenRod').innerHTML='';$('#givenRod').appendChild(rod(given));renderBench2()}
+function renderBench2(){var h=$('#bench2');h.innerHTML='';h.className='workbench';if(!build2.length){h.innerHTML='<span class="sub">Pon aquí la regleta que falta</span>';return}h.appendChild(rod(build2[0]))}
+function add2(n){build2=[n];renderBench2()}
+makeTray($('#tray2'),add2);enableDrop($('#bench2'),add2);newMissing();
+$('#new2').onclick=newMissing;
+$('#check2').onclick=function(){var ok=build2.length===1&&given+build2[0]===8;$('#bench2').classList.toggle('good',ok);$('#bench2').classList.toggle('bad',!ok);fb('#fb2',ok,ok?'✅':'🧩',ok?'Exacto: '+given+' y '+build2[0]+' forman 8.':'Compara el espacio que falta hasta llegar a la longitud 8.')};
+
+function renderAllPairs(){var h=$('#allPairs');h.innerHTML='';[[1,7],[2,6],[3,5],[4,4]].forEach(function(p){var k=p[0]+'+'+p[1],d=document.createElement('div');d.className='card';d.style.display='flex';d.style.alignItems='center';d.style.justifyContent='space-between';d.innerHTML='<span style="font-weight:950">'+(saved[k]?p[0]+' + '+p[1]+' = 8':'? + ? = 8')+'</span><span>'+(saved[k]?'✅':'🔒')+'</span>';h.appendChild(d)});$('#pairCount').textContent=Object.keys(saved).filter(function(k){return ['1+7','2+6','3+5','4+4'].indexOf(k)>=0}).length}
+renderAllPairs();
+$('#revealPairs').onclick=function(){saved={'1+7':[1,7],'2+6':[2,6],'3+5':[3,5],'4+4':[4,4]};renderLog();renderAllPairs()};
+
+var matchPairs=[[1,7],[2,6],[3,5],[4,4]],leftSel=null,rightSel=null,matched={};
+function renderMatches(){var L=$('#leftMatches'),R=$('#rightMatches');L.innerHTML='';R.innerHTML='';matchPairs.forEach(function(p,i){var b=document.createElement('button');b.className='match-item'+(matched[i]?' done':'');b.dataset.i=i;b.innerHTML='<div style="display:flex;justify-content:center;gap:4px">'+rodHtml(p[0])+rodHtml(p[1])+'</div>';b.onclick=function(){leftSel=i;renderMatches();b.classList.add('sel');checkMatch()};L.appendChild(b)});[2,0,3,1].forEach(function(i){var p=matchPairs[i],b=document.createElement('button');b.className='match-item'+(matched[i]?' done':'');b.dataset.i=i;b.textContent=p[0]+' + '+p[1]+' = 8';b.onclick=function(){rightSel=i;renderMatches();b.classList.add('sel');checkMatch()};R.appendChild(b)})}
+function rodHtml(n){return '<span style="display:inline-block;width:'+(n*18)+'px;height:28px;background:'+COLORS[n]+';border:2px solid #17384e;border-radius:5px;color:'+(n===7?'#fff':'#17384e')+';font-weight:900">'+n+'</span>'}
+function checkMatch(){if(leftSel===null||rightSel===null)return;if(leftSel===rightSel){matched[leftSel]=true;fb('#fb4',true,'✅','La construcción y la expresión cuentan la misma relación.')}else fb('#fb4',false,'🔁','Mira las longitudes y vuelve a comparar.');leftSel=null;rightSel=null;setTimeout(renderMatches,250)}
+renderMatches();
+
+var recall=6;
+function newRecall(){recall=1+Math.floor(Math.random()*7);$('#recallPart').textContent=recall;$('#recallReveal').textContent='?'}
+$('#showRecall').onclick=function(){$('#recallReveal').textContent=(8-recall)+'  →  '+recall+' + '+(8-recall)+' = 8'};
+$('#nextRecall').onclick=newRecall;newRecall();
+
+var ans=$('#problemAnswers');[2,3,4,5].forEach(function(n){var b=document.createElement('button');b.className='choice';b.textContent=n;b.onclick=function(){var ok=n===3;b.classList.add(ok?'good':'bad');tone(ok);if(ok)$('#problemReveal').style.display='block'};ans.appendChild(b)});
+
+$('#teacherBtn').onclick=function(){$('#teacherModal').classList.add('open')};$('#closeTeacher').onclick=function(){$('#teacherModal').classList.remove('open')};$('#teacherModal').onclick=function(e){if(e.target===$('#teacherModal'))$('#teacherModal').classList.remove('open')};
+
+var ac=$('#annot'),actx=ac.getContext('2d'),drawing=false,last=null,history=[];
+function resizeAnnot(){var r=$('#sheetLayer').getBoundingClientRect(),d=window.devicePixelRatio||1,old=null;try{old=ac.toDataURL()}catch(e){}ac.width=Math.max(1,Math.round(r.width*d));ac.height=Math.max(1,Math.round(r.height*d));ac.style.width=r.width+'px';ac.style.height=r.height+'px';actx.setTransform(d,0,0,d,0,0);if(old){var im=new Image();im.onload=function(){actx.drawImage(im,0,0,r.width,r.height)};im.src=old}}
+var tool='pen';$$('[data-tool]').forEach(function(b){b.onclick=function(){tool=b.dataset.tool;$$('[data-tool]').forEach(function(x){x.classList.remove('active')});b.classList.add('active')}});
+function apos(e){var r=ac.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
+ac.onpointerdown=function(e){e.preventDefault();history.push(ac.toDataURL());drawing=true;last=apos(e);if(tool==='check'){actx.font='bold 38px Arial';actx.fillStyle='#27874a';actx.fillText('✓',last.x,last.y);drawing=false}};
+ac.onpointermove=function(e){if(!drawing)return;var p=apos(e);actx.beginPath();actx.moveTo(last.x,last.y);actx.lineTo(p.x,p.y);actx.lineCap='round';actx.lineWidth=tool==='highlight'?16:(tool==='eraser'?22:5);actx.strokeStyle=tool==='highlight'?'rgba(255,220,40,.35)':(tool==='eraser'?'rgba(255,255,255,1)':'#e53935');actx.stroke();last=p};
+ac.onpointerup=function(){drawing=false};ac.onpointercancel=function(){drawing=false};
+$('#clearAnnot').onclick=function(){actx.clearRect(0,0,ac.width,ac.height);history=[]};$('#undoAnnot').onclick=function(){var src=history.pop();if(!src)return;var r=ac.getBoundingClientRect(),im=new Image();actx.clearRect(0,0,r.width,r.height);im.onload=function(){actx.drawImage(im,0,0,r.width,r.height)};im.src=src};window.addEventListener('resize',function(){if(current===7)resizeAnnot()});
+
+var kind='ampliacion',variant=0;
+var sheets={
+ampliacion:[['Encuentra tres formas diferentes de construir 8 con dos partes.','Explica qué observas cuando una parte aumenta 1.','Dibuja una pareja del 8 y escribe la suma.'],['Ordena las parejas del 8 de menor a mayor primera parte.','Escribe dos sumas distintas que formen 8.','Completa: 8 = 2 + __ ; 8 = __ + 5.']],
+refuerzo:[['Completa: 1 + __ = 8','Completa: 6 + __ = 8','Rodea la pareja que forma 8: 3+4 / 3+5.'],['Une: 7 con 1, 6 con 2, 5 con 3.','Completa: 4 + __ = 8.','Dibuja dos grupos que juntos formen 8.']],
+tarea:[['Busca en casa 8 objetos y sepáralos en dos grupos. Dibuja cómo lo hiciste.','Escribe la pareja de números que has formado.','¿Puedes hacerlo de otra manera?'],['Forma 8 con lápices y rotuladores. Dibuja los dos grupos.','Escribe: __ + __ = 8.','Cuenta a alguien cómo sabes que hay 8.']],
+paso:[['1. Mira el 8 como el todo.','2. Construye una parte.','3. Busca qué parte falta.','4. Comprueba que las dos juntas forman 8.','5. Escribe la relación.'],['1. Elige una regleta menor que 8.','2. Compárala con la marrón.','3. Busca la regleta del hueco.','4. Di los dos números.','5. Escribe la suma.']],
+pictogramas:[['👀 Mira el 8.','🧱 Elige una parte.','🧩 Busca la que falta.','✅ Comprueba.','✏️ Escribe __ + __ = 8.'],['8️⃣ TODO: 8','🟫 Compara longitudes.','➕ Junta dos partes.','✅ ¿Miden 8?','✏️ Escribe la pareja.']]
+};
+function renderWorksheet(){var names={ampliacion:'Ampliación',refuerzo:'Refuerzo',tarea:'Tarea',paso:'Trabajo paso a paso',pictogramas:'Pictogramas'},arr=sheets[kind][variant%sheets[kind].length];$('#printTitle').textContent=names[kind]+' · Página 22';$('#worksheet').innerHTML='<h2>'+names[kind]+' · Número 8</h2><p><strong>Nombre:</strong> ____________________ &nbsp; <strong>Fecha:</strong> __________</p>'+arr.map(function(q,i){return '<div class="q"><strong>'+(i+1)+'.</strong> '+q+'<div style="height:55px"></div></div>'}).join('')}
+$$('.pdf-type').forEach(function(b){b.onclick=function(){kind=b.dataset.kind;variant=0;$$('.pdf-type').forEach(function(x){x.classList.remove('selected')});b.classList.add('selected');renderWorksheet()}});$('#otherVersion').onclick=function(){variant++;renderWorksheet()};$('#printBtn').onclick=function(){$('#printArea').innerHTML=$('#worksheet').outerHTML;window.print()};renderWorksheet();
+
+var hash=location.hash.match(/step(\d+)/);if(hash)go(Math.min(8,Math.max(1,Number(hash[1]))));
+})();
+</script>
+<script src="../assets/fullscreen-persistent.js"></script>
+</body>
+</html>
