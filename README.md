@@ -23,7 +23,7 @@ El archivo `index.html` de la raíz abre automáticamente la sección **Fichas**
 - `vocabulario/`
 - `juegos/`
 - `examenes/`
-- páginas interactivas hasta `pagina-21/`
+- páginas interactivas hasta `pagina-24/`
 - `assets/`
 
 ## Notas
