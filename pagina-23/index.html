@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Página 23 · Parejas del 6, 7 y 8 · Matemáticas OAOA</title>
+<style>
+:root{--ink:#17384e;--muted:#60798a;--line:#bfd5e1;--bg:#eef7fb;--blue:#469ac7;--ok:#e9f7ed;--bad:#fff1f1}
+*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}button{font:inherit}
+.app{height:100%;display:grid;grid-template-rows:auto auto minmax(0,1fr)}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 10px;background:#fff;border-bottom:2px solid var(--line)}
+.brand{display:flex;align-items:center;gap:9px}.icon{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#6a9fd1,#9b6bc1);color:#fff;display:grid;place-items:center;font-weight:1000}.brand h1{font-size:1.12rem;margin:0}.brand small{display:block;color:var(--muted);font-weight:800;font-size:.72rem}
+.top-actions{display:flex;gap:6px;align-items:center}.control,.action,.tab,.choice,.toolbtn,.pdf-type{border:2px solid #b9cedb;background:#fff;color:var(--ink);border-radius:13px;font-weight:900;cursor:pointer}.control{padding:7px 10px;min-height:38px;text-decoration:none;display:inline-flex;align-items:center}.action{padding:8px 13px;min-height:42px}.action.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.tabs-wrap{padding:5px 7px;background:#fbfdff;border-bottom:2px solid var(--line)}.tabs{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:5px}.tab{padding:6px 2px;min-height:39px;font-size:.67rem}.tab.active{background:#dceff8;border-color:var(--blue)}.tab.done{background:#e9f6ed;border-color:#76ba8d;color:#326d46}
+.main{position:relative;min-height:0;overflow:hidden}.badge{position:absolute;right:9px;top:5px;z-index:20;background:#eef5f9;color:var(--muted);border-radius:999px;padding:4px 8px;font-size:.68rem;font-weight:900}
+.step{display:none;height:100%;overflow:auto;padding:12px}.step.active{display:block}.head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:9px}.title{font-size:1.18rem;font-weight:1000}.sub{color:var(--muted);font-weight:750;font-size:.82rem;line-height:1.35}.prompt{font-weight:1000;margin-bottom:7px}.card{background:#fff;border:2px solid var(--line);border-radius:17px;padding:12px;box-shadow:0 5px 14px rgba(34,70,91,.06)}.rule{background:#f2f8fb;border-left:5px solid var(--blue);padding:10px;border-radius:10px;font-weight:850;line-height:1.35}.feedback{margin-top:8px;border-radius:13px;padding:9px 11px;display:flex;gap:8px;align-items:center;font-weight:850;background:#f3f7f9}.feedback.ok{background:var(--ok);border:2px solid #84c69b}.feedback.err{background:var(--bad);border:2px solid #dfa2a2}
+.layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(250px,.7fr);gap:12px;height:calc(100% - 36px);min-height:0}.side{display:grid;gap:10px;align-content:start}
+.target-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.target-btn{border:2px solid #b9cedb;background:#fff;border-radius:13px;padding:9px 14px;font-weight:950;cursor:pointer}.target-btn.active{background:#dceff8;border-color:var(--blue)}
+.wall{background:#f2e0bd;border:4px solid #c69c65;border-radius:22px;padding:14px;display:grid;gap:10px;align-content:start}.targetline{display:flex;justify-content:center;margin:6px 0}.pairrow{display:flex;align-items:center;gap:6px;justify-content:center;background:rgba(255,255,255,.75);border:2px solid #d4c09a;border-radius:14px;padding:9px;min-height:58px}.rod{--u:34px;height:34px;width:calc(var(--n)*var(--u));border:2px solid rgba(23,56,78,.75);border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-weight:1000;box-shadow:inset 0 2px 0 rgba(255,255,255,.45),0 2px 4px rgba(0,0,0,.14);color:#17384e}.rod.dark{color:#fff}
+.pairboard{display:grid;gap:8px}.pair{display:grid;grid-template-columns:1fr auto 1fr auto;gap:8px;align-items:center}.num{height:52px;border:2px solid #b9cedb;border-radius:13px;background:#fff;display:grid;place-items:center;font-size:1.6rem;font-weight:1000}.op{font-size:1.35rem;font-weight:1000}.blank{border-style:dashed}
+.memory{display:grid;place-items:center;min-height:300px}.big{font-size:clamp(3rem,8vw,6rem);font-weight:1000;text-align:center}.choices{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.choice{padding:11px;font-size:1.1rem}.choice.good{background:#def3e5;border-color:#58a372}.choice.bad{background:#fde8e8;border-color:#c76969}
+.calcgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.calc{border:2px solid #c7dce5;border-radius:15px;background:#fff;padding:12px}.eq{font-size:2rem;font-weight:1000;text-align:center}.notice{background:#fff8dc;border:2px solid #e3d38b;border-radius:14px;padding:11px;font-weight:800}
+.compare{display:grid;gap:10px}.swap{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center}.swapbox{border:3px solid #9bc1d2;border-radius:18px;background:#fff;padding:18px;text-align:center;font-size:2.2rem;font-weight:1000}
+.problem-text{font-size:1.25rem;line-height:1.55;font-weight:850}
+.sheet-stage{display:grid;grid-template-columns:minmax(0,1fr) 210px;gap:10px;height:calc(100% - 36px)}.viewer{background:#dfe8ed;border-radius:15px;overflow:auto;display:grid;place-items:center;position:relative}.sheet-layer{width:min(760px,95%);height:96%;min-height:480px;position:relative}.sheet-layer iframe{width:100%;height:100%;border:0;background:#fff}.sheet-layer canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none}.tools{background:#fff;border:2px solid var(--line);border-radius:15px;padding:9px;display:grid;gap:7px;align-content:start}.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.toolbtn{padding:7px;font-size:.75rem}.toolbtn.active{background:#dceff8;border-color:var(--blue)}
+.pdf-layout{display:grid;grid-template-columns:190px minmax(0,1fr);gap:12px;height:calc(100% - 36px)}.pdf-types{display:grid;gap:7px;align-content:start;background:#fff;border:2px solid var(--line);border-radius:15px;padding:10px}.pdf-type{padding:9px}.pdf-type.selected{background:#dceff8;border-color:var(--blue)}.pdf-panel{background:#fff;border:2px solid var(--line);border-radius:15px;padding:12px;display:grid;grid-template-rows:auto 1fr auto;gap:8px}.print-preview{overflow:auto;background:#eef3f6;border-radius:12px;padding:10px}.worksheet{max-width:760px;margin:auto;background:#fff;padding:22px;border:1px solid #ccd9df;min-height:700px}.worksheet .q{border-bottom:1px solid #d2dfe5;padding:13px 0;font-size:1.05rem}
+.teacher-modal{position:fixed;inset:0;background:rgba(12,35,50,.7);z-index:100;display:none;place-items:center;padding:18px}.teacher-modal.open{display:grid}.teacher-box{max-width:780px;max-height:90vh;overflow:auto;background:#fff;border-radius:22px;padding:20px}.teacher-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.teacher-item{background:#f4f8fa;border:2px solid #d4e3ea;border-radius:14px;padding:12px}.teacher-item strong{display:block;margin-bottom:5px}
+@media(max-width:920px){.brand small{display:none}.tabs{grid-template-columns:repeat(4,1fr)}.layout,.sheet-stage,.pdf-layout{grid-template-columns:1fr}.step{overflow:auto}.calcgrid{grid-template-columns:1fr}.teacher-grid{grid-template-columns:1fr}}
+@media print{body{background:#fff}.app,.teacher-modal{display:none!important}#printArea{display:block!important}.worksheet{border:0;max-width:none;min-height:0}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar"><div class="brand"><div class="icon">6·7·8</div><div><h1>Página 23 · Parejas del 6, 7 y 8</h1><small>Organizar · recordar · calcular · observar relaciones</small></div></div><div class="top-actions"><a class="control" href="../fichas/">← Menú de fichas</a><button class="control" id="teacherBtn">👩‍🏫 Ayuda docente</button><button class="control" id="soundBtn">🔊 Sonido</button></div></header>
+<nav class="tabs-wrap"><div class="tabs">
+<button class="tab active" data-step="1">1 · Construyo parejas</button><button class="tab" data-step="2">2 · Completo</button><button class="tab" data-step="3">3 · Memoriza con sentido</button><button class="tab" data-step="4">4 · Calcula</button><button class="tab" data-step="5">5 · ¿Qué observas?</button><button class="tab" data-step="6">6 · Problema</button><button class="tab" data-step="7">7 · Ver la ficha</button><button class="tab" data-step="8">8 · Imprimibles</button>
+</div></nav>
+<main class="main"><div class="badge">P23 · OAOA</div>
+
+<section class="step active" data-step="1"><div class="head"><div class="title">1. Construyo y organizo las parejas</div></div><div class="layout">
+<div class="wall"><div class="target-tabs"><button class="target-btn active" data-target="6">6</button><button class="target-btn" data-target="7">7</button><button class="target-btn" data-target="8">8</button></div><div class="targetline" id="targetRod"></div><div class="pairboard" id="pairBoard"></div></div>
+<div class="side"><div class="card"><div class="prompt">Palabra matemática</div><div style="font-size:2rem;font-weight:1000;text-align:center">ORDEN</div><div class="sub">Organizar las parejas nos ayuda a encontrar todas sin repetir ni olvidar ninguna.</div></div><div class="rule">Una parte aumenta de uno en uno y la otra disminuye de uno en uno.</div></div>
+</div></section>
+
+<section class="step" data-step="2"><div class="head"><div class="title">2. Encuentro la parte que falta</div></div><div class="layout">
+<div class="card memory"><div><div class="sub" style="text-align:center">Completa la pareja de <span id="missTarget">7</span></div><div class="big"><span id="missA">5</span> + ? = <span id="missTarget2">7</span></div><div class="choices" id="missChoices"></div></div></div>
+<div class="side"><div class="rule">Piensa en el total y en la parte conocida. ¿Cuánto falta?</div><button class="action primary" id="newMissing">Otro reto</button></div>
+</div><div class="feedback" id="fb2"><span>🧩</span><span>Busca la parte que completa el total.</span></div></section>
+
+<section class="step" data-step="3"><div class="head"><div class="title">3. Memoriza después de comprender</div></div><div class="layout">
+<div class="card memory"><div><div class="sub" style="text-align:center">Piensa primero. Después comprueba.</div><div class="big" id="memoryQ">6 + ? = 8</div><div class="big" id="memoryA" style="font-size:3rem">?</div><div class="actions" style="justify-content:center"><button class="action primary" id="showMem">Mostrar</button><button class="action" id="nextMem">Otro</button></div></div></div>
+<div class="side"><div class="card"><div class="prompt">No es recitar sin sentido</div><div class="sub">La memoria llega después de manipular, ordenar y explicar las parejas.</div></div><div class="rule">Recuerda la estructura, no una lista aislada.</div></div>
+</div></section>
+
+<section class="step" data-step="4"><div class="head"><div class="title">4. Calcula relaciones conocidas</div></div><div class="calcgrid" id="calcGrid"></div><div class="feedback" id="fb4"><span>➕</span><span>Calcula usando las parejas que ya conoces.</span></div></section>
+
+<section class="step" data-step="5"><div class="head"><div class="title">5. ¿Qué observas?</div></div><div class="layout">
+<div class="compare"><div class="swap"><div class="swapbox">2 + 6 = 8</div><div style="font-size:2.3rem">↔</div><div class="swapbox">6 + 2 = 8</div></div><div class="swap"><div class="swapbox">3 + 4 = 7</div><div style="font-size:2.3rem">↔</div><div class="swapbox">4 + 3 = 7</div></div><div class="notice">¿Qué ha cambiado? ¿Qué se mantiene? Explica con tus palabras.</div></div>
+<div class="side"><div class="card"><div class="prompt">Idea que descubrimos</div><div class="rule">Al cambiar el <strong>orden</strong> de las partes, el total se mantiene.</div></div><div class="card"><div class="sub">Todavía no necesitamos memorizar el nombre formal de la propiedad. Primero observamos y justificamos.</div></div></div>
+</div></section>
+
+<section class="step" data-step="6"><div class="head"><div class="title">6. Problema · uso una pareja conocida</div></div><div class="layout">
+<div class="card"><div class="problem-text">En una mesa hay <strong>8 rotuladores</strong>. <strong>3</strong> son azules y los demás son rojos. ¿Cuántos rotuladores rojos hay?</div><div style="font-size:3rem;text-align:center;margin:20px">🖍️🖍️🖍️ + ❓ = 8</div></div>
+<div class="card"><div class="prompt">Elige</div><div class="choices" id="problemChoices"></div><div class="rule" id="problemRule" style="margin-top:10px;display:none">3 y 5 forman una pareja del 8. Hay <strong>5 rotuladores rojos</strong>.</div></div>
+</div></section>
+
+<section class="step" data-step="7"><div class="head"><div class="title">7. Ver la ficha original · Página 23</div></div><div class="sheet-stage"><div class="viewer"><div class="sheet-layer" id="sheetLayer"><iframe title="Ficha original página 23" src="https://drive.google.com/uc?export=download&id=1kDDt6by7DsmGHHMrXVqcMUpFkual-RKB#page=23&toolbar=0&navpanes=0"></iframe><canvas id="annot"></canvas></div></div><aside class="tools"><h3>Anotar</h3><div class="tool-grid"><button class="toolbtn active" data-tool="pen">✏️ Lápiz</button><button class="toolbtn" data-tool="highlight">🖍️ Resaltar</button><button class="toolbtn" data-tool="check">✓</button><button class="toolbtn" data-tool="eraser">⌫ Goma</button><button class="toolbtn" id="undoAnnot">↶ Deshacer</button><button class="toolbtn" id="clearAnnot">🧹 Limpiar</button></div><a class="control" target="_blank" rel="noopener" href="https://drive.google.com/file/d/1kDDt6by7DsmGHHMrXVqcMUpFkual-RKB/view">↗ Abrir PDF original</a><div class="sub">Si abre al inicio del libro, ve a la página 23.</div></aside></div></section>
+
+<section class="step" data-step="8"><div class="head"><div class="title">8. Páginas imprimibles · Página 23</div></div><div class="pdf-layout"><aside class="pdf-types"><h3>Elige</h3><button class="pdf-type selected" data-kind="ampliacion">Ampliación</button><button class="pdf-type" data-kind="refuerzo">Refuerzo</button><button class="pdf-type" data-kind="tarea">Tarea</button><button class="pdf-type" data-kind="paso">Trabajo paso a paso</button><button class="pdf-type" data-kind="pictogramas">Pictogramas</button></aside><div class="pdf-panel"><div class="prompt" id="printTitle">Ampliación · Página 23</div><div class="print-preview"><div class="worksheet" id="worksheet"></div></div><div class="actions"><button class="action" id="otherVersion">↻ Otra versión</button><button class="action primary" id="printBtn">🖨 Imprimir / guardar PDF</button></div></div></div></section>
+</main></div>
+
+<div class="teacher-modal" id="teacherModal"><div class="teacher-box"><div class="head"><h2>👩‍🏫 Ayuda docente · Página 23</h2><button class="action" id="closeTeacher">Cerrar</button></div><div class="teacher-grid">
+<div class="teacher-item"><strong>Objetivo</strong>Organizar y recuperar las parejas del 6, 7 y 8 y observar relaciones entre sumas.</div>
+<div class="teacher-item"><strong>Secuencia</strong>Construir → ordenar → completar → recuperar → calcular → observar.</div>
+<div class="teacher-item"><strong>Pregunta clave</strong>Si una parte aumenta 1, ¿qué debe pasar con la otra para conservar el mismo total?</div>
+<div class="teacher-item"><strong>Memorización</strong>Se introduce después de comprender las relaciones. Evita convertir la actividad en recitado mecánico.</div>
+<div class="teacher-item"><strong>¿Qué observas?</strong>Pide que comparen pares como 2+6 y 6+2 y expliquen qué cambia y qué permanece.</div>
+<div class="teacher-item"><strong>Error frecuente</strong>Repetir una pareja en orden inverso como si fuera una nueva descomposición.</div>
+<div class="teacher-item"><strong>Intervención</strong>Vuelve al muro de regletas y recorre las parejas de forma sistemática.</div>
+<div class="teacher-item"><strong>Cierre</strong>“Dime una pareja de 6, una de 7 y una de 8 sin mirar. ¿Cómo lo sabes?”</div>
+</div></div></div><div id="printArea" style="display:none"></div>
+
+<script>
+(function(){
+var $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];let current=1,sound=true;
+function go(n){current=n;$$('.step').forEach(x=>x.classList.toggle('active',+x.dataset.step===n));$$('.tab').forEach(x=>{x.classList.toggle('active',+x.dataset.step===n);if(+x.dataset.step<n)x.classList.add('done')});location.hash='step'+n;if(n===7)setTimeout(resizeAnnot,120);if(n===8)renderWorksheet()}$$('.tab').forEach(b=>b.onclick=()=>go(+b.dataset.step));$('#soundBtn').onclick=()=>{sound=!sound;$('#soundBtn').textContent=sound?'🔊 Sonido':'🔇 Sonido'};
+function tone(ok=true){if(!sound)return;try{let A=new AudioContext(),o=A.createOscillator(),g=A.createGain();o.connect(g);g.connect(A.destination);o.frequency.value=ok?680:230;g.gain.setValueAtTime(.07,A.currentTime);g.gain.exponentialRampToValueAtTime(.001,A.currentTime+.16);o.start();o.stop(A.currentTime+.16)}catch(e){}}
+function fb(id,ok,icon,msg){let el=$(id);el.className='feedback '+(ok?'ok':'err');el.innerHTML='<span>'+icon+'</span><span>'+msg+'</span>';tone(ok)}
+const COLORS={1:'#fff',2:'#e53d3d',3:'#7fc86c',4:'#8b4aa8',5:'#f1d34d',6:'#3f8d52',7:'#262626',8:'#8b5a35'};
+function rod(n){let d=document.createElement('div');d.className='rod'+(n===7||n===8?' dark':'');d.dataset.n=n;d.style.setProperty('--n',n);d.style.background=COLORS[n];d.textContent=n;return d}
+let target=6;
+function pairsFor(t){let out=[];for(let a=1;a<=Math.floor(t/2);a++)out.push([a,t-a]);return out}
+function renderPairs(){let tr=$('#targetRod');tr.innerHTML='';tr.appendChild(rod(target));let b=$('#pairBoard');b.innerHTML='';pairsFor(target).forEach(p=>{let row=document.createElement('div');row.className='pairrow';row.appendChild(rod(p[0]));row.appendChild(document.createTextNode(' + '));row.appendChild(rod(p[1]));let lab=document.createElement('strong');lab.textContent=' = '+target;row.appendChild(lab);b.appendChild(row)})}
+$$('.target-btn').forEach(b=>b.onclick=()=>{target=+b.dataset.target;$$('.target-btn').forEach(x=>x.classList.toggle('active',x===b));renderPairs()});renderPairs();
+
+let mt=7,ma=5;
+function newMissing(){mt=6+Math.floor(Math.random()*3);ma=1+Math.floor(Math.random()*(mt-1));$('#missTarget').textContent=mt;$('#missTarget2').textContent=mt;$('#missA').textContent=ma;let host=$('#missChoices');host.innerHTML='';let ans=mt-ma,opts=[ans];while(opts.length<4){let x=1+Math.floor(Math.random()*7);if(!opts.includes(x))opts.push(x)}opts.sort(()=>Math.random()-.5).forEach(n=>{let b=document.createElement('button');b.className='choice';b.textContent=n;b.onclick=()=>{let ok=n===ans;b.classList.add(ok?'good':'bad');fb('#fb2',ok,ok?'✅':'🧩',ok?ma+' + '+n+' = '+mt:'Vuelve a pensar cuánto falta hasta '+mt)};host.appendChild(b)})}
+$('#newMissing').onclick=newMissing;newMissing();
+
+let memT=8,memA=6;
+function newMem(){memT=6+Math.floor(Math.random()*3);memA=1+Math.floor(Math.random()*(memT-1));$('#memoryQ').textContent=memA+' + ? = '+memT;$('#memoryA').textContent='?'}$('#showMem').onclick=()=>$('#memoryA').textContent=(memT-memA);$('#nextMem').onclick=newMem;newMem();
+
+const CALCS=[[2,4],[3,3],[1,6],[4,3],[2,6],[5,3],[6,2],[4,4]];
+let cg=$('#calcGrid');CALCS.forEach(p=>{let c=document.createElement('div');c.className='calc';c.innerHTML='<div class="eq">'+p[0]+' + '+p[1]+' = <button class="choice">?</button></div>';let b=c.querySelector('button'),ans=p[0]+p[1];b.onclick=()=>{b.textContent=ans;b.classList.add('good');fb('#fb4',true,'✅','Usa una relación que ya conoces.')};cg.appendChild(c)});
+
+let ph=$('#problemChoices');[4,5,6,7].forEach(n=>{let b=document.createElement('button');b.className='choice';b.textContent=n;b.onclick=()=>{let ok=n===5;b.classList.add(ok?'good':'bad');tone(ok);if(ok)$('#problemRule').style.display='block'};ph.appendChild(b)});
+
+$('#teacherBtn').onclick=()=>$('#teacherModal').classList.add('open');$('#closeTeacher').onclick=()=>$('#teacherModal').classList.remove('open');$('#teacherModal').onclick=e=>{if(e.target===$('#teacherModal'))$('#teacherModal').classList.remove('open')};
+
+let ac=$('#annot'),ctx=ac.getContext('2d'),drawing=false,last=null,history=[],tool='pen';
+function resizeAnnot(){let r=$('#sheetLayer').getBoundingClientRect(),d=devicePixelRatio||1;ac.width=Math.max(1,Math.round(r.width*d));ac.height=Math.max(1,Math.round(r.height*d));ac.style.width=r.width+'px';ac.style.height=r.height+'px';ctx.setTransform(d,0,0,d,0,0)}
+$$('[data-tool]').forEach(b=>b.onclick=()=>{tool=b.dataset.tool;$$('[data-tool]').forEach(x=>x.classList.remove('active'));b.classList.add('active')});function pos(e){let r=ac.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
+ac.onpointerdown=e=>{history.push(ac.toDataURL());drawing=true;last=pos(e);if(tool==='check'){ctx.font='bold 38px Arial';ctx.fillStyle='#27874a';ctx.fillText('✓',last.x,last.y);drawing=false}};ac.onpointermove=e=>{if(!drawing)return;let p=pos(e);ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.lineCap='round';ctx.lineWidth=tool==='highlight'?16:(tool==='eraser'?22:5);ctx.strokeStyle=tool==='highlight'?'rgba(255,220,40,.35)':(tool==='eraser'?'#fff':'#e53935');ctx.stroke();last=p};ac.onpointerup=()=>drawing=false;ac.onpointercancel=()=>drawing=false;$('#clearAnnot').onclick=()=>{ctx.clearRect(0,0,ac.width,ac.height);history=[]};$('#undoAnnot').onclick=()=>{let src=history.pop();if(!src)return;let r=ac.getBoundingClientRect(),im=new Image();ctx.clearRect(0,0,r.width,r.height);im.onload=()=>ctx.drawImage(im,0,0,r.width,r.height);im.src=src};addEventListener('resize',()=>{if(current===7)resizeAnnot()});
+
+let kind='ampliacion',variant=0;const sheets={
+ampliacion:[['Escribe todas las parejas diferentes de 6, 7 y 8.','¿Qué patrón observas al ordenarlas?','Compara 2+6 y 6+2. ¿Qué cambia?'],['Completa: 1+__=6, 2+__=7, 3+__=8.','Escribe una suma de 6, una de 7 y una de 8.','Explica qué ocurre al cambiar el orden.']],
+refuerzo:[['Une 5 con su pareja para formar 6.','Une 5 con su pareja para formar 7.','Une 5 con su pareja para formar 8.'],['Completa: 4+__=6.','Completa: 4+__=7.','Completa: 4+__=8.']],
+tarea:[['Busca 8 objetos y sepáralos en dos grupos.','Haz lo mismo con 7 objetos.','Haz lo mismo con 6 objetos.'],['Escribe una pareja de 6, una de 7 y una de 8.','Cuenta a alguien cómo encontraste las partes.','Cambia el orden de una suma. ¿Cambia el total?']],
+paso:[['1. Elige el total 6, 7 u 8.','2. Elige una primera parte.','3. Busca la parte que falta.','4. Comprueba el total.','5. Ordena las parejas.'],['1. Mira una pareja conocida.','2. Tapa una parte.','3. Piensa cuánto falta.','4. Comprueba.','5. Dilo sin mirar.']],
+pictogramas:[['6️⃣7️⃣8️⃣ Elige total.','🧩 Busca pareja.','✅ Comprueba.','↔ Cambia orden.','🗣 Explica.'],['👀 Mira.','🧠 Piensa.','➕ Completa.','✅ Comprueba.','✏️ Escribe.']]};
+function renderWorksheet(){let names={ampliacion:'Ampliación',refuerzo:'Refuerzo',tarea:'Tarea',paso:'Trabajo paso a paso',pictogramas:'Pictogramas'},arr=sheets[kind][variant%sheets[kind].length];$('#printTitle').textContent=names[kind]+' · Página 23';$('#worksheet').innerHTML='<h2>'+names[kind]+' · Parejas del 6, 7 y 8</h2><p><strong>Nombre:</strong> ____________________ &nbsp; <strong>Fecha:</strong> __________</p>'+arr.map((q,i)=>'<div class="q"><strong>'+(i+1)+'.</strong> '+q+'<div style="height:55px"></div></div>').join('')}
+$$('.pdf-type').forEach(b=>b.onclick=()=>{kind=b.dataset.kind;variant=0;$$('.pdf-type').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');renderWorksheet()});$('#otherVersion').onclick=()=>{variant++;renderWorksheet()};$('#printBtn').onclick=()=>{$('#printArea').innerHTML=$('#worksheet').outerHTML;print()};renderWorksheet();
+let hash=location.hash.match(/step(\d+)/);if(hash)go(Math.min(8,Math.max(1,+hash[1])));
+})();
+</script>
+<script src="../assets/fullscreen-persistent.js"></script>
+</body></html>
