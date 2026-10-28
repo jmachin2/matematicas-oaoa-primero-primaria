@@ -230,7 +230,7 @@ button{font:inherit}
    <button class="pdf-type selected" data-pdf="ampliacion">Ampliación</button>
    <button class="pdf-type" data-pdf="refuerzo">Refuerzo</button>
    <button class="pdf-type" data-pdf="tarea">Tarea</button>
-   <button class="pdf-type" data-pdf="paso">Trabajo paso a paso</button>
+   <button class="pdf-type" data-pdf="tea">TEA</button>
    <button class="pdf-type" data-pdf="pictogramas">Pictogramas</button>
   </aside>
   <div class="pdf-panel">
@@ -307,15 +307,55 @@ function applyZoom(){$('#sheetTransform').style.transform=`scale(${zoom})`}$('#z
 img.onload=()=>setTimeout(resizeCanvas,50);window.addEventListener('resize',()=>{if(current===5)setTimeout(sizeTrace,100);if(current===7)setTimeout(resizeCanvas,100)});
 
 /* 8 PDF */
-let pdfType='ampliacion',pdfVersion=1,pdfCanvas=null;const labels={ampliacion:'Ampliación',refuerzo:'Refuerzo',tarea:'Tarea',paso:'Trabajo paso a paso',pictogramas:'Pictogramas'};
+let pdfType='ampliacion',pdfVersion=1,pdfCanvas=null;const labels={ampliacion:'Ampliación',refuerzo:'Refuerzo',tarea:'Tarea',tea:'TEA',pictogramas:'Pictogramas'};
 function rr(g,x,y,w,h,r=14,fill='#fff',stroke='#bfd5e1',sw=3){g.beginPath();g.roundRect(x,y,w,h,r);g.fillStyle=fill;g.fill();g.lineWidth=sw;g.strokeStyle=stroke;g.stroke()}
 function txt(g,t,x,y,s=28,b=true,align='left',col='#17384e'){g.fillStyle=col;g.font=`${b?'700':'400'} ${s}px Arial`;g.textAlign=align;g.textBaseline='alphabetic';g.fillText(t,x,y)}
 function line(g,x,y,w){g.strokeStyle='#718b99';g.lineWidth=2;g.setLineDash([8,6]);g.beginPath();g.moveTo(x,y);g.lineTo(x+w,y);g.stroke();g.setLineDash([])}
 function drawRod(g,n,x,y,u=26,h=34){const cols={1:'#f7f4ec',2:'#d95757',3:'#9acb6a',4:'#b978b5',5:'#edda4a',6:'#2d7b4d',7:'#202020'},tc={2:'#fff',4:'#fff',6:'#fff',7:'#fff'};rr(g,x,y,n*u,h,5,cols[n],'#788b96',2);txt(g,String(n),x+n*u/2,y+24,17,true,'center',tc[n]||'#25333d')}
+
+function pdfEye(g,x,y,s=1){g.save();g.strokeStyle='#17384e';g.lineWidth=4*s;g.beginPath();g.ellipse(x,y,42*s,24*s,0,0,Math.PI*2);g.stroke();g.beginPath();g.arc(x,y,9*s,0,Math.PI*2);g.fillStyle='#17384e';g.fill();g.restore()}
+function pdfWrite(g,x,y,s=1){g.save();g.strokeStyle='#17384e';g.lineWidth=5*s;g.beginPath();g.moveTo(x-30*s,y+25*s);g.lineTo(x+24*s,y-29*s);g.stroke();g.beginPath();g.moveTo(x+22*s,y-30*s);g.lineTo(x+34*s,y-18*s);g.stroke();g.beginPath();g.moveTo(x-34*s,y+30*s);g.lineTo(x-18*s,y+25*s);g.stroke();g.restore()}
+function pdfCheck(g,x,y,s=1){g.save();g.strokeStyle='#27874a';g.lineWidth=6*s;g.beginPath();g.moveTo(x-30*s,y);g.lineTo(x-8*s,y+22*s);g.lineTo(x+34*s,y-26*s);g.stroke();g.restore()}
+function pdfJoin(g,x,y,s=1){g.save();g.strokeStyle='#17384e';g.lineWidth=4*s;g.strokeRect(x-48*s,y-19*s,34*s,38*s);g.strokeRect(x+14*s,y-19*s,34*s,38*s);g.beginPath();g.moveTo(x-8*s,y);g.lineTo(x+8*s,y);g.moveTo(x,y-8*s);g.lineTo(x,y+8*s);g.stroke();g.restore()}
+function pdfArrow(g,x1,y1,x2,y2){g.save();g.strokeStyle='#17384e';g.lineWidth=4;g.beginPath();g.moveTo(x1,y1);g.lineTo(x2,y2);g.stroke();const a=Math.atan2(y2-y1,x2-x1);g.beginPath();g.moveTo(x2,y2);g.lineTo(x2-15*Math.cos(a-.5),y2-15*Math.sin(a-.5));g.moveTo(x2,y2);g.lineTo(x2-15*Math.cos(a+.5),y2-15*Math.sin(a+.5));g.stroke();g.restore()}
+function pdfPicBox(g,x,y,w,h,label,icon){rr(g,x,y,w,h,16,'#fff','#9fbfcf',3);if(icon==='eye')pdfEye(g,x+w/2,y+52,1);if(icon==='join')pdfJoin(g,x+w/2,y+52,1);if(icon==='write')pdfWrite(g,x+w/2,y+52,1);if(icon==='check')pdfCheck(g,x+w/2,y+52,1);txt(g,label,x+w/2,y+h-22,20,true,'center')}
+function pdfCheckbox(g,x,y,label){rr(g,x,y,38,38,4,'#fff','#60798a',2);txt(g,label,x+70,y+30,24,false)}
 function makeSheet(){
  const c=document.createElement('canvas');c.width=1240;c.height=1754;const g=c.getContext('2d');g.fillStyle='#fffefa';g.fillRect(0,0,c.width,c.height);
- txt(g,`${labels[pdfType].toUpperCase()} · PAREJAS DEL 5, 6 Y 7`,620,75,34,true,'center');txt(g,'Nombre:',70,130,22);line(g,160,133,430);txt(g,'Fecha:',730,130,22);line(g,805,133,300);txt(g,`Página 18 · versión ${pdfVersion}`,620,172,18,true,'center','#60798a');
+ txt(g,`${pdfType==='tea'?'FICHA ESTRUCTURADA':labels[pdfType].toUpperCase()} · PAREJAS DEL 5, 6 Y 7`,620,75,34,true,'center');txt(g,'Nombre:',70,130,22);line(g,160,133,430);txt(g,'Fecha:',730,130,22);line(g,805,133,300);txt(g,`Página 18 · versión ${pdfVersion}`,620,172,18,true,'center','#60798a');
  let y=220;const task=(title,h)=>{rr(g,65,y,1110,h,18,'#fff','#c7dce7',3);txt(g,title,90,y+42,27,true);const yy=y;y+=h+24;return yy};
+if(pdfType==='refuerzo'){
+ let yy=task('1. Mira el modelo.',300);txt(g,'7 = 5 + 2',620,yy+115,42,true,'center');drawRod(g,5,320,yy+165,28,38);drawRod(g,2,475,yy+165,28,38);
+ yy=task('2. Completa una pareja de cada total.',390);[[5,4],[6,4],[7,5]].forEach((p,i)=>{txt(g,p[0]+' = '+p[1]+' +',160,yy+110+i*90,34,true);rr(g,400,yy+68+i*90,110,58,10,'#fff','#91a9b7',2)});
+ yy=task('3. Une cada total con una pareja.',330);['5','6','7'].forEach((n,i)=>{rr(g,110+i*340,yy+85,110,70,12,'#fff','#9fbfcf',3);txt(g,n,165+i*340,yy+133,34,true,'center')});['3+2','4+2','5+2'].forEach((n,i)=>txt(g,n,165+i*340,yy+225,30,true,'center'));
+ yy=task('4. Dibuja una pareja del 7.',260);rr(g,110,yy+80,1020,120,12,'#fbfdfe','#cbdde6',2);
+ txt(g,'REFUERZO · mismo objetivo con menos carga.',620,1690,18,true,'center','#60798a');return c
+}
+if(pdfType==='tarea'){
+ let yy=task('1. Reúne 5 objetos y haz dos grupos.',300);rr(g,100,yy+80,1040,150,12,'#fbfdfe','#cbdde6',2);
+ yy=task('2. Reúne 6 objetos y haz dos grupos.',300);rr(g,100,yy+80,1040,150,12,'#fbfdfe','#cbdde6',2);
+ yy=task('3. Reúne 7 objetos y haz dos grupos.',300);rr(g,100,yy+80,1040,150,12,'#fbfdfe','#cbdde6',2);
+ yy=task('4. Escribe tus parejas.',360);txt(g,'5 = __ + __',160,yy+125,34,true);txt(g,'6 = __ + __',470,yy+125,34,true);txt(g,'7 = __ + __',780,yy+125,34,true);txt(g,'Haz otra pareja del 7:',160,yy+235,28,true);line(g,460,yy+238,500);
+ txt(g,'TAREA · manipulación sencilla con objetos de casa.',620,1690,18,true,'center','#60798a');return c
+}
+if(pdfType==='tea'){
+ txt(g,'FICHA ESTRUCTURADA · PAREJAS 5, 6 Y 7',620,75,34,true,'center');txt(g,'HOY HAGO 4 PASOS',620,220,26,true,'center','#60798a');
+ [['1','MIRA'],['2','ELIGE'],['3','COMPLETA'],['4','REVISA']].forEach((p,i)=>{rr(g,90+i*285,255,245,72,16,'#fff7bf','#9e8b3c',3);txt(g,p[0]+'  '+p[1],212+i*285,302,24,true,'center')});
+ let yy=task('1. MIRA EL MODELO.',285);txt(g,'7 = 5 + 2',620,yy+150,44,true,'center');
+ yy=task('2. ELIGE LO QUE FALTA.',285);txt(g,'6 = 4 + ?',300,yy+160,40,true,'center');[2,3].forEach((n,i)=>{rr(g,650+i*180,yy+105,120,75,14,'#fff','#9fbfcf',3);txt(g,String(n),710+i*180,yy+156,36,true,'center')});
+ yy=task('3. COMPLETA UNA.',245);txt(g,'5 = 3 +',300,yy+145,38,true);rr(g,540,yy+98,130,65,10,'#fff','#91a9b7',2);
+ yy=task('4. REVISA.',300);pdfCheckbox(g,160,yy+70,'He mirado el total.');pdfCheckbox(g,160,yy+140,'He buscado la pareja.');pdfCheckbox(g,160,yy+210,'He comprobado.');
+ return c
+}
+if(pdfType==='pictogramas'){
+ txt(g,'MIRA · JUNTA · ESCRIBE · REVISA',620,220,25,true,'center','#60798a');pdfPicBox(g,95,250,235,135,'MIRA','eye');pdfPicBox(g,365,250,235,135,'JUNTA','join');pdfPicBox(g,635,250,235,135,'ESCRIBE','write');pdfPicBox(g,905,250,235,135,'REVISA','check');
+ let yy=task('1.',300);pdfEye(g,150,yy+130,1);txt(g,'7',320,yy+145,48,true);pdfArrow(g,380,yy+130,520,yy+130);txt(g,'5 + 2',700,yy+145,42,true,'center');
+ yy=task('2.',300);pdfJoin(g,150,yy+130,1);txt(g,'6 = 4 +',360,yy+145,40,true);rr(g,610,yy+100,130,65,10,'#fff','#91a9b7',2);
+ yy=task('3.',280);pdfWrite(g,150,yy+125,1);txt(g,'5 = __ + __',620,yy+145,42,true,'center');
+ yy=task('4.',230);pdfCheck(g,150,yy+110,1);txt(g,'5     6     7',650,yy+125,38,true,'center');
+ return c
+}
+
  let yy=task(pdfType==='pictogramas'?'1. 🧱 COMPLETA LAS PAREJAS':'1. Completa las parejas de 5, 6 y 7.',430);
  const rows=pdfVersion%2?[[5,4],[5,3],[6,5],[6,4],[6,3],[7,6],[7,5],[7,4]]:[[5,1],[5,2],[6,1],[6,2],[6,3],[7,1],[7,2],[7,3]];
  rows.forEach(([t,a],i)=>{const x=100+(i%2)*540,ry=yy+78+Math.floor(i/2)*78;txt(g,`${t} = ${a} +`,x,ry,24,true);rr(g,x+155,ry-34,80,44,8,'#fff','#91a9b7',2)});
