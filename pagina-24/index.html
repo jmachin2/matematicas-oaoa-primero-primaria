@@ -24,7 +24,7 @@
 .pdf-layout{display:grid;grid-template-columns:190px minmax(0,1fr);gap:12px;height:calc(100% - 36px)}.pdf-types{display:grid;gap:7px;align-content:start;background:#fff;border:2px solid var(--line);border-radius:15px;padding:10px}.pdf-type{padding:9px}.pdf-type.selected{background:#dceff8;border-color:var(--blue)}.pdf-panel{background:#fff;border:2px solid var(--line);border-radius:15px;padding:12px;display:grid;grid-template-rows:auto 1fr auto;gap:8px}.pdf-title{text-align:center;font-weight:1000}.pdf-preview{display:grid;place-items:center;overflow:auto;background:#eef3f6;border-radius:12px;padding:8px;min-height:0}.pdf-preview canvas{max-height:100%;max-width:100%;width:auto;height:auto;box-shadow:0 3px 12px rgba(0,0,0,.16)}
 .teacher-modal{position:fixed;inset:0;background:rgba(12,35,50,.7);z-index:100;display:none;place-items:center;padding:18px}.teacher-modal.open{display:grid}.teacher-box{max-width:790px;max-height:90vh;overflow:auto;background:#fff;border-radius:22px;padding:20px}.teacher-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.teacher-item{background:#f4f8fa;border:2px solid #d4e3ea;border-radius:14px;padding:12px}.teacher-item strong{display:block;margin-bottom:5px}
 @media(max-width:920px){.brand small{display:none}.tabs{grid-template-columns:repeat(4,1fr)}.layout,.sheet-stage,.pdf-layout{grid-template-columns:1fr}.step{overflow:auto}.sequence,.pairpick{grid-template-columns:repeat(2,1fr)}.missing-grid{grid-template-columns:1fr}.teacher-grid{grid-template-columns:1fr}}
-@media print{body{background:#fff}.app,.teacher-modal{display:none!important}#printArea{display:block!important}.worksheet{border:0;max-width:none;min-height:0}}
+
 </style>
 </head>
 <body>
@@ -76,7 +76,7 @@
 <div class="teacher-item"><strong>Error frecuente</strong>Leer el diagrama como tres números independientes. Reforzar: uno es el todo y dos son las partes.</div>
 <div class="teacher-item"><strong>Evaluación</strong>Observar si el alumno mantiene la relación al cambiar de representación y si encuentra una parte desconocida.</div>
 <div class="teacher-item"><strong>Cierre</strong>“Enséñame 8 de una manera y cuéntame cómo la misma idea aparece en las cuatro representaciones.”</div>
-</div></div></div><div id="printArea" style="display:none"></div>
+</div></div></div>
 
 <script>
 (function(){
