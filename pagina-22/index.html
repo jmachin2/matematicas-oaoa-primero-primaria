@@ -29,7 +29,7 @@
 .sheet-stage{display:grid;grid-template-columns:minmax(0,1fr) 210px;gap:10px;height:calc(100% - 36px)}.viewer{background:#dfe8ed;border-radius:15px;overflow:auto;display:grid;place-items:center;position:relative}.sheet-layer{width:min(760px,95%);height:96%;min-height:480px;position:relative;transform-origin:center}.sheet-layer iframe{width:100%;height:100%;border:0;background:#fff}.sheet-layer canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none}.tools{background:#fff;border:2px solid var(--line);border-radius:15px;padding:9px;display:grid;gap:7px;align-content:start}.tools h3{margin:0}.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.toolbtn{padding:7px;font-size:.75rem}.toolbtn.active{background:#dceff8;border-color:var(--blue)}
 .pdf-layout{display:grid;grid-template-columns:190px minmax(0,1fr);gap:12px;height:calc(100% - 36px)}.pdf-types{display:grid;gap:7px;align-content:start;background:#fff;border:2px solid var(--line);border-radius:15px;padding:10px}.pdf-type{padding:9px}.pdf-type.selected{background:#dceff8;border-color:var(--blue)}.pdf-panel{background:#fff;border:2px solid var(--line);border-radius:15px;padding:12px;display:grid;grid-template-rows:auto 1fr auto;gap:8px;min-height:0}.pdf-title{text-align:center;font-weight:1000}.pdf-preview{display:grid;place-items:center;overflow:auto;background:#eef3f6;border-radius:12px;padding:8px;min-height:0}.pdf-preview canvas{max-height:100%;max-width:100%;width:auto;height:auto;box-shadow:0 3px 12px rgba(0,0,0,.16)}.teacher-modal{position:fixed;inset:0;background:rgba(12,35,50,.7);z-index:100;display:none;place-items:center;padding:18px}.teacher-modal.open{display:grid}.teacher-box{max-width:780px;max-height:90vh;overflow:auto;background:#fff;border-radius:22px;padding:20px}.teacher-box h2{margin-top:0}.teacher-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.teacher-item{background:#f4f8fa;border:2px solid #d4e3ea;border-radius:14px;padding:12px}.teacher-item strong{display:block;margin-bottom:5px}
 @media(max-width:920px){.brand small{display:none}.tabs{grid-template-columns:repeat(4,1fr)}.rod-layout,.missing-layout,.pairs-layout,.transfer-layout,.recall-layout,.problem{grid-template-columns:1fr}.sheet-stage,.pdf-layout{grid-template-columns:1fr}.step{overflow:auto}.rod{--u:34px}.teacher-grid{grid-template-columns:1fr}}
-@media print{body{background:#fff}.app,.teacher-modal{display:none!important}#printArea{display:block!important}.worksheet{border:0;max-width:none;min-height:0}}
+
 </style>
 </head>
 <body>
@@ -92,7 +92,7 @@
 <div class="teacher-item"><strong>Cierre</strong>“Hoy hemos descubierto que 8 puede construirse de varias maneras. ¿Qué pareja recuerdas sin mirar?”</div>
 </div></div></div>
 
-<div id="printArea" style="display:none"></div>
+
 <script>
 (function(){
 var $=function(s){return document.querySelector(s)}, $$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s))};
