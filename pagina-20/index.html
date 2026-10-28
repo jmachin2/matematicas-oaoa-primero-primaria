@@ -309,6 +309,27 @@ function makeSheet(){
  const c=document.createElement('canvas');c.width=1240;c.height=1754;const g=c.getContext('2d');g.fillStyle='#fffefa';g.fillRect(0,0,c.width,c.height);
  txt(g,`${labels[pdfType].toUpperCase()} · EL NÚMERO POSTERIOR`,620,75,34,true,'center');txt(g,'Nombre:',70,130,22);line(g,160,133,430);txt(g,'Fecha:',730,130,22);line(g,805,133,300);txt(g,`Página 20 · versión ${pdfVersion}`,620,172,18,true,'center','#60798a');
  let y=220;const task=(title,h)=>{rr(g,65,y,1110,h,18,'#fff','#c7dce7',3);txt(g,title,90,y+42,27,true);const yy=y;y+=h+24;return yy};
+ if(pdfType==='refuerzo'){
+  let yy=task('1. Añade 1 y completa.',360);
+  [2,3,4,5].forEach((n,i)=>{const x=130+(i%2)*520,ry=yy+100+Math.floor(i/2)*110;drawRod(g,n,x,ry-34,24,34);txt(g,'+ 1 =',x+190,ry,24,true);rr(g,x+290,ry-38,90,48,8,'#fff','#91a9b7',2)});
+  yy=task('2. Escribe el número que viene después.',300);[2,3,4,5,6].forEach((n,i)=>{const x=120+i*205;txt(g,String(n),x,yy+105,30,true,'center');txt(g,'→',x,yy+155,28,true,'center','#60798a');rr(g,x-45,yy+180,90,48,8,'#fff','#91a9b7',2)});
+  yy=task('3. Completa.',260);['3 + 1 =','5 + 1 =','6 + 1 ='].forEach((s,i)=>{const x=150+i*350;txt(g,s,x,yy+125,26,true);rr(g,x+145,yy+88,85,46,8,'#fff','#91a9b7',2)});
+  yy=task('4. Recuerda.',210);txt(g,'POSTERIOR = el número que viene justo después. Es uno más.',620,yy+110,24,true,'center');
+  return c
+ }
+ if(pdfType==='tea'){
+  let yy=task('1. MIRA.',250);drawRod(g,4,300,yy+95,34,42);txt(g,'+ 1',560,yy+128,34,true);txt(g,'→ 5',760,yy+128,38,true);txt(g,'Uno más que 4 es 5.',620,yy+190,22,true,'center','#60798a');
+  yy=task('2. AÑADE 1.',330);[2,5].forEach((n,i)=>{const x=180+i*520;drawRod(g,n,x,yy+100,30,38);txt(g,'+ 1 =',x+210,yy+132,25,true);rr(g,x+320,yy+95,90,48,8,'#fff','#91a9b7',2)});
+  yy=task('3. ESCRIBE.',300);[3,4,6].forEach((n,i)=>{const x=180+i*350;txt(g,String(n),x,yy+118,34,true,'center');txt(g,'→',x,yy+170,30,true,'center','#60798a');rr(g,x-45,yy+195,90,50,8,'#fff','#91a9b7',2)});
+  yy=task('4. REVISA.',230);['He añadido solo 1.','He escrito el número siguiente.','Mi respuesta es uno más.'].forEach((s,i)=>{rr(g,170,yy+62+i*55,34,34,4,'#fff','#60798a',2);txt(g,s,235,yy+88+i*55,22,false)});
+  return c
+ }
+ if(pdfType==='pictogramas'){
+  let yy=task('1. MIRA Y AÑADE 1.',400);drawRod(g,3,180,yy+110,38,46);drawRod(g,1,500,yy+110,38,46);txt(g,'→',680,yy+145,40,true,'center');drawRod(g,4,780,yy+110,38,46);txt(g,'3 + 1 = 4',620,yy+250,34,true,'center');
+  yy=task('2. SIGUE LA FLECHA.',330);[2,4,6].forEach((n,i)=>{const x=200+i*360;txt(g,String(n),x,yy+100,42,true,'center');txt(g,'↓',x,yy+160,34,true,'center','#60798a');rr(g,x-50,yy+190,100,58,8,'#fff','#91a9b7',2)});
+  yy=task('3. REVISA.',260);txt(g,'MIRA  →  +1  →  ESCRIBE  →  REVISA',620,yy+130,32,true,'center');
+  return c
+ }
  let yy=task(pdfType==='pictogramas'?'1. ➕ AÑADE 1 Y ESCRIBE EL POSTERIOR':'1. Suma 1 y escribe el número posterior.',390);
  const nums=pdfVersion%2?[2,3,4,5,6]:[6,5,4,3,2];
  nums.forEach((n,i)=>{const x=105+(i%2)*530,ry=yy+88+Math.floor(i/2)*76;txt(g,`${n}  +  1  =`,x,ry,25,true);rr(g,x+185,ry-35,90,45,8,'#fff','#91a9b7',2)});
