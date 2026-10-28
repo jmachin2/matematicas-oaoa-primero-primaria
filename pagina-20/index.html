@@ -219,7 +219,7 @@ button{font:inherit}
    <button class="pdf-type selected" data-pdf="ampliacion">Ampliación</button>
    <button class="pdf-type" data-pdf="refuerzo">Refuerzo</button>
    <button class="pdf-type" data-pdf="tarea">Tarea</button>
-   <button class="pdf-type" data-pdf="paso">Trabajo paso a paso</button>
+   <button class="pdf-type" data-pdf="tea">TEA</button>
    <button class="pdf-type" data-pdf="pictogramas">Pictogramas</button>
   </aside>
   <div class="pdf-panel">
@@ -300,7 +300,7 @@ function applyZoom(){$('#sheetTransform').style.transform=`scale(${zoom})`}$('#z
 img.onload=()=>setTimeout(resizeCanvas,50);window.addEventListener('resize',()=>{if(current===7)setTimeout(resizeCanvas,100)});
 
 /* 8 PDF */
-let pdfType='ampliacion',pdfVersion=1,pdfCanvas=null;const labels={ampliacion:'Ampliación',refuerzo:'Refuerzo',tarea:'Tarea',paso:'Trabajo paso a paso',pictogramas:'Pictogramas'};
+let pdfType='ampliacion',pdfVersion=1,pdfCanvas=null;const labels={ampliacion:'Ampliación',refuerzo:'Refuerzo',tarea:'Tarea',tea:'TEA',pictogramas:'Pictogramas'};
 function rr(g,x,y,w,h,r=14,fill='#fff',stroke='#bfd5e1',sw=3){g.beginPath();g.roundRect(x,y,w,h,r);g.fillStyle=fill;g.fill();g.lineWidth=sw;g.strokeStyle=stroke;g.stroke()}
 function txt(g,t,x,y,s=28,b=true,align='left',col='#17384e'){g.fillStyle=col;g.font=`${b?'700':'400'} ${s}px Arial`;g.textAlign=align;g.textBaseline='alphabetic';g.fillText(t,x,y)}
 function line(g,x,y,w){g.strokeStyle='#718b99';g.lineWidth=2;g.setLineDash([8,6]);g.beginPath();g.moveTo(x,y);g.lineTo(x+w,y);g.stroke();g.setLineDash([])}
