@@ -64,7 +64,7 @@
 
 <section class="step" data-step="7"><div class="head"><div class="title">7. Ver la ficha original · Página 24</div></div><div class="sheet-stage"><div class="viewer"><div class="sheet-layer" id="sheetLayer"><iframe title="Ficha original página 24" src="https://drive.google.com/file/d/1GTUFBd9eTLZ_KfIw6G_Od7CUqrmM3Vt-/preview"></iframe><canvas id="annot"></canvas></div></div><aside class="tools"><h3>Anotar</h3><div class="tool-grid"><button class="toolbtn active" data-tool="pen">✏️ Lápiz</button><button class="toolbtn" data-tool="highlight">🖍️ Resaltar</button><button class="toolbtn" data-tool="check">✓</button><button class="toolbtn" data-tool="eraser">⌫ Goma</button><button class="toolbtn" id="undoAnnot">↶ Deshacer</button><button class="toolbtn" id="clearAnnot">🧹 Limpiar</button></div><a class="control" target="_blank" rel="noopener" href="https://drive.google.com/file/d/1NPEqcEIY0Fq5c_-kJE4Z2_p6Mw7K_lJe/view">↗ Abrir PDF original</a><div class="sub">Si abre al inicio del libro, ve a la página 24.</div></aside></div></section>
 
-<section class="step" data-step="8"><div class="head"><div class="title">8. Páginas imprimibles · Página 24</div></div><div class="pdf-layout"><aside class="pdf-types"><h3>Elige</h3><button class="pdf-type selected" data-pdf="ampliacion">Ampliación</button><button class="pdf-type" data-pdf="refuerzo">Refuerzo</button><button class="pdf-type" data-pdf="tarea">Tarea</button><button class="pdf-type" data-pdf="paso">Trabajo paso a paso</button><button class="pdf-type" data-pdf="pictogramas">Pictogramas</button></aside><div class="pdf-panel"><div class="pdf-title" id="pdfTitle">Ampliación · Página 24</div><div class="pdf-preview" id="pdfPreview"></div><div class="actions"><button class="action" id="regenPdf">↻ Otra versión</button><button class="action primary" id="downloadPdf">⬇ Descargar PDF</button></div></div></div></section>
+<section class="step" data-step="8"><div class="head"><div class="title">8. Páginas imprimibles · Página 24</div></div><div class="pdf-layout"><aside class="pdf-types"><h3>Elige</h3><button class="pdf-type selected" data-pdf="ampliacion">Ampliación</button><button class="pdf-type" data-pdf="refuerzo">Refuerzo</button><button class="pdf-type" data-pdf="tarea">Tarea</button><button class="pdf-type" data-pdf="tea">TEA</button><button class="pdf-type" data-pdf="pictogramas">Pictogramas</button></aside><div class="pdf-panel"><div class="pdf-title" id="pdfTitle">Ampliación · Página 24</div><div class="pdf-preview" id="pdfPreview"></div><div class="actions"><button class="action" id="regenPdf">↻ Otra versión</button><button class="action primary" id="downloadPdf">⬇ Descargar PDF</button></div></div></div></section>
 </main></div>
 
 <div class="teacher-modal" id="teacherModal"><div class="teacher-box"><div class="head"><h2>👩‍🏫 Ayuda docente · Página 24</h2><button class="action" id="closeTeacher">Cerrar</button></div><div class="teacher-grid">
@@ -102,18 +102,25 @@ $$('[data-tool]').forEach(b=>b.onclick=()=>{tool=b.dataset.tool;$$('[data-tool]'
 ac.onpointerdown=e=>{history.push(ac.toDataURL());drawing=true;last=pos(e);if(tool==='check'){ctx.font='bold 38px Arial';ctx.fillStyle='#27874a';ctx.fillText('✓',last.x,last.y);drawing=false}};ac.onpointermove=e=>{if(!drawing)return;let p=pos(e);ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.lineCap='round';ctx.lineWidth=tool==='highlight'?16:(tool==='eraser'?22:5);ctx.strokeStyle=tool==='highlight'?'rgba(255,220,40,.35)':(tool==='eraser'?'#fff':'#e53935');ctx.stroke();last=p};ac.onpointerup=()=>drawing=false;ac.onpointercancel=()=>drawing=false;$('#clearAnnot').onclick=()=>{ctx.clearRect(0,0,ac.width,ac.height);history=[]};$('#undoAnnot').onclick=()=>{let src=history.pop();if(!src)return;let r=ac.getBoundingClientRect(),im=new Image();ctx.clearRect(0,0,r.width,r.height);im.onload=()=>ctx.drawImage(im,0,0,r.width,r.height);im.src=src};addEventListener('resize',()=>{if(current===7)resizeAnnot()});
 
 let pdfType='ampliacion',pdfVersion=1,pdfCanvas=null;
-const pdfLabels={ampliacion:'Ampliación',refuerzo:'Refuerzo',tarea:'Tarea',paso:'Trabajo paso a paso',pictogramas:'Pictogramas'};
+const pdfLabels={ampliacion:'Ampliación',refuerzo:'Refuerzo',tarea:'Tarea',tea:'TEA',pictogramas:'Pictogramas'};
 function prr(g,x,y,w,h,r=14,fill='#fff',stroke='#bfd5e1',sw=3){g.beginPath();g.roundRect(x,y,w,h,r);g.fillStyle=fill;g.fill();g.lineWidth=sw;g.strokeStyle=stroke;g.stroke()}
 function ptxt(g,t,x,y,s=28,b=true,align='left',col='#17384e'){g.fillStyle=col;g.font=(b?'700 ':'400 ')+s+'px Arial';g.textAlign=align;g.textBaseline='alphabetic';g.fillText(t,x,y)}
 function pline(g,x1,y1,x2,y2,col='#718b99',sw=2,dash=false){g.save();g.strokeStyle=col;g.lineWidth=sw;if(dash)g.setLineDash([10,7]);g.beginPath();g.moveTo(x1,y1);g.lineTo(x2,y2);g.stroke();g.restore()}
 function pblank(g,x,y,w=100,h=52){prr(g,x,y,w,h,8,'#fff','#91a9b7',2)}
 function ptask(g,y,title,h){prr(g,65,y,1110,h,18,'#fff','#c7dce7',3);ptxt(g,title,90,y+43,27,true);return y}
+function picEye(g,x,y,s=1){g.save();g.strokeStyle='#17384e';g.lineWidth=4*s;g.beginPath();g.ellipse(x,y,42*s,24*s,0,0,Math.PI*2);g.stroke();g.beginPath();g.arc(x,y,9*s,0,Math.PI*2);g.fillStyle='#17384e';g.fill();g.restore()}
+function picBlocks(g,x,y,s=1){g.save();g.strokeStyle='#17384e';g.lineWidth=4*s;g.strokeRect(x-50*s,y-18*s,42*s,36*s);g.strokeRect(x+8*s,y-18*s,42*s,36*s);g.restore()}
+function picTree(g,x,y,s=1){g.save();g.strokeStyle='#17384e';g.lineWidth=4*s;g.beginPath();g.arc(x,y-24*s,18*s,0,Math.PI*2);g.stroke();g.beginPath();g.moveTo(x,y-6*s);g.lineTo(x-32*s,y+28*s);g.moveTo(x,y-6*s);g.lineTo(x+32*s,y+28*s);g.stroke();g.strokeRect(x-48*s,y+28*s,32*s,28*s);g.strokeRect(x+16*s,y+28*s,32*s,28*s);g.restore()}
+function picWrite(g,x,y,s=1){g.save();g.strokeStyle='#17384e';g.lineWidth=5*s;g.beginPath();g.moveTo(x-30*s,y+25*s);g.lineTo(x+24*s,y-29*s);g.stroke();g.beginPath();g.moveTo(x+22*s,y-30*s);g.lineTo(x+34*s,y-18*s);g.stroke();g.beginPath();g.moveTo(x-34*s,y+30*s);g.lineTo(x-18*s,y+25*s);g.stroke();g.restore()}
+function picCheck(g,x,y,s=1){g.save();g.strokeStyle='#27874a';g.lineWidth=6*s;g.beginPath();g.moveTo(x-30*s,y);g.lineTo(x-8*s,y+22*s);g.lineTo(x+34*s,y-26*s);g.stroke();g.restore()}
+function picBox(g,x,y,w,h,label,icon){prr(g,x,y,w,h,16,'#fff','#9fbfcf',3);if(icon==='eye')picEye(g,x+w/2,y+55,1);if(icon==='blocks')picBlocks(g,x+w/2,y+55,1);if(icon==='tree')picTree(g,x+w/2,y+48,.8);if(icon==='write')picWrite(g,x+w/2,y+55,1);if(icon==='check')picCheck(g,x+w/2,y+55,1);ptxt(g,label,x+w/2,y+h-24,20,true,'center')}
+
 const RCOL={1:'#ffffff',2:'#e53d3d',3:'#7fc86c',4:'#8b4aa8',5:'#f1d34d',6:'#3f8d52',7:'#262626',8:'#8b5a35'};
 function prod(g,n,x,y,u=34){prr(g,x,y,n*u,42,7,RCOL[n],'#17384e',2);ptxt(g,String(n),x+n*u/2,y+29,20,true,'center',(n===7||n===8)?'#fff':'#17384e')}
 function pdiagram(g,x,y,a,b,hide=-1){prr(g,x+135,y,100,60,12,'#fff','#17384e',3);ptxt(g,'8',x+185,y+40,30,true,'center');pline(g,x+185,y+60,x+80,y+125,'#17384e',4);pline(g,x+185,y+60,x+290,y+125,'#17384e',4);prr(g,x+30,y+125,100,60,12,'#fff','#17384e',3);prr(g,x+240,y+125,100,60,12,'#fff','#17384e',3);ptxt(g,hide===0?'?':String(a),x+80,y+166,30,true,'center');ptxt(g,hide===1?'?':String(b),x+290,y+166,30,true,'center')}
 function drawBars(g,x,y,a,b){const scale=35,base=y+210;g.fillStyle=RCOL[a];g.fillRect(x,base-a*scale,110,a*scale);g.strokeStyle='#17384e';g.lineWidth=3;g.strokeRect(x,base-a*scale,110,a*scale);g.fillStyle=RCOL[b];g.fillRect(x+155,base-b*scale,110,b*scale);g.strokeRect(x+155,base-b*scale,110,b*scale);ptxt(g,String(a),x+55,base-a*scale+35,24,true,'center');ptxt(g,String(b),x+210,base-b*scale+35,24,true,'center')}
 function makePdfSheet24(){const c=document.createElement('canvas');c.width=1240;c.height=1754;const g=c.getContext('2d');g.fillStyle='#fffefa';g.fillRect(0,0,c.width,c.height);
-ptxt(g,pdfLabels[pdfType].toUpperCase()+' · REPRESENTO EL 8',620,72,34,true,'center');ptxt(g,'Nombre:',70,126,22);pline(g,160,130,540,130);ptxt(g,'Fecha:',735,126,22);pline(g,810,130,1110,130);ptxt(g,'Página 24 · versión '+pdfVersion,620,168,18,true,'center','#60798a');
+ptxt(g,(pdfType==='tea'?'FICHA ESTRUCTURADA':pdfLabels[pdfType].toUpperCase())+' · REPRESENTO EL 8',620,72,34,true,'center');ptxt(g,'Nombre:',70,126,22);pline(g,160,130,540,130);ptxt(g,'Fecha:',735,126,22);pline(g,810,130,1110,130);ptxt(g,'Página 24 · versión '+pdfVersion,620,168,18,true,'center','#60798a');
 let y=210,yy;const pair=pdfVersion%2?[5,3]:[6,2];
 if(pdfType==='refuerzo'){
  yy=ptask(g,y,'1. Completa los diagramas.',440);[[7,1,1],[6,2,0],[5,3,1],[4,4,0]].forEach((p,i)=>pdiagram(g,85+(i%2)*555,yy+70+Math.floor(i/2)*195,p[0],p[1],p[2]));y+=464;
@@ -125,15 +132,20 @@ if(pdfType==='refuerzo'){
  yy=ptask(g,y,'2. Dibuja esos mismos dos grupos.',390);prr(g,95,yy+82,1050,240,12,'#fbfdfe','#cbdde6',2);y+=414;
  yy=ptask(g,y,'3. Completa el diagrama con los mismos números.',330);pdiagram(g,430,yy+75,pair[0],pair[1],-1);y+=354;
  yy=ptask(g,y,'4. Escribe la expresión.',210);ptxt(g,'8 = '+pair[0]+' + '+pair[1],620,yy+135,40,true,'center')
- }else if(pdfType==='paso'){
- const steps=['1. REGLETAS','2. DIBUJO','3. DIAGRAMA','4. EXPRESIÓN'];
- steps.forEach((s,i)=>{yy=ptask(g,y,s,320);if(i===0){prod(g,8,400,yy+95,40);prod(g,pair[0],365,yy+185,40);prod(g,pair[1],365+pair[0]*40+12,yy+185,40)}else if(i===1){drawBars(g,435,yy+65,pair[0],pair[1])}else if(i===2){pdiagram(g,430,yy+75,pair[0],pair[1],-1)}else{ptxt(g,'8 = '+pair[0]+' + '+pair[1],620,yy+190,48,true,'center')}y+=340})
+ }else if(pdfType==='tea'){
+ ptxt(g,'HOY HAGO 4 PASOS',620,225,26,true,'center','#60798a');
+ [['1','MIRA'],['2','COPIA'],['3','COMPLETA'],['4','REVISA']].forEach((p,i)=>{prr(g,90+i*285,255,245,72,16,'#fff7bf','#9e8b3c',3);ptxt(g,p[0]+'  '+p[1],212+i*285,302,24,true,'center')});
+ yy=ptask(g,360,'1. MIRA EL MODELO.',300);prod(g,8,390,yy+80,38);prod(g,pair[0],350,yy+175,38);prod(g,pair[1],350+pair[0]*38+12,yy+175,38);ptxt(g,'8 = '+pair[0]+' + '+pair[1],930,yy+185,34,true,'center');
+ yy=ptask(g,685,'2. COPIA LOS MISMOS NÚMEROS.',300);pdiagram(g,435,yy+75,pair[0],pair[1],-1);
+ yy=ptask(g,1010,'3. COMPLETA UNA.',250);ptxt(g,'8 = '+(pdfVersion%2?4:5)+' +',300,yy+150,38,true);pblank(g,580,yy+105,130,65);
+ yy=ptask(g,1285,'4. REVISA.',270);['He usado el mismo 8.','He puesto las dos partes.','He comprobado.'].forEach((s,i)=>{prr(g,150,yy+62+i*64,38,38,4,'#fff','#60798a',2);ptxt(g,s,225,yy+92+i*64,25,false)});
  }else if(pdfType==='pictogramas'){
- yy=ptask(g,y,'1. TODO = 8.',310);prod(g,8,410,yy+105,42);y+=334;
- yy=ptask(g,y,'2. DOS PARTES.',340);prod(g,pair[0],330,yy+130,42);prod(g,pair[1],330+pair[0]*42+20,yy+130,42);y+=364;
- yy=ptask(g,y,'3. DIAGRAMA.',380);pdiagram(g,430,yy+100,pair[0],pair[1],-1);y+=404;
- yy=ptask(g,y,'4. EXPRESIÓN.',280);ptxt(g,'8 = '+pair[0]+' + '+pair[1],620,yy+165,44,true,'center');y+=304;
- yy=ptask(g,y,'5. Completa otra.',210);ptxt(g,'8 = __ + __',620,yy+130,38,true,'center')
+ ptxt(g,'MIRA · BLOQUES · DIAGRAMA · ESCRIBE',620,225,25,true,'center','#60798a');
+ picBox(g,95,255,235,135,'MIRA','eye');picBox(g,365,255,235,135,'BLOQUES','blocks');picBox(g,635,255,235,135,'DIAGRAMA','tree');picBox(g,905,255,235,135,'ESCRIBE','write');
+ yy=ptask(g,425,'1.',300);picEye(g,150,yy+125,1);prod(g,8,300,yy+95,40);prod(g,pair[0],620,yy+95,35);prod(g,pair[1],620+pair[0]*35+12,yy+95,35);
+ yy=ptask(g,750,'2.',300);picBlocks(g,150,yy+125,1);drawBars(g,430,yy+55,pair[0],pair[1]);
+ yy=ptask(g,1075,'3.',300);picTree(g,150,yy+115,1);pdiagram(g,430,yy+55,pair[0],pair[1],-1);
+ yy=ptask(g,1400,'4.',200);picWrite(g,150,yy+100,1);ptxt(g,'8 = '+pair[0]+' + '+pair[1],620,yy+118,40,true,'center');
  }else{
  yy=ptask(g,y,'1. REGLETAS · construye una descomposición de 8.',350);prod(g,8,410,yy+80,42);prod(g,pair[0],340,yy+180,42);prod(g,pair[1],340+pair[0]*42+16,yy+180,42);y+=374;
  yy=ptask(g,y,'2. DIBUJO · representa las mismas dos partes.',350);drawBars(g,430,yy+70,pair[0],pair[1]);y+=374;
