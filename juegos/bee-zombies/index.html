@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bee-Zombies: misión jardín</title>
+<style>
+:root{--bg1:#fff8c8;--bg2:#c9e9c3;--green:#35653b;--soft:#fffffff0;--wood:#8e613d;--tile1:#d3eca4;--tile2:#c4e798;--shadow:#41733e30;font-family:system-ui,'Trebuchet MS',sans-serif;color:#243c31}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at top,var(--bg1),var(--bg2) 70%);min-height:100vh}
+header{text-align:center;padding:16px 12px 8px}
+h1{margin:0;font-size:clamp(1.55rem,4vw,2.6rem);color:var(--green);text-shadow:1px 2px white}
+header p{margin:4px}
+main{max-width:1280px;margin:auto;display:grid;grid-template-columns:minmax(320px,1fr) 360px;gap:16px;padding:12px}
+section{background:var(--soft);border:3px solid #fff;border-radius:24px;box-shadow:0 8px 22px var(--shadow);padding:14px}
+.topbar,.line{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
+.pill{border-radius:50px;background:#e8f4db;padding:8px 14px;font-weight:800}
+.garden{display:grid;gap:4px;margin:12px auto;width:min(100%,690px);aspect-ratio:1;max-height:67vh;background:#8bb765;border:8px solid var(--wood);border-radius:15px;padding:5px}
+.cell{position:relative;display:flex;justify-content:center;align-items:center;background:var(--tile1);border-radius:8px;min-width:0;min-height:0;overflow:hidden}
+.cell:nth-child(odd){background:var(--tile2)}
+.cell.wall{background:repeating-linear-gradient(45deg,#a0a5a9,#a0a5a9 10px,#7e898b 10px,#7e898b 20px)}
+.rock{font-size:clamp(21px,4vw,40px)}
+.cell .arrow{position:absolute;top:2px;right:3px;font-size:12px;background:#ffffffd3;border-radius:8px;padding:2px 5px;z-index:6;font-weight:900}
+.cell .plant{font-size:clamp(22px,4vw,40px);filter:drop-shadow(1px 4px 1px #496d3d);z-index:1}
+.panel h2{margin:0 0 10px;font-size:1.35rem}
+.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.keys button:nth-child(1){grid-column:2}
+.keys button:nth-child(2){grid-column:1;grid-row:2}
+.keys button:nth-child(3){grid-column:2;grid-row:2}
+.keys button:nth-child(4){grid-column:3;grid-row:2}
+button,select{font:inherit;border:none;border-radius:13px;padding:12px 8px;font-weight:850;cursor:pointer;touch-action:manipulation}
+button:focus-visible,select:focus-visible{outline:3px solid #286ca8;outline-offset:2px}
+.key{font-size:24px;background:#f8da6e;color:#5c3f0c;box-shadow:0 4px #c7a33a}
+.key:active{transform:translateY(3px);box-shadow:0 1px #c7a33a}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.go{background:#59b36b;color:white}
+.clear{background:#f7a87d}
+.undo{background:#d3d8e9}
+.reset{background:#e1d5f4}
+.next{background:#f7cf57;width:100%;margin-top:8px}
+.costumeBtn{background:#5fa6dd;color:#fff;width:100%;margin-top:8px}
+.program{min-height:72px;background:#edf0e9;padding:10px;border:2px dashed #9bad97;border-radius:14px;display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin:10px 0}
+.cmd{background:white;border-radius:9px;padding:7px 9px;border:1px solid #ccd3c7;font-size:20px}
+.cmd.now{background:#ffe08a;border-color:#bf8200}
+.message{background:#eaf7fa;border-left:5px solid #67b9c8;border-radius:8px;padding:10px;margin:10px 0;min-height:45px}
+select{background:#e4f2ce;width:100%;margin:7px 0;border:2px solid #91bd75}
+.status{font-weight:700}
+.help{font-size:.91rem;line-height:1.42}
+.stars{color:#d49d12;font-size:22px}
+.hidden{display:none !important}
+footer{text-align:center;padding:10px;font-size:.85rem}
+body.party .garden{animation:party .6s infinite alternate}
+@keyframes party{from{filter:hue-rotate(0deg)}to{filter:hue-rotate(12deg)}}
+.botWrap{position:absolute;inset:8%;z-index:2;display:flex;align-items:center;justify-content:center;filter:drop-shadow(0 4px 3px #4445)}
+.botWrap.big{position:relative;inset:auto;width:180px;height:180px;margin:auto;filter:drop-shadow(0 7px 8px #4444)}
+.botBase{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;user-select:none}
+.botLayer{position:absolute;pointer-events:none;user-select:none}
+.hat{top:2%;left:16%;font-size:clamp(18px,2.4vw,28px);transform:rotate(-7deg)}
+.eyes{top:27%;left:26%;font-size:clamp(14px,1.8vw,20px)}
+.mouth{top:58%;left:30%;font-size:clamp(14px,1.7vw,20px)}
+.arms{top:42%;left:-5%;font-size:clamp(18px,2.3vw,28px);width:110%;display:flex;justify-content:space-between}
+.extra{bottom:7%;right:10%;font-size:clamp(16px,2vw,24px)}
+.previewCard{background:#f7fbf2;border:2px solid #dce8cf;border-radius:18px;padding:10px;margin:10px 0;text-align:center}
+.previewTitle{margin:0 0 6px;font-size:.98rem;color:#39603a}
+.smallCostume{display:flex;gap:6px;flex-wrap:wrap;font-size:.86rem}
+.tag{background:#e7f3da;border-radius:999px;padding:5px 8px;font-weight:700}
+.overlay{position:fixed;inset:0;background:#1b2f1ece;display:flex;align-items:center;justify-content:center;padding:16px;z-index:20}
+.overlayCard{width:min(980px,100%);max-height:95vh;overflow:auto;background:#fffdf4;border-radius:24px;padding:18px;border:4px solid #fff;box-shadow:0 10px 35px #0004}
+.overlay h2{margin:0 0 10px;color:#315f35;font-size:clamp(1.4rem,4vw,2rem)}
+.overlayGrid{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;align-items:start}
+.chooser{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chooser .card{background:#f7fbf2;border:2px solid #dce8cf;border-radius:18px;padding:10px}
+.chooser label{display:block;font-weight:800;margin-bottom:4px;color:#305f34}
+.startBtn{background:#54ad65;color:#fff;padding:14px 18px;font-size:1.05rem;width:100%;margin-top:10px}
+.secondaryBtn{background:#dce7f7;color:#274f75;padding:12px 18px;width:100%;margin-top:10px}
+.legend{font-size:.92rem;line-height:1.4;background:#fff8dc;border:2px dashed #efcf70;border-radius:15px;padding:10px;margin-top:10px}
+.miniBoardBot{width:200px;height:200px;margin:auto}.botWrap.big{width:160px;height:160px}.botWrap svg{display:block}
+@media(max-width:850px){main{grid-template-columns:1fr}.garden{max-height:56vh}.panel{max-width:690px;width:100%;margin:auto}.overlayGrid{grid-template-columns:1fr}.chooser{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* El frente de la abeja (ojos y sonrisa) señala el sentido de marcha.
+   Se conserva el elemento entre giros para transiciones visuales de 90 grados. */
+.garden .botWrap{transition:transform 380ms cubic-bezier(.2,.7,.25,1);transform-origin:50% 50%;will-change:transform}
+.garden .botWrap svg{overflow:visible}
+/* Diseño adaptable a toda la pantalla */
+html,body{width:100%;min-height:100%;margin:0}
+body{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
+header{position:relative;flex:0 0 auto;padding:8px 150px 5px 12px;min-height:62px}
+header p{font-size:.88rem}
+.fullscreenBtn{position:absolute;right:12px;top:10px;z-index:10;background:#365aab;color:white;border:2px solid #ffffffae;padding:10px 14px;white-space:nowrap;box-shadow:0 3px 8px #0002}
+.fullscreenBtn:hover{background:#25468e}
+main{flex:1 1 auto;min-height:0;width:100%;max-width:none;padding:8px 12px 4px;grid-template-columns:minmax(0,1fr) clamp(300px,27vw,390px);gap:10px;align-items:stretch}
+main>section{min-width:0;min-height:0}
+main>section:first-child{display:flex;flex-direction:column;justify-content:flex-start}
+.garden{width:auto;height:auto;min-height:0;max-height:none;max-width:none;aspect-ratio:1;flex:1 1 auto;align-self:center;/* viewport-fit size is calculated below */}
+.panel{overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.panel .previewCard{margin:5px 0;padding:5px}
+.panel .botWrap.big{width:90px;height:90px}
+.panel .smallCostume{font-size:.73rem;gap:4px}
+.panel .tag{padding:3px 6px}
+.panel h2{margin-bottom:4px;font-size:1.16rem}
+.panel .help{font-size:.84rem}
+.panel .keys{margin:7px 0;gap:5px}
+.panel .key{padding:7px}
+.panel .program{min-height:46px;padding:6px;margin:5px 0;max-height:95px;overflow-y:auto}
+.panel button{padding:9px 7px}
+.panel .message{margin:7px 0;padding:7px}
+footer{flex:0 0 auto;padding:3px;font-size:.75rem}
+@media(min-width:851px){
+ main{height:calc(100dvh - 104px)}
+ main>section:first-child .garden{height:min(calc(100dvh - 202px),calc(100vw - 460px));width:min(calc(100dvh - 202px),calc(100vw - 460px));max-width:100%;flex:0 1 auto;margin:auto}
+}
+@media(max-width:850px){
+ body{min-height:100dvh}
+ header{padding:10px 8px 6px;min-height:0}
+ header h1{font-size:1.6rem;padding-right:130px;text-align:left}
+ header p{text-align:left;font-size:.76rem}
+ .fullscreenBtn{top:10px;right:6px;padding:8px;font-size:.75rem}
+ main{display:flex;flex-direction:column;min-height:auto;height:auto;padding:6px;gap:8px}
+ main>section:first-child{flex:0 0 auto}
+ .garden{height:min(75vw,58dvh);width:min(75vw,58dvh);max-height:none;margin:8px auto;flex:none}
+ .panel{overflow:visible;max-width:none;padding:10px}
+ .panel .previewCard{display:none}
+ .keys{max-width:450px;margin-inline:auto!important}
+ .overlayCard{max-height:90dvh}
+}
+@media(max-width:480px){
+ header h1{font-size:1.22rem}
+ .garden{height:min(95vw,52dvh);width:min(95vw,52dvh)}
+ .topbar{gap:3px}
+ .pill{padding:5px 7px;font-size:.75rem}
+ .overlay{padding:7px}
+ .overlayCard{padding:10px}
+}
+@media(max-height:650px) and (min-width:851px){header{min-height:46px}header p{display:none}.panel .previewCard{display:none}main>section:first-child .garden{height:min(calc(100dvh - 135px),calc(100vw - 460px));width:min(calc(100dvh - 135px),calc(100vw - 460px))}}
+
+/* Pantalla principal ilustrada: zonas clicables alineadas con los botones del dibujo */
+.menuScreen{position:fixed;inset:0;background:#130d2d;z-index:18;display:flex;align-items:center;justify-content:center;padding:0;overflow:auto}
+.menuCanvas{position:relative;aspect-ratio:1672 / 941;width:min(100vw,177.68vh);max-height:100vh;flex:0 0 auto;background:#241448 url('menu-ceip-camino-largo.png') center/100% 100% no-repeat;overflow:hidden;box-shadow:0 0 45px #000a}
+.menuHit{position:absolute;background:transparent;border:0;border-radius:22px;padding:0;cursor:pointer;color:transparent;outline-offset:-3px;transition:background .18s ease,box-shadow .18s ease}
+.menuHit:hover,.menuHit:focus-visible{background:#ffffff19;box-shadow:0 0 0 3px #ffe7a9 inset,0 0 20px #a0ff8290}
+.menuHit:focus-visible{outline:4px solid #ffe29c}
+.menuPlay{left:7.7%;top:75.1%;width:22%;height:16.5%}
+.menuLevels{left:31%;top:75.1%;width:20.5%;height:16.5%}
+.menuDress{left:51.9%;top:75%;width:19.5%;height:16.5%}
+.menuFull{left:71.8%;top:75%;width:21%;height:16.5%}
+.menuLevelsBox{position:absolute;inset:18% 27% 15%;background:#231c41ed;border:4px solid #a464de;border-radius:22px;box-shadow:0 12px 25px #000a;padding:18px;color:white;display:flex;flex-direction:column;gap:10px;overflow-y:auto}
+.menuLevelsBox h2{color:#d6f985;margin:0;font-size:clamp(18px,2vw,30px)}
+.menuLevelsGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.menuLevelsGrid button{background:#80bf4f;color:#14230e;border:2px solid #d4fb9d;min-height:45px;font-size:clamp(12px,1.15vw,17px)}
+.menuLevelsGrid button:hover{background:#b2ef7a}
+.menuBack{background:#d8a5f9;color:#261640}
+.gameHomeBtn{position:absolute;left:12px;top:10px;z-index:12;background:#654087;color:white;border:2px solid #a6e355;padding:10px 14px}
+@media(max-aspect-ratio:5/4){.menuScreen{align-items:center}.menuCanvas{width:100vw;height:auto;max-height:none}.menuLevelsBox{inset:7% 9%;padding:10px}.menuLevelsGrid button{min-height:30px;padding:4px}}
+
+/* JUEGO: tablero original claro, a diferencia del menú ilustrado */
+:root{--bg1:#f1f2bf;--bg2:#c9e7c6;--wood:#8b673a;--tile1:#b6e69d;--tile2:#c3eca8}
+body{background:linear-gradient(115deg,#c9e9ca,#edf2bd 75%)}
+header{padding-left:115px}
+header h1{color:#2d6339}
+.garden{background:#8bb66b!important;border:8px solid #896539!important;box-shadow:0 4px 10px #365c3440!important;gap:5px;padding:6px;border-radius:17px}
+.cell{background:#b8e79f!important;border:0;border-radius:9px!important}
+.cell:nth-child(odd){background:#c4ecaa!important}
+.cell.wall{background:repeating-linear-gradient(45deg,#abb1b3 0 11px,#808d91 11px 22px)!important}
+main>section{background:#fffffff4}
+@media(min-width:851px){main>section:first-child .garden{height:min(calc(100dvh - 198px),calc(100vw - 465px));width:min(calc(100dvh - 198px),calc(100vw - 465px))}}
+@media(max-height:650px) and (min-width:851px){main>section:first-child .garden{height:min(calc(100dvh - 145px),calc(100vw - 465px));width:min(calc(100dvh - 145px),calc(100vw - 465px))}}
+@media(max-width:850px){header{padding-left:8px}.garden{width:min(90vw,55dvh);height:min(90vw,55dvh)}}
+@media(max-width:480px){.garden{width:min(95vw,51dvh);height:min(95vw,51dvh)}}
+.panel .previewCard{display:none}
+.panel{padding:14px}
+.panel h2{font-size:1.2rem}
+.panel .keys{margin:10px 0}
+.panel .key{padding:12px}
+.panel .program{min-height:54px}
+.panel .actions button{min-height:45px}
+header .schoolTitle{font-size:.76rem;font-weight:800;color:#456b46}
+
+.mathBar{background:#e8f2ff;border:2px solid #b5cfea;border-radius:14px;padding:8px 10px;margin:8px 0;display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.mathBar label{font-size:.83rem;font-weight:800;display:block}.mathBar select{margin:3px 0;padding:8px;width:100%;background:#fff}
+.mathHint{font-size:.8rem;grid-column:1/-1;color:#355277}
+.mathOverlay{position:fixed;inset:0;z-index:100;background:#132315c9;display:flex;align-items:center;justify-content:center;padding:12px}
+.mathCard{background:#fffdf1;border:5px solid #f4cb51;border-radius:24px;max-width:530px;width:100%;padding:20px;text-align:center;box-shadow:0 20px 65px #0006}
+.mathCard h2{color:#3d7839;margin:4px 0}.mathQuestion{font-size:clamp(1.1rem,3vw,1.5rem);font-weight:850;margin:16px 0;line-height:1.35}
+.mathOptions{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.mathOptions button{background:#e6f3d7;border:2px solid #82b665;font-size:1.15rem;min-height:64px}
+.mathOptions button:hover{background:#d4ecb9}.mathOptions button:disabled{opacity:.7}.mathFeedback{min-height:34px;margin-top:12px;font-weight:800}
+.mathScore{background:#eff5ff;border-radius:10px;padding:6px;font-weight:700}
+@media(max-width:850px){.mathBar{grid-template-columns:1fr 1fr}}
+.mathTools{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:12px 0}.mathTools button{padding:10px 12px;background:#e4efff;border:2px solid #94bce8;font-size:.95rem}.mathHelp{background:#fffae1;border:2px solid #e2c765;border-radius:12px;padding:12px;text-align:left;line-height:1.5;margin:8px 0}.menuAudioControls{position:absolute;top:1.5%;left:1.5%;z-index:12;display:flex;gap:8px;align-items:center;background:#182038d9;border:1px solid #8cb2eb;border-radius:15px;padding:6px 9px;color:white;font-size:12px}.menuAudioControls button{background:#e4b954;padding:7px;color:#112}.menuAudioControls input{width:85px}.mathCard{max-height:94dvh;overflow-y:auto}@media(max-width:600px){.mathTools button{flex:1 1 40%}.menuAudioControls{top:0;left:0;transform:scale(.82);transform-origin:top left}}
+.siteBackLink{position:fixed;left:12px;bottom:12px;z-index:110;background:#17384ee8;color:#fff;text-decoration:none;font-weight:900;padding:9px 12px;border-radius:12px;border:2px solid #fff8;box-shadow:0 3px 10px #0003}</style>
+</head>
+<body><a class="siteBackLink" href="../" aria-label="Volver a la sección de juegos">← Juegos</a>
+<div id="menuScreen" class="menuScreen" aria-label="Menú principal BEE-ZOMBIES CEIP Camino Largo">
+  <div class="menuCanvas"><div class="menuAudioControls"><button type="button" id="menuMusic" aria-label="Activar o silenciar música">🔊 Música</button><label for="musicVol">Volumen</label><input id="musicVol" type="range" min="0" max="100" value="40" aria-label="Volumen de música"></div>
+    <button class="menuHit menuPlay" id="menuPlay" aria-label="Jugar">Jugar</button>
+    <button class="menuHit menuLevels" id="menuLevels" aria-label="Elegir niveles">Niveles</button>
+    <button class="menuHit menuDress" id="menuDress" aria-label="Disfrazar Bee-Bot">Disfrazar Bee-Bot</button>
+    <button class="menuHit menuFull" id="menuFull" aria-label="Pantalla completa">Pantalla completa</button>
+    <div class="menuLevelsBox hidden" id="menuLevelsBox"><h2>🧟 Elige tu misión</h2><div class="menuLevelsGrid" id="menuLevelsGrid"></div><button class="menuBack" id="menuBack">← Volver al colegio</button></div>
+  </div>
+</div>
+<div class="overlay hidden" id="customizerOverlay">
+  <div class="overlayCard">
+    <h2>🎭 Diseña tu Bee-Bot zombi</h2>
+    <p>Antes de empezar, elige <b>5 elementos de disfraz</b>. El Bee-Bot seguirá viéndose claramente, pero con tu toque zombi.</p>
+    <div class="overlayGrid">
+      <div>
+        <div class="chooser">
+          <div class="card">
+            <label for="hatSelect">1. Gorro / cabeza</label>
+            <select id="hatSelect"></select>
+          </div>
+          <div class="card">
+            <label for="eyesSelect">2. Ojos</label>
+            <select id="eyesSelect"></select>
+          </div>
+          <div class="card">
+            <label for="mouthSelect">3. Boca</label>
+            <select id="mouthSelect"></select>
+          </div>
+          <div class="card">
+            <label for="armsSelect">4. Brazos / manos</label>
+            <select id="armsSelect"></select>
+          </div>
+          <div class="card" style="grid-column:1/-1">
+            <label for="extraSelect">5. Extra</label>
+            <select id="extraSelect"></select>
+          </div>
+        </div>
+        <button class="secondaryBtn" id="randomizeCostume">🎲 Disfraz aleatorio</button>
+        <button class="startBtn" id="startMission">🚀 Empezar misión</button>
+        <div class="legend">
+          <b>Idea del juego:</b> programa el recorrido como en Bee-Bot. Cuando el Bee-Bot zombi llegue a una planta, se la come. Hay varios niveles con más obstáculos y plantas.
+        </div>
+      </div>
+      <div class="previewCard">
+        <p class="previewTitle">Vista previa: Bee-Bot claramente visible con disfraz</p>
+        <img src="bee-zombie-art.png" alt="Ilustración del Bee-Bot zombi" style="width:min(100%,220px);border-radius:18px;margin-bottom:7px"><div id="customizerPreview" class="miniBoardBot"></div>
+        <div class="smallCostume" id="chosenSummary"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<header><button type="button" id="homeBtn" class="gameHomeBtn" aria-label="Volver al menú">⌂ Menú</button><button type="button" id="fullscreenBtn" class="fullscreenBtn" aria-label="Activar pantalla completa" aria-pressed="false">⛶ Pantalla completa</button><h1>🐝🧟 BEE-ZOMBIES 🌻</h1><span class="schoolTitle">CEIP CAMINO LARGO</span><p>¡Programa tu Bee-Bot disfrazado de zombi para que se coma las plantas del jardín!</p></header>
+<main>
+<section>
+  <div class="topbar"><span class="pill" id="levelLabel">Nivel 1</span><span class="pill" id="counter">Plantas: 0/0</span><span class="pill" id="moves">Pasos: 0</span></div>
+<div class="garden" id="garden" aria-label="Tablero de programación Bee-Bot del CEIP Camino Largo"></div>
+  <div class="line"><span id="objective" class="status"></span><span class="stars" id="stars"></span></div>
+</section>
+<section class="panel">
+  <h2>🎮 Panel Bee-Bot</h2>
+  <div class="previewCard">
+    <p class="previewTitle">Tu Bee-Bot disfrazado</p>
+    <div id="panelPreview"></div>
+    <div class="smallCostume" id="panelSummary"></div>
+  </div>
+  <div class="mathBar">
+ <div><label for="mathMode">Modalidad de juego</label><select id="mathMode"><option value="math">🧮 Bee-Bot + Matemáticas</option><option value="classic">🐝 Solo programación</option></select></div>
+ <div><label for="gradeSelect">Curso de Primaria</label><select id="gradeSelect"><option value="1">1.º</option><option value="2">2.º</option><option value="3">3.º</option><option value="4">4.º</option><option value="5">5.º</option><option value="6">6.º</option></select></div>
+ <div class="mathHint" id="mathDescriptor">Al encontrar cada planta, resuelve un reto de Matemáticas para poder comértela.</div>
+ </div>
+ <label for="levelSelect"><b>Elige un nivel</b></label><select id="levelSelect"></select>
+  <div class="help"><b>Programa primero:</b> ⬆️ avanza una casilla; ↶ gira a la izquierda; ↷ gira a la derecha; ⬇️ retrocede una casilla. Los giros no avanzan.</div>
+  <div class="keys"><button class="key" data-cmd="F" aria-label="Avanzar">⬆️</button><button class="key" data-cmd="L" aria-label="Girar izquierda">↶</button><button class="key" data-cmd="B" aria-label="Retroceder">⬇️</button><button class="key" data-cmd="R" aria-label="Girar derecha">↷</button></div>
+  <b>🧠 Mi programa <span id="programCount">(0 instrucciones)</span></b><div class="program" id="program" aria-live="polite"></div>
+  <div class="actions"><button class="go" id="go">▶ GO</button><button class="undo" id="undo">↩ Borrar última</button><button class="clear" id="clear">🗑 Limpiar programa</button><button class="reset" id="reset">🔄 Reiniciar nivel</button></div>
+  <button class="costumeBtn" id="changeCostume">🎭 Cambiar disfraz</button>
+  <button class="next hidden" id="next">⭐ Siguiente nivel →</button>
+  <div class="message" id="message" role="status">¡Elige un disfraz para tu Bee-Bot y luego pulsa GO!</div>
+  <div class="help"><b>Objetivo:</b> visitar y comer 🌻 todas las plantas sin chocar con 🪨. Puedes ejecutar un programa y después seguir añadiendo instrucciones. Usa el menor número posible de órdenes.</div>
+  <div class="help" style="margin-top:10px"><label><input type="checkbox" id="slow" checked> Animación paso a paso</label> · <label><input type="checkbox" id="sound" checked> Efectos</label> · <label><input type="checkbox" id="voiceOn" checked> 🔊 Voz de Matemáticas</label></div>
+</section>
+</main>
+<div id="mathOverlay" class="mathOverlay hidden" role="dialog" aria-modal="true" aria-labelledby="mathTitle">
+ <div class="mathCard"><div class="mathScore" id="mathScore">Matemáticas</div><h2 id="mathTitle">🌻 ¡Planta encontrada!</h2>
+ <p>¡Resuelve el reto para que tu Bee-Bot pueda comerse esta planta!</p>
+ <div class="mathQuestion" id="mathQuestion"></div><div class="mathOptions" id="mathOptions"></div>
+ <div class="mathTools"><button id="readMath" type="button">🔊 Leer problema</button><button id="helpMath" type="button">💡 Ayuda</button><button id="explainMath" type="button">🧠 Explicar</button><button id="repeatFeedback" type="button">🔁 Repetir voz</button></div><div id="mathHelp" class="mathHelp hidden" aria-live="polite"></div><div class="mathFeedback" id="mathFeedback" role="status"></div>
+ </div>
+</div>
+<footer>Juego educativo · Pensamiento computacional · Funciona sin conexión a Internet</footer>
+<script>
+'use strict';
+const menuAudio=new Audio('menu-music.mp3');menuAudio.loop=true;menuAudio.volume=.4;menuAudio.preload='auto';
+let musicMuted=false;let lastSpoken='';let activeQuestion=null;let currentHelpStage=0;
+const effects={};for(const name of ['click','turn','move','eat','wrong','correct','win','costume']){effects[name]='fx-'+name+'.mp3'}
+function playFx(name){if(!document.getElementById('sound')?.checked||!effects[name])return;try{const a=new Audio(effects[name]);a.volume=.55;a.play().catch(()=>{});}catch(e){}}
+function speakText(text){lastSpoken=text;if(!document.getElementById('voiceOn')?.checked||!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='es-ES';u.rate=.85;u.pitch=1.08;const vs=speechSynthesis.getVoices();const es=vs.find(v=>v.lang.toLowerCase().startsWith('es')&&/female|mujer|sofia|helena|monica|paulina|lucia/i.test(v.name))||vs.find(v=>v.lang.toLowerCase().startsWith('es'));if(es)u.voice=es;speechSynthesis.speak(u)}catch(e){}}
+function haltVoice(){if('speechSynthesis' in window)speechSynthesis.cancel();}
+function mathHint(c,stage){const q=c.q.toLowerCase(),t=c.topic.toLowerCase();if(stage===1){if(q.includes('¿cuánt')||q.includes('¿cuánto'))return 'Busca los datos del enunciado. ¿Qué cantidades conoces y qué te están preguntando?';if(q.includes('perímetro'))return 'Imagina que recorres todo el borde de la figura. ¿Qué lados hay que tener en cuenta?';if(q.includes('área'))return 'Piensa en la superficie que ocupa la figura, no solo en su contorno.';return 'Lee despacio, localiza los números y decide qué operación o propiedad necesitas.'}if(/fraccion|fracción|cuarta parte|mitad|tercera parte|repart/.test(q+' '+t))return 'Dibuja grupos iguales o representa las partes de un todo. Comprueba cuántas partes hay en total.';if(/perímetro|contorno/.test(q+' '+t))return 'Dibuja la figura y suma las longitudes de sus lados. No confundas el perímetro con el área.';if(/área|superficie/.test(q+' '+t))return 'Cuenta cuadrados unidad o piensa en filas y columnas del rectángulo.';if(/porcent/.test(q+' '+t))return 'Recuerda que porcentaje significa de cada cien. Puedes calcular primero el diez o el uno por ciento.';if(/multipl|cada una|cada uno|filas/.test(q+' '+t))return 'Representa la situación con grupos iguales y una suma repetida.';if(/resta|desaparecen|quedan|menos/.test(q+' '+t))return 'Representa la cantidad inicial y tacha las que se retiran. Cuenta lo que queda.';if(/suma|más|llegan|total/.test(q+' '+t))return 'Junta los dos grupos. Puedes usar dedos, regletas o una recta numérica.';return 'Haz un esquema, usa material manipulativo y comprueba si el resultado tiene sentido.'}
+function explainMath(c){return 'Vamos a pensar cómo resolverlo. '+c.q+' '+mathHint(c,2)+' Haz la operación por partes y compara tu resultado con las opciones. Cuando contestes, sabrás si has acertado.'}
+function safeStartMenuMusic(){if(musicMuted)return;menuAudio.play().catch(()=>{});}
+const BEEBOT_SRC='bee-zombie-art.png';
+const costumeOptions={
+  hat:[
+    {value:'cap',label:'Gorra zombie 🧢',emoji:'🧢'},
+    {value:'helmet',label:'Casco torcido ⛑️',emoji:'⛑️'},
+    {value:'pirate',label:'Sombrero pirata 🏴‍☠️',emoji:'🏴‍☠️'},
+    {value:'crown',label:'Corona loca 👑',emoji:'👑'}
+  ],
+  eyes:[
+    {value:'googly',label:'Ojos saltones 👀',emoji:'👀'},
+    {value:'patch',label:'Parche pirata 🩹',emoji:'🩹'},
+    {value:'glasses',label:'Gafas raras 🥽',emoji:'🥽'},
+    {value:'angry',label:'Ceño zombi 😵',emoji:'😵'}
+  ],
+  mouth:[
+    {value:'fangs',label:'Colmillos 🧛',emoji:'🧛'},
+    {value:'stitches',label:'Boca cosida 🪡',emoji:'🪡'},
+    {value:'tongue',label:'Lengua fuera 👅',emoji:'👅'},
+    {value:'slime',label:'Baba zombi 🤤',emoji:'🤤'}
+  ],
+  arms:[
+    {value:'zombie',label:'Brazos zombi 🧟',emoji:'🧟'},
+    {value:'robot',label:'Brazos robot 🤖',emoji:'🤖'},
+    {value:'bat',label:'Alas de murciélago 🦇',emoji:'🦇'},
+    {value:'claws',label:'Garras monstruo 🦖',emoji:'🦖'}
+  ],
+  extra:[
+    {value:'bandage',label:'Venda en la frente 🤕',emoji:'🤕'},
+    {value:'cape',label:'Capa mini 🦸',emoji:'🦸'},
+    {value:'antenna',label:'Antena loca 📡',emoji:'📡'},
+    {value:'flower',label:'Flor mutante 🌼',emoji:'🌼'}
+  ]
+};
+let costume={hat:'cap',eyes:'googly',mouth:'fangs',arms:'zombie',extra:'bandage'};
+function populateSelectors(){
+  const map={hat:'hatSelect',eyes:'eyesSelect',mouth:'mouthSelect',arms:'armsSelect',extra:'extraSelect'};
+  Object.entries(map).forEach(([k,id])=>{
+    const sel=document.getElementById(id);
+    sel.innerHTML=costumeOptions[k].map(o=>`<option value="${o.value}">${o.label}</option>`).join('');
+    sel.value=costume[k];
+    sel.onchange=()=>{costume[k]=sel.value;updateCostumePreview();};
+  });
+}
+function optionData(group,val){return costumeOptions[group].find(o=>o.value===val)||costumeOptions[group][0];}
+function svgCostume(){
+ const hat={
+ cap:`<path d="M50 34 Q82 8 124 30 L132 43 Q92 26 44 47Z" fill="#73468e" stroke="#493065" stroke-width="3"/><path d="M89 17 L107 25 L98 37 L81 32Z" fill="#c18dde"/><path d="M86 22l17 10m-15 1 14-12" stroke="#f6d6a0" stroke-width="2.4"/>`,
+ helmet:`<path d="M49 44 Q52 12 89 13 Q124 13 135 46 L45 52Z" fill="#f97373" stroke="#8f484a" stroke-width="3"/><path d="M45 48 Q90 40 139 48" stroke="#ffe39d" stroke-width="7" fill="none"/>`,
+ pirate:`<path d="M38 48 Q67 39 72 15 Q92 25 109 12 Q116 40 145 49 Q92 58 38 48Z" fill="#413852" stroke="#272037" stroke-width="3"/><path d="M82 34l16 12m0-12L82 46" stroke="white" stroke-width="4"/>`,
+ crown:`<path d="M54 52L47 20 72 34 88 12 105 34 129 20 122 52Z" fill="#f8ba39" stroke="#a46d18" stroke-width="3"/><circle cx="88" cy="39" r="6" fill="#f66ea0"/>`
+ };
+ const eyes={
+ googly:`<ellipse cx="64" cy="93" rx="6" ry="7" fill="white"/><ellipse cx="108" cy="91" rx="6" ry="7" fill="white"/><circle cx="67" cy="94" r="3" fill="#1e2845"/><circle cx="111" cy="92" r="3" fill="#1e2845"/>`,
+ patch:`<path d="M48 79 L115 92" stroke="#59455c" stroke-width="4"/><path d="M48 83 Q65 65 79 88 Q71 110 53 99Z" fill="#59455c" stroke="#2b2733" stroke-width="3"/>`,
+ glasses:`<rect x="45" y="76" width="33" height="27" rx="12" fill="#77d9e1" fill-opacity=".55" stroke="#563967" stroke-width="5"/><rect x="96" y="74" width="32" height="27" rx="12" fill="#77d9e1" fill-opacity=".55" stroke="#563967" stroke-width="5"/><path d="M78 86 Q86 79 96 85" stroke="#563967" stroke-width="5" fill="none"/>`,
+ angry:`<path d="M51 73l25 7m45-9-26 8" stroke="#6d4b70" stroke-width="6" stroke-linecap="round"/><circle cx="66" cy="92" r="4" fill="#43314d"/><circle cx="109" cy="90" r="4" fill="#43314d"/>`
+ };
+ const mouth={
+ fangs:`<path d="M66 120Q87 140 111 115" stroke="#48354b" stroke-width="4" fill="none"/><path d="M76 126l7 15 5-12m9-1 5 12 7-23" fill="#fffdf0" stroke="#795c6d" stroke-width="1.5"/>`,
+ stitches:`<path d="M65 126Q88 140 111 121" stroke="#694f71" stroke-width="4" fill="none"/><path d="M72 125l1 10m10-5 0 11m10-12 2 11m8-17 5 10" stroke="#f6d5a1" stroke-width="3"/>`,
+ tongue:`<path d="M67 124 Q88 150 111 121" stroke="#48354b" stroke-width="4" fill="none"/><path d="M84 136q-2 28 9 24q12-2 8-30" fill="#f188a9" stroke="#b44e7b" stroke-width="2"/>`,
+ slime:`<path d="M68 127 Q87 144 109 122" stroke="#48354b" stroke-width="4" fill="none"/><path d="M86 138 q-3 16 3 19 q9-2 7-20" fill="#7bbf75" stroke="#43964d" stroke-width="2"/>`
+ };
+ const arms={
+ zombie:`<path d="M41 106 Q19 96 17 120L29 133 41 119M132 101 Q155 98 156 121L144 133 131 117" fill="#96cf88" stroke="#57954f" stroke-width="4"/><path d="M17 120l-10-3m21 16-3 7m131-19 10-4m-22 16 3 8" stroke="#57954f" stroke-width="4" stroke-linecap="round"/>`,
+ robot:`<path d="M38 111L16 115 12 133 35 131M136 110L159 114 164 133 139 130" fill="#afc8d8" stroke="#6d8d9c" stroke-width="4"/><circle cx="22" cy="121" r="5" fill="#ffd34d"/><circle cx="151" cy="121" r="5" fill="#ffd34d"/>`,
+ bat:`<path d="M41 100Q22 86 9 101L4 92 2 123 Q18 111 27 133L43 116M134 101Q156 87 166 100L173 91 171 122Q157 113 149 133L132 116" fill="#81549f" stroke="#624273" stroke-width="3"/>`,
+ claws:`<path d="M39 105Q19 106 14 121L31 130 42 118M135 105 Q153 103 162 121L145 133 133 117" fill="#a8d78e" stroke="#65944e" stroke-width="3"/><path d="M13 120l-8-8m15 14-7 10m17-8-1 11m133-18 9-9m-17 17 8 10m-17-7 1 9" stroke="#fdf6e6" stroke-width="4" stroke-linecap="round"/>`
+ };
+ const extra={
+ bandage:`<g transform="rotate(-18 123 117)"><rect x="112" y="110" width="33" height="14" rx="6" fill="#ffe1a4" stroke="#c59565" stroke-width="2"/><circle cx="124" cy="117" r="1.5" fill="#bc8e62"/><circle cx="131" cy="117" r="1.5" fill="#bc8e62"/></g>`,
+ cape:`<path d="M133 70q38 18 26 88l-29-13" fill="#8550b1" stroke="#543675" stroke-width="3"/>`,
+ antenna:`<path d="M125 34q14-21 25-19" fill="none" stroke="#4e6274" stroke-width="4"/><circle cx="152" cy="14" r="8" fill="#7ad0a3" stroke="#478769" stroke-width="3"/>`,
+ flower:`<path d="M133 130l13-18" stroke="#4b9558" stroke-width="4"/><circle cx="145" cy="109" r="5" fill="#f7b838"/><g fill="#f8cde7"><circle cx="145" cy="99" r="6"/><circle cx="155" cy="108" r="6"/><circle cx="145" cy="117" r="6"/><circle cx="136" cy="108" r="6"/></g>`
+ };
+ return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-label="Bee-Bot amarillo y negro con disfraz de zombi" style="width:100%;height:100%;overflow:visible">
+ <defs><linearGradient id="shell" x1="0" y1="0" x2=".75" y2="1"><stop stop-color="#fff466"/><stop offset=".55" stop-color="#ffd600"/><stop offset="1" stop-color="#efae06"/></linearGradient><linearGradient id="face" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff756"/><stop offset="1" stop-color="#ffc500"/></linearGradient></defs>
+ <ellipse cx="90" cy="162" rx="76" ry="11" fill="#42613d" opacity=".19"/>
+ ${arms[costume.arms]}
+ <path d="M32 92Q17 31 88 24Q152 25 157 102Q162 142 111 157L49 150Q23 135 32 92Z" fill="url(#shell)" stroke="#d59700" stroke-width="3"/>
+ <path d="M84 25Q113 24 136 47L148 72Q115 51 87 55Z" fill="#28252d"/>
+ <path d="M138 50Q159 70 157 101L155 117Q125 94 107 90L109 74Q128 81 150 93Z" fill="#28252d"/>
+ <path d="M32 88Q69 73 105 81Q151 92 145 129Q138 159 80 156Q25 158 20 122Q16 100 32 88Z" fill="url(#face)" stroke="#f0b000" stroke-width="3"/>
+ <path d="M30 99 Q20 69 35 58L48 52L42 71Q56 71 64 80Q37 82 30 99Z" fill="#a9d66e" opacity=".95"/>
+ <path d="M136 99q15 9 11 29l-9 14q-6-21-16-22Z" fill="#8cc96c"/>
+ <path d="M39 68l8 8m-4-12 9 8m80 45 12 4m-8-11 8 14" stroke="#795d52" stroke-width="3" stroke-linecap="round"/>
+ <ellipse cx="63" cy="97" rx="19" ry="24" fill="#fffdf7" stroke="#e9b831" stroke-width="2" transform="rotate(-12 63 97)"/><ellipse cx="107" cy="93" rx="21" ry="25" fill="#fffdf7" stroke="#e9b831" stroke-width="2" transform="rotate(8 107 93)"/>
+ <ellipse cx="69" cy="105" rx="7" ry="11" fill="#263041"/><ellipse cx="113" cy="102" rx="7" ry="11" fill="#263041"/>
+ <path d="M58 124Q85 150 116 121" stroke="#332c26" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+ <ellipse cx="80" cy="44" rx="9" ry="6" fill="#f79d25" stroke="#c77f0f" stroke-width="2"/><ellipse cx="106" cy="38" rx="10" ry="6" fill="#8ccf57" stroke="#548b32" stroke-width="2"/><ellipse cx="127" cy="52" rx="9" ry="6" fill="#f79d25" stroke="#c77f0f" stroke-width="2"/>
+ ${extra[costume.extra]} ${eyes[costume.eyes]} ${mouth[costume.mouth]} ${hat[costume.hat]}
+ </svg>`;
+}
+function createBotHTML(size='small',dir=0){
+ const wrapClass=size==='big'?'botWrap big':'botWrap';
+ return `<div class="${wrapClass}">${svgCostume()}</div>`;
+}
+function updateCostumePreview(){
+  document.getElementById('customizerPreview').innerHTML=createBotHTML('big',1);
+  document.getElementById('panelPreview').innerHTML=createBotHTML('big',1);
+  const items=['hat','eyes','mouth','arms','extra'].map(k=>`<span class="tag">${optionData(k,costume[k]).emoji} ${optionData(k,costume[k]).label}</span>`).join('');
+  document.getElementById('chosenSummary').innerHTML=items;
+  document.getElementById('panelSummary').innerHTML=items;
+  const live=document.querySelector('#garden .botWrap');if(live)live.innerHTML=svgCostume();
+}
+function openCustomizer(){document.getElementById('customizerOverlay').classList.remove('hidden');}
+function closeCustomizer(){document.getElementById('customizerOverlay').classList.add('hidden');msg('¡Disfraz listo! Ahora programa tu Bee-Bot zombi.');render();}
+function randomizeCostume(){['hat','eyes','mouth','arms','extra'].forEach(k=>{const list=costumeOptions[k];const choice=list[Math.floor(Math.random()*list.length)];costume[k]=choice.value;document.getElementById(k+'Select').value=choice.value;});updateCostumePreview();}
+
+// 0 norte, 1 este, 2 sur, 3 oeste
+const levels=[
+{name:'Primer bocado',w:5,h:5,start:[0,4,1],plants:[[3,4]],walls:[],hint:'Avanza en línea recta hasta el girasol.'},
+{name:'Giro de zombi',w:5,h:5,start:[0,4,0],plants:[[0,2],[3,2]],walls:[],hint:'Come dos plantas. Recuerda girar antes de avanzar.'},
+{name:'Laberinto de piedras',w:6,h:6,start:[0,5,0],plants:[[5,0]],walls:[[1,5],[1,4],[1,3],[3,2],[3,3],[3,4],[4,4]],hint:'Busca un camino alrededor de las rocas.'},
+{name:'Desayuno doble',w:6,h:6,start:[0,5,1],plants:[[2,5],[5,1]],walls:[[3,5],[3,4],[3,3],[1,2]],hint:'Piensa en qué orden comer las plantas.'},
+{name:'Jardín zigzag',w:7,h:7,start:[0,6,0],plants:[[2,4],[4,2],[6,0]],walls:[[1,6],[1,5],[3,4],[3,3],[5,2],[5,1]],hint:'Prueba una ruta con giros y retrocesos.'},
+{name:'Las tres semillas',w:7,h:7,start:[0,6,1],plants:[[2,6],[4,3],[6,1]],walls:[[3,6],[3,5],[3,4],[1,4],[1,3],[5,3],[5,2]],hint:'Separa el problema en tres recorridos.'},
+{name:'Caminos cerrados',w:7,h:7,start:[0,6,0],plants:[[0,0],[6,0],[6,6]],walls:[[2,1],[2,2],[2,3],[2,4],[4,2],[4,3],[4,4],[4,5]],hint:'Planifica la ruta antes de pulsar GO.'},
+{name:'Zombi experto',w:8,h:8,start:[0,7,1],plants:[[3,7],[7,4],[4,1],[0,0]],walls:[[2,6],[2,5],[2,4],[4,7],[4,6],[4,5],[6,6],[6,5],[5,3],[3,3],[2,2],[1,2]],hint:'¡Cuatro plantas! Usa papel para anotar tu algoritmo.'},
+{name:'El jardín final',w:8,h:8,start:[0,7,0],plants:[[1,5],[6,6],[7,1],[2,0],[4,3]],walls:[[1,7],[2,7],[2,6],[3,5],[3,4],[1,3],[2,3],[4,4],[5,4],[6,4],[6,3],[4,1]],hint:'Superreto: elige una estrategia y optimízala.'}
+];
+const $=id=>document.getElementById(id), dirs=[[0,-1],[1,0],[0,1],[-1,0]], arrows=['⬆','➡','⬇','⬅'], icons={F:'⬆️',B:'⬇️',L:'↶',R:'↷'};
+let current=0,pos,remaining,program=[],executing=false,done=false,steps=0,runToken=0,turnAngle=180,activeCommand=-1,completed=JSON.parse(localStorage.getItem('beezombieCompleted')||'{}');
+const key=(x,y)=>x+','+y;
+function sound(f=500){if(!$('sound').checked)return;try{const AC=window.AudioContext||window.webkitAudioContext;const ac=new AC(),o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.045,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.13);o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+.14);setTimeout(()=>ac.close(),300)}catch(e){}}
+function msg(s){$('message').textContent=s}
+function load(i){haltVoice();runToken++;executing=false;current=i;const l=levels[i];pos=[...l.start];turnAngle=180+90*pos[2];activeCommand=-1;remaining=new Set(l.plants.map(p=>key(...p)));if(pendingMath){pendingMath(false);pendingMath=null;$('mathOverlay').classList.add('hidden')}program=[];steps=0;done=false;document.body.classList.remove('party');$('next').classList.add('hidden');$('levelSelect').value=i;msg('💡 '+l.hint);render();}
+function render(){
+ const l=levels[current],garden=$('garden');
+ // Conservamos el mismo nodo del robot para que el giro CSS se anime realmente.
+ let sprite=garden.querySelector('.botWrap');
+ if(!sprite){
+   const holder=document.createElement('div');
+   holder.innerHTML=createBotHTML('small',pos[2]);sprite=holder.firstElementChild;
+ }
+ garden.style.gridTemplateColumns=`repeat(${l.w},1fr)`;
+ garden.style.gridTemplateRows=`repeat(${l.h},1fr)`;
+ garden.replaceChildren();
+ const walls=new Set(l.walls.map(p=>key(...p)));
+ for(let y=0;y<l.h;y++)for(let x=0;x<l.w;x++){
+   const c=document.createElement('div');
+   c.className='cell'+(walls.has(key(x,y))?' wall':'');
+   c.setAttribute('aria-label',`Casilla ${x+1}, ${y+1}`);
+   if(walls.has(key(x,y))){let r=document.createElement('span');r.className='rock';r.textContent='🪨';c.appendChild(r)}
+   if(remaining.has(key(x,y))){let e=document.createElement('span');e.className='plant';e.textContent='🌻';c.appendChild(e)}
+   if(x===pos[0]&&y===pos[1]){
+     c.appendChild(sprite);
+     let a=document.createElement('span');a.className='arrow';a.textContent=arrows[pos[2]];c.appendChild(a);
+   }
+   garden.appendChild(c)
+ }
+ sprite.style.transform=`rotate(${turnAngle}deg)`;
+ sprite.setAttribute('aria-label',`Bee-Bot mirando hacia ${['arriba','derecha','abajo','izquierda'][pos[2]]}`);
+ $('levelLabel').textContent=`Nivel ${current+1} de ${levels.length} · ${l.name}`;
+ $('counter').textContent=`Plantas: ${l.plants.length-remaining.size}/${l.plants.length}`;
+ $('moves').textContent=`Avances: ${steps}`;
+ $('objective').textContent=l.hint;
+ $('stars').textContent=completed[current]?'⭐ CONSEGUIDO':'';
+ renderProgram(activeCommand);
+ document.querySelectorAll('button').forEach(b=>{if(b.id!=='next')b.disabled=executing});
+ $('levelSelect').disabled=executing;$('mathMode').disabled=executing;$('gradeSelect').disabled=executing||$('mathMode').value!=='math';
+}
+function renderProgram(active=-1){$('programCount').textContent=`(${program.length} instrucciones)`;const p=$('program');p.replaceChildren();if(!program.length){p.textContent='Aquí aparecerán tus órdenes…';return}program.forEach((cmd,i)=>{let e=document.createElement('span');e.className='cmd'+(i===active?' now':'');e.textContent=icons[cmd];e.title=`Instrucción ${i+1}`;p.appendChild(e)})}
+function add(cmd){if(executing||done)return;if(program.length>=100){msg('Máximo 100 instrucciones por programa. ¡Ejecuta primero!');return}program.push(cmd);renderProgram();playFx('click')}
+function move(cmd){const l=levels[current];if(cmd==='L'){pos[2]=(pos[2]+3)%4;turnAngle-=90;return true}if(cmd==='R'){pos[2]=(pos[2]+1)%4;turnAngle+=90;return true}let d=cmd==='B'?(pos[2]+2)%4:pos[2],nx=pos[0]+dirs[d][0],ny=pos[1]+dirs[d][1];if(nx<0||ny<0||nx>=l.w||ny>=l.h||l.walls.some(p=>p[0]===nx&&p[1]===ny))return false;pos[0]=nx;pos[1]=ny;steps++;let k=key(nx,ny);if(remaining.delete(k)){playFx('eat');msg('¡ÑAM! 🌻 Tu Bee-Bot zombi se ha comido una planta.')}return true}
+const sleep=t=>new Promise(r=>setTimeout(r,t));
+async function go(){if(executing||done)return;if(!program.length){msg('Primero programa el Bee-Bot con las flechas.');return}executing=true;let token=++runToken;render();const queue=[...program];for(let i=0;i<queue.length;i++){if(token!==runToken)return;activeCommand=i;renderProgram(i);if($('slow').checked)await sleep(340);if(token!==runToken)return;const plantsBefore=remaining.size;if(!move(queue[i])){playFx('wrong');msg(`💥 ¡Choque en la orden ${i+1}! El Bee-Bot no puede atravesar una piedra ni salir del tablero. Corrige tu algoritmo.`);executing=false;program=[];activeCommand=-1;render();return}playFx(queue[i]==='L'||queue[i]==='R'?'turn':'move');render();if(remaining.size < plantsBefore){const accepted=await showMathChallenge(token);if(!accepted||token!==runToken)return;}if(!remaining.size)break;if($('slow').checked)await sleep(queue[i]==='L'||queue[i]==='R'?430:220)}if(token!==runToken)return;executing=false;program=[];activeCommand=-1;if(!remaining.size){done=true;completed[current]=true;try{localStorage.setItem('beezombieCompleted',JSON.stringify(completed))}catch(e){}document.body.classList.add('party');playFx('win');msg(`🎉 ¡NIVEL SUPERADO! Has comido todas las plantas en ${steps} avances. ¡Gran algoritmo!`);if(current<levels.length-1)$('next').classList.remove('hidden');else msg('🏆 ¡ENHORABUENA! Has completado todos los jardines. ¡Eres un experto en programación Bee-Bot!')}else msg('✅ Programa terminado. Aún quedan plantas: piensa qué instrucciones necesitas ahora.');render()}
+
+// Retos graduados por curso, basados en los sentidos matemáticos del currículo canario.
+const mathThemes={1:'Conteo, suma y resta hasta 20; formas y patrones',2:'Cálculo hasta 100; dobles, repartos y medidas',3:'Tablas y operaciones; valor posicional y perímetros',4:'Multiplicación, división, fracciones y medida',5:'Decimales, fracciones, áreas y proporciones sencillas',6:'Porcentajes, operaciones decimales, escalas y volumen'};
+let mathSolved=0,mathAttempts=0,pendingMath=null,mathSequence=0;
+const rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+function chooseMath(g){
+ let a,b,c,ans,q,topic;
+ const kind=mathSequence++%5;
+ if(g===1){
+  if(kind===0){a=rand(3,10);b=rand(1,Math.min(9,20-a));ans=a+b;q=`En el huerto hay ${a} semillas y llegan ${b} más. ¿Cuántas hay?`;topic='Sentido numérico · suma';}
+  else if(kind===1){a=rand(7,19);b=rand(1,Math.min(7,a));ans=a-b;q=`Había ${a} flores y desaparecen ${b}. ¿Cuántas quedan?`;topic='Sentido numérico · resta';}
+  else if(kind===2){a=rand(4,15);ans=a+1;q=`¿Qué número va después de ${a}?`;topic='Orden y conteo';}
+  else if(kind===3){a=rand(2,5);ans=a*2;q=`Hay ${a} parejas de zapatos zombis. ¿Cuántos zapatos son?`;topic='Agrupaciones';}
+  else{ans=4;q='¿Cuántos lados tiene un cuadrado del patio?';topic='Sentido espacial · figuras';}
+ }else if(g===2){
+  if(kind===0){a=rand(23,65);b=rand(10,30);ans=a+b;q=`La biblioteca tiene ${a} libros y recibe ${b}. ¿Cuántos hay ahora?`;topic='Suma hasta 100';}
+  else if(kind===1){a=rand(45,99);b=rand(11,35);ans=a-b;q=`De ${a} tizas se gastan ${b}. ¿Cuántas quedan?`;topic='Resta hasta 100';}
+  else if(kind===2){a=rand(3,9);ans=a*2;q=`¿Cuál es el doble de ${a}?`;topic='Cálculo mental';}
+  else if(kind===3){a=rand(2,5);b=rand(2,5);ans=a*b;q=`Hay ${a} filas de ${b} macetas. ¿Cuántas macetas hay?`;topic='Grupos iguales';}
+  else{a=rand(2,6);ans=a*10;q=`Una cuerda mide ${a} decímetros. ¿Cuántos centímetros mide?`;topic='Medida de longitud';}
+ }else if(g===3){
+  if(kind===0){a=rand(3,9);b=rand(3,9);ans=a*b;q=`Hay ${a} clases con ${b} plantas cada una. ¿Cuántas plantas hay?`;topic='Tablas de multiplicar';}
+  else if(kind===1){a=rand(3,9);b=rand(2,9);ans=b;q=`Se reparten ${a*b} lápices entre ${a} mesas por igual. ¿Cuántos recibe cada mesa?`;topic='División exacta';}
+  else if(kind===2){a=rand(2,8);ans=a*100;q=`¿Cuántas unidades hay en ${a} centenas?`;topic='Valor posicional';}
+  else if(kind===3){a=rand(3,10);b=rand(2,8);ans=2*(a+b);q=`Un huerto rectangular mide ${a} m de largo y ${b} m de ancho. ¿Cuál es su perímetro?`;topic='Perímetro';}
+  else{a=rand(3,8);ans=a*60;q=`¿Cuántos minutos son ${a} horas?`;topic='Tiempo';}
+ }else if(g===4){
+  if(kind===0){a=rand(12,35);b=rand(3,9);ans=a*b;q=`Hay ${a} filas con ${b} baldosas. ¿Cuántas baldosas hay?`;topic='Multiplicación';}
+  else if(kind===1){a=rand(7,15);b=rand(3,9);ans=a;q=`Se reparten ${a*b} semillas en ${b} bolsas iguales. ¿Cuántas semillas por bolsa?`;topic='División';}
+  else if(kind===2){a=rand(3,12);ans=a;q=`Un huerto tiene ${a*4} plantas. ¿Cuánto es una cuarta parte de ellas?`;topic='Fracciones';}
+  else if(kind===3){a=rand(3,12);b=rand(3,9);ans=2*(a+b);q=`Un patio mide ${a} m por ${b} m. ¿Cuántos metros mide todo su borde?`;topic='Perímetro';}
+  else{a=rand(2,9);ans=a*100;q=`¿Cuántos centímetros son ${a} metros?`;topic='Conversión de medidas';}
+ }else if(g===5){
+  if(kind===0){a=rand(12,75);b=rand(11,49);ans=(a+b)/10;q=`¿Cuánto suman ${(a/10).toFixed(1).replace('.',',')} y ${(b/10).toFixed(1).replace('.',',')}?`;topic='Decimales';}
+  else if(kind===1){a=rand(3,12);ans=a;q=`Una clase cosecha ${a*5} tomates. ¿Cuánto es un quinto del total?`;topic='Fracciones';}
+  else if(kind===2){a=rand(5,18);b=rand(3,10);ans=a*b;q=`El huerto rectangular mide ${a} m de largo y ${b} m de ancho. ¿Cuál es su área en m²?`;topic='Área';}
+  else if(kind===3){a=rand(3,12);ans=a*10;q=`¿Cuánto es el 10 % de ${a*100}?`;topic='Porcentajes sencillos';}
+  else{a=rand(4,16);ans=a*1000;q=`¿Cuántos mililitros son ${a} litros?`;topic='Unidades de capacidad';}
+ }else{
+  if(kind===0){a=rand(4,15);ans=a*25;q=`Una excursión cuesta ${a*100} €. ¿Cuánto representa el 25 %?`;topic='Porcentajes';}
+  else if(kind===1){a=rand(25,84);b=rand(12,49);ans=(a-b)/10;q=`Calcula ${(a/10).toFixed(1).replace('.',',')} − ${(b/10).toFixed(1).replace('.',',')}.`;topic='Operaciones decimales';}
+  else if(kind===2){a=rand(3,12);ans=a*2;q=`En un plano a escala 1:200, un pasillo mide ${a} cm. ¿Cuántos metros reales representa?`;topic='Escalas';}
+  else if(kind===3){a=rand(2,7);b=rand(2,6);c=rand(2,5);ans=a*b*c;q=`Una caja mide ${a} cm × ${b} cm × ${c} cm. ¿Qué volumen tiene en cm³?`;topic='Volumen';}
+  else{a=rand(5,18);ans=a;q=`Se reparten ${a*4} plantas: 3/4 para el jardín y el resto para el aula. ¿Cuántas van al aula?`;topic='Fracciones y reparto';}
+ }
+ const values=new Set([ans]);let bump=Math.max(1,Math.round(Math.abs(ans)*.08));
+ for(const shift of [-2,-1,1,2,3,-3,5]){if(values.size>=4)break;const n=ans+shift*bump;if(n>=0)values.add(Number(n.toFixed(2)));}
+ while(values.size<4)values.add(Number((ans+values.size()+1).toFixed(2)));
+ const opts=[...values].slice(0,4).sort(()=>Math.random()-.5);
+ return {q,ans,topic,opts};
+}
+function showMathChallenge(token){
+ if($('mathMode').value!=='math')return Promise.resolve(true);
+ const challenge=chooseMath(Number($('gradeSelect').value));
+ $('mathScore').textContent=`${$('gradeSelect').selectedOptions[0].text} Primaria · ${challenge.topic} · Aciertos: ${mathSolved}`;
+ $('mathQuestion').textContent=challenge.q;
+ $('mathFeedback').textContent='Elige una respuesta';activeQuestion=challenge;currentHelpStage=0;$('mathHelp').classList.add('hidden');$('mathHelp').textContent='';
+ $('mathOptions').replaceChildren();$('mathOverlay').classList.remove('hidden');speakText('Planta encontrada. '+challenge.q+' Elige la respuesta correcta.');
+ return new Promise(resolve=>{
+  pendingMath=resolve;
+  for(const v of challenge.opts){
+   const btn=document.createElement('button');btn.textContent=Number.isInteger(v)?String(v):v.toFixed(1).replace('.',',');
+   btn.onclick=()=>{
+    if(token!==runToken){$('mathOverlay').classList.add('hidden');pendingMath=null;resolve(false);return;}
+    mathAttempts++;
+    if(Math.abs(v-challenge.ans)<.0001){mathSolved++;$('mathFeedback').textContent='✅ ¡Correcto! ¡Ñam, planta conseguida!';speakText('¡Muy bien! Has acertado. La respuesta es '+String(challenge.ans).replace('.',',')+'. ¡Planta conseguida!');playFx('correct');$('mathOptions').querySelectorAll('button').forEach(b=>b.disabled=true);
+      setTimeout(()=>{$('mathOverlay').classList.add('hidden');pendingMath=null;resolve(true)},550);
+    }else{$('mathFeedback').textContent='💡 Casi. Revisa el cálculo e inténtalo otra vez.';speakText('Todavía no. '+mathHint(challenge,1)+' Inténtalo otra vez.');btn.disabled=true;playFx('wrong');}
+   };$('mathOptions').appendChild(btn);
+  }
+ });
+}
+$('readMath').onclick=()=>{if(activeQuestion)speakText(activeQuestion.q)};
+$('helpMath').onclick=()=>{if(!activeQuestion)return;currentHelpStage=Math.min(2,currentHelpStage+1);const h=mathHint(activeQuestion,currentHelpStage);$('mathHelp').textContent='Pista '+currentHelpStage+': '+h;$('mathHelp').classList.remove('hidden');speakText(h)};
+$('explainMath').onclick=()=>{if(!activeQuestion)return;const e=explainMath(activeQuestion);$('mathHelp').textContent=e;$('mathHelp').classList.remove('hidden');speakText(e)};
+$('repeatFeedback').onclick=()=>{if(lastSpoken)speakText(lastSpoken)};
+function updateMathMode(){const on=$('mathMode').value==='math';$('gradeSelect').disabled=!on;$('mathDescriptor').textContent=on?mathThemes[Number($('gradeSelect').value)]+' · Un reto al llegar a cada planta.':'Modo clásico: solo pensamiento computacional y recorridos.';}
+$('gradeSelect').onchange=updateMathMode;$('mathMode').onchange=updateMathMode;updateMathMode();
+
+$('levelSelect').innerHTML=levels.map((l,i)=>`<option value="${i}">Nivel ${i+1}: ${l.name}</option>`).join('');
+document.querySelectorAll('[data-cmd]').forEach(b=>b.addEventListener('click',()=>add(b.dataset.cmd)));
+$('go').onclick=go;$('undo').onclick=()=>{if(!executing){program.pop();renderProgram()}};$('clear').onclick=()=>{if(!executing){program=[];renderProgram();msg('Programa borrado. ¡Prueba otra estrategia!')}};$('reset').onclick=()=>load(current);$('next').onclick=()=>load(Math.min(current+1,levels.length-1));$('levelSelect').onchange=e=>load(Number(e.target.value));$('changeCostume').onclick=()=>{if(!executing)openCustomizer()};
+$('randomizeCostume').onclick=randomizeCostume;$('startMission').onclick=closeCustomizer;
+document.addEventListener('keydown',e=>{if(!menuScreen.classList.contains('hidden')||!$('customizerOverlay').classList.contains('hidden')||e.target.tagName==='SELECT'||e.target.tagName==='INPUT'||e.repeat)return;let c={'ArrowUp':'F','ArrowDown':'B','ArrowLeft':'L','ArrowRight':'R'}[e.key];if(c){e.preventDefault();add(c)}if(e.code==='Space'){e.preventDefault();go()}});
+populateSelectors();updateCostumePreview();load(0);
+
+// Pantalla completa: compatible con navegadores que permiten la API.
+const fullscreenBtn=document.getElementById('fullscreenBtn');
+const menuScreen=document.getElementById('menuScreen');
+function showGame(){menuAudio.pause();menuScreen.classList.add('hidden');document.getElementById('menuLevelsBox').classList.add('hidden');}
+function showMenu(){haltVoice();safeStartMenuMusic();if(executing)load(current);document.getElementById('customizerOverlay').classList.add('hidden');menuScreen.classList.remove('hidden');}
+$('homeBtn').addEventListener('click',showMenu);
+$('menuPlay').addEventListener('click',showGame);
+$('menuDress').addEventListener('click',()=>{showGame();openCustomizer();});
+$('menuLevels').addEventListener('click',()=>document.getElementById('menuLevelsBox').classList.remove('hidden'));
+$('menuBack').addEventListener('click',()=>document.getElementById('menuLevelsBox').classList.add('hidden'));
+$('menuLevelsGrid').innerHTML=levels.map((l,i)=>`<button data-menu-level="${i}">Nivel ${i+1}: ${l.name}</button>`).join('');
+$('menuLevelsGrid').addEventListener('click',e=>{const btn=e.target.closest('[data-menu-level]');if(btn){load(Number(btn.dataset.menuLevel));showGame();}});
+$('menuFull').addEventListener('click',()=>fullscreenBtn.click());
+$('menuMusic').onclick=()=>{musicMuted=!musicMuted;$('menuMusic').textContent=musicMuted?'🔇 Música':'🔊 Música';if(musicMuted)menuAudio.pause();else safeStartMenuMusic()};$('musicVol').oninput=e=>{menuAudio.volume=Number(e.target.value)/100};document.addEventListener('pointerdown',()=>{if(!menuScreen.classList.contains('hidden'))safeStartMenuMusic()},{once:true});
+
+function syncFullscreen(){const active=Boolean(document.fullscreenElement||document.webkitFullscreenElement);fullscreenBtn.textContent=active?'⤢ Salir de pantalla completa':'⛶ Pantalla completa';fullscreenBtn.setAttribute('aria-pressed',String(active));}
+fullscreenBtn.addEventListener('click',async()=>{
+ try{
+  if(document.fullscreenElement||document.webkitFullscreenElement){const exit=document.exitFullscreen||document.webkitExitFullscreen;if(exit)await exit.call(document);}
+  else{const root=document.documentElement;const enter=root.requestFullscreen||root.webkitRequestFullscreen;if(enter)await enter.call(root);else msg('Tu navegador no permite el modo pantalla completa. Usa F11 en el ordenador.');}
+ }catch(e){msg('No se pudo activar la pantalla completa. Prueba con F11 en el ordenador.');}
+ syncFullscreen();
+});
+document.addEventListener('fullscreenchange',syncFullscreen);
+document.addEventListener('webkitfullscreenchange',syncFullscreen);
+</script>
+</body>
+</html>
