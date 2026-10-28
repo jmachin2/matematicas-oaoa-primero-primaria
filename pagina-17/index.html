@@ -223,7 +223,7 @@
    <button class="pdf-type selected" data-pdf="ampliacion">Ampliación</button>
    <button class="pdf-type" data-pdf="refuerzo">Refuerzo</button>
    <button class="pdf-type" data-pdf="tarea">Tarea</button>
-   <button class="pdf-type" data-pdf="paso">Trabajo paso a paso</button>
+   <button class="pdf-type" data-pdf="tea">TEA</button>
    <button class="pdf-type" data-pdf="pictogramas">Pictogramas</button>
   </aside>
   <div class="pdf-panel">
@@ -369,15 +369,54 @@ function applyZoom(){$('#sheetTransform').style.transform=`scale(${zoom})`}$('#z
 img.onload=()=>setTimeout(resizeCanvas,50);window.addEventListener('resize',()=>{if(current===7)setTimeout(resizeCanvas,100)});
 
 /* 8 */
-let pdfType='ampliacion',pdfVersion=1,pdfCanvas=null;const labels={ampliacion:'Ampliación',refuerzo:'Refuerzo',tarea:'Tarea',paso:'Trabajo paso a paso',pictogramas:'Pictogramas'};
+let pdfType='ampliacion',pdfVersion=1,pdfCanvas=null;const labels={ampliacion:'Ampliación',refuerzo:'Refuerzo',tarea:'Tarea',tea:'TEA',pictogramas:'Pictogramas'};
 function rr(g,x,y,w,h,r=14,fill='#fff',stroke='#bfd5e1',sw=3){g.beginPath();g.roundRect(x,y,w,h,r);g.fillStyle=fill;g.fill();g.lineWidth=sw;g.strokeStyle=stroke;g.stroke()}
 function txt(g,t,x,y,s=28,b=true,align='left',col='#17384e'){g.fillStyle=col;g.font=`${b?'700':'400'} ${s}px Arial`;g.textAlign=align;g.textBaseline='alphabetic';g.fillText(t,x,y)}
 function line(g,x,y,w){g.strokeStyle='#718b99';g.lineWidth=2;g.setLineDash([8,6]);g.beginPath();g.moveTo(x,y);g.lineTo(x+w,y);g.stroke();g.setLineDash([])}
 function drawRod(g,n,x,y,u=28,h=36){const cols={1:'#f7f4ec',2:'#d95757',3:'#9acb6a',4:'#b978b5',5:'#edda4a',6:'#2d7b4d',7:'#202020'},tc={2:'#fff',4:'#fff',6:'#fff',7:'#fff'};rr(g,x,y,n*u,h,5,cols[n],'#788b96',2);txt(g,String(n),x+n*u/2,y+26,18,true,'center',tc[n]||'#25333d')}
+
+function pdfEye(g,x,y,s=1){g.save();g.strokeStyle='#17384e';g.lineWidth=4*s;g.beginPath();g.ellipse(x,y,42*s,24*s,0,0,Math.PI*2);g.stroke();g.beginPath();g.arc(x,y,9*s,0,Math.PI*2);g.fillStyle='#17384e';g.fill();g.restore()}
+function pdfWrite(g,x,y,s=1){g.save();g.strokeStyle='#17384e';g.lineWidth=5*s;g.beginPath();g.moveTo(x-30*s,y+25*s);g.lineTo(x+24*s,y-29*s);g.stroke();g.beginPath();g.moveTo(x+22*s,y-30*s);g.lineTo(x+34*s,y-18*s);g.stroke();g.beginPath();g.moveTo(x-34*s,y+30*s);g.lineTo(x-18*s,y+25*s);g.stroke();g.restore()}
+function pdfCheck(g,x,y,s=1){g.save();g.strokeStyle='#27874a';g.lineWidth=6*s;g.beginPath();g.moveTo(x-30*s,y);g.lineTo(x-8*s,y+22*s);g.lineTo(x+34*s,y-26*s);g.stroke();g.restore()}
+function pdfJoin(g,x,y,s=1){g.save();g.strokeStyle='#17384e';g.lineWidth=4*s;g.strokeRect(x-48*s,y-19*s,34*s,38*s);g.strokeRect(x+14*s,y-19*s,34*s,38*s);g.beginPath();g.moveTo(x-8*s,y);g.lineTo(x+8*s,y);g.moveTo(x,y-8*s);g.lineTo(x,y+8*s);g.stroke();g.restore()}
+function pdfArrow(g,x1,y1,x2,y2){g.save();g.strokeStyle='#17384e';g.lineWidth=4;g.beginPath();g.moveTo(x1,y1);g.lineTo(x2,y2);g.stroke();const a=Math.atan2(y2-y1,x2-x1);g.beginPath();g.moveTo(x2,y2);g.lineTo(x2-15*Math.cos(a-.5),y2-15*Math.sin(a-.5));g.moveTo(x2,y2);g.lineTo(x2-15*Math.cos(a+.5),y2-15*Math.sin(a+.5));g.stroke();g.restore()}
+function pdfPicBox(g,x,y,w,h,label,icon){rr(g,x,y,w,h,16,'#fff','#9fbfcf',3);if(icon==='eye')pdfEye(g,x+w/2,y+52,1);if(icon==='join')pdfJoin(g,x+w/2,y+52,1);if(icon==='write')pdfWrite(g,x+w/2,y+52,1);if(icon==='check')pdfCheck(g,x+w/2,y+52,1);txt(g,label,x+w/2,y+h-22,20,true,'center')}
+function pdfCheckbox(g,x,y,label){rr(g,x,y,38,38,4,'#fff','#60798a',2);txt(g,label,x+70,y+30,24,false)}
 function makeSheet(){
  const c=document.createElement('canvas');c.width=1240;c.height=1754;const g=c.getContext('2d');g.fillStyle='#fffefa';g.fillRect(0,0,c.width,c.height);
- txt(g,`${labels[pdfType].toUpperCase()} · SUMAS HASTA EL 7`,620,75,35,true,'center');txt(g,'Nombre:',70,130,22);line(g,160,133,430);txt(g,'Fecha:',730,130,22);line(g,805,133,300);txt(g,`Página 17 · versión ${pdfVersion}`,620,172,18,true,'center','#60798a');
+ txt(g,`${pdfType==='tea'?'FICHA ESTRUCTURADA':labels[pdfType].toUpperCase()} · SUMAS HASTA EL 7`,620,75,35,true,'center');txt(g,'Nombre:',70,130,22);line(g,160,133,430);txt(g,'Fecha:',730,130,22);line(g,805,133,300);txt(g,`Página 17 · versión ${pdfVersion}`,620,172,18,true,'center','#60798a');
  let y=225;const task=(title,h)=>{rr(g,65,y,1110,h,18,'#fff','#c7dce7',3);txt(g,title,90,y+42,27,true);const yy=y;y+=h+25;return yy};
+if(pdfType==='refuerzo'){
+ let yy=task('1. Mira el modelo y calcula.',330);drawRod(g,4,120,yy+95,30,40);txt(g,'+',260,yy+125,30);drawRod(g,2,305,yy+95,30,40);txt(g,'=',400,yy+125,30);txt(g,'6',500,yy+127,42,true);txt(g,'4 + 2 = 6',850,yy+127,34,true,'center');
+ yy=task('2. Calcula tres sumas.',360);[[3,2],[4,2],[5,2]].forEach((p,i)=>{txt(g,p[0]+' + '+p[1]+' =',150,yy+105+i*85,34,true);rr(g,370,yy+62+i*85,110,58,10,'#fff','#91a9b7',2);drawRod(g,p[0],650,yy+68+i*85,22,32);drawRod(g,p[1],810,yy+68+i*85,22,32)});
+ yy=task('3. Une cada suma con 5, 6 o 7.',320);['4+1','3+3','5+2'].forEach((s,i)=>txt(g,s,160+i*330,yy+105,32,true,'center'));['5','6','7'].forEach((s,i)=>{rr(g,105+i*330,yy+170,110,65,12,'#fff','#9fbfcf',3);txt(g,s,160+i*330,yy+215,34,true,'center')});
+ yy=task('4. Comprueba una con regletas.',260);rr(g,110,yy+80,1020,120,12,'#fbfdfe','#cbdde6',2);
+ txt(g,'REFUERZO · pocas sumas y apoyo visual.',620,1690,18,true,'center','#60798a');return c
+}
+if(pdfType==='tarea'){
+ let yy=task('1. Calcula.',460);const sums=pdfVersion%2?[[2,3],[4,2],[5,2],[3,3],[6,1],[1,4]]:[[3,2],[5,1],[4,3],[2,4],[1,6],[2,3]];sums.forEach((p,i)=>{const x=130+(i%2)*520,ry=yy+105+Math.floor(i/2)*105;txt(g,p[0]+' + '+p[1]+' =',x,ry,32,true);rr(g,x+220,ry-42,105,58,9,'#fff','#91a9b7',2)});
+ yy=task('2. Problema.',360);txt(g,'Hay 4 lápices azules y 2 verdes.',110,yy+100,28,true);txt(g,'¿Cuántos lápices hay en total?',110,yy+155,28,true);txt(g,'Operación:',110,yy+235,24,true);rr(g,265,yy+195,300,65,10,'#fff','#91a9b7',2);txt(g,'Respuesta:',650,yy+235,24,true);line(g,790,yy+238,300);
+ yy=task('3. Comprueba una suma con objetos.',300);rr(g,110,yy+80,1020,150,12,'#fbfdfe','#cbdde6',2);
+ txt(g,'TAREA · contenido ya trabajado y consignas autónomas.',620,1690,18,true,'center','#60798a');return c
+}
+if(pdfType==='tea'){
+ txt(g,'FICHA ESTRUCTURADA · SUMAS HASTA 7',620,75,35,true,'center');txt(g,'HOY HAGO 4 PASOS',620,220,26,true,'center','#60798a');
+ [['1','MIRA'],['2','ELIGE'],['3','SUMA'],['4','REVISA']].forEach((p,i)=>{rr(g,90+i*285,255,245,72,16,'#fff7bf','#9e8b3c',3);txt(g,p[0]+'  '+p[1],212+i*285,302,24,true,'center')});
+ let yy=task('1. MIRA EL MODELO.',285);drawRod(g,4,180,yy+105,30,40);txt(g,'+',320,yy+135,30);drawRod(g,2,365,yy+105,30,40);txt(g,'= 6',500,yy+135,36,true);
+ yy=task('2. ELIGE EL RESULTADO.',285);txt(g,'3 + 2 = ?',300,yy+160,42,true,'center');[5,6].forEach((n,i)=>{rr(g,650+i*180,yy+105,120,75,14,'#fff','#9fbfcf',3);txt(g,String(n),710+i*180,yy+156,36,true,'center')});
+ yy=task('3. HAZ UNA SUMA.',245);txt(g,'5 + 2 =',300,yy+145,38,true);rr(g,540,yy+98,130,65,10,'#fff','#91a9b7',2);
+ yy=task('4. REVISA.',300);pdfCheckbox(g,160,yy+70,'He juntado las partes.');pdfCheckbox(g,160,yy+140,'He escrito el total.');pdfCheckbox(g,160,yy+210,'He comprobado.');
+ return c
+}
+if(pdfType==='pictogramas'){
+ txt(g,'MIRA · JUNTA · ESCRIBE · REVISA',620,220,25,true,'center','#60798a');pdfPicBox(g,95,250,235,135,'MIRA','eye');pdfPicBox(g,365,250,235,135,'JUNTA','join');pdfPicBox(g,635,250,235,135,'ESCRIBE','write');pdfPicBox(g,905,250,235,135,'REVISA','check');
+ let yy=task('1.',300);pdfEye(g,150,yy+130,1);drawRod(g,4,300,yy+100,30,40);txt(g,'+',440,yy+130,30);drawRod(g,2,485,yy+100,30,40);txt(g,'=',580,yy+130,30);rr(g,640,yy+92,120,65,10,'#fff','#91a9b7',2);
+ yy=task('2.',300);pdfJoin(g,150,yy+130,1);txt(g,'3 + 3 =',350,yy+145,40,true);rr(g,580,yy+100,130,65,10,'#fff','#91a9b7',2);
+ yy=task('3.',280);pdfWrite(g,150,yy+125,1);txt(g,'5 + 2 = __',620,yy+145,42,true,'center');
+ yy=task('4.',230);pdfCheck(g,150,yy+110,1);txt(g,'5     6     7',650,yy+125,38,true,'center');
+ return c
+}
+
  if(pdfType==='paso'||pdfType==='pictogramas'){
   let yy=task(pdfType==='pictogramas'?'1. 👀 MIRA LA SUMA Y BUSCA EL RESULTADO':'1. Piensa con regletas y escribe el resultado',330);
   drawRod(g,4,110,yy+92,30,40);txt(g,'+',250,yy+121,30);drawRod(g,2,295,yy+92,30,40);txt(g,'=',385,yy+121,30);rr(g,440,yy+87,105,50,8,'#fff','#91a9b7',2);drawRod(g,6,650,yy+92,30,40);
