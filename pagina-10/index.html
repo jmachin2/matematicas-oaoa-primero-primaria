@@ -192,7 +192,7 @@
 
 <section class="step" id="step8">
  <div class="step-head"><div class="step-title">8. Fichas PDF</div><button class="speak" data-say="Elige una ficha, genera otra versión o descarga el PDF.">🔈</button></div>
- <div class="pdf-layout"><aside class="pdf-selector"><h3>Tipo de ficha</h3><button class="pdf-type selected" data-sheet="ampliacion">🚀 Ampliación</button><button class="pdf-type" data-sheet="refuerzo">🧩 Refuerzo</button><button class="pdf-type" data-sheet="tarea">🏠 Tarea</button><button class="pdf-type" data-sheet="tea">🪜 Trabajo paso a paso</button><button class="pdf-type" data-sheet="pictogramas">👁️ Pictogramas</button><div class="pdf-status" id="pdfStatus">Versión 1 lista.</div></aside><div class="pdf-preview-panel"><div class="pdf-preview-title" id="pdfTitle">Ampliación · versión 1</div><div class="pdf-preview" id="pdfPreview"></div><div class="pdf-actions"><button class="action" id="regenPdf">🔄 Otra versión</button><button class="action primary" id="downloadPdf">⬇ Descargar PDF</button></div></div></div>
+ <div class="pdf-layout"><aside class="pdf-selector"><h3>Tipo de ficha</h3><button class="pdf-type selected" data-sheet="ampliacion">🚀 Ampliación</button><button class="pdf-type" data-sheet="refuerzo">🧩 Refuerzo</button><button class="pdf-type" data-sheet="tarea">🏠 Tarea</button><button class="pdf-type" data-sheet="tea">🧩 TEA</button><button class="pdf-type" data-sheet="pictogramas">👁️ Pictogramas</button><div class="pdf-status" id="pdfStatus">Versión 1 lista.</div></aside><div class="pdf-preview-panel"><div class="pdf-preview-title" id="pdfTitle">Ampliación · versión 1</div><div class="pdf-preview" id="pdfPreview"></div><div class="pdf-actions"><button class="action" id="regenPdf">🔄 Otra versión</button><button class="action primary" id="downloadPdf">⬇ Descargar PDF</button></div></div></div>
 </section>
 
 <section class="step" id="step9"><div class="finish"><h2>¡Página 14 lista! 🎉</h2><p>Has clasificado sumas y completado diagramas parte-parte-todo.</p><button class="action primary" id="againBtn">Volver a empezar</button></div></section>
@@ -513,7 +513,7 @@ function fitSheet(){zoom=1;applyZoom();const v=$('#sheetViewer'),tr=$('#sheetTra
 $('#zoomIn').onclick=()=>{zoom=Math.min(2.2,zoom+.15);applyZoom()};$('#zoomOut').onclick=()=>{zoom=Math.max(.35,zoom-.15);applyZoom()};$('#fitBtn').onclick=fitSheet;$('#explainBtn').onclick=()=>{document.body.classList.toggle('explain-mode');$('#hideToolsBtn').hidden=!document.body.classList.contains('explain-mode');setTimeout(fitSheet,80)};$('#hideToolsBtn').onclick=()=>$('#sheetTools').style.display=$('#sheetTools').style.display==='none'?'flex':'none';
 
 /* 8. PDF */
-let pdfType='ampliacion',pdfVersion=1,pdfData=null;const pdfNames={ampliacion:'Ampliación',refuerzo:'Refuerzo',tarea:'Tarea',tea:'Trabajo paso a paso',pictogramas:'Pictogramas'};
+let pdfType='ampliacion',pdfVersion=1,pdfData=null;const pdfNames={ampliacion:'Ampliación',refuerzo:'Refuerzo',tarea:'Tarea',tea:'TEA',pictogramas:'Pictogramas'};
 function drawWorksheet(type,version){
  const c=document.createElement('canvas');c.width=1240;c.height=1754;const g=c.getContext('2d');
  const C={paper:'#fffef9',ink:'#5c554d',blue:'#5b98bf',green:'#70a47c',pink:'#e7a1ad',pale:'#fff7bf',soft:'#f7fbfd'};
@@ -554,7 +554,7 @@ function drawWorksheet(type,version){
    sec(2,830,'Calcula estas sumas.');B.c.forEach((p,i)=>opbox(105+(i%2)*540,885+Math.floor(i/2)*120,p[0],p[1],true));
    text('Cuenta, piensa y comprueba.',620,1580,30,{align:'center'});
  }else if(type==='tea'){
-   text('Trabajo paso a paso',620,235,42,{align:'center'});
+   text('TEA · TRABAJO PASO A PASO',620,235,42,{align:'center'});
    ['1  MIRA','2  JUNTA','3  ELIGE','4  REVISA'].forEach((s,i)=>{rr(85+i*285,285,245,70,15,'#99802d',C.pale,3);text(s,207+i*285,330,27,{align:'center'})});
    sec(1,470,'MIRA LAS DOS PARTES.');rr(210,515,820,110,12,C.blue,'#fff',3);text(`${B.m[0][0]} + ${B.m[0][1]} = ___`,620,585,50,{font:'num',align:'center'});
    sec(2,760,'ELIGE EL TODO.');[2,3,4,5].forEach((n,i)=>resultBox(130+i*260,815,n,i===B.m[0][0]+B.m[0][1]-2?'#f8efbd':'#fff'));
