@@ -40,6 +40,8 @@
 @media(max-width:920px){.workgrid{grid-template-columns:1fr}.pdf-layout{height:auto}.app{min-height:100vh}}
 @media print{.topbar,.tabs-wrap,.step,.teacher-modal,.badge{display:none!important}.app,.main{display:block;height:auto;overflow:visible}.step[data-step="8"]{display:block!important;height:auto;padding:0}.step[data-step="8"]>.head,.pdf-types,.pdf-panel>.pdf-title,.pdf-panel>.actions,.download-status{display:none!important}.pdf-layout,.pdf-panel,.pdf-preview{display:block!important;height:auto!important;overflow:visible!important;border:0!important;padding:0!important;background:white!important}.pdf-preview .paper{box-shadow:none;width:100%;padding:12mm;aspect-ratio:auto;overflow:visible}.paper .drawing{height:65px}body{background:white}}
 .editable-paper .edit-text{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.45} .editable-paper{box-sizing:border-box;overflow:visible!important}.editable-exercise{break-inside:avoid;page-break-inside:avoid} @media print{#paperEditorToolbar,#paperEditorStatus{display:none!important}.editable-exercise{outline:none!important}.editable-paper{width:190mm!important;min-height:0!important;max-height:none!important;height:auto!important;aspect-ratio:auto!important;overflow:visible!important;padding:5mm!important}}
+
+.editor-host{display:flex;flex-direction:column;gap:7px;height:calc(100% - 36px);min-height:0}.editor-host>.control{align-self:flex-start}.editor-frame{width:100%;height:100%;min-height:530px;border:2px solid #b9cedb;border-radius:14px;background:#eef7fb}.step[data-step="8"]{overflow:auto}@media(max-width:920px){.editor-host{height:auto}.editor-frame{height:870px}}
 </style></head><body>
 <div class="app"><header class="topbar"><div class="brand"><div class="icon">27</div><div><h1>Página 27 · Los sacos de Paco: dinero y sumas</h1><small>51 · Sacos de Paco / 52 · Anota las sumas</small></div></div><div class="top-actions"><a class="control" href="../fichas/">← Menú de fichas</a><button class="control" id="teacherBtn">👩‍🏫 Ayuda docente</button><button class="control" id="soundBtn">🔊 Sonido</button></div></header>
 <nav class="tabs-wrap"><div class="tabs"><button class="tab active" data-step="1">1 · Construyo</button><button class="tab " data-step="2">2 · Completo</button><button class="tab " data-step="3">3 · Pienso y digo</button><button class="tab " data-step="4">4 · Calculo</button><button class="tab " data-step="5">5 · ¿Qué observas?</button><button class="tab " data-step="6">6 · Problema</button><button class="tab " data-step="7">7 · Ver la ficha</button><button class="tab " data-step="8">8 · Imprimibles</button></div></nav>
@@ -51,7 +53,9 @@
 <section class="step" data-step="5"><div class="head"><div class="title">5. ¿Qué observas?</div></div><div class="workgrid"><div class="workbox"><div class="prompt">Compara, clasifica y explica qué cambia y qué se mantiene.</div><div id="work5" style="margin-top:20px"></div></div><div class="side"><div class="card"><div class="prompt">Palabra matemática</div><div class="big" style="font-size:1.8rem">TOTAL</div><div class="sub">Todo lo que tenemos al reunir las partes.</div></div><div class="rule">Construye, representa, explica y comprueba antes de responder.</div></div></div></section>
 <section class="step" data-step="6"><div class="head"><div class="title">6. Problema</div></div><div class="layout"><div class="card"><div class="prompt">Problema matemático</div><div class="problem-text">Paco tiene un billete de 5 euros y una moneda de 2 euros. ¿Cuántos euros tiene?</div><div class="notice" style="margin-top:14px">Representa la situación con las regletas o con un dibujo antes de elegir la respuesta.</div></div><div class="card"><div class="prompt">Elige la respuesta</div><div class="choices" id="problemChoices"></div><div class="feedback" id="fb6">🔎 Comprueba el resultado.</div></div></div></section>
 <section class="step" data-step="7"><div class="head"><div class="title">7. Ver la ficha</div></div><div class="sheet-stage"><div class="viewer"><div class="sheet-layer" id="sheetLayer"><iframe title="Libro original OAOA: consulta la página 27" src="https://drive.google.com/file/d/1kDDt6by7DsmGHHMrXVqcMUpFkual-RKB/preview"></iframe><canvas id="annot"></canvas></div></div><aside class="tools"><h3>Ficha original · P27</h3><div class="notice">Busca la página 27 del libro original. Puedes señalar y anotar con las herramientas de la pizarra.</div><div class="tool-grid"><button class="toolbtn active" data-tool="pen">✏️ Lápiz</button><button class="toolbtn" data-tool="highlight">🖍️ Resaltar</button><button class="toolbtn" data-tool="check">✓ Marca</button><button class="toolbtn" data-tool="eraser">⌫ Goma</button><button class="toolbtn" id="undoAnnot">↶ Deshacer</button><button class="toolbtn" id="clearAnnot">🧹 Limpiar</button></div><a class="control" href="https://drive.google.com/file/d/1kDDt6by7DsmGHHMrXVqcMUpFkual-RKB/view" target="_blank" rel="noopener">↗ Abrir libro original</a></aside></div></section>
-<section class="step" data-step="8"><div class="head"><div class="title">8. Imprimibles</div></div><div class="pdf-layout"><aside class="pdf-types"><h3>Elige</h3><button class="pdf-type selected" data-pdf="ampliacion">Ampliacion</button><button class="pdf-type " data-pdf="refuerzo">Refuerzo</button><button class="pdf-type " data-pdf="tarea">Tarea</button><button class="pdf-type " data-pdf="tea">TEA</button><button class="pdf-type " data-pdf="pictogramas">Pictogramas</button></aside><div class="pdf-panel"><div class="pdf-title" id="pdfTitle">Ampliación · Página 27</div><div class="pdf-preview" id="pdfPreview"></div><div class="actions"><button class="action" id="regenPdf">↻ Otra versión</button><button class="action primary" id="downloadPdf">⬇ Imprimir / Guardar PDF</button></div><div class="download-status">En el cuadro de impresión, elige «Guardar como PDF».</div></div></div></section>
+<section class="step" data-step="8"><div class="head"><div class="title">8. Imprimibles · Editor visual A4 · Página 27</div></div>
+ <div class="editor-host"><a class="control" href="../editor-imprimibles/?pagina=27" target="_blank" rel="noopener">↗ Abrir editor a pantalla completa</a>
+ <iframe class="editor-frame" title="Editor de imprimibles de la página 27" loading="eager" src="../editor-imprimibles/?pagina=27"></iframe></div></section>
 </main></div>
 <div class="teacher-modal" id="teacherModal"><div class="teacher-box"><div class="head"><h2>👩‍🏫 Ayuda docente · Página 27</h2><button class="action" id="closeTeacher">Cerrar</button></div><div class="teacher-grid">
 <div class="teacher-item"><strong>Referencia del libro</strong>51 · Sacos de Paco / 52 · Anota las sumas</div>
@@ -85,107 +89,8 @@ function sizeAnnot(){const cv=$('#annot'),layer=$('#sheetLayer');cv.width=layer.
 function redraw(){const cv=$('#annot'),g=cv.getContext('2d');g.clearRect(0,0,cv.width,cv.height);for(const p of paths){g.save();g.strokeStyle=p.color;g.lineWidth=p.width*devicePixelRatio;g.lineCap='round';g.lineJoin='round';g.beginPath();p.points.forEach((pt,i)=>{const x=pt[0]*cv.width,y=pt[1]*cv.height;i?g.lineTo(x,y):g.moveTo(x,y)});if(p.points.length===1){const pt=p.points[0];g.lineTo(pt[0]*cv.width+.1,pt[1]*cv.height+.1)}g.stroke();g.restore()}}
 $$('[data-tool]').forEach(b=>b.onclick=()=>{annotMode=b.dataset.tool;$$('[data-tool]').forEach(x=>x.classList.toggle('active',x===b))});
 const cv=$('#annot');function pcoords(e){const r=cv.getBoundingClientRect();return [(e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height]}cv.addEventListener('pointerdown',e=>{e.preventDefault();drawing=true;cv.setPointerCapture(e.pointerId);activePath={color:annotMode==='highlight'?'rgba(241,204,37,.65)':annotMode==='eraser'?'#fff':annotMode==='check'?'#308c57':'#163b56',width:annotMode==='highlight'?15:annotMode==='eraser'?26:3,points:[pcoords(e)]};paths.push(activePath);redraw()});cv.addEventListener('pointermove',e=>{if(drawing&&activePath){activePath.points.push(pcoords(e));redraw()}});cv.addEventListener('pointerup',()=>{drawing=false;activePath=null});$('#undoAnnot').onclick=()=>{paths.pop();redraw()};$('#clearAnnot').onclick=()=>{paths=[];redraw()};window.addEventListener('resize',()=>{if(current===7)sizeAnnot()});
-function basePrintTasks(){
-  if(DATA.n===27)return [...DATA.money.map(p=>({kind:'money',nums:p})),...DATA.items.map(p=>({kind:'sum',nums:p}))];
-  if(DATA.n===26)return [...DATA.items.map(p=>({kind:'brick',nums:p})),...DATA.sums.map(p=>({kind:'sum',nums:p}))];
-  if(DATA.n===28)return [...DATA.items.map(p=>({kind:'compare',nums:p})),...DATA.bricks.map(p=>({kind:'brick',nums:p}))];
-  return DATA.items.map(p=>({kind:'sum',nums:p}));
-}
-function variantTasks(){
- const pool=basePrintTasks();const amount=pdfType==='tea'?3:pdfType==='refuerzo'?4:pdfType==='pictogramas'?4:pdfType==='tarea'?5:6;
- // Variations stay within the mathematical target and rotate through every original item.
- const offset=pdfVersion%pool.length,cycle=Math.floor(pdfVersion/pool.length);
- const picked=Array.from({length:Math.min(amount,pool.length)},(_,i)=>{
-   const source=pool[(offset+i)%pool.length],nums=[...source.nums];
-   // Subsequent cycles vary the order of the addends while preserving their total.
-   if(cycle%2===1&&nums.length===2&&source.kind!=='brick')nums.reverse();
-   return {kind:source.kind,nums};
- });
- // Even if all items fit in one sheet, rotate their order to create a visible new version.
- return picked;
-}
-function printTaskLabel(task,index){
- const nums=task.nums,expr=nums.join(' + ');
- if(task.kind==='brick')return (index+1)+'. Completa el ladrillo: '+nums[0]+' = '+nums[1]+' + ____';
- if(task.kind==='compare')return (index+1)+'. '+expr+' = ____ . ¿Igual a 8 o menor que 8? __________';
- if(task.kind==='money')return (index+1)+'. Saco de Paco: '+nums.map(n=>n+' €').join(' + ')+' = ____ €';
- return (index+1)+'. '+expr+' = ____';
-}
-function showPaper(){
- const tasks=variantTasks();
- const prompt=pdfType==='pictogramas'?'👀 Mira · 🧩 Construye · ✍️ Escribe':pdfType==='tea'?'Una actividad cada vez. Puedes usar regletas.':'Resuelve con regletas, dibujo o una suma.';
- $('#pdfTitle').textContent=pdfType.toUpperCase()+' · Página '+DATA.n+' · Versión '+(pdfVersion+1);
- const host=$('#pdfPreview');
- host.innerHTML='<div class="paper editable-paper"><h3>MATEMÁTICAS OAOA · PÁGINA '+DATA.n+'</h3><p>'+pdfType.toUpperCase()+' · Versión '+(pdfVersion+1)+'</p><p>Nombre: ________________________ Fecha: ___________</p><p>'+prompt+'</p><div class="paper-tasks"></div><p>Explico cómo lo he pensado:</p><div class="drawing" style="height:60px;border:1px dashed #aaa"></div></div>';
- const parent=host.querySelector('.paper-tasks');
- tasks.forEach((t,i)=>{
-   const el=document.createElement('div');el.className='exercise editable-exercise';
-   el.style.cssText='position:relative;display:block;clear:both;overflow-wrap:anywhere;line-height:1.5;margin:12px 0;padding:5px;break-inside:avoid;page-break-inside:avoid;';
-   const text=document.createElement('div');text.className='edit-text';text.contentEditable='true';text.spellcheck=true;text.textContent=printTaskLabel(t,i);el.appendChild(text);
-   if(pdfType==='ampliacion'||pdfType==='tea'){
-     const drawing=document.createElement('div');drawing.className='drawing';drawing.style.cssText='height:46px;border:1px dashed #aaa;margin-top:6px';el.appendChild(drawing);
-   }
-   parent.appendChild(el);
- });
- const savedKey='oaoa-print-layout-p'+DATA.n+'-'+pdfType+'-v'+pdfVersion;
- try{
-   const saved=JSON.parse(localStorage.getItem(savedKey)||'null');
-   if(Array.isArray(saved)&&saved.length===tasks.length)host.querySelectorAll('.edit-text').forEach((el,i)=>el.textContent=saved[i]);
- }catch(e){}
- prepareEditor();
-}
-function prepareEditor(){
- let bar=document.getElementById('paperEditorToolbar'),host=$('#pdfPreview');
- if(!bar){
-   bar=document.createElement('div');bar.id='paperEditorToolbar';
-   bar.style.cssText='display:flex;gap:5px;flex-wrap:wrap;padding:8px;background:#eef7fb;border-radius:10px;margin:5px 0;font-size:12px';
-   bar.innerHTML='<button type="button" data-editor="up">↑ Subir</button><button type="button" data-editor="down">↓ Bajar</button><button type="button" data-editor="smaller">A−</button><button type="button" data-editor="larger">A+</button><button type="button" data-editor="less">− Espacio</button><button type="button" data-editor="more">+ Espacio</button><button type="button" data-editor="save">💾 Guardar cambios</button><button type="button" data-editor="reset">↺ Restablecer</button>';
-   host.parentNode.insertBefore(bar,host);
-   const status=document.createElement('div');status.id='paperEditorStatus';status.setAttribute('role','status');status.style.cssText='font-size:12px;font-weight:bold;margin:4px 0';host.parentNode.insertBefore(status,host);
-   bar.addEventListener('click',e=>{
-     const btn=e.target.closest('button[data-editor]');if(!btn)return;
-     const action=btn.dataset.editor,selected=host.querySelector('.editable-exercise.is-selected'),container=host.querySelector('.paper-tasks');
-     const key='oaoa-print-layout-p'+DATA.n+'-'+pdfType+'-v'+pdfVersion;
-     if(action==='save'){
-       if(!checkPaperFit())return;
-       try{localStorage.setItem(key,JSON.stringify([...host.querySelectorAll('.edit-text')].map(el=>el.textContent)));$('#paperEditorStatus').textContent='✓ Textos guardados en este navegador.'}catch(err){$('#paperEditorStatus').textContent='No se pudieron guardar los textos.'}return;
-     }
-     if(action==='reset'){try{localStorage.removeItem(key)}catch(err){}showPaper();return}
-     if(!selected){$('#paperEditorStatus').textContent='Selecciona primero un ejercicio.';return}
-     if(action==='up'&&selected.previousElementSibling)container.insertBefore(selected,selected.previousElementSibling);
-     if(action==='down'&&selected.nextElementSibling)container.insertBefore(selected.nextElementSibling,selected);
-     if(action==='smaller'||action==='larger'){
-       const el=selected.querySelector('.edit-text'),size=parseFloat(getComputedStyle(el).fontSize)||16;el.style.fontSize=Math.max(11,Math.min(25,size+(action==='larger'?1:-1)))+'px';
-     }
-     if(action==='less'||action==='more'){
-       const margin=parseFloat(getComputedStyle(selected).marginBottom)||12;selected.style.marginBottom=Math.max(2,Math.min(35,margin+(action==='more'?3:-3)))+'px';
-     }
-     checkPaperFit();
-   });
-   host.addEventListener('click',e=>{
-     const exercise=e.target.closest('.editable-exercise');if(!exercise)return;
-     host.querySelectorAll('.editable-exercise').forEach(el=>{el.classList.remove('is-selected');el.style.outline='none'});
-     exercise.classList.add('is-selected');exercise.style.outline='2px dashed #469ac7';
-   });
-   host.addEventListener('input',()=>checkPaperFit());
- }
- checkPaperFit();
-}
-function checkPaperFit(){
- const paper=$('#pdfPreview .paper'),status=$('#paperEditorStatus');if(!paper||!status)return true;
- const available=paper.clientWidth*297/210-20;
- const full=paper.scrollHeight>available;
- let collide=false,previous=-Infinity;
- for(const block of paper.querySelectorAll('.editable-exercise')){
-   const b=block.getBoundingClientRect();if(b.top<previous-1)collide=true;previous=Math.max(previous,b.bottom);
- }
- paper.style.outline=full||collide?'3px solid #ce783a':'none';
- status.textContent=collide?'⚠️ Los ejercicios se superponen. Reordena o reduce el espacio.':full?'⚠️ Se supera el alto A4. Reduce texto o espacio antes de imprimir.':'✓ Composición en flujo, sin superposición detectada.';
- return !collide&&!full;
-}
-$$('[data-pdf]').forEach(b=>b.onclick=()=>{pdfType=b.dataset.pdf;pdfVersion=0;$$('[data-pdf]').forEach(x=>x.classList.toggle('selected',x===b));showPaper()});
-$('#regenPdf').onclick=()=>{pdfVersion++;showPaper()};
-$('#downloadPdf').onclick=()=>{if(!checkPaperFit()){$('#paperEditorStatus').textContent+=' Corrige el diseño antes de imprimir.';return;}window.print()};
+function showPaper(){ /* Editor de imprimibles en módulo independiente visible en paso 8. */ }
+
 build1();build2();build3();build4();build5();build6();showPaper();let h=location.hash.match(/step(\d+)/);if(h)go(Math.max(1,Math.min(8,Number(h[1]))));
 })();
 </script><script src="../assets/fullscreen-persistent.js"></script></body></html>
