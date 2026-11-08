@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Página 25 · Sumas hasta el 8 y problemas · Matemáticas OAOA</title>
+<style>
+:root{--ink:#17384e;--muted:#60798a;--line:#c5dbe6;--bg:#eef7fb;--primary:#277fa8;--ok:#dff5e5;--bad:#ffe8e8}
+*{box-sizing:border-box}html,body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--bg)}
+header{background:white;border-bottom:2px solid var(--line);padding:12px 18px}
+nav{max-width:1100px;margin:auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+nav a{color:var(--ink);text-decoration:none;font-weight:800;padding:8px;border-radius:9px;background:#edf6fa}
+nav strong{margin-right:auto}
+main{max-width:1100px;margin:20px auto;padding:0 16px 30px}
+h1{font-size:clamp(1.45rem,3vw,2rem);margin:4px 0 6px}h2{font-size:1.18rem}
+.subtitle{color:var(--muted);font-weight:700;line-height:1.45}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px}
+.panel{background:white;border:2px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 6px 22px #2646570d}
+.eyebrow{font-size:.77rem;color:var(--muted);font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.progress{height:11px;border-radius:16px;background:#dceaf1;overflow:hidden;margin:12px 0 20px}.progress div{height:100%;background:#479f80;transition:width .25s}
+.question{font-size:1.4rem;font-weight:900;line-height:1.5}
+.visual{min-height:132px;background:#f7fafc;border:2px dashed var(--line);border-radius:15px;padding:15px;margin:16px 0;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:9px}
+.rod{height:37px;min-width:24px;border:2px solid #41515f;border-radius:6px;display:inline-grid;place-items:center;font-size:14px;font-weight:bold}
+.rod span{display:block;line-height:1}
+.op{font-size:30px;font-weight:900}.coin{display:inline-grid;place-items:center;border-radius:50%;border:3px solid #b48a26;background:#ffdf61;color:#593d00;width:56px;height:56px;font-weight:900;font-size:22px}.note{background:#eaf5fb;border-radius:13px;padding:12px;font-weight:700;line-height:1.45}
+.answers{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+button{border:2px solid #95bbcf;background:white;color:var(--ink);border-radius:12px;padding:12px 16px;cursor:pointer;font-size:1.05rem;font-weight:900;min-height:45px}
+button:hover,button:focus-visible{border-color:#257ca7;background:#eff8fc}button.primary{background:var(--primary);color:white;border-color:var(--primary)}
+button:disabled{opacity:.45;cursor:not-allowed}
+#feedback{margin:12px 0 0;min-height:44px;font-weight:900;padding:10px;border-radius:10px}
+#feedback.good{background:var(--ok);color:#245f38}#feedback.wrong{background:var(--bad);color:#982a2a}
+.controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;margin-top:18px}
+.side-item{margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.side-item b{display:block;margin-bottom:5px}
+.small{font-size:.92rem;color:var(--muted);line-height:1.5}
+.menu{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:18px 0}
+.menu a{text-decoration:none;text-align:center;border:2px solid var(--line);background:white;border-radius:12px;padding:10px;font-weight:900;color:var(--ink)}
+.menu a.current{background:#dff2fa;border-color:#438fb7}
+#sheet{display:none}
+@media(max-width:800px){.layout{grid-template-columns:1fr}.menu{grid-template-columns:repeat(2,1fr)}}
+@media print{header,.menu,.layout,button,.subtitle,.noprint{display:none!important}main{padding:0;margin:0;max-width:none}h1{font-size:17pt}#sheet{display:block!important}.print-row{padding:11px 0;border-bottom:1px solid #aaa;break-inside:avoid}.line{display:inline-block;border-bottom:1px solid #555;min-width:130px}.print-meta{margin:14px 0 18px}.print-row{font-size:13pt}.print-row small{font-size:10pt}}
+</style></head><body>
+<header><nav><strong>🧮 Matemáticas OAOA · 1.º Primaria</strong><a href="../fichas/">Fichas</a><a href="../juegos/">Juegos</a><a href="../vocabulario/">Vocabulario</a><a href="../examenes/">Exámenes</a></nav></header>
+<main><div class="eyebrow">CEIP Camino Largo · Libro OAOA · Página 25</div><h1>Sumas hasta el 8 y problemas</h1>
+<p class="subtitle">Secuencia: construimos con materiales → representamos → calculamos → explicamos y comprobamos.</p>
+<div class="menu">
+<a href="../pagina-25/" class="current">Página 25</a>
+<a href="../pagina-26/" class="">Página 26</a>
+<a href="../pagina-27/" class="">Página 27</a>
+<a href="../pagina-28/" class="">Página 28</a>
+</div>
+<div class="layout"><section class="panel">
+<div class="topline"><span class="eyebrow" id="stepCount">Actividad 1</span><span id="score" class="small">0 aciertos</span></div>
+<div class="progress"><div id="bar" style="width:0"></div></div>
+<div id="prompt" class="question"></div><div id="visual" class="visual"></div>
+<div id="answers" class="answers"></div><p id="feedback" role="status" aria-live="polite"></p>
+<div class="controls"><button id="back">← Anterior</button><button id="say">🔊 Escuchar</button><button id="next" class="primary">Siguiente →</button></div>
+</section><aside class="panel">
+<div class="side-item"><b>Palabra matemática</b><h2 style="margin:0 0 8px">SUMA</h2><p class="small">Juntar dos cantidades para averiguar cuántas hay en total.</p></div>
+<div class="side-item"><b>Ayuda al profesorado</b><p class="small">Primero compone las cantidades con regletas. En el problema del colegio, identifica 3 y 5 como partes y busca el total. Explica la operación antes de escribirla.</p></div>
+<div class="side-item"><b>Para observar</b><p class="small">Comprueba si el alumnado representa la cantidad, selecciona una estrategia y explica cómo sabe el resultado. Valora el procedimiento, no solo el acierto.</p></div>
+<div class="side-item"><b>Colores de las regletas</b><p class="small">1 blanco · 2 rojo · 3 verde claro · 4 rosa · 5 amarillo · 6 verde oscuro · 7 negro · 8 marrón.</p></div>
+<button id="print" style="width:100%">🖨️ Imprimir / guardar ficha PDF</button>
+<button id="restart" style="width:100%;margin-top:8px">↻ Repetir actividades</button>
+</aside></div>
+<div id="sheet"><h2>Matemáticas OAOA · Ficha 25: Sumas hasta el 8 y problemas</h2>
+<div class="print-meta">Nombre: <span class="line"></span> &nbsp; Fecha: <span class="line"></span></div>
+<div id="printQuestions"></div><p style="font-size:11pt;margin-top:22px">Explica con un dibujo o con regletas cómo has llegado a uno de tus resultados.</p>
+<div style="height:65px;border:1px solid #aaa"></div></div>
+</main>
+<script>
+const P={"page":25,"title":"Sumas hasta el 8 y problemas","word":"SUMA","definition":"Juntar dos cantidades para averiguar cuántas hay en total.","questions":[["sum",6,1],["sum",4,4],["sum",3,2],["sum",4,2],["sum",2,6],["sum",3,1],["brick",8,3],["problem",3,5]],"teacher":"Primero compone las cantidades con regletas. En el problema del colegio, identifica 3 y 5 como partes y busca el total. Explica la operación antes de escribirla."};
+const COLORS={1:'#f7f4ec',2:'#d95757',3:'#9acb6a',4:'#ed9abc',5:'#edda4a',6:'#2d7b4d',7:'#202020',8:'#8b5a35',9:'#377ec2',10:'#ef9139'};
+const $=q=>document.querySelector(q);let i=0,correct=0;let solved=new Set();let listenedText='';
+const rod=n=>'<span class="rod" style="width:'+n*31+'px;background:'+COLORS[n]+';color:'+([6,7,8].includes(n)?'#fff':'#182f3d')+'"><span>'+n+'</span></span>';
+const textFor=q=>q[0]==='sum'?'¿Cuánto es '+q[1]+' + '+q[2]+'?':q[0]==='brick'?'Tenemos '+q[2]+'. ¿Cuánto falta para llegar a '+q[1]+'?':q[0]==='money'?'¿Cuántos euros hay en este saco?':q[0]==='problem'?'En el colegio hay '+q[1]+' niños y '+q[2]+' niñas jugando. ¿Cuántos hay en total?':q[0]==='class'?'Clasifica la suma '+q[1]+' + '+q[2]+'. ¿Qué resultado tiene?':'¿La suma '+q[1]+' + '+q[2]+' es igual a 8 o menor que 8?';
+const result=q=>q[0]==='brick'?q[1]-q[2]:q[0]==='money'?q[1].reduce((a,b)=>a+b,0):q[0]==='compare'?(q[1]+q[2]===8?'Igual que 8':'Menor que 8'):q[1]+q[2];
+function options(q){if(q[0]==='compare')return ['Igual que 8','Menor que 8'];if(q[0]==='class')return [4,5,6,7,8];let n=result(q);return [...new Set([n,Math.max(0,n-1),Math.min(10,n+1),Math.max(0,n-2)])].sort((a,b)=>a-b)}
+function picture(q){if(q[0]==='money')return q[1].map(v=>v===5?'<span style="padding:16px 25px;background:#a4cbb1;border:3px solid #4a8565;border-radius:7px;font-size:22px;font-weight:900">5 €</span>':'<span class="coin">'+v+' €</span>').join('');
+if(q[0]==='brick')return '<div style="text-align:center"><div class="note">TODO: '+q[1]+'</div><div style="margin-top:8px">'+rod(q[2])+' <span class="op">+</span> <span class="op">?</span></div></div>';
+if(q[0]==='class'||q[0]==='compare')return rod(q[1])+'<span class="op">+</span>'+(q[2]?rod(q[2]):'<span class="note">0</span>');
+return rod(q[1])+'<span class="op">+</span>'+rod(q[2])}
+function render(){
+ const q=P.questions[i];$('#stepCount').textContent='Actividad '+(i+1)+' de '+P.questions.length;$('#bar').style.width=(i/P.questions.length*100)+'%';
+ $('#score').textContent=correct+' aciertos';$('#prompt').textContent=textFor(q);listenedText=textFor(q);
+ $('#visual').innerHTML=picture(q);$('#answers').innerHTML='';$('#feedback').className='';$('#feedback').textContent='';
+ options(q).forEach(v=>{let b=document.createElement('button');b.type='button';b.textContent=v;b.onclick=()=>check(v);$('#answers').appendChild(b)});
+ $('#back').disabled=i===0;$('#next').textContent=i===P.questions.length-1?'Terminar ✓':'Siguiente →';
+ if(solved.has(i)){ $('#feedback').className='good';$('#feedback').textContent='¡Resuelto! Puedes pasar a la siguiente actividad.';}
+}
+function check(v){const q=P.questions[i],ok=v===result(q);$('#feedback').className=ok?'good':'wrong';$('#feedback').textContent=ok?'¡Correcto! Explica cómo lo has comprobado.':'Prueba de nuevo. Usa las regletas y cuenta las partes.';
+ if(ok&&!solved.has(i)){solved.add(i);correct++;$('#score').textContent=correct+' aciertos';}}
+$('#back').onclick=()=>{if(i>0){i--;render()}};
+$('#next').onclick=()=>{if(i<P.questions.length-1){i++;render()}else{$('#feedback').className='good';$('#feedback').textContent='Has terminado. Has acertado '+correct+' de '+P.questions.length+'. Puedes imprimir la ficha para continuar en papel.';$('#bar').style.width='100%';}};
+$('#say').onclick=()=>{if('speechSynthesis' in window){speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(listenedText);u.lang='es-ES';u.rate=.85;speechSynthesis.speak(u)}};
+$('#restart').onclick=()=>{i=0;correct=0;solved.clear();render()};
+$('#print').onclick=()=>window.print();
+$('#printQuestions').innerHTML=P.questions.map((q,j)=>'<div class="print-row"><b>'+(j+1)+'.</b> '+textFor(q)+' &nbsp; <span class="line"></span></div>').join('');
+render();
+</script></body></html>
