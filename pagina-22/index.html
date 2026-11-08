@@ -30,6 +30,14 @@
 .pdf-layout{display:grid;grid-template-columns:190px minmax(0,1fr);gap:12px;height:calc(100% - 36px)}.pdf-types{display:grid;gap:7px;align-content:start;background:#fff;border:2px solid var(--line);border-radius:15px;padding:10px}.pdf-type{padding:9px}.pdf-type.selected{background:#dceff8;border-color:var(--blue)}.pdf-panel{background:#fff;border:2px solid var(--line);border-radius:15px;padding:12px;display:grid;grid-template-rows:auto 1fr auto;gap:8px;min-height:0}.pdf-title{text-align:center;font-weight:1000}.pdf-preview{display:grid;place-items:center;overflow:auto;background:#eef3f6;border-radius:12px;padding:8px;min-height:0}.pdf-preview canvas{max-height:100%;max-width:100%;width:auto;height:auto;box-shadow:0 3px 12px rgba(0,0,0,.16)}.teacher-modal{position:fixed;inset:0;background:rgba(12,35,50,.7);z-index:100;display:none;place-items:center;padding:18px}.teacher-modal.open{display:grid}.teacher-box{max-width:780px;max-height:90vh;overflow:auto;background:#fff;border-radius:22px;padding:20px}.teacher-box h2{margin-top:0}.teacher-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.teacher-item{background:#f4f8fa;border:2px solid #d4e3ea;border-radius:14px;padding:12px}.teacher-item strong{display:block;margin-bottom:5px}
 @media(max-width:920px){.brand small{display:none}.tabs{grid-template-columns:repeat(4,1fr)}.rod-layout,.missing-layout,.pairs-layout,.transfer-layout,.recall-layout,.problem{grid-template-columns:1fr}.sheet-stage,.pdf-layout{grid-template-columns:1fr}.step{overflow:auto}.rod{--u:34px}.teacher-grid{grid-template-columns:1fr}}
 
+
+/* A4 editor replaces legacy canvas preview without changing pedagogical steps 1-7. */
+.oaoa-editor-shell{display:flex;flex-direction:column;gap:8px;height:calc(100% - 37px);min-height:0}
+.oaoa-editor-shell>.control{align-self:flex-start}
+.oaoa-editor-frame{display:block;width:100%;height:100%;min-height:535px;border:2px solid #b9cedb;border-radius:14px;background:#eef7fb}
+.legacy-pdf-hidden{display:none!important}
+.step[data-step="8"]{overflow:auto}
+@media(max-width:920px){.oaoa-editor-shell{height:auto}.oaoa-editor-frame{height:900px}}
 </style>
 </head>
 <body>
@@ -75,10 +83,13 @@
 <aside class="tools"><h3>Anotar</h3><div class="tool-grid"><button class="toolbtn active" data-tool="pen">✏️ Lápiz</button><button class="toolbtn" data-tool="highlight">🖍️ Resaltar</button><button class="toolbtn" data-tool="circle">⭕ Círculo</button><button class="toolbtn" data-tool="check">✓</button><button class="toolbtn" data-tool="eraser">⌫ Goma</button><button class="toolbtn" id="undoAnnot">↶ Deshacer</button></div><button class="toolbtn" id="clearAnnot">🧹 Limpiar</button><a class="control" target="_blank" rel="noopener" href="https://drive.google.com/file/d/1NPEqcEIY0Fq5c_-kJE4Z2_p6Mw7K_lJe/view">↗ Abrir PDF original</a><div class="sub">Si el visor abre al inicio del libro, ve a la página 22.</div></aside>
 </div></section>
 
-<section class="step" data-step="8"><div class="head"><div class="title">8. Páginas imprimibles · Página 22</div></div><div class="pdf-layout">
+<section class="step" data-step="8"><div class="head"><div class="title">8. Imprimibles · Editor visual A4 · Página 22</div></div>
+ <div class="oaoa-editor-shell"><a class="control" href="../editor-imprimibles/?pagina=22" target="_blank" rel="noopener">↗ Abrir editor a pantalla completa</a>
+ <iframe class="oaoa-editor-frame" title="Editor de los imprimibles de la página 22" loading="eager" src="../editor-imprimibles/?pagina=22"></iframe></div>
+ <div class="legacy-pdf-hidden" hidden aria-hidden="true"><div class="pdf-layout">
 <aside class="pdf-types"><h3>Elige</h3><button class="pdf-type selected" data-pdf="ampliacion">Ampliación</button><button class="pdf-type" data-pdf="refuerzo">Refuerzo</button><button class="pdf-type" data-pdf="tarea">Tarea</button><button class="pdf-type" data-pdf="tea">TEA</button><button class="pdf-type" data-pdf="pictogramas">Pictogramas</button></aside>
 <div class="pdf-panel"><div class="pdf-title" id="pdfTitle">Ampliación · Página 22</div><div class="pdf-preview" id="pdfPreview"></div><div class="actions"><button class="action" id="regenPdf">↻ Otra versión</button><button class="action primary" id="downloadPdf">⬇ Descargar PDF</button></div></div>
-</div></section>
+</div></div></section>
 </main></div>
 
 <div class="teacher-modal" id="teacherModal"><div class="teacher-box"><div class="head"><h2>👩‍🏫 Ayuda docente · Página 22</h2><button class="action" id="closeTeacher">Cerrar</button></div><div class="teacher-grid">
@@ -102,7 +113,7 @@ $$('.tab').forEach(function(b){b.onclick=function(){go(Number(b.dataset.step))}}
 $('#soundBtn').onclick=function(){sound=!sound;$('#soundBtn').textContent=sound?'🔊 Sonido':'🔇 Sonido'};
 function tone(ok){if(!sound)return;try{var A=new AudioContext(),o=A.createOscillator(),g=A.createGain();o.connect(g);g.connect(A.destination);o.frequency.value=ok?680:230;g.gain.setValueAtTime(.07,A.currentTime);g.gain.exponentialRampToValueAtTime(.001,A.currentTime+.16);o.start();o.stop(A.currentTime+.16)}catch(e){}}
 function fb(id,ok,icon,msg){var el=$(id);el.className='feedback '+(ok?'ok':'err');el.innerHTML='<span>'+icon+'</span><span>'+msg+'</span>';tone(ok)}
-var COLORS={1:'#fff',2:'#e53d3d',3:'#7fc86c',4:'#8b4aa8',5:'#f1d34d',6:'#3f8d52',7:'#262626',8:'#8b5a35',9:'#2d75b9',10:'#e68b2c'};
+var COLORS={1:'#fff',2:'#e53d3d',3:'#7fc86c',4:'#ed9abc',5:'#f1d34d',6:'#3f8d52',7:'#262626',8:'#8b5a35',9:'#2d75b9',10:'#e68b2c'};
 function rod(n,small){var d=document.createElement('div');d.className='rod';d.dataset.n=n;d.style.setProperty('--n',n);d.style.background=COLORS[n];d.textContent=n;if(small)d.style.setProperty('--u','28px');return d}
 function target(host){host.innerHTML='';host.appendChild(rod(8))}
 target($('#target8'));target($('#target8b'));
@@ -160,7 +171,7 @@ function prr(g,x,y,w,h,r=14,fill='#fff',stroke='#bfd5e1',sw=3){g.beginPath();g.r
 function ptxt(g,t,x,y,s=28,b=true,align='left',col='#17384e'){g.fillStyle=col;g.font=(b?'700 ':'400 ')+s+'px Arial';g.textAlign=align;g.textBaseline='alphabetic';g.fillText(t,x,y)}
 function pline(g,x1,y1,x2,y2,col='#718b99',sw=2,dash=false){g.save();g.strokeStyle=col;g.lineWidth=sw;if(dash)g.setLineDash([10,7]);g.beginPath();g.moveTo(x1,y1);g.lineTo(x2,y2);g.stroke();g.restore()}
 function pwrap(g,t,x,y,maxW,lineH=34,size=25,b=false,col='#17384e'){const words=String(t).split(/\s+/);let line='',yy=y;for(const w of words){const test=line?line+' '+w:w;g.font=(b?'700 ':'400 ')+size+'px Arial';if(g.measureText(test).width>maxW&&line){ptxt(g,line,x,yy,size,b,'left',col);line=w;yy+=lineH}else line=test}if(line)ptxt(g,line,x,yy,size,b,'left',col);return yy}
-const RCOL={1:'#ffffff',2:'#e53d3d',3:'#7fc86c',4:'#8b4aa8',5:'#f1d34d',6:'#3f8d52',7:'#262626',8:'#8b5a35'};
+const RCOL={1:'#ffffff',2:'#e53d3d',3:'#7fc86c',4:'#ed9abc',5:'#f1d34d',6:'#3f8d52',7:'#262626',8:'#8b5a35'};
 function prod(g,n,x,y,u=34){prr(g,x,y,n*u,42,7,RCOL[n],'#17384e',2);ptxt(g,String(n),x+n*u/2,y+29,20,true,'center',(n===7||n===8)?'#fff':'#17384e')}
 function pblank(g,x,y,w=100,h=52){prr(g,x,y,w,h,8,'#fff','#91a9b7',2)}
 function ptask(g,y,title,h){prr(g,65,y,1110,h,18,'#fff','#c7dce7',3);ptxt(g,title,90,y+43,27,true);return y}
