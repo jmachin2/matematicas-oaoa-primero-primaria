@@ -1147,7 +1147,7 @@ document.getElementById('downloadWorksheet').onclick=()=>{try{if(!(worksheetPdfB
       tea:'rutina_visual_complementarios_2_3_4',
       pictogramas:'pictogramas_complementarios_2_3_4'
     };
-    a.download=`${fileNames[selectedWorksheet]||selectedWorksheet}_v${worksheetVersion}.pdf`;document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(url)},1200);document.getElementById('worksheetStatus').textContent='PDF descargado.'}catch(e){console.error(e);document.getElementById('worksheetStatus').textContent='No se pudo descargar el PDF.'}};
+    a.download=`${fileNames[selectedWorksheet]||selectedWorksheet}_v${worksheetVersion}.pdf`;document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(url)},60000);document.getElementById('worksheetStatus').textContent='PDF descargado.'}catch(e){console.error(e);document.getElementById('worksheetStatus').textContent='No se pudo descargar el PDF.'}};
 
 function renderSummary(){[[2,'sum2'],[3,'sum3'],[4,'sum4']].forEach(([t,id])=>{const h=document.getElementById(id);h.innerHTML='';pairMap[t].forEach(p=>{const r=document.createElement('div');r.className='pair-row';r.appendChild(rod(p[0]));const s=document.createElement('b');s.textContent='+';r.appendChild(s,rod(p[1]));h.appendChild(r)})})}
 function resetAll(){build.length=0;buildTarget=2;compIndex=0;pairIndex=0;memoryIndex=0;problemIndex=-1;renderBuild();setBuildTarget(2);loadComplement();loadPair();renderAllPairs(2);setMemoryMode(true);loadProblem(false);renderWorksheetPreview();goStep(1)}
