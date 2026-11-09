@@ -127,6 +127,7 @@ html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;backgr
       <div class="pdf-actions">
         <button class="pdf-btn primary" id="testPdfBtn" type="button" disabled>⬇ Prueba PDF</button>
         <button class="pdf-btn rubric" id="rubricPdfBtn" type="button" disabled>⬇ Rúbrica PDF</button>
+        <button class="pdf-btn" id="printPdfBtn" type="button" disabled>🖨 Imprimir / guardar como PDF</button>
         <a class="pdf-btn" id="openPdfLink" href="#" target="_blank" rel="noopener" style="display:none;text-decoration:none">Abrir PDF para guardarlo</a>
       </div>
     </div>
@@ -367,12 +368,16 @@ function buildTasks(sel){
       pairs567:{title:'Parejas del 5, 6 y 7',type:'pairs567',instruction:'Completa las parejas que faltan y escribe otra descomposición válida.'},
       decomp7:{title:'Descomposición sucesiva del 7',type:'tree7',instruction:'Completa el árbol: descompón 7 y vuelve a descomponer una de sus partes.'},
       successor:{title:'El número posterior',type:'successor',instruction:'Escribe el número posterior y calcula una suma de +1.'},
-      money7:{title:'Billetes y monedas',type:'money7',instruction:'Calcula el valor del dinero y decide si alcanza para una compra.'}
+      money7:{title:'Billetes y monedas',type:'money7',instruction:'Calcula el valor del dinero y decide si alcanza para una compra.'},
+      pairs8:{title:'Parejas del 8',type:'pairs8',instruction:'Completa las parejas que forman 8 y representa una de ellas con regletas.'},
+      pairs678:{title:'Parejas del 6, 7 y 8',type:'pairs678',instruction:'Busca la parte que falta para formar cada total y compruébalo.'},
+      represent8:{title:'Representamos el 8',type:'represent8',instruction:'Representa la misma descomposición del 8 mediante dibujo, diagrama parte-todo y suma.'}
     };
     tasks.push({sheet:s,...map[s.id]});
   });
-  const maxTarget=sel.some(x=>['n7','sums567','pairs567','decomp7','successor'].includes(x.id))?7:sel.some(x=>['n6','diag56'].includes(x.id))?6:sel.some(x=>['n5','fourfive','partwhole','sumresult','comm'].includes(x.id))?5:4;
-  const problem=maxTarget===7 ? {a:5,b:2,total:7} : maxTarget===6 ? {a:4,b:2,total:6} : maxTarget===5 ? {a:3,b:2,total:5} : {a:2,b:2,total:4};
+  const maxTarget=sel.some(x=>['pairs8','pairs678','represent8'].includes(x.id))?8:sel.some(x=>['n7','sums567','pairs567','decomp7','successor','pairs8','pairs678','represent8'].includes(x.id))?7:sel.some(x=>['n6','diag56'].includes(x.id))?6:sel.some(x=>['n5','fourfive','partwhole','sumresult','comm'].includes(x.id))?5:4;
+  const problem=maxTarget===8 ? {a:5,b:3,total:8} :
+                maxTarget===7 ? {a:5,b:2,total:7} : maxTarget===6 ? {a:4,b:2,total:6} : maxTarget===5 ? {a:3,b:2,total:5} : {a:2,b:2,total:4};
   tasks.push({title:'Reto final: resuelve y comprueba',type:'problem',...problem,instruction:`En una bandeja hay ${problem.a} lápices azules y ${problem.b} lápices verdes. ¿Cuántos lápices hay en total? Representa, calcula y comprueba.`});
   return tasks;
 }
@@ -381,8 +386,8 @@ function representativeTasksForSession(sessionSheets,isLastSession,fullSelection
   const all=buildTasks(sessionSheets).filter(t=>t.type!=='problem');
 
   // Priorizamos tareas que recogen varias destrezas a la vez.
-  const priority=['partWhole','complements','classify','missingPairs','twoWays',
-                  'detective','commute','matchSums','six','seven','sum567','pairs567','tree7','successor','money7'];
+  const priority=['represent8','pairs8','pairs678','partWhole','complements','classify','missingPairs','twoWays',
+                  'detective','commute','matchSums','six','seven','sum567','pairs567','tree7','successor','money7','pairs8','pairs678','represent8'];
   const ordered=[...all].sort((a,b)=>priority.indexOf(a.type)-priority.indexOf(b.type));
 
   // En un folio caben tres tareas competenciales con espacio suficiente.
@@ -391,8 +396,8 @@ function representativeTasksForSession(sessionSheets,isLastSession,fullSelection
   const chosen=[];
   const families=new Set();
   const family=t=>{
-    if(['twoWays','missingPairs'].includes(t.type)) return 'representacion';
-    if(['classify','complements','partWhole','pairs567','tree7'].includes(t.type)) return 'composicion';
+    if(['twoWays','missingPairs','represent8'].includes(t.type)) return 'representacion';
+    if(['classify','complements','partWhole','pairs567','pairs8','pairs678','tree7'].includes(t.type)) return 'composicion';
     if(['matchSums','six','seven','sum567','successor','money7'].includes(t.type)) return 'relaciones';
     if(['commute','detective'].includes(t.type)) return 'razonamiento';
     return t.type;
@@ -414,10 +419,12 @@ function representativeTasksForSession(sessionSheets,isLastSession,fullSelection
 
   // Siempre incluimos una situación de transferencia. Si hay dos sesiones,
   // aparece al final de cada una con rango numérico coherente con sus fichas.
-  const maxTarget=sessionSheets.some(x=>['n7','sums567','pairs567','decomp7','successor'].includes(x.id)) ? 7 :
+  const maxTarget=sessionSheets.some(x=>['pairs8','pairs678','represent8'].includes(x.id)) ? 8 :
+                  sessionSheets.some(x=>['n7','sums567','pairs567','decomp7','successor','pairs8','pairs678','represent8'].includes(x.id)) ? 7 :
                   sessionSheets.some(x=>['n6','diag56'].includes(x.id)) ? 6 :
                   sessionSheets.some(x=>['n5','fourfive','partwhole','sumresult','comm'].includes(x.id)) ? 5 : 4;
-  const problem=maxTarget===7 ? {a:5,b:2,total:7} :
+  const problem=maxTarget===8 ? {a:5,b:3,total:8} :
+                maxTarget===7 ? {a:5,b:2,total:7} :
                 maxTarget===6 ? {a:4,b:2,total:6} :
                 maxTarget===5 ? {a:3,b:2,total:5} : {a:2,b:2,total:4};
   chosen.push({
@@ -449,13 +456,14 @@ function update(){
   $('#previewPlan').innerHTML=planHtml(sel);
   $('#testPdfBtn').disabled=!sel.length;
   $('#rubricPdfBtn').disabled=!sel.length;
+  $('#printPdfBtn').disabled=!sel.length;
 }
 $('#allBtn').onclick=()=>{document.querySelectorAll('#sheetSelect input').forEach(x=>x.checked=true);update()};
 $('#noneBtn').onclick=()=>{document.querySelectorAll('#sheetSelect input').forEach(x=>x.checked=false);update()};
 
 // ----- Drawing helpers -----
 const C={ink:'#17384e',muted:'#627b8a',line:'#b9cedb',blue:'#469ac7',paper:'#fffefa',
-  rods:{1:'#f5f1e8',2:'#d95757',3:'#9acb6a',4:'#b978b5',5:'#edda4a',6:'#2d7b4d',7:'#202020'}};
+  rods:{1:'#f5f1e8',2:'#d95757',3:'#9acb6a',4:'#f29ac2',5:'#edda4a',6:'#2d7b4d',7:'#202020',8:'#8b654e'}};
 function rr(g,x,y,w,h,r=14,fill='#fff',stroke=C.line,lw=3){
   g.beginPath();g.roundRect(x,y,w,h,r);g.fillStyle=fill;g.fill();g.lineWidth=lw;g.strokeStyle=stroke;g.stroke();
 }
@@ -546,6 +554,23 @@ function drawTask(g,t,x,y,w,h,num){
     const claims=['2 + 3 = 5','3 + 3 = 6','2 + 3 = 6'];claims.forEach((s,i)=>{rr(g,cx,yy+12+i*52,260,40,8,'#fff','#b9cedb',2);txt(g,s,cx+130,yy+40+i*52,22,{bold:true,align:'center'});});
     txt(g,'Corrige:',cx+320,yy+55,20,{bold:true});blankLine(g,cx+405,yy+58,245);
     tree(g,cx+360,yy+100,6,2);
+  } else if(t.type==='pairs8'){
+    const items=['8 = 1 +','8 = 2 +','8 = 3 +','8 = 4 +'];
+    items.forEach((v,i)=>{const xx=cx+(i%2)*(avail/2),ry=yy+18+Math.floor(i/2)*78;
+      txt(g,v,xx,ry+32,23,{bold:true});rr(g,xx+145,ry,82,42,8,'#fff','#91a9b7',2);
+    });
+    txt(g,'Dibuja una pareja del 8:',cx,yy+225,19,{bold:true});blankLine(g,cx+255,yy+228,400);
+  } else if(t.type==='pairs678'){
+    const items=['6 = 2 +','7 = 3 +','8 = 5 +','8 = 4 +'];
+    items.forEach((v,i)=>{const xx=cx+(i%2)*(avail/2),ry=yy+18+Math.floor(i/2)*80;
+      txt(g,v,xx,ry+32,23,{bold:true});rr(g,xx+145,ry,82,42,8,'#fff','#91a9b7',2);
+    });
+    txt(g,'Comprueba con regletas o dibujo:',cx,yy+227,19,{bold:true});blankLine(g,cx+355,yy+230,315);
+  } else if(t.type==='represent8'){
+    txt(g,'8 = 3 +',cx,yy+25,24,{bold:true});rr(g,cx+140,yy-9,90,43,7,'#fff','#91a9b7',2);
+    txt(g,'DIBUJO',cx,yy+76,19,{bold:true,color:C.muted});rr(g,cx,yy+85,avail/2-15,125,8,'#fff','#c7dce7',2);
+    txt(g,'PARTE-TODO',cx+avail/2+15,yy+76,19,{bold:true,color:C.muted});
+    tree(g,cx+avail/2+35,yy+85,8,3);
   } else if(t.type==='problem'){
     txt(g,'REPRESENTA',cx,yy+28,18,{bold:true,color:C.muted});rr(g,cx,yy+43,avail,95,12,'#fbfdfe','#d6e3eb',2);
     txt(g,'OPERACIÓN',cx,yy+178,18,{bold:true,color:C.muted});blankLine(g,cx+120,yy+180,260);
@@ -588,9 +613,9 @@ function testCanvases(sel){
 function rubricRows(sel){
   const rows=[];
   const ids=new Set(sel.map(x=>x.id));
-  if(sel.some(x=>['n4','n5','fourfive','n6','diag56','n7','sums567','pairs567','decomp7','successor'].includes(x.id))) rows.push({name:'Cantidad y representación',crit:'1.1 · 6.1 · 6.2',desc:'Representa cantidades con material, dibujo o símbolos y relaciona las representaciones.'});
-  if(sel.some(x=>['n4','n5','comp','partwhole','n6','diag56','n7','sums567','pairs567','decomp7'].includes(x.id))) rows.push({name:'Composición y descomposición',crit:'2.1 · 3.1',desc:'Compone, descompone y encuentra partes que faltan de forma comprensiva.'});
-  if(sel.some(x=>['fourfive','sumresult','comm','n6','diag56','n7','sums567','pairs567','decomp7','successor','money7'].includes(x.id))) rows.push({name:'Relaciones aditivas y cálculo',crit:'2.1 · 2.2',desc:'Relaciona sumas con cantidades y utiliza relaciones numéricas en lugar de contar mecánicamente.'});
+  if(sel.some(x=>['n4','n5','fourfive','n6','diag56','n7','sums567','pairs567','decomp7','successor','pairs8','pairs678','represent8'].includes(x.id))) rows.push({name:'Cantidad y representación',crit:'1.1 · 6.1 · 6.2',desc:'Representa cantidades con material, dibujo o símbolos y relaciona las representaciones.'});
+  if(sel.some(x=>['n4','n5','comp','partwhole','n6','diag56','n7','sums567','pairs567','decomp7','pairs8','pairs678','represent8'].includes(x.id))) rows.push({name:'Composición y descomposición',crit:'2.1 · 3.1',desc:'Compone, descompone y encuentra partes que faltan de forma comprensiva.'});
+  if(sel.some(x=>['fourfive','sumresult','comm','n6','diag56','n7','sums567','pairs567','decomp7','successor','money7','pairs8','pairs678','represent8'].includes(x.id))) rows.push({name:'Relaciones aditivas y cálculo',crit:'2.1 · 2.2',desc:'Relaciona sumas con cantidades y utiliza relaciones numéricas en lugar de contar mecánicamente.'});
   if(ids.has('comm')) rows.push({name:'Propiedades y conjeturas',crit:'3.1 · 3.2 · 5.1',desc:'Compara expresiones, formula una conclusión y comprueba que el total se conserva.'});
   if(ids.has('diag56')) rows.push({name:'Comprobación y error',crit:'2.3 · 7.1',desc:'Detecta resultados incoherentes, corrige y utiliza el error para revisar.'});
   rows.push({name:'Resolución de problemas',crit:'1.1 · 2.1 · 2.2 · 2.3',desc:'Comprende la situación, representa, elige estrategia, responde y comprueba.'});
@@ -709,6 +734,20 @@ function exportPdf(kind){
     btn.disabled=false;
   }
 }
+function printAsPdf(){
+  const sel=selected();
+  if(!sel.length) return;
+  const w=window.open('','_blank');
+  if(!w){$('#pdfExportStatus').textContent='El navegador bloqueó la vista de impresión. Permite ventanas emergentes e inténtalo otra vez.';return}
+  try{
+    const pages=testCanvases(sel).map(c=>c.toDataURL('image/png'));
+    const content='<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Prueba OAOA — guardar PDF</title><style>@page{size:A4;margin:0}html,body{margin:0}img{display:block;width:210mm;height:297mm;object-fit:contain;break-after:page}@media screen{body{background:#ddd}img{margin:12px auto;box-shadow:0 2px 14px #aaa;background:#fff}}</style></head><body>'+pages.map(src=>'<img alt="Página de examen" src="'+src+'">').join('')+'</body></html>';
+    w.document.open();w.document.write(content);w.document.close();
+    w.onload=()=>{w.focus();w.print()};
+    $('#pdfExportStatus').textContent='Vista de impresión preparada. Selecciona «Guardar como PDF» como destino en el navegador.';
+  }catch(e){w.close();$('#pdfExportStatus').textContent='No se pudo preparar la impresión: '+e.message}
+}
+$('#printPdfBtn').onclick=printAsPdf;
 $('#testPdfBtn').onclick=()=>exportPdf('test');
 $('#rubricPdfBtn').onclick=()=>exportPdf('rubric');
 
