@@ -76,13 +76,13 @@ export function mountOAOA(host,page){
     else renderPractice(n);
   }
   function renderPractice(n){
-    const item=page.items[(n-1)%page.items.length];
+    let index=(n-1)%page.items.length;let item=page.items[index];
     const description=make("div",{class:"oaoa-card"});description.append(make("p",{},page.instructions?.[n-1]||"Representa con material y explica cómo lo has pensado."),make("div",{class:"oaoa-task"},exerciseText(item)));
     const diagram=make("div",{class:"oaoa-rods"});item.nums.forEach(x=>{const wrap=make("span");wrap.innerHTML=rodHTML(x);diagram.append(wrap);});description.append(diagram);
-    const result=item.type==="part"?item.nums[0]-item.nums[1]:item.nums.reduce((a,b)=>a+b,0);
+    const answer=()=>item.type==="part"?item.nums[0]-item.nums[1]:item.nums.reduce((a,b)=>a+b,0);
     const field=make("input",{type:"number",min:"0",max:"20","aria-label":"Resultado"});
-    const check=make("button",{type:"button"},"Comprobar");check.onclick=()=>{note.textContent=Number(field.value)===result?"✓ Correcto; explica tu estrategia.":"Revisa las partes con material manipulativo.";};
-    const next=make("button",{type:"button"},"Otro ejemplo");next.onclick=()=>{const idx=(page.items.indexOf(item)+1)%page.items.length;description.querySelector(".oaoa-task").textContent=exerciseText(page.items[idx]);note.textContent="";};
+    const check=make("button",{type:"button"},"Comprobar");check.onclick=()=>{note.textContent=field.value.trim()!==""&&Number(field.value)===answer()?"✓ Correcto; explica tu estrategia.":"Revisa las partes con material manipulativo.";};
+    const next=make("button",{type:"button"},"Otro ejemplo");next.onclick=()=>{index=(index+1)%page.items.length;item=page.items[index];description.querySelector(".oaoa-task").textContent=exerciseText(item);diagram.replaceChildren();item.nums.forEach(x=>{const wrap=make("span");wrap.innerHTML=rodHTML(x);diagram.append(wrap)});field.value="";note.textContent="";};
     description.append(field,check,next);work.append(description);
   }
   function renderPrint(){
@@ -108,15 +108,15 @@ export function mountOAOA(host,page){
         if(mode==="ampliacion"||mode==="tea")section.append(make("div",{class:"oaoa-write-area"}));
         body.append(section);
       });
-      foot.textContent="P"+page.page+" · "+mode+" · versión "+(version+1);
+      try{const saved=JSON.parse(localStorage.getItem("oaoa-core:"+page.page+":"+mode+":"+version)||"null");if(Array.isArray(saved)&&saved.length===body.children.length){saved.forEach((value,i)=>{if(typeof value==="string")body.children[i].querySelector(".oaoa-editable").textContent=value;});}}catch(e){}foot.textContent="P"+page.page+" · "+mode+" · versión "+(version+1);
       if(!dirty)note.textContent="Versión "+(version+1)+" · "+items.map(i=>i.nums.join("+")).join(" | ");
       requestAnimationFrame(checkFit);
     }
     function checkFit(){const checked=validatePrint(sheet.parentElement);print.disabled=!checked.ok;note.textContent=checked.ok?"✓ "+checked.reason+" · Versión "+(version+1):"⚠️ "+checked.reason;}
     select.onchange=()=>{mode=select.value;version=0;dirty=false;draw();};
     regen.onclick=()=>{version++;dirty=false;draw()};
-    reset.onclick=()=>{dirty=false;draw()};
-    save.onclick=()=>{try{localStorage.setItem("oaoa-core:"+page.page+":"+mode+":"+version,JSON.stringify([...body.querySelectorAll(".oaoa-editable")].map(x=>x.textContent)));note.textContent="Diseño guardado en este navegador.";}catch(e){note.textContent="El navegador no permite guardar estos cambios."}};
+    reset.onclick=()=>{try{localStorage.removeItem("oaoa-core:"+page.page+":"+mode+":"+version)}catch(e){}dirty=false;draw()};
+    save.onclick=()=>{const checked=validatePrint(sheet.parentElement);if(!checked.ok){note.textContent="Corrige primero: "+checked.reason;return}try{localStorage.setItem("oaoa-core:"+page.page+":"+mode+":"+version,JSON.stringify([...body.querySelectorAll(".oaoa-editable")].map(x=>x.textContent)));note.textContent="Diseño guardado en este navegador.";}catch(e){note.textContent="El navegador no permite guardar estos cambios."}};
     print.onclick=()=>{const checked=validatePrint(sheet.parentElement);if(checked.ok)window.print();else note.textContent="No se puede imprimir: "+checked.reason};
     draw();
   }
