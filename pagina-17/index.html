@@ -243,6 +243,7 @@
  </div>
 </div>
 
+<script src="../assets/print-version-guard.js"></script>
 <script>
 (()=>{
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
@@ -437,7 +438,7 @@ if(pdfType==='pictogramas'){
  txt(g,'Palabra matemática: RESULTADO = el total que obtenemos al calcular.',620,1690,18,true,'center','#17384e');return c
 }
 function renderPdf(){pdfCanvas=makeSheet();$('#pdfPreview').innerHTML='';$('#pdfPreview').appendChild(pdfCanvas);$('#pdfTitle').textContent=`${labels[pdfType]} · Página 17 · versión ${pdfVersion}`}
-$$('.pdf-type').forEach(b=>b.onclick=()=>{$$('.pdf-type').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');pdfType=b.dataset.pdf;pdfVersion=1;renderPdf()});$('#regenPdf').onclick=()=>{pdfVersion++;renderPdf()};
+$$('.pdf-type').forEach(b=>b.onclick=()=>{$$('.pdf-type').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');pdfType=b.dataset.pdf;pdfVersion=1;$('#regenPdf').disabled=false;$('#regenPdf').textContent='↻ Otra versión';renderPdf()});$('#regenPdf').onclick=()=>window.OAOAPrintVersionGuard.advance({getCanvas:()=>pdfCanvas,getVersion:()=>pdfVersion,setVersion:v=>{pdfVersion=v},render:renderPdf,button:$('#regenPdf')});
 function ascii(s){return new TextEncoder().encode(s)}function concat(parts){let n=0;parts.forEach(p=>n+=p.length);const o=new Uint8Array(n);let k=0;parts.forEach(p=>{o.set(p,k);k+=p.length});return o}function b64bytes(u){const b=atob(u.split(',')[1]),a=new Uint8Array(b.length);for(let i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a}
 function canvasPdf(c){const jpg=b64bytes(c.toDataURL('image/jpeg',.92)),objs=[],catalog=1,pages=2,page=3,imgO=4,cont=5;objs[catalog]=ascii('<< /Type /Catalog /Pages 2 0 R >>');objs[pages]=ascii('<< /Type /Pages /Count 1 /Kids [3 0 R] >>');objs[page]=ascii('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Resources << /XObject << /Im 4 0 R >> >> /Contents 5 0 R >>');objs[imgO]=concat([ascii(`<< /Type /XObject /Subtype /Image /Width ${c.width} /Height ${c.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpg.length} >>\nstream\n`),jpg,ascii('\nendstream')]);const st=ascii('q\n595.28 0 0 841.89 0 0 cm\n/Im Do\nQ\n');objs[cont]=concat([ascii(`<< /Length ${st.length} >>\nstream\n`),st,ascii('endstream')]);const head=ascii('%PDF-1.4\n%âãÏÓ\n'),parts=[head],off=[0];let pos=head.length;for(let i=1;i<=5;i++){off[i]=pos;const bl=concat([ascii(`${i} 0 obj\n`),objs[i],ascii('\nendobj\n')]);parts.push(bl);pos+=bl.length}const xp=pos;let xr='xref\n0 6\n0000000000 65535 f \n';for(let i=1;i<=5;i++)xr+=String(off[i]).padStart(10,'0')+' 00000 n \n';xr+=`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xp}\n%%EOF`;parts.push(ascii(xr));return new Blob([concat(parts)],{type:'application/pdf'})}
 $('#downloadPdf').onclick=()=>{if(!pdfCanvas)renderPdf();const a=document.createElement('a');a.href=URL.createObjectURL(canvasPdf(pdfCanvas));a.download=`pagina17_${pdfType}_v${pdfVersion}.pdf`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},60000)};
