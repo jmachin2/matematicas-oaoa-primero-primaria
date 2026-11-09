@@ -3493,7 +3493,7 @@ document.getElementById('downloadWorksheet').addEventListener('click',()=>{
     setTimeout(()=>{
       a.remove();
       URL.revokeObjectURL(url);
-    },1500);
+    },60000);
 
     status.textContent='PDF descargado.';
     good();
