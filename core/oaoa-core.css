@@ -1,0 +1,44 @@
+/* Modelo piloto OAOA 0.1 — un único sistema visual para las fichas que se migren. */
+:root{--oaoa-ink:#17384e;--oaoa-blue:#469ac7;--oaoa-line:#bfd5e1;--oaoa-bg:#eef7fb}
+*{box-sizing:border-box}
+body{margin:0;font:16px Arial,Helvetica,sans-serif;background:var(--oaoa-bg);color:var(--oaoa-ink)}
+button,select,input{font:inherit}
+button,select{background:white;border:2px solid #b9cedb;border-radius:11px;padding:9px 11px;color:var(--oaoa-ink);font-weight:bold;cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #357fa5;outline-offset:3px}
+button:disabled{opacity:.55;cursor:not-allowed}
+.oaoa-app{min-height:100vh;display:grid;grid-template-rows:auto auto 1fr}
+.oaoa-top{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff;border-bottom:2px solid var(--oaoa-line);padding:9px 15px}
+.oaoa-top a{color:inherit;text-decoration:none;border:2px solid var(--oaoa-line);padding:7px;border-radius:9px}
+.oaoa-progress{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:5px;padding:8px;background:#fafcff;border-bottom:2px solid var(--oaoa-line)}
+.oaoa-progress button{font-size:12px;padding:9px 5px}.oaoa-progress .active{background:#dff0fa;border-color:var(--oaoa-blue)}
+.oaoa-main{padding:13px;min-width:0}.oaoa-main h2{font-size:20px;margin:0 0 10px}
+.oaoa-work{min-width:0}.oaoa-card{background:white;border:2px solid var(--oaoa-line);border-radius:15px;padding:19px;max-width:920px;margin:auto}
+.oaoa-task{font-size:27px;font-weight:900;text-align:center;padding:25px 0}
+.oaoa-card input{max-width:120px;padding:9px;border:2px solid var(--oaoa-line);border-radius:9px}
+.oaoa-card button{margin:8px}
+.oaoa-rods{display:flex;gap:9px;align-items:center;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+.oaoa-rod{display:inline-flex;background:var(--rod-color);width:calc(var(--rod-size)*27px);height:29px;border:2px solid #354955;border-radius:5px;align-items:center;justify-content:center;font-weight:900}
+.oaoa-zero{border:1px dashed #b9cedb;padding:4px}
+.oaoa-status{background:#e6f3f9;border-radius:10px;padding:9px;min-height:38px;margin:10px 0}
+.oaoa-print-grid{display:grid;grid-template-columns:190px minmax(0,1fr);gap:12px;align-items:start}
+.oaoa-print-controls{display:flex;flex-direction:column;gap:8px;background:#fff;padding:11px;border:2px solid var(--oaoa-line);border-radius:13px}
+.oaoa-sheet{width:210mm;height:297mm;background:white;padding:13mm 14mm;box-shadow:0 4px 14px #263e5130;position:relative;overflow:hidden;justify-self:center}
+.oaoa-sheet-header{font-size:20pt;font-weight:900;text-align:center;border-bottom:2px solid var(--oaoa-ink);padding-bottom:5mm}
+.oaoa-sheet-meta{margin:6mm 0 4mm;font-size:12pt}
+.oaoa-sheet-instruction{margin:0 0 5mm;font-size:12pt}
+.oaoa-sheet-body{display:flex;flex-direction:column;gap:3mm}
+.oaoa-print-exercise{min-width:0;padding:3mm;border:2px dashed transparent;border-radius:5px;break-inside:avoid;page-break-inside:avoid}
+.oaoa-print-exercise.selected{background:#edf8ff;border-color:#4899c7}
+.oaoa-editable{font-size:16pt;font-weight:650;line-height:1.4;white-space:pre-wrap;overflow-wrap:anywhere;outline:0;max-width:100%}
+.oaoa-write-area{height:17mm;border:1px dashed #c0cbd2;margin-top:3mm}
+.oaoa-sheet-footer{position:absolute;bottom:8mm;right:14mm;font-size:10pt;color:#60798a}
+@media(max-width:920px){.oaoa-progress{grid-template-columns:repeat(4,minmax(0,1fr))}.oaoa-print-grid{grid-template-columns:1fr}.oaoa-print-controls{flex-direction:row;flex-wrap:wrap}.oaoa-sheet{transform:scale(.75);transform-origin:top left;margin:0 auto -75mm}}
+@page{size:A4;margin:0}
+@media print{
+  html,body{background:white!important;margin:0!important}
+  .oaoa-app{display:block!important;height:auto!important;min-height:0!important}
+  .oaoa-top,.oaoa-progress,.oaoa-main>h2,.oaoa-status,.oaoa-print-controls{display:none!important}
+  .oaoa-main,.oaoa-work,.oaoa-print-grid{display:block!important;margin:0!important;padding:0!important}
+  .oaoa-sheet{width:210mm!important;height:297mm!important;margin:0!important;padding:13mm 14mm!important;box-shadow:none!important;transform:none!important}
+  .oaoa-print-exercise{border-color:transparent!important;background:white!important}
+}
