@@ -962,7 +962,7 @@ async function renderPdf(){
 }
 
 
-$('#downloadPdf').onclick=()=>{if(!(pdfData instanceof Uint8Array))pdfData=makePdf();const blob=new Blob([pdfData],{type:'application/pdf'}),url=URL.createObjectURL(blob),a=document.createElement('a'),names={ampliacion:'ampliacion',refuerzo:'refuerzo',tarea:'tarea',tea:'trabajo_paso_a_paso',pictogramas:'pictogramas'};a.href=url;a.download=`${names[pdfType]}_conmutativa_v${pdfVersion}.pdf`;document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(url)},900);$('#pdfStatus').textContent='PDF descargado.'};$('#finishBtn').onclick=()=>goStep(9);
+$('#downloadPdf').onclick=()=>{if(!(pdfData instanceof Uint8Array))pdfData=makePdf();const blob=new Blob([pdfData],{type:'application/pdf'}),url=URL.createObjectURL(blob),a=document.createElement('a'),names={ampliacion:'ampliacion',refuerzo:'refuerzo',tarea:'tarea',tea:'trabajo_paso_a_paso',pictogramas:'pictogramas'};a.href=url;a.download=`${names[pdfType]}_conmutativa_v${pdfVersion}.pdf`;document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(url)},60000);$('#pdfStatus').textContent='PDF descargado.'};$('#finishBtn').onclick=()=>goStep(9);
 
 /* controles */
 $('#soundBtn').onclick=()=>{soundOn=!soundOn;$('#soundBtn').textContent=soundOn?'🔊 Sonido ON':'🔇 Sonido OFF'};$('#calmBtn').onclick=()=>{calm=!calm;document.body.classList.toggle('calm',calm);$('#calmBtn').textContent=calm?'🌿 Modo calma ON':'🌿 Modo calma'};$('#fullscreenBtn').onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
