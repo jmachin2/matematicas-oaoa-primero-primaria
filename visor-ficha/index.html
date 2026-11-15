@@ -1,0 +1,46 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ficha OAOA individual</title>
+<style>
+*{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;color:#292929;background:#e5ebee;margin:0}
+main{background:white;width:min(100%,800px);min-height:1050px;margin:auto;padding:35px 50px 25px;box-shadow:0 2px 12px #0002}
+header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #bbb;margin-bottom:22px;padding-bottom:13px}
+h1{font-family:"Segoe Print","Comic Sans MS",cursive;font-size:30px;font-weight:500;margin:0}
+h2{font-family:"Segoe Print","Comic Sans MS",cursive;font-size:24px;font-weight:500;margin:18px 0}
+.note{font-size:12px;color:#777}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:22px 10px;font-size:30px;text-align:center;padding:8px 25px 18px}
+.eqgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px 25px;padding:0 20px}.eq{border:3px solid #ff857f;padding:10px;font-size:30px;text-align:center}
+input.answer{border:0;border-bottom:2px solid #888;width:60px;font:inherit;text-align:center;background:transparent}
+.diagramgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:27px 30px}
+.diagram{display:flex;align-items:center;flex-direction:column;gap:0}.top,.part{border:3px solid #65816b;width:85px;height:65px;font-size:30px;display:grid;place-items:center}.branches{height:27px;width:140px;position:relative}.branches:before,.branches:after{content:"";position:absolute;height:2px;background:#b38966;top:0;width:80px}.branches:before{left:70px;transform-origin:left;transform:rotate(20deg)}.branches:after{right:70px;transform-origin:right;transform:rotate(-20deg)}.parts{display:flex;gap:15px}
+.tables{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.pairs{border:2px solid #555}.pairs strong{display:block;color:#fff;text-align:center;padding:10px;font-size:30px}.pairs label{border-top:2px solid #555;display:flex;justify-content:space-evenly;align-items:center;font-size:25px;padding:9px 4px}.pairs input{width:48px}
+.notice{background:#fff59c;padding:14px 19px;margin:18px 0;border-radius:15px;line-height:1.55}.previous{display:grid;grid-template-columns:80px 1fr 80px;gap:14px;align-items:center;margin:12px auto;max-width:460px;font-size:30px}.previous .box{border:2px solid #666;text-align:center;padding:8px}.previous .arrow{text-align:center;font-size:28px;color:#da6a60}.previous input{width:72px}.match{display:grid;grid-template-columns:1fr 90px 1fr;gap:10px 28px;align-items:center}.match .op{border:2px solid #777;padding:12px;text-align:center;font-size:27px}.match .target{font-size:32px;text-align:center;color:white;padding:6px}.match .left,.match .right{display:grid;gap:16px}
+footer{text-align:center;margin-top:25px;font-size:14px;color:#777}.small{font-size:17px}button{border:1px solid #acc5d0;border-radius:10px;padding:9px 14px;cursor:pointer;background:#eaf7fc;font-weight:700}
+@media(max-width:600px){main{padding:18px 15px;min-height:700px}h1{font-size:24px}h2{font-size:20px}.grid{font-size:22px;gap:18px 5px}.eq{font-size:21px}.eqgrid{gap:8px;padding:0}.diagramgrid{gap:15px 6px}.top,.part{width:67px;height:52px}.tables{gap:5px}.pairs label{font-size:17px}.pairs input{width:29px}.previous{grid-template-columns:60px 1fr 70px}}
+@media print{body{background:white}main{box-shadow:none;width:100%;min-height:0;padding:10mm}button{display:none}}
+</style></head><body><main><header><div>📚 <b>Matemáticas OAOA · 1.º Primaria</b><div class="note">Adaptación interactiva de una sola página del libro</div></div><button onclick="print()">Imprimir</button></header><div id="page"></div><footer id="footer"></footer></main>
+<script>
+const n=Number(new URLSearchParams(location.search).get('pagina'));
+const host=document.getElementById('page');
+const input=(value='')=>value===''?'<input class="answer" inputmode="numeric" maxlength="2" aria-label="Respuesta">':String(value);
+const titles={29:'Número 9',30:'Número 9',31:'Números del 7 al 9',32:'El número anterior',33:'Números del 7 al 9'};
+function diagram(t,a,b){return '<div class="diagram"><div class="top">'+input(t)+'</div><div class="branches"></div><div class="parts"><div class="part">'+input(a)+'</div><div class="part">'+input(b)+'</div></div></div>'}
+let html='<h1>'+titles[n]+'</h1>';
+if(n===29){
+ const nums=[[4,5,7,2,3,6],[5,3,2,6,3,4],[3,6,7,5,4,1],[7,5,1,8,1,7],[2,4,2,7,5,4]];
+ html+='<h2>55.- Caza el número 9.</h2><div class="grid">'+nums.flat().map(x=>'<span>'+x+'</span>').join('')+'</div>';
+ html+='<h2>56.- ¿Cuánto falta para llegar a 9?</h2><div class="eqgrid">'+[[5,7],[6,4],[2,8]].flatMap(([a,b])=>['9 = '+a+' + '+input(),'9 = '+b+' + '+input()]).map(x=>'<div class="eq">'+x+'</div>').join('')+'</div>';
+}else if(n===30){
+ html+='<h2>57.- Dibuja el número 9.</h2><div class="grid" style="grid-template-columns:repeat(10,1fr);font-size:29px;padding:20px 0 55px">'+Array.from({length:10},()=>'<span style="color:#aaa">9</span>').join('')+'</div>';
+ html+='<h2>58.- Completa los diagramas.</h2><div class="diagramgrid">'+[[9,'',2],['',4,4],['',3,3],['',5,4],[9,3,''],['',2,7]].map(d=>diagram(...d)).join('')+'</div>';
+}else if(n===31){
+ html+='<h2>59.- Escribe las parejas del 7, 8 y 9.</h2><div class="tables">'+[[7,3,'#252525'],[8,4,'#a67752'],[9,4,'#3b82a8']].map(([v,count,color])=>'<div class="pairs"><strong style="background:'+color+'">'+v+'</strong>'+Array.from({length:count},()=>'<label>'+input()+' + '+input()+'</label>').join('')+'</div>').join('')+'</div>';
+ html+='<h2>¡Memorízalas!</h2><h2>60.- ¿Cuáles son las parejas del…?</h2><div class="notice"><b>Juego por parejas.</b> Uno pregunta: «¿Cuáles son las parejas del número…?» y el otro dice todas las parejas que lo forman.<p>Por ejemplo, para el 6: 5 + 1, 4 + 2 y 3 + 3.</p></div>';
+}else if(n===32){
+ html+='<h2>61.- Estrategia de cálculo −1.</h2><p>Escribe el número anterior. Quita una unidad.</p>'+[8,5,3,6,7].map(v=>'<div class="previous"><div class="box">'+v+'</div><span class="arrow">− 1 →</span><div class="box">'+input()+'</div></div>').join('');
+ html+='<div class="notice"><b>Recuerda:</b> el número anterior es uno menos. No hay actividades de dinero en esta ficha interactiva.</div>';
+}else if(n===33){
+ html+='<h2>63.- Repasa las sumas del 8 y 9.</h2><div class="eqgrid">'+[[6,2],[4,4],[3,6],[8,1],[2,6],[7,1]].map(([a,b])=>'<div class="eq">'+a+' + '+b+' = '+input()+'</div>').join('')+'</div>';
+ html+='<h2>64.- Une con flechas.</h2><div class="match"><div class="left">'+['5 + 3','5 + 2','5 + 4','7 + 1'].map(v=>'<div class="op">'+v+'</div>').join('')+'</div><div>'+[[7,'#252525'],[8,'#a67752'],[9,'#3b82a8']].map(([v,c])=>'<div class="target" style="background:'+c+';margin:28px 0">'+v+'</div>').join('')+'</div><div class="right">'+['4 + 4','6 + 3','4 + 3','6 + 2'].map(v=>'<div class="op">'+v+'</div>').join('')+'</div></div>';
+}else{html='<h1>Selecciona una página del 29 al 33</h1>'}
+host.innerHTML=html;document.getElementById('footer').textContent=n>=29&&n<=33?'Página '+n+' · Vista individual adaptada (no es una imagen escaneada del original)':'';
+</script></body></html>
