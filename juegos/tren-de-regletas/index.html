@@ -1,143 +1,128 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#dff6ff"><title>El tren de las regletas · Matemáticas OAOA</title>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#c7eeff">
+<title>Tren Exprés OAOA · Las estaciones de las regletas</title>
 <style>
-:root{font-family:system-ui,"Trebuchet MS",sans-serif;color:#183852;--ink:#183852;--blue:#2476a8;--unit:30px}
-*{box-sizing:border-box}body{margin:0;background:#dff5ff}button,select{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible{outline:3px solid #1854d5;outline-offset:3px}
-header{background:#fff;box-shadow:0 3px 12px #173e5c23;padding:12px max(12px,calc((100vw - 1150px)/2));display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-h1{font-size:clamp(20px,3vw,30px);margin:0;color:#1a5f80}.sub{font-size:13px;font-weight:750;color:#658092}
-nav{margin-left:auto;display:flex;flex-wrap:wrap;gap:8px}.navbtn{color:#194565;border:2px solid #cce2ec;border-radius:12px;background:#fff;padding:9px 12px;text-decoration:none;font-weight:800}
-nav .navbtn:hover{background:#ecf9ff}.navbtn.sound{min-width:51px}
-main{max-width:1150px;margin:auto;padding:16px;display:grid;gap:13px}
-.status{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.pill{border:2px solid #c4e3f2;background:#fff;padding:9px 13px;border-radius:999px;font-weight:850;font-size:14px}
-.play{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:14px}
-.panel{border-radius:20px;padding:15px;background:#fff;border:2px solid #c7e5f2;box-shadow:0 7px 18px #2c648014}
-h2{font-size:clamp(17px,2.4vw,23px);margin:0 0 10px}.info{font-size:15px;line-height:1.45;margin:4px 0 12px}
-.landscape{border-radius:17px;background:linear-gradient(#9bdfff 0%,#e9faff 65%,#89cc7b 66%,#72b96a);padding:14px;min-height:270px;position:relative;overflow:hidden}
-.sun{position:absolute;right:45px;top:20px;font-size:43px;opacity:.8}.cloud{position:absolute;font-size:32px;opacity:.85}.cloud.one{left:8%;top:8%}.cloud.two{right:28%;top:18%}
-.destination{display:flex;align-items:center;gap:9px;position:relative;z-index:1;font-weight:950;font-size:18px;margin-bottom:30px}.station{padding:9px 14px;border:3px solid #426988;border-radius:13px;background:#fff4bc}
-.trackouter{position:relative;z-index:1;padding:15px 10px 25px;border-radius:12px;background:#ffffffd8}
-.tracklabel{font-weight:800;font-size:13px;margin:0 0 7px}.track{height:64px;display:flex;align-items:center;position:relative;width:100%;border-bottom:8px solid #675146;touch-action:pan-y}
-.track:before{content:"";position:absolute;left:0;right:0;bottom:-13px;height:5px;background:repeating-linear-gradient(90deg,#7f6558 0 11px,transparent 11px 31px)}
-.loco{height:44px;flex:0 0 50px;background:#2377c7;border:2px solid #174e83;border-radius:7px 17px 5px 5px;color:white;font-size:29px;display:grid;place-items:center;position:relative;align-self:flex-end;margin-bottom:3px}
-.loco:after{content:"";position:absolute;bottom:-12px;width:36px;height:12px;background:radial-gradient(circle at 8px 5px,#263e50 0 5px,transparent 6px),radial-gradient(circle at 28px 5px,#263e50 0 5px,transparent 6px)}
-.wagons{display:flex;align-items:flex-end;gap:2px;min-width:0;height:58px;padding-bottom:7px}
-.rod{height:40px;flex:none;border:2px solid #263d5340;border-bottom:5px solid #263d5355;border-radius:7px;display:grid;place-items:center;font-weight:950;font-size:17px;box-shadow:inset 0 3px #ffffff70;user-select:none;position:relative}
-.rod.white{border-color:#718090;background:#f5f2e9!important}.rod.intrain{cursor:pointer}.rod.intrain:after{content:"";position:absolute;bottom:-13px;left:15%;right:15%;height:9px;background:radial-gradient(circle at 12% 4px,#273f55 0 4px,transparent 5px),radial-gradient(circle at 87% 4px,#273f55 0 4px,transparent 5px)}
-.empty{font-size:13px;color:#5d7487;font-weight:750;padding:12px}.measure{margin:8px 0 0;font-weight:900;text-align:center}
-.progressbar{background:#dfecf4;height:13px;border-radius:20px;overflow:hidden;margin-top:9px}.progressbar>div{background:linear-gradient(90deg,#49b9d3,#48ae6b);height:100%;width:0;transition:width .25s}
-.palette{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
-.pick{border:2px solid #cfdfeb;background:#f5fbff;border-radius:13px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:7px;touch-action:manipulation;user-select:none}
-.pick:hover{border-color:#2698c0;background:#e9f9ff}.pick .rod{height:22px;max-width:100%;min-width:13px;font-size:12px;border-radius:4px}
-.pick small{font-weight:900}.actionrow{display:flex;flex-wrap:wrap;gap:9px;margin-top:13px}.action{border:0;border-radius:12px;padding:12px 15px;font-weight:950;background:#ffcb55;color:#503605}.action.alt{background:#e6f1f8;color:#265a74}.action.good{background:#39ab72;color:#fff}
-.feedback{min-height:53px;margin-top:12px;background:#e9f7ff;border-radius:13px;padding:11px;font-size:15px;font-weight:800;color:#175a86}
-.buddy{display:flex;align-items:flex-start;gap:10px;margin-top:10px;background:#f1f7ff;padding:12px;border-radius:15px}.buddy .face{font-size:36px}.buddy p{margin:0;font-size:14px;font-weight:750}
-.collection{display:grid;gap:9px}.saved{padding:9px;border:2px solid #d8e8f1;border-radius:12px;background:#f7fcff}.saved b{display:block;margin-bottom:4px}.savedrods{display:flex;gap:3px;align-items:center;max-width:100%;overflow:hidden}.savedrods .rod{height:21px;font-size:11px;border-radius:4px}.sidehint{color:#667f8d;font-size:14px}
-.panelhead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
-.config{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.config label{display:grid;gap:3px;font-size:12px;font-weight:850;color:#4f7185}.config select{border:2px solid #cbe3ee;border-radius:9px;padding:7px 8px;background:#fff}
-.end{border:3px solid #efc768;background:#fff9df;border-radius:17px;padding:16px;text-align:center;margin-top:10px}.end h2{margin:4px}.end p{line-height:1.5}
-.note{font-size:12px;color:#698092;margin-top:8px}
-.helpcontrols{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 13px}.helpbtn{border:2px solid #1f8fac;background:#f0fbff;color:#154968;font-weight:900;border-radius:13px;padding:12px 17px;min-height:48px}.helpbtn.play{background:#ffe081;border-color:#e4b942;color:#563d05;display:inline-block}.helpbox{background:#fff9e5;border:2px solid #eacb73;border-radius:16px;padding:14px;margin-bottom:13px;font-size:16px;line-height:1.55}.helpbox[hidden]{display:none}.helpbox h3{margin:0 0 7px}.helpbox ol{margin:4px 0;padding-left:26px}.helpbox .sample{font-size:17px;font-weight:850;color:#175c7b;margin-top:8px}
-@media(max-width:770px){.play{grid-template-columns:1fr}.palette{grid-template-columns:repeat(5,1fr)}header{padding:10px}nav{margin-left:0}.landscape{min-height:230px}.loco{flex-basis:38px;font-size:21px}.rod{height:35px}.panel{padding:12px}.savedrods .rod{min-width:0!important}}
-@media(max-width:410px){.palette{gap:4px}.pick{padding:6px 1px}.pick small{font-size:12px}}
+:root{font-family:system-ui,'Trebuchet MS',sans-serif;color:#16334c;--ink:#16334c;--yellow:#ffd65e;--blue:#2686bc}
+*{box-sizing:border-box}body{margin:0;background:#d9f4ff}button{font:inherit;cursor:pointer}button:focus-visible{outline:3px solid #124bd7;outline-offset:2px}
+header{background:#fff;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px clamp(12px,3vw,32px);box-shadow:0 3px 15px #164b621c}
+h1{font-size:clamp(20px,3vw,29px);margin:0}header small{color:#628196;font-weight:750}nav{margin-left:auto;display:flex;gap:7px;flex-wrap:wrap}
+.nav{border:2px solid #c5e0ed;border-radius:12px;background:#fff;padding:10px 12px;font-weight:850;text-decoration:none;color:#234b69}
+main{max-width:1200px;margin:0 auto;padding:16px;display:grid;gap:12px}
+.dashboard{display:flex;gap:8px;flex-wrap:wrap}.chip{background:white;border:2px solid #c6e5f1;border-radius:100px;padding:9px 13px;font-size:14px;font-weight:900}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 255px;gap:13px}.box{background:white;border:2px solid #c6e5ef;border-radius:20px;padding:15px;box-shadow:0 8px 17px #23618512}
+.titleline{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+h2{margin:0;font-size:clamp(20px,2.5vw,26px)}.prompt{margin:6px 0 13px;font-weight:750;color:#3d708a;font-size:16px}
+.world{position:relative;height:315px;border-radius:18px;overflow:hidden;background:linear-gradient(#83d6ff 0%,#d3f5ff 63%,#8bce7b 64%,#61ad65 100%);border:2px solid #b6e8f8}
+.sun{position:absolute;right:20%;top:20px;font-size:38px}.cloud{position:absolute;font-size:31px;opacity:.88}.cloud.one{left:9%;top:30px}.cloud.two{left:46%;top:72px}
+.hill{position:absolute;border-radius:50%;background:#93c97a;width:320px;height:100px;bottom:85px;left:-40px}.hill.two{left:auto;right:-70px;background:#78bb7b}
+.sign{position:absolute;right:13px;top:27px;padding:11px 14px;border:3px solid #875a35;background:#ffedab;border-radius:10px;text-align:center;box-shadow:0 4px #b38b5b;z-index:1;font-weight:950}
+.sign strong{display:block;font-size:29px}.flag{font-size:25px}
+.rails{position:absolute;left:3%;right:3%;bottom:55px;height:17px;background:linear-gradient(to bottom,#4b5761 0 4px,transparent 4px 11px,#4b5761 11px 15px,transparent 15px);z-index:2}
+.rails:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,#7a573e 0 9px,transparent 9px 29px);opacity:.75}
+.train{position:absolute;left:5%;bottom:68px;display:flex;align-items:end;z-index:3;transition:transform 1.6s cubic-bezier(.4,0,.3,1);max-width:90%}
+.train.travel{transform:translateX(min(44vw,490px))}.engine{width:69px;height:69px;flex:none;background:linear-gradient(#2a92da,#165d9e);border:3px solid #164872;border-radius:11px 22px 8px 8px;position:relative;display:flex;justify-content:center;align-items:center;font-size:34px;filter:drop-shadow(1px 3px 0 #153d5670);margin-right:3px}
+.engine:before{content:"";position:absolute;top:-17px;left:13px;width:18px;height:19px;background:#163d5d;border-radius:3px}
+.wheels{position:absolute;bottom:-12px;left:5px;right:5px;height:17px;background:radial-gradient(circle at 18% 50%,#243f53 0 8px,transparent 9px),radial-gradient(circle at 79% 50%,#243f53 0 8px,transparent 9px)}
+.train.travel .wheels{animation:roll .3s linear infinite}@keyframes roll{50%{transform:translateY(2px)}}
+.carriages{display:flex;align-items:flex-end;gap:2px;padding-bottom:1px;height:70px}
+.carriage{height:46px;min-width:15px;border-radius:7px;border:2px solid #31445788;border-bottom:5px solid #253d5488;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 4px #ffffff70;color:#15364d;font-weight:950;font-size:18px;position:relative;cursor:pointer;flex:none}
+.carriage:after{content:"";position:absolute;bottom:-16px;left:0;right:0;height:13px;background:radial-gradient(circle at 19% 50%,#263b50 0 5px,transparent 6px),radial-gradient(circle at 83% 50%,#263b50 0 5px,transparent 6px)}
+.carriage.dark{color:white}.carriage:hover{filter:brightness(1.08)}.train.travel .carriage{pointer-events:none}
+.puff{position:absolute;z-index:3;bottom:164px;left:12%;opacity:0;font-size:30px}.puff.go{animation:puff 1.4s ease-out}@keyframes puff{0%{opacity:1;transform:translate(0,0) scale(.6)}100%{opacity:0;transform:translate(70px,-90px) scale(2)}}
+.ruler{border:2px dashed #75b1ca;border-radius:12px;padding:12px;margin-top:11px;background:#f0fbff}
+.rulertop{display:flex;justify-content:space-between;gap:8px;font-weight:850;margin-bottom:8px}
+.cells{display:grid;grid-template-columns:repeat(var(--cols),1fr);height:32px;border:2px solid #8ab4c5;border-radius:8px;overflow:hidden}
+.cell{border-right:1px solid #adc7d3;background:#fff;display:grid;place-items:center;font-size:10px;color:#678ba3;font-weight:800}.cell:last-child{border:0}.cell.filled{background:#67c5a2;color:#174e4a}
+.feedback{background:#edf8ff;padding:12px 14px;border-radius:12px;margin:11px 0;font-weight:850;min-height:52px;line-height:1.35}
+.feedback.warn{background:#fff0d9;color:#835011}.feedback.good{background:#e3faea;color:#23663c}
+.banktitle{font-size:18px;font-weight:950;margin:17px 0 10px}.bank{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}
+.choice{border:2px solid #cadfea;background:#f7fcff;border-radius:15px;min-height:75px;padding:7px;display:flex;align-items:center;justify-content:space-around;flex-direction:column;gap:5px}
+.choice:hover:not(:disabled){border-color:#1688b6;transform:translateY(-1px);background:#eafbff}.choice:disabled{opacity:.4;cursor:default}
+.sample{height:26px;max-width:90%;min-width:14px;border:2px solid #2b48515e;border-radius:6px;box-shadow:inset 0 3px #ffffff70}.choice strong{font-size:15px}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.action{border:0;border-radius:12px;padding:12px 15px;font-weight:900;background:#e5f3fb;color:#24597a}
+.action.help{background:#ffdc74;color:#5c400b}.action:disabled{opacity:.45}
+.side h3{margin:0 0 12px;font-size:20px}.badge{display:flex;align-items:center;justify-content:center;background:#edf8ff;border-radius:16px;padding:15px;font-size:48px;margin-bottom:12px}
+.speech{border-radius:13px;padding:12px;background:#fff4d9;font-size:15px;line-height:1.4;font-weight:750}
+.deliveries{display:grid;gap:8px;margin:12px 0}.delivery{border:2px solid #d9eaf1;border-radius:12px;padding:9px;background:#f7fcff;font-weight:800}.delivery small{display:block;color:#5b7f91;font-weight:700}
+.rules{font-size:14px;line-height:1.5;color:#516e7d}
+.overlay{position:fixed;inset:0;background:#0c294ea9;z-index:20;display:grid;place-items:center;padding:14px}.overlay[hidden]{display:none}
+.dialog{max-width:510px;width:100%;border-radius:24px;padding:27px;background:#fff;text-align:center;box-shadow:0 15px 60px #03152f80}
+.dialog h2{font-size:29px}.dialog p{font-size:17px;line-height:1.55}.dialog .action{font-size:18px;padding:15px 25px;background:#ffd65e}
+@media(max-width:760px){.main{grid-template-columns:1fr}.side{order:2}.world{height:270px}.train.travel{transform:translateX(35vw)}.bank{gap:5px}.choice{min-height:66px}.engine{width:52px;height:55px;font-size:27px}.carriage{height:38px;font-size:15px}.train{bottom:69px}.sun{right:35%}.box{padding:12px}}
+@media(prefers-reduced-motion:reduce){.train{transition:none!important}.puff.go{animation:none}}
 </style></head><body>
-<header><div><h1>🚂 El tren de las regletas</h1><div class="sub">Matemáticas OAOA · 1.º de Primaria</div></div>
-<nav><a class="navbtn" href="../">← Juegos OAOA</a><button class="navbtn sound" id="sound" aria-label="Activar o silenciar sonidos">🔊</button><button class="navbtn" id="reset">↻ Reiniciar</button></nav></header>
+<header><div><h1>🚂 Tren Exprés OAOA</h1><small>Construye, arranca y llega a la estación · 1.º Primaria</small></div>
+<nav><a class="nav" href="../">← Juegos OAOA</a><button class="nav" id="instructions">❓ Cómo jugar</button><button class="nav" id="sound">🔊</button><button class="nav" id="restart">↻ Reiniciar</button></nav></header>
 <main>
-<div class="status"><div class="pill" id="level">🚉 Nivel 1 de 9</div><div class="pill" id="counter">🚂 0 / 1 trenes</div><div class="pill" id="points">⭐ 0 puntos</div><div class="pill" id="stars">☆ ☆ ☆</div></div>
-<div class="play"><section class="panel"><div class="panelhead"><h2 id="task">Construye un tren</h2><div class="config"><label>Estación inicial<select id="start"></select></label><label>Retos por estación<select id="challenges"><option value="1">1 tren</option><option value="2">2 trenes</option><option value="3" selected>3 trenes</option><option value="4">4 trenes</option></select></label><label>Números<select id="labels"><option value="yes">Visibles</option><option value="no">Ocultos</option></select></label></div></div>
-<p class="info" id="instruction">Construye distintas combinaciones de regletas que lleguen exactamente a la estación.</p>
-<div class="helpcontrols" aria-label="Instrucciones del juego"><button type="button" class="helpbtn play" id="listenRules">▶ Escuchar instrucciones</button><button type="button" class="helpbtn" id="showHelp" aria-expanded="false" aria-controls="rulesBox">❓ Ayuda</button></div>
-<div class="helpbox" id="rulesBox" hidden>
-<h3>🚂 ¿Cómo se juega?</h3>
-<ol><li>Mira el número de la estación.</li><li>Elige al menos dos regletas y ponlas en el tren.</li><li>Consigue que juntas midan lo mismo que el número de la estación.</li><li>Pulsa «Comprobar tren». Si es correcto, busca otra combinación diferente.</li><li>Completa los trenes necesarios para ir a la siguiente estación.</li></ol>
-<div class="sample">💡 Ejemplo: estación 5 → 2 + 3 = 5 o 1 + 4 = 5.</div>
-<button type="button" class="helpbtn play" id="repeatRules">▶ Escuchar otra vez</button>
-</div>
-<div class="landscape"><div class="sun">☀️</div><div class="cloud one">☁️</div><div class="cloud two">☁️</div><div class="destination"><span class="station" id="station">Estación 2</span> <span>🚩</span></div>
-<div class="trackouter"><div class="tracklabel" id="targettext">Meta: 2 unidades</div><div class="track" id="track"><div class="loco">🚂</div><div class="wagons" id="wagons"><span class="empty">Elige regletas abajo</span></div></div><div class="measure" id="measure">0 de 2</div><div class="progressbar"><div id="bar"></div></div></div>
-</div>
-<div class="buddy"><span class="face" id="face">🤖</span><p id="buddy">¡Hola! Soy Tino. Vamos a construir trenes de la misma longitud con vagones diferentes.</p></div>
-<h2 style="margin-top:16px">🧩 Elige las regletas</h2><div class="palette" id="palette"></div>
-<div class="actionrow"><button class="action good" id="check">✓ Comprobar tren</button><button class="action alt" id="undo">↶ Quitar última</button><button class="action alt" id="clear">✕ Vaciar tren</button><button class="action alt" id="help">💡 Pista</button></div>
-<div class="feedback" id="feedback" role="status" aria-live="polite">Pulsa una regleta para añadirla al tren. También puedes arrastrarla hasta la vía.</div>
-<div id="ending"></div></section>
-<aside class="panel"><h2>🏆 Trenes construidos</h2><div class="collection" id="collection"><p class="sidehint">Aquí aparecerán los trenes que logres completar.</p></div><p class="note">Una misma combinación en distinto orden cuenta como el mismo tren. Busca formas realmente diferentes de construir el número.</p></aside></div>
+<div class="dashboard"><span class="chip" id="level">🚉 Estación 2 de 10</span><span class="chip" id="task">🚂 0 de 1 entregas</span><span class="chip" id="score">⭐ 0 puntos</span><span class="chip" id="medals">☆ ☆ ☆</span></div>
+<div class="main"><section class="box"><div class="titleline"><h2 id="mission">¡Prepara tu tren!</h2><span class="chip" id="limit">🧩 Elige 2 o más vagones</span></div>
+<p class="prompt" id="hint">Pon regletas en el tren hasta llegar al número de la estación.</p>
+<div class="world" id="world"><div class="sun">☀️</div><div class="cloud one">☁️</div><div class="cloud two">☁️</div><div class="hill"></div><div class="hill two"></div>
+<div class="sign"><div>🚉 ESTACIÓN</div><strong id="station">2</strong><span class="flag">🚩</span></div>
+<div class="puff" id="puff">☁️</div><div class="rails"></div><div class="train" id="train"><div class="engine">🚂<div class="wheels"></div></div><div class="carriages" id="carriages"></div></div></div>
+<div class="ruler"><div class="rulertop"><span>📏 Longitud de tu tren</span><span id="sum">0 / 2</span></div><div class="cells" id="cells"></div></div>
+<div class="feedback" id="feedback" role="status" aria-live="polite">¡Elige una regleta para empezar!</div>
+<div class="banktitle">🎨 Elige los vagones</div><div class="bank" id="bank"></div>
+<div class="actions"><button class="action" id="undo">↶ Quitar último vagón</button><button class="action" id="empty">✕ Vaciar tren</button><button class="action help" id="clue">💡 Pista</button></div>
+</section>
+<aside class="box side"><h3>🤖 Tino, el jefe de estación</h3><div class="badge" id="face">🤖</div><div class="speech" id="speech">¡Hola, maquinista! Construye un tren que mida exactamente lo que indica la estación.</div><h3 style="margin-top:20px">🏅 Entregas realizadas</h3><div class="deliveries" id="deliveries"></div><div class="rules"><b>Regla OAOA:</b> trenes diferentes pueden tener la misma longitud. Cambiar de orden los mismos vagones no es una combinación nueva.</div></aside></div>
 </main>
+<div class="overlay" id="modal"><div class="dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div style="font-size:57px" id="modalIcon">🚂</div><h2 id="modalTitle">¡Bienvenido al Tren Exprés!</h2><p id="modalText">1. Mira el número de la estación.<br>2. Pulsa regletas para formar vagones.<br>3. Cuando la longitud sea correcta, ¡el tren saldrá solo!<br>4. Encuentra otra combinación y avanza.</p><div class="actions" style="justify-content:center"><button class="action" id="modalPlay">▶ ¡A jugar!</button><button class="action" id="read">🔊 Escuchar</button></div></div></div>
 <script>
 (function(){
 "use strict";
-var COLORS={1:["Blanca","#f6f5ef"],2:["Roja","#e9434d"],3:["Verde claro","#82c979"],4:["Rosa","#f3a0c3"],5:["Amarilla","#ffd446"],6:["Verde oscuro","#289869"],7:["Negra","#3c414c"],8:["Marrón","#a46e44"],9:["Azul","#3679d2"],10:["Naranja","#f18a37"]};
-var $=function(id){return document.getElementById(id)},n=2,level=1,chosen=[],solved=[],score=0,errors=0,required=1,muted=false,finished=false,audio=null,baseStart=2,preferred=3;
-function sum(a){return a.reduce(function(x,y){return x+y},0)}
-function key(a){return a.slice().sort(function(a,b){return a-b}).join("+")}
-function rod(v,cls,unit){var text=$("labels").value==="yes"?v:"";var color=COLORS[v][1];var dark=[1,3,4,5].includes(v);return '<span class="rod '+(v===1?'white ':'')+(cls||'')+'" style="width:'+Math.max(13,Math.round(unit*v))+'px;background:'+color+';color:'+(dark?'#1e4051':'#fff')+'">'+text+'</span>'}
-function allCombos(target){var out=[];function walk(left,min,items){if(left===0){if(items.length>=2 && items.length<=6)out.push(items.slice());return}if(items.length>=6)return;for(var v=min;v<=Math.min(left,10);v++){items.push(v);walk(left-v,v,items);items.pop()}}walk(target,1,[]);return out}
-function voice(s,face){$("buddy").textContent=s;$("face").textContent=face||"🤖"}
-function beep(ok){if(muted)return;try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();if(audio.state==="suspended")audio.resume();var t=audio.currentTime;[0,1,2].forEach(function(i){var o=audio.createOscillator(),g=audio.createGain();o.type="square";o.frequency.value=(ok?[523,659,784]:[220,185,155])[i];g.gain.setValueAtTime(.0001,t+i*.09);g.gain.exponentialRampToValueAtTime(.025,t+i*.09+.015);g.gain.exponentialRampToValueAtTime(.0001,t+i*.09+.085);o.connect(g);g.connect(audio.destination);o.start(t+i*.09);o.stop(t+i*.09+.09)})}catch(e){}}
-function usable(){return Math.max(1,Math.min(preferred,allCombos(n).length))}
-function unit(){var w=$("track").clientWidth;var loco=document.querySelector(".loco");return Math.max(11,Math.min(40,(w-(loco?loco.offsetWidth:50)-32)/n-2))}
+const C={1:["Blanca","#f6f5ef"],2:["Roja","#e9434d"],3:["Verde claro","#82c979"],4:["Rosa","#f3a0c3"],5:["Amarilla","#ffd446"],6:["Verde oscuro","#289869"],7:["Negra","#3c414c"],8:["Marrón","#a46e44"],9:["Azul","#3679d2"],10:["Naranja","#f18a37"]};
+const $=id=>document.getElementById(id);
+let target=2,train=[],completed=[],score=0,errors=0,locked=true,token=0,muted=false,audio=null,modalAction=null;
+const sum=a=>a.reduce((s,x)=>s+x,0),key=a=>a.slice().sort((x,y)=>x-y).join(","),palette=[1,2,3,4,5,6,7,8,9,10];
+const combos=n=>{let out=[];function walk(rem,min,arr){if(!rem){if(arr.length>=2&&arr.length<=6)out.push(arr.slice());return}if(arr.length>=6)return;for(let v=min;v<=Math.min(rem,10);v++){arr.push(v);walk(rem-v,v,arr);arr.pop()}}walk(n,1,[]);return out};
+const goal=()=>Math.min(3,combos(target).length);
+function say(s,emo="🤖"){$("speech").textContent=s;$("face").textContent=emo}
+function message(s,type=""){$("feedback").textContent=s;$("feedback").className="feedback "+type}
+function sound(ok=true){if(muted)return;try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();if(audio.state==="suspended")audio.resume();let at=audio.currentTime;[0,1,2,3].forEach((j)=>{let osc=audio.createOscillator(),gain=audio.createGain();osc.type="square";osc.frequency.value=(ok?[392,523,659,784]:[262,220,196,175])[j];gain.gain.setValueAtTime(.0001,at+j*.105);gain.gain.exponentialRampToValueAtTime(.026,at+j*.105+.015);gain.gain.exponentialRampToValueAtTime(.0001,at+j*.105+.095);osc.connect(gain);gain.connect(audio.destination);osc.start(at+j*.105);osc.stop(at+j*.105+.11)})}catch(e){}}
+function unit(){let world=$("world").clientWidth;return Math.max(10,Math.min(39,(world-135)/target-2))}
 function paint(){
- var u=unit(),total=sum(chosen);$("station").textContent="Estación "+n;$("targettext").textContent="Longitud de la meta: "+n+" unidades";$("task").textContent="🚉 Construye el número "+n;
- $("level").textContent="🚉 Nivel "+level+" de "+(11-baseStart);$("counter").textContent="🚂 "+solved.length+" / "+required+" trenes";$("points").textContent="⭐ "+score+" puntos";
- $("stars").textContent=errors===0?"⭐ ⭐ ⭐":errors<=2?"⭐ ⭐ ☆":"⭐ ☆ ☆";
- $("wagons").innerHTML=chosen.length?chosen.map(function(v,i){return rod(v,"intrain",u).replace('<span ','<span data-at="'+i+'" title="Pulsa para quitar esta regleta" ') }).join(""):'<span class="empty">Elige regletas abajo</span>';
- $("measure").textContent=total+" de "+n+" unidades";$("bar").style.width=Math.min(100,100*total/n)+"%";$("bar").style.background=total>n?"#e45555":"linear-gradient(90deg,#49b9d3,#48ae6b)";
- Array.from($("wagons").querySelectorAll("[data-at]")).forEach(function(el){el.onclick=function(){if(finished)return;chosen.splice(Number(el.dataset.at),1);paint()};});
- $("collection").innerHTML=solved.length?solved.map(function(a,i){return '<div class="saved"><b>🚂 Tren '+(i+1)+': '+a.join(" + ")+" = "+n+'</b><div class="savedrods">'+a.map(function(v){return rod(v,"",Math.max(10,Math.min(22,180/n)))}).join("")+'</div></div>'}).join(""):'<p class="sidehint">Aquí aparecerán los trenes que logres completar.</p>';
- $("check").disabled=finished;
+const total=sum(train),u=unit();
+$("station").textContent=target;$("level").textContent="🚉 Estación "+target+" de 10";$("task").textContent="🚂 "+completed.length+" de "+goal()+" entregas";$("score").textContent="⭐ "+score+" puntos";$("medals").textContent=errors===0?"⭐ ⭐ ⭐":errors<=2?"⭐ ⭐ ☆":"⭐ ☆ ☆";
+$("mission").textContent="¡Llega al "+target+"!";$("hint").textContent=completed.length?"¡Busca otra forma de construir el "+target+"!":"Elige regletas hasta completar "+target+" unidades.";
+$("sum").textContent=total+" / "+target;
+$("carriages").innerHTML=train.map((v,i)=>'<button type="button" data-index="'+i+'" title="Quitar regleta '+v+'" class="carriage '+([2,6,7,8,9,10].includes(v)?"dark":"")+'" style="width:'+Math.round(v*u)+'px;background:'+C[v][1]+'" '+(locked?"disabled":"")+'>'+v+'</button>').join("");
+$("carriages").querySelectorAll("[data-index]").forEach(b=>b.onclick=()=>{if(!locked){train.splice(Number(b.dataset.index),1);paint()}});
+$("cells").style.setProperty("--cols",target);
+$("cells").innerHTML=Array.from({length:target},(_,i)=>'<span class="cell '+(i<total?"filled":"")+'">'+(i+1)+'</span>').join("");
+$("bank").innerHTML=palette.map(v=>'<button class="choice" data-v="'+v+'" '+(locked||v>target-total?'disabled':'')+' aria-label="Añadir regleta de '+v+'"><span class="sample" style="width:'+Math.min(85,12+v*7)+'px;background:'+C[v][1]+'"></span><strong>'+v+'</strong></button>').join("");
+$("bank").querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>add(Number(b.dataset.v)));
+$("undo").disabled=locked||!train.length;$("empty").disabled=locked||!train.length;
+$("deliveries").innerHTML=completed.length?completed.map((arr,i)=>'<div class="delivery">🚂 Tren '+(i+1)+': '+arr.join(" + ")+' = '+target+'<small>✅ Entrega realizada</small></div>').join(""):'<p class="rules">Todavía no hay entregas. ¡Construye el primero!</p>';
 }
-function feedback(t){$("feedback").textContent=t}
-function add(v){if(finished)return;if(chosen.length>=6){feedback("El tren ya tiene seis vagones. Comprueba o cambia las piezas.");return}chosen.push(v);paint();var s=sum(chosen);if(s>n){feedback("¡Nos hemos pasado! El tren mide "+s+" y la estación está en "+n+". ¿Qué podrías cambiar?");voice("Si el tren es demasiado largo, prueba con una regleta más pequeña.","🤔")}else if(s===n){feedback("¡La longitud coincide! Pulsa «Comprobar tren» para explicar tu solución.")}else{feedback("Llevas "+s+" unidades. ¿Cuántas faltan para llegar a "+n+"?")}}
-function advance(){level++;n++;chosen=[];solved=[];errors=0;required=usable();finished=false;$("ending").innerHTML="";feedback("¡Nueva estación! Construye "+required+" tren"+(required===1?"":"es")+" diferente"+(required===1?"":"s")+".");voice("¡Nueva estación! ¿De cuántas formas puedes construir el "+n+"?","🤖");paint()}
-function win(){finished=true;var stars=errors===0?3:errors<=2?2:1;var last=n===10;var box=$("ending");
- box.innerHTML='<div class="end"><div style="font-size:41px">'+(last?"🏆🚂🎉":"🚂🎉")+'</div><h2>'+(last?"¡Maquinista matemático!":"¡Estación completada!")+'</h2><div style="font-size:27px">'+("⭐".repeat(stars)+"☆".repeat(3-stars))+'</div><p>Has encontrado <b>'+solved.length+'</b> trenes diferentes que miden <b>'+n+'</b> unidades.</p><p>¡Todos llegan a la misma estación aunque utilizan regletas distintas!</p><button class="action" id="next">'+(last?"↻ Volver a empezar":"➡ Siguiente estación")+'</button></div>';
- $("next").onclick=function(){if(last)start(baseStart);else advance()};voice("¡Bravo! Has demostrado que varias combinaciones pueden representar el mismo número.","🥳");beep(true);paint()}
-function check(){if(finished)return;var total=sum(chosen);
- if(chosen.length<2){feedback("Utiliza al menos dos regletas. Queremos formar un tren de varios vagones.");voice("Prueba con al menos dos vagones.","💡");errors++;beep(false);paint();return}
- if(total!==n){feedback(total<n?"Faltan "+(n-total)+" unidades. Busca una regleta que complete la longitud.":"Sobran "+(total-n)+" unidades. Prueba a cambiar un vagón.");voice("Compara el largo del tren con la meta y vuelve a intentarlo.","🤔");errors++;beep(false);paint();return}
- if(solved.some(function(a){return key(a)===key(chosen)})){feedback("¡Ese tren ya lo construiste! Cambiar el orden no crea una nueva descomposición. Prueba con otras regletas.");voice("Busca otra combinación, no solo cambies el orden de las piezas.","💡");errors++;beep(false);paint();return}
- solved.push(chosen.slice());score+=10+(solved.length===required?15:0);feedback("¡Correcto! "+chosen.join(" + ")+" = "+n+". Has construido un tren nuevo.");voice("¡Excelente! "+chosen.join(" más ")+" son "+n+". Ahora busca otra forma.","🥳");beep(true);chosen=[];paint();if(solved.length>=required)win();
+function add(v){
+if(locked)return;let next=sum(train)+v;if(next>target){errors++;say("Ese vagón es demasiado largo. Prueba con otro más pequeño.","🤔");message("¡Cuidado! Sobran "+(next-target)+" unidades. El tren no puede salir.","warn");sound(false);paint();return}
+if(train.length>=6){message("Solo caben seis vagones. Puedes quitar uno y probar de nuevo.","warn");return}
+train.push(v);paint();
+if(next<target){let missing=target-next;message("Llevas "+next+". ¡Faltan "+missing+" para llegar a "+target+"!");say("¿Qué regleta mide "+missing+"?","🤖")}
+else{locked=true;paint();if(completed.some(a=>key(a)===key(train))){errors++;message("¡La longitud es correcta, pero este tren ya llegó! Busca vagones distintos.","warn");say("Cambiar el orden no crea un tren nuevo. Vamos a probar otra combinación.","🤔");sound(false);setTimeout(()=>{locked=false;train=[];paint();message("Prueba otra combinación diferente.")},1000);return}dispatch()}
 }
-function start(target){baseStart=target;n=target;level=1;score=0;errors=0;chosen=[];solved=[];finished=false;required=usable();$("ending").innerHTML="";feedback("Elige al menos dos regletas y construye "+required+" tren"+(required===1?"":"es")+" diferente"+(required===1?"":"s")+".");voice("¡Hola! Soy Tino. Busca diferentes formas de construir la longitud de la estación.","🤖");paint()}
-for(var i=2;i<=10;i++)$("start").innerHTML+='<option value="'+i+'">'+i+'</option>';
-$("start").onchange=function(){start(Number(this.value))};
-$("challenges").onchange=function(){preferred=Number(this.value);start(baseStart)};
-$("labels").onchange=paint;
-$("check").onclick=check;
-$("undo").onclick=function(){if(!finished){chosen.pop();paint();feedback("Has quitado la última regleta.")}};
-$("clear").onclick=function(){if(!finished){chosen=[];paint();feedback("Tren vacío. ¡Prueba una nueva combinación!")}};
-$("help").onclick=function(){if(finished)return;var remain=n-sum(chosen);var suggestion=allCombos(n).find(function(a){return !solved.some(function(x){return key(a)===key(x)})&&key(a)!==key(chosen)});
- var msg;if(remain>0 && remain<=10 && chosen.length>0)msg="Llevas "+sum(chosen)+". Faltan "+remain+" para llegar a "+n+".";else if(suggestion)msg="Prueba a usar "+suggestion.length+" vagones. No hace falta que todos tengan el mismo tamaño.";else msg="Observa la longitud total de tus regletas.";feedback("💡 "+msg);voice(msg,"💡")};
-$("reset").onclick=function(){start(Number($("start").value))};
-$("sound").onclick=function(){muted=!muted;this.textContent=muted?"🔇":"🔊"};
-$("palette").innerHTML=Object.keys(COLORS).map(function(k){var v=Number(k);return '<button type="button" class="pick" data-v="'+v+'" draggable="true" aria-label="Añadir regleta '+v+'"><span class="rod '+(v===1?"white":"")+'" style="width:'+Math.min(52,13+v*4)+'px;background:'+COLORS[v][1]+';color:'+([1,3,4,5].includes(v)?"#1e4051":"#fff")+'">'+v+'</span><small>'+v+'</small></button>'}).join("");
-Array.from($("palette").children).forEach(function(b){b.onclick=function(){add(Number(b.dataset.v))};b.ondragstart=function(e){e.dataTransfer.setData("text/plain",b.dataset.v)}});
-$("track").ondragover=function(e){e.preventDefault()};
-$("track").ondrop=function(e){e.preventDefault();var v=Number(e.dataTransfer.getData("text/plain"));if(v>=1&&v<=10)add(v)};
-
-// Instrucciones accesibles: voz en español integrada en el navegador.
-var RULES="¡Hola, maquinista! Vamos a jugar al tren de las regletas. Primero, mira el número de la estación. Después, elige dos o más regletas y colócalas como vagones. Tienen que sumar exactamente ese número. Por ejemplo, para llegar al cinco, puedes poner una regleta de dos y otra de tres. Cuando lo consigas, pulsa comprobar tren. Después intenta construir otro tren diferente que llegue a la misma estación. ¡Buen viaje!";
-function readRules(){
- $("rulesBox").hidden=false;$("showHelp").setAttribute("aria-expanded","true");
- if(!("speechSynthesis" in window)){feedback("Las instrucciones están escritas en el cuadro de ayuda. Este navegador no ofrece lectura de voz.");return}
- try{
-  window.speechSynthesis.cancel();
-  var utterance=new SpeechSynthesisUtterance(RULES);
-  utterance.lang="es-ES";utterance.rate=.86;utterance.pitch=1.08;utterance.volume=1;
-  var voices=window.speechSynthesis.getVoices();
-  var spanish=voices.find(function(v){return /^es(-|_)/i.test(v.lang)&&/ES/i.test(v.lang)})||voices.find(function(v){return /^es/i.test(v.lang)});
-  if(spanish)utterance.voice=spanish;
-  utterance.onerror=function(){feedback("No se ha podido reproducir la voz. Puedes leer las instrucciones en Ayuda.")};
-  window.speechSynthesis.speak(utterance);
- }catch(e){feedback("Las instrucciones están disponibles por escrito en Ayuda.")}
-}
-$("listenRules").onclick=readRules;
-$("repeatRules").onclick=readRules;
-$("showHelp").onclick=function(){
- var box=$("rulesBox");box.hidden=!box.hidden;this.setAttribute("aria-expanded",String(!box.hidden));
- if(box.hidden&&"speechSynthesis" in window)window.speechSynthesis.cancel();
-};
-window.addEventListener("resize",paint);start(2);
+function dispatch(){
+let stamp=++token,arr=train.slice();message("¡PERFECTO! "+arr.join(" + ")+" = "+target+". ¡El tren sale hacia la estación!","good");say("¡Todos los vagones encajan! ¡Buen viaje!","🥳");sound(true);
+$("train").classList.add("travel");$("puff").classList.remove("go");void $("puff").offsetWidth;$("puff").classList.add("go");
+setTimeout(()=>{if(stamp!==token)return;completed.push(arr);score+=10+(completed.length===goal()?20:0);
+$("train").style.transition="none";$("train").classList.remove("travel");train=[];paint();sound(true);
+if(completed.length===goal())endStation();else{say("¡Estupendo! ¿Puedes conseguir otro tren de la misma longitud con vagones diferentes?","🤖");message("✅ Entrega "+completed.length+" completada. Construye un tren diferente.","good");setTimeout(()=>{if(stamp!==token)return;$("train").style.transition="";locked=false;paint()},350)}
+},1650)}
+function endStation(){locked=true;paint();let final=target===10,headline=final?"¡Gran maquinista OAOA!":"¡Estación completada!",next=final?"↻ Volver a empezar":"➡ Siguiente estación";modalAction=()=>{if(final){score=0;start(2)}else start(target+1)};
+showModal("🏆🚂🎉",headline,"Has construido "+completed.length+" trenes diferentes para el "+target+". ¡Todos tienen la misma longitud! "+(final?"¡Has superado las nueve estaciones!":"¡La siguiente estación te espera."),next)}
+function start(n){token++;target=n;train=[];completed=[];errors=0;locked=false;$("train").style.transition="none";$("train").classList.remove("travel");$("puff").classList.remove("go");$("modal").hidden=true;paint();requestAnimationFrame(()=>{$("train").style.transition=""});say("¡Mira la estación "+n+"! Construye un tren que mida exactamente "+n+".","🤖");message("Pulsa las regletas. Cuando el tren mida "+n+", ¡arrancará solo!")}
+function showModal(icon,title,description,button){$("modalIcon").textContent=icon;$("modalTitle").textContent=title;$("modalText").textContent=description;$("modalPlay").textContent=button;$("modal").hidden=false}
+function speak(){if(!window.speechSynthesis){message("Tu navegador no tiene voz. Puedes leer la ayuda en pantalla.","warn");return}let msg=$("modalText").textContent;try{speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(msg);u.lang="es-ES";u.rate=.88;u.pitch=1.08;let voices=speechSynthesis.getVoices(),v=voices.find(v=>/^es/i.test(v.lang));if(v)u.voice=v;speechSynthesis.speak(u)}catch(e){}}
+$("modalPlay").onclick=()=>{if(window.speechSynthesis)speechSynthesis.cancel();let f=modalAction;modalAction=null;if(f)f();else start(target)};
+$("read").onclick=speak;
+$("instructions").onclick=()=>{if(window.speechSynthesis)speechSynthesis.cancel();locked=true;paint();modalAction=()=>{locked=false;paint()};showModal("🚂","¿Cómo se juega?","Mira el número de la estación. Pulsa dos o más regletas para formar los vagones. Si la suma coincide, ¡el tren saldrá automáticamente! Encuentra combinaciones diferentes para superar cada estación.","▶ Continuar")};
+$("clue").onclick=()=>{if(locked)return;let missing=target-sum(train);if(train.length)message("💡 Te faltan "+missing+" unidades. Busca una regleta de ese tamaño.");else{let option=combos(target).find(a=>!completed.some(b=>key(a)===key(b)));message("💡 Prueba un tren con "+(option?option.length:2)+" vagones. ¿Cómo puedes sumar "+target+"?")}say("¡Puedes probar y cambiar las piezas tantas veces como quieras!","💡")};
+$("undo").onclick=()=>{if(!locked&&train.length){train.pop();paint();message("Has quitado el último vagón.")}};
+$("empty").onclick=()=>{if(!locked){train=[];paint();message("¡Tren vacío! Prueba de nuevo.")}};
+$("sound").onclick=()=>{muted=!muted;$("sound").textContent=muted?"🔇":"🔊"};
+$("restart").onclick=()=>{if(window.speechSynthesis)speechSynthesis.cancel();score=0;start(2)};
+window.addEventListener("resize",paint);
+paint();modalAction=()=>start(2);
 })();
 </script></body></html>
