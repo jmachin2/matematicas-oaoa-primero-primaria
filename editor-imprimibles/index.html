@@ -15,9 +15,9 @@ h1{font-size:19px;margin:0 0 8px}h2{font-size:16px;margin:0 0 8px}p{line-height:
 </style><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Playwrite+ES:wght@100..400&display=swap" rel="stylesheet">
 <style id="oaoa-print-playwrite">:root{--oaoa-hand:"Playwrite ES","Segoe Print",cursive}
 .paper-header,.paper .prompt,.task.prose .editable{font-family:var(--oaoa-hand);font-weight:400;line-height:1.75}
-.paper-header{font-size:15pt;line-height:1.5}
-.paper .prompt{font-size:10.5pt;line-height:1.85}
-.task.prose .editable{line-height:1.8}
+.paper-header{font-size:18pt;line-height:1.55}
+.paper .prompt{font-size:14pt;line-height:1.8}
+.task.prose .editable{line-height:1.8;font-size:var(--size,18pt)}
 .task.math .editable{font-family:Arial,Helvetica,sans-serif;line-height:1.4;font-weight:600}
 @media print{.paper-header,.paper .prompt,.task.prose .editable{font-family:var(--oaoa-hand)}}
 </style></head><body>
@@ -55,7 +55,7 @@ let version=0,selected=null,history=[],frozen=false;const config=sets[page];
 function key(){return 'oaoa-editor-v3-p'+page+'-'+$('kind').value+'-'+version}
 function escapeTxt(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function taskText(t){const a=t.nums;switch(t.type){case 'brick':return 'Completa: '+a[0]+' = '+a[1]+' + ______';case 'money':return 'Saco de Paco: '+a.map(x=>x+' €').join(' + ')+' = ______ €';case 'previous':return 'Número anterior: '+a[0]+' − 1 = ______';case 'compare':return a.join(' + ')+' = ______ . ¿Igual a 8 o menor que 8? __________';default:return a.join(' + ')+' = ______';}}
-function createModel(){const pool=config.tasks,amount={ampliacion:5,refuerzo:4,tarea:4,tea:3,pictogramas:4}[$('kind').value];const index=version%pool.length;const cycle=Math.floor(version/pool.length);const selectedTasks=Array.from({length:amount},(_,j)=>{const item=pool[(index+j)%pool.length],a=item.nums.slice();if(cycle%2===1&&item.type==='sum')a.reverse();return {text:(j+1)+'. '+taskText({type:item.type,nums:a}),size:16,gap:5,draw:$('kind').value==='ampliacion'?13:$('kind').value==='tea'?17:0}});selectedTasks.push({text:'Explica con un dibujo o con regletas cómo has pensado.',size:13,gap:5,draw:22});return selectedTasks;}
+function createModel(){const pool=config.tasks,amount={ampliacion:5,refuerzo:4,tarea:4,tea:3,pictogramas:4}[$('kind').value];const index=version%pool.length;const cycle=Math.floor(version/pool.length);const selectedTasks=Array.from({length:amount},(_,j)=>{const item=pool[(index+j)%pool.length],a=item.nums.slice();if(cycle%2===1&&item.type==='sum')a.reverse();return {text:(j+1)+'. '+taskText({type:item.type,nums:a}),size:18,gap:5,draw:$('kind').value==='ampliacion'?13:$('kind').value==='tea'?17:0}});selectedTasks.push({text:'Explica con un dibujo o con regletas cómo has pensado.',size:13,gap:5,draw:22});return selectedTasks;}
 function snapshot(){return [...$('items').children].map(el=>({text:el.querySelector('.editable')?.textContent||'',size:Number(el.dataset.size),gap:Number(el.dataset.gap),draw:Number(el.dataset.draw)}))}
 function remember(){history.push(snapshot());if(history.length>30)history.shift()}
 function buildTask(m){const wrap=document.createElement('div');wrap.className='task '+(/^(?:[0-9]+[.] *)?(?:Explica|Dibuja|Representa|Piensa|Escribe aquí|Observa|Responde|Compara)/i.test(m.text)?'prose':'math');const text=document.createElement('div');text.className='editable';text.contentEditable='true';text.spellcheck=true;text.textContent=m.text;wrap.append(text);wrap.addEventListener('click',()=>pick(wrap));text.addEventListener('input',validate);apply(wrap,m);return wrap}
