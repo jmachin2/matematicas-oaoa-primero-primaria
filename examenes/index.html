@@ -129,6 +129,7 @@ html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;backgr
       </div>
       <div class="pdf-actions">
         <button class="pdf-btn primary" id="testPdfBtn" type="button" disabled>⬇ Prueba PDF</button>
+        <button class="pdf-btn" id="editExamBtn" type="button" disabled>✏️ Editar examen visualmente</button>
         <button class="pdf-btn rubric" id="rubricPdfBtn" type="button" disabled>⬇ Rúbrica PDF</button>
         <button class="pdf-btn" id="printPdfBtn" type="button" disabled>🖨 Imprimir / guardar como PDF</button>
         <a class="pdf-btn" id="openPdfLink" href="#" target="_blank" rel="noopener" style="display:none;text-decoration:none">Abrir PDF para guardarlo</a>
@@ -481,6 +482,7 @@ function update(){
   $('#analysis').innerHTML=analysisHtml(sel);
   $('#previewPlan').innerHTML=planHtml(sel);
   $('#testPdfBtn').disabled=!sel.length;
+  $('#editExamBtn').disabled=!sel.length;
   $('#rubricPdfBtn').disabled=!sel.length;
   $('#printPdfBtn').disabled=!sel.length;
 }
@@ -801,6 +803,12 @@ async function printAsPdf(){
     $('#pdfExportStatus').textContent='Vista de impresión preparada. Selecciona «Guardar como PDF» como destino en el navegador.';
   }catch(e){w.close();$('#pdfExportStatus').textContent='No se pudo preparar la impresión: '+e.message}
 }
+$('#editExamBtn').onclick=()=>{
+ const sel=selected();if(!sel.length)return;
+ const sessions=assessmentPlan(sel).slice(0,2).map(s=>({tasks:s.tasks.slice(0,3)}));
+ sessionStorage.setItem('oaoa-exam-for-editor',JSON.stringify({sessions,created:new Date().toISOString()}));
+ window.location.href='../editor-examenes/';
+};
 $('#printPdfBtn').onclick=printAsPdf;
 $('#testPdfBtn').onclick=()=>exportPdf('test');
 $('#rubricPdfBtn').onclick=()=>exportPdf('rubric');
