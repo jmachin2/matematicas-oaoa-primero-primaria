@@ -1,6 +1,8 @@
 name: Preparar páginas originales OAOA 29-33
 on:
   workflow_dispatch:
+  issues:
+    types: [opened]
   push:
     paths:
       - '.github/workflows/preparar-paginas-oaoa.yml'
@@ -8,6 +10,7 @@ permissions:
   contents: write
 jobs:
   extract-pages:
+    if: github.event_name != 'issues' || github.event.issue.title == '[OAOA] Publicar páginas originales 29-33'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -41,8 +44,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/paginas-originales/pagina-{29,30,31,32,33}.png
+          git add assets/paginas-originales/pagina-29.png assets/paginas-originales/pagina-30.png assets/paginas-originales/pagina-31.png assets/paginas-originales/pagina-32.png assets/paginas-originales/pagina-33.png
           if ! git diff --cached --quiet; then
             git commit -m "Añadir imágenes exactas de páginas originales OAOA 29-33"
-            git push
+            git push origin HEAD:main
           fi
