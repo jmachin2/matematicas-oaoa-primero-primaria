@@ -73,7 +73,10 @@ html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;backgr
 @media(max-width:900px){.exam-layout{grid-template-columns:1fr}.sheet-select{grid-template-columns:1fr}.preview-plan{grid-template-columns:1fr}}
 
 </style>
-</head>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Playwrite+ES:wght@100..400&display=swap" rel="stylesheet">
+<style id="oaoa-exam-playwrite">
+.exam-layout .panel-lead,.section-lead{font-family:"Playwrite ES","Segoe Print",cursive;font-weight:400;line-height:1.9}
+</style></head>
 <body>
 <header class="site-header">
   <div class="header-inner">
@@ -491,10 +494,10 @@ function rr(g,x,y,w,h,r=14,fill='#fff',stroke=C.line,lw=3){
   g.beginPath();g.roundRect(x,y,w,h,r);g.fillStyle=fill;g.fill();g.lineWidth=lw;g.strokeStyle=stroke;g.stroke();
 }
 function txt(g,t,x,y,size=30,opt={}){
-  g.save();g.fillStyle=opt.color||C.ink;g.font=`${opt.bold?'700 ':'400 '}${size}px Arial`;g.textAlign=opt.align||'left';g.textBaseline='alphabetic';g.fillText(t,x,y);g.restore();
+  g.save();g.fillStyle=opt.color||C.ink;g.font=opt.school?`400 ${size}px "Playwrite ES", "Segoe Print", cursive`:`${opt.bold?'700 ':'400 '}${size}px Arial`;g.textAlign=opt.align||'left';g.textBaseline='alphabetic';g.fillText(t,x,y);g.restore();
 }
 function wrap(g,t,x,y,maxW,lineH,size=28,opt={}){
-  g.save();g.fillStyle=opt.color||C.ink;g.font=`${opt.bold?'700 ':'400 '}${size}px Arial`;g.textAlign=opt.align||'left';
+  g.save();g.fillStyle=opt.color||C.ink;g.font=opt.school?`400 ${size}px "Playwrite ES", "Segoe Print", cursive`:`${opt.bold?'700 ':'400 '}${size}px Arial`;g.textAlign=opt.align||'left';
   const words=t.split(/\s+/);let line='',yy=y;
   for(const word of words){
     const test=line?line+' '+word:word;
@@ -516,8 +519,8 @@ function tree(g,x,y,total,known){
 }
 function drawTask(g,t,x,y,w,h,num){
   rr(g,x,y,w,h,18,'#fff','#c7dce7',3);
-  txt(g,`${num}. ${t.title}`,x+22,y+38,28,{bold:true});
-  const yy=wrap(g,t.instruction,x+22,y+74,w-44,30,23,{color:C.muted,bold:true})+18;
+  txt(g,`${num}. ${t.title}`,x+22,y+38,26,{school:true});
+  const yy=wrap(g,t.instruction,x+22,y+74,w-44,34,20,{color:C.muted,school:true})+18;
   const cx=x+25, avail=w-50;
   if(t.type==='twoWays'){
     txt(g,'OBJETIVO',cx,yy+20,18,{bold:true,color:C.muted});rod(g,t.target,cx+120,yy-12,29,36);
@@ -533,7 +536,7 @@ function drawTask(g,t,x,y,w,h,num){
   } else if(t.type==='complements'){
     let ry=yy+20;t.targets.forEach(([tot,p])=>{rod(g,tot,cx,ry,23,31);txt(g,'objetivo',cx+tot*23+12,ry+23,17,{color:C.muted,bold:true});rod(g,p,cx+250,ry,23,31);txt(g,'+ ?',cx+250+p*23+12,ry+24,24,{bold:true});txt(g,'Falta:',cx+470,ry+23,20,{bold:true});blankLine(g,cx+545,ry+25,100);ry+=62;});
   } else if(t.type==='partWhole'){
-    tree(g,cx+80,yy+5,t.total,t.known);txt(g,'Respuesta:',cx+480,yy+78,22,{bold:true});blankLine(g,cx+590,yy+80,150);txt(g,'Lo sé porque...',cx+480,yy+135,20,{bold:true,color:C.muted});blankLine(g,cx+480,yy+165,260);
+    tree(g,cx+80,yy+5,t.total,t.known);txt(g,'Respuesta:',cx+480,yy+78,22,{bold:true});blankLine(g,cx+590,yy+80,150);txt(g,'Lo sé porque...',cx+480,yy+135,18,{school:true,color:C.muted});blankLine(g,cx+480,yy+165,260);
   } else if(t.type==='matchSums'){
     const left=cx+30,right=cx+avail-130; t.pairs.forEach((p,i)=>{rr(g,left,yy+20+i*65,180,46,9,'#fff','#b9cedb',2);txt(g,p[0],left+90,yy+51+i*65,24,{bold:true,align:'center'});rr(g,right,yy+20+i*65,90,46,9,'#fff','#b9cedb',2);txt(g,String(p[1]),right+45,yy+51+i*65,24,{bold:true,align:'center'});});
     txt(g,'Comprobación:',cx+250,yy+230,20,{bold:true,color:C.muted});blankLine(g,cx+390,yy+232,260);
@@ -650,7 +653,7 @@ function testCanvases(sel){
       drawTask(g,t,70,startY+j*(taskH+gap),1100,taskH,number++);
     });
 
-    txt(g,'Puedes usar regletas cuando te ayuden a pensar. Explica cómo lo sabes.',620,1690,18,{bold:true,align:'center',color:C.muted});
+    txt(g,'Puedes usar regletas cuando te ayuden a pensar. Explica cómo lo sabes.',620,1690,16,{school:true,align:'center',color:C.muted});
     all.push(c);
   });
 
@@ -757,7 +760,8 @@ function downloadBlob(blob,name){
 $('#openPdfLink').addEventListener('click',e=>{
   e.currentTarget.removeAttribute('download');
 });
-function exportPdf(kind){
+async function ensureSchoolFont(){if(!document.fonts)return;try{await document.fonts.load('400 20px "Playwrite ES"');await document.fonts.ready;}catch(e){console.warn('Fuente escolar no disponible; usando alternativa',e)}}
+async function exportPdf(kind){
   const sel=selected();
   if(!sel.length){
     $('#pdfExportStatus').textContent='Selecciona al menos una ficha.';
@@ -770,6 +774,7 @@ function exportPdf(kind){
   status.textContent='Preparando PDF…';
   fallback.style.display='none';
   try{
+    await ensureSchoolFont();
     const canvases=kind==='test'?testCanvases(sel):rubricCanvases(sel);
     if(!canvases.length) throw new Error('No se han generado páginas.');
     const blob=canvasesToPdf(canvases);
@@ -782,12 +787,13 @@ function exportPdf(kind){
     btn.disabled=false;
   }
 }
-function printAsPdf(){
+async function printAsPdf(){
   const sel=selected();
   if(!sel.length) return;
   const w=window.open('','_blank');
   if(!w){$('#pdfExportStatus').textContent='El navegador bloqueó la vista de impresión. Permite ventanas emergentes e inténtalo otra vez.';return}
   try{
+    await ensureSchoolFont();
     const pages=testCanvases(sel).map(c=>c.toDataURL('image/png'));
     const content='<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Prueba OAOA — guardar PDF</title><style>@page{size:A4;margin:0}html,body{margin:0}img{display:block;width:210mm;height:297mm;object-fit:contain;break-after:page}@media screen{body{background:#ddd}img{margin:12px auto;box-shadow:0 2px 14px #aaa;background:#fff}}</style></head><body>'+pages.map(src=>'<img alt="Página de examen" src="'+src+'">').join('')+'</body></html>';
     w.document.open();w.document.write(content);w.document.close();
