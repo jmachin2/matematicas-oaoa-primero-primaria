@@ -519,8 +519,8 @@ function tree(g,x,y,total,known){
 }
 function drawTask(g,t,x,y,w,h,num){
   rr(g,x,y,w,h,18,'#fff','#c7dce7',3);
-  txt(g,`${num}. ${t.title}`,x+22,y+38,26,{school:true});
-  const yy=wrap(g,t.instruction,x+22,y+74,w-44,34,20,{color:C.muted,school:true})+18;
+  txt(g,`${num}. ${t.title}`,x+22,y+41,36,{school:true});
+  const yy=wrap(g,t.instruction,x+22,y+74,w-44,42,30,{color:C.muted,school:true})+18;
   const cx=x+25, avail=w-50;
   if(t.type==='twoWays'){
     txt(g,'OBJETIVO',cx,yy+20,18,{bold:true,color:C.muted});rod(g,t.target,cx+120,yy-12,29,36);
@@ -536,7 +536,7 @@ function drawTask(g,t,x,y,w,h,num){
   } else if(t.type==='complements'){
     let ry=yy+20;t.targets.forEach(([tot,p])=>{rod(g,tot,cx,ry,23,31);txt(g,'objetivo',cx+tot*23+12,ry+23,17,{color:C.muted,bold:true});rod(g,p,cx+250,ry,23,31);txt(g,'+ ?',cx+250+p*23+12,ry+24,24,{bold:true});txt(g,'Falta:',cx+470,ry+23,20,{bold:true});blankLine(g,cx+545,ry+25,100);ry+=62;});
   } else if(t.type==='partWhole'){
-    tree(g,cx+80,yy+5,t.total,t.known);txt(g,'Respuesta:',cx+480,yy+78,22,{bold:true});blankLine(g,cx+590,yy+80,150);txt(g,'Lo sé porque...',cx+480,yy+135,18,{school:true,color:C.muted});blankLine(g,cx+480,yy+165,260);
+    tree(g,cx+80,yy+5,t.total,t.known);txt(g,'Respuesta:',cx+480,yy+78,22,{bold:true});blankLine(g,cx+590,yy+80,150);txt(g,'Lo sé porque...',cx+480,yy+135,26,{school:true,color:C.muted});blankLine(g,cx+480,yy+165,260);
   } else if(t.type==='matchSums'){
     const left=cx+30,right=cx+avail-130; t.pairs.forEach((p,i)=>{rr(g,left,yy+20+i*65,180,46,9,'#fff','#b9cedb',2);txt(g,p[0],left+90,yy+51+i*65,24,{bold:true,align:'center'});rr(g,right,yy+20+i*65,90,46,9,'#fff','#b9cedb',2);txt(g,String(p[1]),right+45,yy+51+i*65,24,{bold:true,align:'center'});});
     txt(g,'Comprobación:',cx+250,yy+230,20,{bold:true,color:C.muted});blankLine(g,cx+390,yy+232,260);
@@ -653,7 +653,7 @@ function testCanvases(sel){
       drawTask(g,t,70,startY+j*(taskH+gap),1100,taskH,number++);
     });
 
-    txt(g,'Puedes usar regletas cuando te ayuden a pensar. Explica cómo lo sabes.',620,1690,16,{school:true,align:'center',color:C.muted});
+    txt(g,'Puedes usar regletas cuando te ayuden a pensar. Explica cómo lo sabes.',620,1690,24,{school:true,align:'center',color:C.muted});
     all.push(c);
   });
 
