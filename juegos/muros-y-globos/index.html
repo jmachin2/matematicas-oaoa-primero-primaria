@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#e9f7ff"><title>OAOA · Los muros de las regletas</title>
+<style>
+:root{font-family:system-ui,'Trebuchet MS',sans-serif;color:#173452;--ink:#173452;--sky:#e8f8ff;--accent:#ffbc49}*{box-sizing:border-box}body{margin:0;background:#e8f8ff;overflow:hidden}button,select{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible{outline:3px solid #215dff;outline-offset:3px}
+#game{height:100dvh;min-height:560px;display:flex;flex-direction:column;background:linear-gradient(#bcecff 0%,#ecfbff 75%);position:relative;overflow:hidden}
+header{position:relative;z-index:6;padding:9px 14px;background:#ffffffed;box-shadow:0 3px 12px #6597a023;display:flex;align-items:center;gap:10px;flex-wrap:wrap}header h1{margin:0;font-size:clamp(17px,2.5vw,24px);font-weight:900;letter-spacing:-.5px}header h1 span{color:#148e9b} .pill{padding:7px 11px;border-radius:99px;background:#f1f7ff;font-size:13px;font-weight:800;white-space:nowrap}.controls{display:flex;gap:7px;align-items:center;margin-left:auto;flex-wrap:wrap}.btn{background:#fff;border:2px solid #d2e5ed;color:#1e4263;border-radius:13px;padding:8px 12px;font-weight:800;font-size:14px}.btn.primary{background:#ffcf62;border-color:#ffcf62;color:#503600}.btn:hover{filter:brightness(.97)}
+#instruction{position:relative;z-index:5;text-align:center;padding:7px 10px;font-size:clamp(13px,2vw,17px);font-weight:750;color:#2b617a;background:#eafbffbd}.fields{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap}
+#arena{position:relative;flex:1;min-height:140px;overflow:hidden;touch-action:none;background:radial-gradient(ellipse at 85% 25%,#fff8 0 45px,transparent 47px),linear-gradient(#c5f0ff,#effcff)}.cloud{position:absolute;border-radius:50px;background:#fff8;height:22px;width:92px;filter:drop-shadow(0 2px 1px #b3e1ee);pointer-events:none}.cloud:before,.cloud:after{content:"";position:absolute;background:#fff;border-radius:50%}.cloud:before{height:43px;width:44px;left:16px;bottom:5px}.cloud:after{height:31px;width:35px;left:47px;bottom:3px}.cloud.a{left:7%;top:28%}.cloud.b{left:64%;top:12%;transform:scale(1.3)}.cloud.c{left:83%;top:61%;transform:scale(.65)}
+#items{position:absolute;inset:0;z-index:3;pointer-events:none}.falling{position:absolute;width:124px;transform:translate(-50%,-50%);pointer-events:auto;touch-action:none;user-select:none;cursor:grab;filter:drop-shadow(0 4px 4px #416c9133)}.falling:active,.falling.dragging{cursor:grabbing;z-index:9;filter:drop-shadow(0 9px 6px #416c9166)}.balloon{width:68px;height:83px;margin:auto;position:relative}.balloon-top{height:64px;width:68px;border-radius:47% 47% 43% 43%;border:3px solid #ffffffa6;background:linear-gradient(90deg,var(--bal1) 0 35%,var(--bal2) 35% 65%,var(--bal1) 65%);box-shadow:inset -7px -5px 0 #0000000d}.balloon:after{content:"";width:3px;height:13px;background:#667589;position:absolute;top:64px;left:32px}.basket{height:15px;width:26px;background:repeating-linear-gradient(0deg,#a1683a,#a1683a 4px,#d8a16b 5px);border-radius:2px 2px 6px 6px;position:absolute;top:75px;left:21px;border:2px solid #a37348}.falling .payload{background:#fffef5;border:2px solid #e4c67b;border-radius:11px;padding:5px 6px;box-shadow:0 3px 0 #d9b865;position:relative;margin-top:10px;text-align:center}.falling .payload:before{content:"";position:absolute;height:12px;width:2px;background:#9a9977;top:-12px;left:50%}.rods{display:flex;align-items:center;justify-content:center;gap:4px}.rod{height:22px;min-width:12px;border:1px solid #0004;border-radius:3px;box-shadow:inset 0 3px 0 #ffffff60,inset 0 -3px 0 #00000017;display:inline-flex;align-items:center;justify-content:center;font-weight:900;color:#fff;text-shadow:0 1px 2px #0008;font-size:13px}.rod.white{color:#324968;text-shadow:none}.equation{font-size:15px;font-weight:900;margin-top:3px;color:#163c55}.falling .tag{position:absolute;top:0;right:-5px;background:#ffda5e;color:#613f02;border:2px solid white;border-radius:50%;width:29px;height:29px;font-size:17px;display:grid;place-items:center;box-shadow:0 2px 5px #0002}
+#ground{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(#a7da68,#6bbb66);height:16px;border-top:3px solid #6ca953;z-index:2;pointer-events:none}
+#wallswrap{background:#fffef7;min-height:155px;max-height:41dvh;overflow:auto;position:relative;z-index:4;padding:8px 10px 12px;border-top:4px solid #81c5ae;box-shadow:0 -6px 16px #3f829b13}#walls{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;align-items:stretch}.wall{background:white;border-radius:12px;border:2px solid #dae8eb;padding:8px 9px;min-width:143px;flex:0 1 180px;transition:background .15s,border .15s;position:relative}.wall.highlight{outline:4px solid #53baee;background:#e6f8ff}.wall h2{display:flex;align-items:center;gap:7px;margin:0 0 6px;font-size:16px}.swatch{width:22px;height:22px;border-radius:5px;border:2px solid #0002;display:inline-block}.wall .sub{font-size:11px;color:#607a8b;font-weight:750;margin-left:auto}.slots{display:flex;flex-direction:column;gap:4px}.slot{display:flex;gap:5px;align-items:center;border-radius:6px;background:#f3f7f8;color:#8aa0ac;font-weight:800;font-size:13px;min-height:26px;padding:3px 6px;border:1px dashed #d5e0e4}.slot.filled{background:#ebf9e7;color:#2b6d3e;border:1px solid #b5dfaa}.mini{display:flex;align-items:center;gap:2px}.mini i{height:13px;border-radius:2px;border:1px solid #0002;display:inline-block;min-width:6px}.slot .check{margin-left:auto;color:#268d4d}
+#progress{height:6px;background:#e4edf1;position:relative;z-index:6}#progressFill{height:100%;width:0;background:linear-gradient(90deg,#49c7ae,#6cdb72);transition:width .3s}.screen{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;background:#173452a8;padding:14px;overflow:auto}.panel{background:#fffdf6;border-radius:26px;max-width:610px;width:min(100%,610px);padding:clamp(18px,3vw,32px);text-align:center;box-shadow:0 18px 50px #12304a55;border:5px solid #fff}.panel h2{font-size:clamp(25px,4vw,37px);line-height:1.1;margin:4px 0 13px}.panel p{color:#45647a;line-height:1.5;margin:8px 0 14px}.panel .big{font-size:50px}.panel button.action{border:0;border-radius:15px;background:#ffcc57;color:#513a08;font-size:20px;font-weight:900;padding:13px 30px;box-shadow:0 5px 0 #e7a82b;margin:7px;cursor:pointer}.panel button.action.secondary{background:#d8f1ff;box-shadow:0 5px 0 #9bd4ed;color:#255771}.setup{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left;margin:16px 0}.setup label{font-weight:850;color:#31526b;display:flex;flex-direction:column;gap:6px}.setup select{border:2px solid #bdd8e5;border-radius:11px;padding:10px;background:#f8fdff;max-width:100%;color:#183d57;font-weight:750}.info{background:#f0f9fc;border-radius:13px;padding:12px;color:#3e6274;font-size:13px;line-height:1.45}.hidden{display:none!important}#toast{position:absolute;z-index:12;top:18%;left:50%;transform:translateX(-50%);background:#fff;border-radius:20px;padding:10px 19px;border:3px solid #ffd46e;box-shadow:0 4px 14px #16405b33;font-weight:900;pointer-events:none;text-align:center;min-width:160px}#mute{min-width:47px} .heart{color:#e95a73}
+#scorePill{background:#fff3cf;color:#755006}#streakPill{background:#e8f5ff;color:#226a8c}
+#buddy{position:absolute;left:11px;bottom:22px;z-index:5;display:flex;align-items:end;gap:5px;max-width:min(300px,53vw);pointer-events:none;transition:transform .2s}#buddyFace{font-size:35px;line-height:1;background:#fffefa;border:3px solid #c6e7f3;border-radius:50%;padding:7px;filter:drop-shadow(0 3px 2px #16405b30)}#buddySay{font-size:12px;font-weight:850;line-height:1.3;background:#fffefa;border:2px solid #d6edf1;border-radius:14px 14px 14px 3px;padding:8px 10px;box-shadow:0 3px 8px #285b7840}
+.falling.gold .balloon-top{background:linear-gradient(90deg,#f8b92c,#fff0a0,#f1ac17);box-shadow:0 0 12px #ffe561}.falling.rainbow .balloon-top{background:linear-gradient(90deg,#fa6f85 0 20%,#ffdb58 20% 40%,#7cda93 40% 60%,#72baf5 60% 80%,#b891ee 80%)}.falling.slow .balloon-top{background:linear-gradient(90deg,#86e1ef,#e9ffff,#86e1ef)}
+.specialFlag{position:absolute;top:3px;left:102px;font-size:22px;filter:drop-shadow(0 2px 3px #0005);z-index:2}.falling.gold .payload{border-color:#e6a316}.falling.rainbow .payload{border-color:#b595f3}
+.wall{overflow:hidden}.castleTower{background:linear-gradient(135deg,#f7f2e1,#e9e5d7);border:2px solid #d8d0bb;border-radius:5px;padding:5px;min-height:31px;display:flex;flex-direction:column-reverse;gap:3px;margin:2px 0 7px;position:relative}.castleCourse{height:25px;border-radius:4px;background:#fffdfa99;border:1px dashed #c7baa5;display:flex;align-items:center;padding:2px;gap:2px;justify-content:center}.castleCourse.done{border:1px solid #ab9b75;background:linear-gradient(#fff9e9,#eee6c8);box-shadow:0 1px 2px #9e896455}.castleCourse i{height:17px;border:1px solid #0003;border-radius:3px;display:grid;place-items:center;font-size:10px;font-weight:900;font-style:normal;color:#233047;box-shadow:inset 0 2px 0 #fff6}.castleDoor{height:20px;width:23px;margin:0 auto;background:#926b4b;border-radius:12px 12px 0 0;border:2px solid #70523d;position:relative}.castleDoor:after{content:'•';position:absolute;right:2px;color:#f3d88b;font-size:11px}.wall.complete{border-color:#e8c652;background:#fffbed}.wall.complete h2:after{content:'🏁';font-size:16px}
+#castleBanner{font-size:12px;color:#477083;text-align:center;font-weight:850;margin-bottom:4px}.starsResult{font-size:47px;letter-spacing:4px;margin:9px 0}.burst{animation:pop .45s ease-out}@keyframes pop{from{transform:scale(.5)}to{transform:scale(1)}}
+@media(max-width:600px){#buddy{left:5px;bottom:17px;max-width:48vw}#buddyFace{font-size:23px;padding:4px}#buddySay{font-size:10px;padding:5px 7px}.castleCourse{height:21px}.castleCourse i{height:14px;font-size:9px}.castleTower{padding:3px}}
+@media(max-width:600px){header{gap:5px;padding:6px}header h1{width:100%;text-align:center;font-size:17px}.pill{padding:5px 8px;font-size:11px}.controls{gap:4px}.btn{padding:5px 7px;font-size:12px}#instruction{padding:5px;font-size:12px}#wallswrap{max-height:37dvh;min-height:145px;padding:5px}.wall{min-width:116px;flex:1 1 125px;padding:5px}.wall h2{font-size:13px}.wall .sub{font-size:10px}.slot{font-size:11px;padding:2px 4px;min-height:22px}.mini i{height:10px}.falling{width:100px}.balloon{transform:scale(.8);transform-origin:bottom center;height:67px}.falling .payload{margin-top:12px}.rod{height:19px}.equation{font-size:12px}.setup{grid-template-columns:1fr}}
+@media(max-height:650px){#wallswrap{min-height:122px;max-height:32dvh}.wall{padding:5px}.slots{gap:2px}.slot{min-height:20px}.balloon{transform:scale(.77);height:62px;transform-origin:bottom center}.falling .payload{margin-top:12px}}
+
+/* V8: siempre una única fila de muros, del 2 al 10 en el último nivel. */
+#wallswrap{overflow-x:auto;overflow-y:auto;min-height:132px;scrollbar-gutter:stable}
+#walls{display:grid;grid-template-columns:repeat(var(--wall-count,1),minmax(0,1fr));gap:clamp(3px,.45vw,8px);justify-content:stretch;align-items:stretch;min-width:0}
+#walls .wall{min-width:0;min-height:0;flex:none;padding:6px 5px;border-radius:9px;overflow:hidden}
+#walls .wall h2{display:flex;align-items:center;justify-content:center;gap:3px;font-size:clamp(11px,1.12vw,16px);margin:0 0 5px;white-space:nowrap}
+#walls .wall .swatch{width:clamp(10px,1.4vw,18px);height:clamp(10px,1.4vw,18px);flex:0 0 auto}
+#walls .wall .sub{font-size:clamp(9px,.85vw,12px);margin-left:2px}
+#walls .castleTower{padding:3px;gap:2px;margin:2px 0 5px;min-width:0}
+#walls .castleCourse{height:clamp(18px,2vw,23px);padding:1px;gap:1px;min-width:0}
+#walls .castleCourse i{height:clamp(12px,1.45vw,17px);font-size:clamp(8px,.85vw,10px);min-width:0}
+#walls .castleDoor{height:13px;width:17px}
+#walls[data-count="7"] .wall h2,#walls[data-count="8"] .wall h2,#walls[data-count="9"] .wall h2{font-size:clamp(10px,1vw,13px)}
+#walls[data-count="7"] .wall,#walls[data-count="8"] .wall,#walls[data-count="9"] .wall{padding:4px 3px}
+@media(max-width:690px){
+  /* En pantallas muy estrechas, conservar UNA fila desplazable en vez de partirla. */
+  #walls{grid-template-columns:repeat(var(--wall-count,1),minmax(93px,1fr));min-width:max-content}
+  #walls .wall h2{font-size:11px}
+  #wallswrap{overflow-x:auto;overscroll-behavior-x:contain}
+}
+</style>
+</head>
+<body>
+<div id="game">
+<header>
+<h1>🎈 <span>OAOA</span> · Muros de regletas</h1>
+<span id="levelPill" class="pill">Nivel 1</span><span id="goalPill" class="pill">🧱 Muros: 2</span><span id="countPill" class="pill">⭐ 0/1</span><span id="lifePill" class="pill">💚 Sin caídas</span><span id="scorePill" class="pill">🏆 0 puntos</span><span id="streakPill" class="pill">🔥 Racha 0</span>
+<div class="controls"><a href="../" class="btn" style="text-decoration:none;display:inline-flex;align-items:center" aria-label="Volver a Juegos OAOA">← Juegos OAOA</a><button id="mute" class="btn" aria-label="Activar o desactivar música">🔊</button><button id="pause" class="btn">⏸ Pausa</button><button id="restart" class="btn">↻ Reiniciar</button></div>
+</header>
+<div id="instruction">👆 Atrapa el globo antes de que llegue al suelo y lleva sus <b>dos regletas</b> al muro correcto.</div>
+<div id="progress"><div id="progressFill"></div></div>
+<div id="arena"><div class="cloud a"></div><div class="cloud b"></div><div class="cloud c"></div><div id="items"></div><div id="buddy" aria-live="polite"><div id="buddyFace">🤖</div><div id="buddySay">¡Vamos a construir!</div></div><div id="ground"></div><div id="toast" class="hidden"></div></div>
+<div id="wallswrap"><div id="castleBanner">🏰 CONSTRUYE EL CASTILLO: cada pareja correcta levanta una hilera</div><div id="walls"></div></div>
+<div id="overlay" class="screen"><div id="panel" class="panel"></div></div>
+</div>
+<script>
+'use strict';
+// Regletas Cuisenaire usadas en OAOA: 1 blanca, 2 roja, 3 verde claro, 4 rosa, etc.
+const C={1:['Blanca','#f6f5ef'],2:['Roja','#e9434d'],3:['Verde claro','#82c979'],4:['Rosa','#f3a0c3'],5:['Amarilla','#ffd446'],6:['Verde oscuro','#289869'],7:['Negra','#3c414c'],8:['Marrón','#a46e44'],9:['Azul','#3679d2'],10:['Naranja','#f18a37']};
+const $=s=>document.querySelector(s);let level=1,maxLevel=9,streams=1,speed=1,musicOn=true,playing=false,paused=false,gameOver=false,completed=new Set(),jobs=[],active=[],nextId=0,dragging=null,lastFrame=0,spawnClock=0,toastTimer=0,frameId=0,penaltyId=null,score=0,streak=0,bestStreak=0,mistakes=0,bonusEarned=0,buddyTimer=null,levelToken=0;let audioCtx=null,musicTimer=null,musicStep=0;
+const el={arena:$('#arena'),items:$('#items'),walls:$('#walls'),overlay:$('#overlay'),panel:$('#panel'),toast:$('#toast')};
+function pkey(n,a){return `${n}:${a}`};function pairList(n){return Array.from({length:Math.floor(n/2)},(_,i)=>[i+1,n-(i+1)])}
+function rect(){return el.arena.getBoundingClientRect()};function rod(num,cl='rod'){return `<span class="${cl}${num===1?' white':''}" style="width:${12+num*3}px;background:${C[num][1]};color:${[1,4,5].includes(num)?'#294055':'#fff'}">${num}</span>`}
+// Banda sonora original chiptune de 8 bits, sintetizada localmente (sin archivos ni red).
+function note(freq,dur=.12,kind='square',vol=.026,at=null){
+ if(!musicOn||!audioCtx||!freq)return;
+ try{
+  const t=at??audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.type=kind;o.frequency.setValueAtTime(freq,t);
+  g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(.0002,vol),t+.009);
+  g.gain.setValueAtTime(Math.max(.0002,vol*.72),t+Math.max(.02,dur*.5));
+  g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  o.connect(g);g.connect(audioCtx.destination);o.start(t);o.stop(t+dur+.018);
+ }catch(e){}
+}
+function drum(type,at){
+ if(!musicOn||!audioCtx)return;
+ try{
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  if(type==='kick'){
+   o.type='sine';o.frequency.setValueAtTime(150,at);o.frequency.exponentialRampToValueAtTime(48,at+.11);
+   g.gain.setValueAtTime(.075,at);g.gain.exponentialRampToValueAtTime(.0001,at+.135);
+  }else{
+   o.type='triangle';o.frequency.setValueAtTime(1150,at);o.frequency.exponentialRampToValueAtTime(210,at+.055);
+   g.gain.setValueAtTime(.023,at);g.gain.exponentialRampToValueAtTime(.0001,at+.07);
+  }
+  o.connect(g);g.connect(audioCtx.destination);o.start(at);o.stop(at+(type==='kick'?.145:.08));
+ }catch(e){}
+}
+const arcadeLead=[659,784,988,784,659,0,587,659,784,988,1047,988,784,0,659,587,
+ 523,659,784,659,523,0,494,523,587,784,880,784,659,587,523,0];
+const arcadeBass=[165,165,196,165,147,147,196,147,131,131,175,131,147,147,196,147];
+const arcadeArp=[330,392,494,392,294,392,494,392,262,330,440,330,294,392,494,392];
+function arcadeBeat(){
+ if(!musicOn||!playing||paused||!audioCtx||audioCtx.state!=='running')return;
+ const t=audioCtx.currentTime+.012,i=musicStep%32;
+ note(arcadeLead[i],.115,'square',.018,t);
+ if(i%2===0)note(arcadeBass[Math.floor(musicStep/2)%16],.21,'triangle',.037,t);
+ note(arcadeArp[musicStep%16],.065,'square',.006,t+.018);
+ if(i%4===0)drum('kick',t);
+ if(i%4===2)drum('hat',t);
+ musicStep++;
+}
+function audioStart(){
+ if(!musicOn)return;
+ try{
+  audioCtx??=new (window.AudioContext||window.webkitAudioContext)();
+  if(audioCtx.state==='suspended')audioCtx.resume();
+  if(musicTimer)return;
+  musicTimer=setInterval(arcadeBeat,155);
+ }catch(e){musicOn=false;$('#mute').textContent='🔇'}
+}
+function chime(ok){
+ if(!audioCtx||!musicOn)return;
+ [0,1,2].forEach((_,i)=>setTimeout(()=>note((ok?[784,988,1175]:[390,310,240])[i],.12,ok?'square':'sawtooth',.027),i*95));
+}
+function saveSettings(){try{localStorage.setItem('oaoa-game-settings',JSON.stringify({streams,speed,musicOn}))}catch(e){}}
+try{let x=JSON.parse(localStorage.getItem('oaoa-game-settings')||'{}');streams=Math.max(1,Math.min(3,Number(x.streams)||1));speed=Math.max(.65,Math.min(1.75,Number(x.speed)||1));if(x.musicOn===false)musicOn=false}catch(e){}
+function intro(){playing=false;paused=false;$('#pause').textContent='⏸ Pausa';el.overlay.classList.remove('hidden');el.panel.innerHTML=`<div class="big">🎈🧱🌈</div><h2>¡Construye los muros!</h2><p>En el <b>nivel 1</b> completas el muro del <b>2</b>. Hay 9 niveles: del muro del 2 al muro del 10. En cada nivel aparece uno nuevo, ¡y tienes que completar también los anteriores!</p><div class="setup"><label>🎈 Globos a la vez<select id="setStreams"><option value="1">1 · Fácil</option><option value="2">2 · Medio</option><option value="3">3 · Difícil</option></select></label><label>💨 Velocidad de caída<select id="setSpeed"><option value="0.65">Lenta</option><option value="1">Normal</option><option value="1.35">Rápida</option><option value="1.75">Muy rápida</option></select></label></div><div class="info">✋ Pulsa y arrastra un globo mientras está en el aire. Suéltalo sobre el muro cuyo número sea la <b>suma</b> de las dos regletas. <b>1 + 3</b> va al muro <b>4</b>. Al coger un globo, aparece inmediatamente el siguiente (si quedan parejas pendientes). ⭐ Gana puntos con cada acierto, consigue rachas y atrapa globos dorados (bonus), arcoíris (doble puntuación) o de hielo (más lentos). Cada regleta colocada construye una hilera del castillo. 🤖 El robot te acompaña. Si colocas una pareja en el muro equivocado, aparecerá una única pareja adicional; no aparecerán más hasta resolverla. Si una pareja llega al suelo, debes volver a intentar el nivel.<br>🎵 Música arcade original de 8 bits. Empieza después de pulsar Jugar; puedes silenciarla con 🔊.</div><button class="action" id="start">▶ ¡Jugar!</button>`;$('#setStreams').value=streams;$('#setSpeed').value=String(speed);$('#start').onclick=()=>{streams=+$('#setStreams').value;speed=+$('#setSpeed').value;saveSettings();audioStart();begin(1)}}
+function begin(n){cancelAnimationFrame(frameId);levelToken++;level=n;score=0;streak=0;bestStreak=0;mistakes=0;bonusEarned=0;buddySpeak("¡Atrapa un globo y construye!", "🤖");completed.clear();active.forEach(j=>j.node.remove());active=[];jobs=[];dragging=null;penaltyId=null;spawnClock=0;lastFrame=0;playing=true;paused=false;gameOver=false;el.overlay.classList.add('hidden');$('#pause').textContent='⏸ Pausa';for(let w=2;w<=level+1;w++)for(let [a,b] of pairList(w))jobs.push({n:w,a,b,id:++nextId});shuffle(jobs);drawWalls();hud();frameId=requestAnimationFrame(tick)}
+function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}}
+function drawWalls(){el.walls.innerHTML='';el.walls.dataset.count=String(level);el.walls.style.setProperty('--wall-count',String(level));for(let n=2;n<=level+1;n++){
+ const pairs=pairList(n),done=pairs.filter(p=>completed.has(pkey(n,p[0]))).length,wall=document.createElement('section');
+ wall.className='wall'+(done===pairs.length?' complete':'');wall.dataset.wall=n;wall.style.setProperty('--castle',C[n][1]);
+ const courses=pairs.map(([a,b])=>{let yes=completed.has(pkey(n,a));return `<div class="castleCourse ${yes?'done':''}" aria-label="${a} más ${b}${yes?' completado':' pendiente'}">${yes?`<i style="width:${a/n*100}%;background:${C[a][1]}">${a}</i><i style="width:${b/n*100}%;background:${C[b][1]}">${b}</i>`:'🧱'}</div>`}).join('');
+ wall.innerHTML=`<h2><span class="swatch" style="background:${C[n][1]}"></span> Muro del ${n}<span class="sub">${done}/${pairs.length}</span></h2><div class="castleTower">${courses}</div><div class="castleDoor" aria-hidden="true"></div>`;
+ el.walls.append(wall)
+ }}
+function totalPairs(){return Array.from({length:level},(_,i)=>Math.floor((i+2)/2)).reduce((a,b)=>a+b,0)}
+function hud(){let total=totalPairs();$('#levelPill').textContent=`🎮 Nivel ${level} de ${maxLevel}`;$('#goalPill').textContent=`🏰 Muros 2–${level+1}`;$('#countPill').textContent=`🧱 ${completed.size}/${total}`;$('#progressFill').style.width=`${completed.size/total*100}%`;$('#lifePill').textContent='💚 Sin caídas';$('#scorePill').textContent=`🏆 ${score} puntos`;$('#streakPill').textContent=`🔥 Racha ${streak}`}
+function buddySpeak(s,face='🤖'){clearTimeout(buddyTimer);$('#buddySay').textContent=s;$('#buddyFace').textContent=face;buddyTimer=setTimeout(()=>{$('#buddySay').textContent='¡Tú puedes!';$('#buddyFace').textContent='🤖'},3600)}
+function specialKind(){const r=Math.random();return r<.09?'gold':r<.17?'rainbow':r<.25?'slow':'normal'}
+function spawn(extraJob=null){if(!extraJob&&(!jobs.length||active.length>=streams))return;let job=extraJob||jobs.shift(),r=rect();let x=75+Math.random()*Math.max(1,r.width-150);if(r.width<240)x=r.width/2;let special= specialKind();let node=document.createElement('div');node.className='falling '+special;node.dataset.id=job.id;let colors=[['#ff7b81','#f8dc56'],['#56bdeb','#f89ac2'],['#9bd770','#ffd063'],['#a29bfa','#e9a7f7']][Math.floor(Math.random()*4)];node.style.setProperty('--bal1',colors[0]);node.style.setProperty('--bal2',colors[1]);node.innerHTML=`<div class="balloon"><div class="balloon-top"></div><div class="basket"></div></div>${special!=='normal'?`<span class="specialFlag">${special==='gold'?'⭐':special==='rainbow'?'🌈':'❄️'}</span>`:''}<div class="payload"><div class="rods">${rod(job.a)}${rod(job.b)}</div><div class="equation">${job.a} + ${job.b} = ?</div></div>`;el.items.append(node);let obj={...job,special,x,y:-85,node,held:false,dy:0,groundSince:null,graceUntil:0,v:((36+level*6)*speed+Math.random()*13)*(special==='slow'?.53:1)};active.push(obj);position(obj);node.addEventListener('pointerdown',onDown)}
+function position(o){o.node.style.left=o.x+'px';o.node.style.top=o.y+'px'}
+function onDown(e){if(!playing||paused||dragging)return;e.preventDefault();let o=active.find(o=>o.id===+e.currentTarget.dataset.id);if(!o)return;dragging=o;o.held=true;o.grabX=o.x;o.grabY=o.y;o.groundSince=null;o.node.classList.add('dragging');o.node.setPointerCapture(e.pointerId);o.ghost=o.node.cloneNode(true);o.ghost.removeAttribute('data-id');o.ghost.style.position='fixed';o.ghost.style.zIndex='999';o.ghost.style.pointerEvents='none';o.ghost.style.opacity='.94';document.body.append(o.ghost);o.node.style.opacity='.15';let r=rect();o.dx=o.x-(e.clientX-r.left);o.dy=o.y-(e.clientY-r.top);o.node.addEventListener('pointermove',onMove);o.node.addEventListener('pointerup',onUp);o.node.addEventListener('pointercancel',onUp);positionGhost(o);spawnOnGrab(o)}
+// Relevo inmediato: al coger un globo aparece el siguiente, sin esperar a colocarlo.
+// Máximo un globo de relevo por encima de la dificultad seleccionada;
+// la penalización por error puede añadir uno más, pero nunca en cascada.
+function spawnOnGrab(o){
+  if(o.successorSpawned || !jobs.length)return;
+  const normal=active.filter(j=>j.id!==penaltyId).length;
+  if(normal>=streams+1)return;
+  o.successorSpawned=true;
+  spawn(jobs.shift());
+}
+function positionGhost(o){if(!o.ghost)return;let r=rect();o.ghost.style.left=(r.left+o.x)+'px';o.ghost.style.top=(r.top+o.y)+'px'}
+function onMove(e){if(!dragging)return;let o=dragging,r=rect();o.x=Math.max(20,Math.min(r.width-20,e.clientX-r.left+o.dx));o.y=Math.max(-70,Math.min(r.height+80,e.clientY-r.top+o.dy));position(o);positionGhost(o);highlight(e.clientX,e.clientY)}
+function highlight(x,y){document.querySelectorAll('.wall').forEach(w=>{let r=w.getBoundingClientRect();w.classList.toggle('highlight',x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom)})}
+function onUp(e){if(!dragging)return;let o=dragging;dragging=null;o.node.classList.remove('dragging');o.ghost?.remove();o.ghost=null;o.node.style.opacity='1';o.node.removeEventListener('pointermove',onMove);o.node.removeEventListener('pointerup',onUp);o.node.removeEventListener('pointercancel',onUp);let target=document.elementFromPoint(e.clientX,e.clientY)?.closest('.wall');highlight(-999,-999);if(!playing||paused)return;if(target){if(+target.dataset.wall===o.n){complete(o)}else{streak=0;mistakes++;hud();buddySpeak(`Busca el muro del ${o.n}. ¡Inténtalo otra vez!`,"🧐");restoreDropped(o);let added=addMistakePair(o);showToast(added?`🤔 Ese no es su muro. ¡Una pareja adicional!`:`🤔 Ese no es su muro. Coloca primero la pareja extra.`);chime(false)}}else{restoreDropped(o)}}
+// Penalización controlada: como máximo UNA pareja extra sin resolver.
+// No se encadenan penalizaciones por equivocarse varias veces sobre la misma pareja.
+// La pareja extra se cuenta aparte de los globos elegidos en dificultad.
+function addMistakePair(original){
+  if(penaltyId!==null || active.length>=streams+2)return false;
+  let job=jobs.length?jobs.shift():{n:original.n,a:original.a,b:original.b,id:++nextId};
+  spawn(job);
+  penaltyId=job.id;
+  return true;
+}
+// Un gesto cancelado o soltado fuera de un muro no equivale a una caída.
+// Devolvemos el globo a su posición anterior con un breve margen para reintentarlo.
+function restoreDropped(o){o.x=o.grabX;o.y=o.grabY;o.held=false;o.groundSince=null;o.graceUntil=performance.now()+650;position(o)}
+function complete(o){
+ if(o.id===penaltyId)penaltyId=null;
+ const fresh=!completed.has(pkey(o.n,o.a));
+ if(fresh){completed.add(pkey(o.n,o.a));streak++;bestStreak=Math.max(bestStreak,streak);let earned=10+Math.min(30,Math.floor(streak/3)*5);
+ if(o.special==='gold')earned+=40;
+ if(o.special==='rainbow')earned*=2;
+ score+=earned;bonusEarned+=earned-10;
+ if(streak%3===0)buddySpeak(`¡${streak} seguidas! ¡Eres genial!`,'🥳');else if(o.special==='gold')buddySpeak('¡Globo dorado! ¡40 puntos extra!','⭐');else if(o.special==='rainbow')buddySpeak('¡Arcoíris! ¡Puntos dobles!','🌈');else buddySpeak(`¡Perfecto! ${o.a} y ${o.b} forman ${o.n}`,'🤖');
+ showToast(`⭐ +${earned} puntos · ${o.a} + ${o.b} = ${o.n}`);
+ }else{showToast('¡Bien! Has resuelto la pareja extra.');buddySpeak('¡Penalización resuelta!','🤖')}
+ o.node.remove();active=active.filter(j=>j.id!==o.id);chime(true);drawWalls();hud();
+ if(!jobs.length&&!active.length){playing=false;const token=levelToken;setTimeout(()=>{if(!gameOver&&token===levelToken)levelWon()},650)}
+}
+function showToast(s){clearTimeout(toastTimer);el.toast.textContent=s;el.toast.classList.remove('hidden');toastTimer=setTimeout(()=>el.toast.classList.add('hidden'),1400)}
+function tick(t){if(!playing||paused)return;let dt=Math.min(.05,(t-(lastFrame||t))/1000);lastFrame=t;spawnClock+=dt;let threshold=streams===1?.32:.18;if(spawnClock>threshold){while(active.length<streams&&jobs.length)spawn();spawnClock=0}for(let o of active){if(o.held)continue;o.y+=o.v*dt;position(o);const payload=o.node.querySelector('.payload');const payloadBounds=payload.getBoundingClientRect();const groundBounds=$('#ground').getBoundingClientRect();const now=performance.now();const touchingGround=payloadBounds.top<groundBounds.top&&payloadBounds.bottom>=groundBounds.top;
+// Solo hay pérdida si la parte inferior REAL de las regletas toca el suelo
+// durante al menos 220 ms, sin arrastre ni tiempo de recuperación.
+if(touchingGround&&now>=o.graceUntil){if(o.groundSince===null)o.groundSince=now;else if(now-o.groundSince>=220){fail(o);return}}else{o.groundSince=null}}frameId=requestAnimationFrame(tick)}
+function fail(o){gameOver=true;playing=false;cancelAnimationFrame(frameId);chime(false);$('#lifePill').textContent='💔 ¡Cayó un globo!';el.overlay.classList.remove('hidden');el.panel.innerHTML=`<div class="big">💛🎈</div><h2>¡A intentarlo otra vez!</h2><p>Las regletas <b>${o.a} + ${o.b}</b> llegaron al suelo. No pasa nada: puedes volver a construir los muros de este nivel.</p><p>Has completado <b>${completed.size}</b> parejas.</p><button class="action" id="retry">↻ Repetir nivel ${level}</button><button class="action secondary" id="options">⚙ Cambiar dificultad</button>`;$('#retry').onclick=()=>begin(level);$('#options').onclick=intro}
+function levelWon(){el.overlay.classList.remove('hidden');let medals=mistakes===0?3:mistakes<=2?2:1;let stars='⭐'.repeat(medals)+'☆'.repeat(3-medals);if(level<maxLevel){el.panel.innerHTML=`<div class="big">🏰🎉</div><h2>¡Castillo del nivel ${level} construido!</h2><div class="starsResult">${stars}</div><p><b>🏆 ${score} puntos</b> · ${mistakes} errores · Mejor racha: ¡${bestStreak}!</p><p>Has construido todos los muros <b>del 2 al ${level+1}</b> sin dejar caer ninguna pareja. En el siguiente nivel se incorpora el <b>muro del ${level+2}</b>.</p><button class="action" id="next">➡ Nivel ${level+1}</button><button class="action secondary" id="repeat">↻ Repetir</button>`;$('#next').onclick=()=>begin(level+1);$('#repeat').onclick=()=>begin(level)}else{el.panel.innerHTML=`<div class="big">🏅🏰🎉</div><h2>¡Campeón de los castillos!</h2><div class="starsResult">${stars}</div><p>🏆 ${score} puntos</p><p>¡Has completado los muros del <b>2 al 10</b> y todas sus descomposiciones con dos regletas!</p><button class="action" id="again">🎈 Volver al nivel 1</button>`;$('#again').onclick=()=>begin(1)}}
+function pause(){if(!playing)return;paused=!paused;$('#pause').textContent=paused?'▶ Continuar':'⏸ Pausa';if(paused){cancelAnimationFrame(frameId);el.overlay.classList.remove('hidden');el.panel.innerHTML=`<div class="big">⏸️</div><h2>Juego en pausa</h2><p>Continúa cuando quieras.</p><button class="action" id="resume">▶ Continuar</button>`;$('#resume').onclick=pause}else{el.overlay.classList.add('hidden');lastFrame=0;frameId=requestAnimationFrame(tick)}}
+$('#pause').onclick=pause;$('#restart').onclick=()=>intro();$('#mute').textContent=musicOn?'🔊':'🔇';$('#mute').onclick=()=>{musicOn=!musicOn;$('#mute').textContent=musicOn?'🔊':'🔇';saveSettings();if(musicOn)audioStart();else if(musicTimer){clearInterval(musicTimer);musicTimer=null}};
+window.addEventListener('keydown',e=>{if(e.key==='Escape'&&playing)pause()});window.addEventListener('blur',()=>{if(playing&&!paused)pause()});intro();
+</script>
+</body></html>
