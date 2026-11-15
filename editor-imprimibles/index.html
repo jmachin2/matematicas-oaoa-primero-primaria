@@ -40,7 +40,7 @@ const sets={
 29:{title:'Caza el 9 y complementos',word:'COMPLEMENTO',tasks:[...[[9,5],[9,7],[9,6],[9,4],[9,2],[9,8],[9,3],[9,1]].map(a=>({type:'brick',nums:a})),...[[4,5],[6,3],[8,1],[7,2],[5,4]].map(a=>({type:'sum',nums:a}))]},
 30:{title:'Dibuja el 9 y diagramas',word:'DIAGRAMA',tasks:[...[[9,2],[8,4],[6,3],[9,5],[9,3],[9,7],[9,4],[8,5]].map(a=>({type:'brick',nums:a})),...[[4,5],[3,6],[5,4]].map(a=>({type:'sum',nums:a}))]},
 31:{title:'Parejas del 7, 8 y 9',word:'PAREJAS',tasks:[...[[3,4],[2,5],[1,6],[4,4],[3,5],[2,6],[4,5],[3,6],[1,8],[5,2]].map(a=>({type:'sum',nums:a})),...[[7,3],[8,5],[9,4]].map(a=>({type:'brick',nums:a}))]},
-32:{title:'Número anterior y sacos de Paco',word:'ANTERIOR',tasks:[...[[8,1],[5,1],[3,1],[6,1],[7,1]].map(a=>({type:'previous',nums:a})),...[[5,2,1],[5,1],[2,2,1],[5,2,2],[5,2]].map(a=>({type:'money',nums:a}))]},
+32:{title:'El número anterior (−1)',word:'ANTERIOR',tasks:[[8],[5],[3],[6],[7],[9],[4],[2]].map(([v])=>({type:'previous',nums:[v]}))},
 33:{title:'Sumas y relaciones del 7 al 9',word:'RESULTADO',tasks:[...[[6,2],[4,4],[3,6],[8,1],[2,6],[7,1],[5,3],[5,2],[5,4],[6,3],[4,3],[6,2]].map(a=>({type:'sum',nums:a})),...[[9,6],[8,4],[7,5]].map(a=>({type:'brick',nums:a}))]}
 };
 let version=0,selected=null,history=[],frozen=false;const config=sets[page];
