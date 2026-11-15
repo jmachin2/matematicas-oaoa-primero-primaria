@@ -133,7 +133,7 @@ function speak(){if(!window.speechSynthesis){message("Tu navegador no tiene voz.
 $("modalPlay").onclick=()=>{if(window.speechSynthesis)speechSynthesis.cancel();let f=modalAction;modalAction=null;if(f)f();else start(target)};
 $("read").onclick=speak;
 $("replayMission").onclick=()=>speakText(objective());
-$("instructions").onclick=()=>{if(window.speechSynthesis)speechSynthesis.cancel();locked=true;paint();let wasLocked=locked;modalAction=()=>{locked=wasLocked;paint()};showModal("🚂","¿Cómo se juega?",objective(),"▶ Continuar")};
+$("instructions").onclick=()=>{if(window.speechSynthesis)speechSynthesis.cancel();let wasLocked=locked;locked=true;paint();modalAction=()=>{locked=wasLocked;paint()};showModal("🚂","¿Cómo se juega?",objective(),"▶ Continuar")};
 $("clue").onclick=()=>{if(locked)return;let missing=target-sum(train);if(train.length)message("💡 Te faltan "+missing+" unidades. Busca una regleta de ese tamaño.");else{let option=combos(target).find(a=>!completed.some(b=>key(a)===key(b)));message("💡 Prueba un tren con "+(option?option.length:2)+" vagones. ¿Cómo puedes sumar "+target+"?")}say("¡Puedes probar y cambiar las piezas tantas veces como quieras!","💡")};
 $("undo").onclick=()=>{if(!locked&&train.length){train.pop();paint();message("Has quitado el último vagón.")}};
 $("empty").onclick=()=>{if(!locked){train=[];paint();message("¡Tren vacío! Prueba de nuevo.")}};
