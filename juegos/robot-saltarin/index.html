@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#dff5ff"><title>Robot Saltarín · OAOA</title>
+<style>
+:root{font-family:system-ui,Arial,sans-serif;color:#193d52}*{box-sizing:border-box}body{margin:0;background:#e8f7ff}button{font:inherit;cursor:pointer}button:focus-visible{outline:3px solid #235ac8;outline-offset:3px}
+header{background:white;padding:12px 22px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;box-shadow:0 3px 12px #477d9227}h1{margin:0;font-size:clamp(20px,3vw,28px)}header a,header button{background:#eff8fd;border:2px solid #c7e4ec;border-radius:12px;padding:9px 12px;text-decoration:none;color:#23506c;font-weight:850}header nav{display:flex;gap:7px;flex-wrap:wrap}
+main{max-width:1100px;margin:auto;padding:14px;display:grid;gap:13px}.headinfo{display:flex;gap:9px;flex-wrap:wrap}.chip{background:white;padding:10px 14px;border-radius:100px;border:2px solid #c4dfea;font-size:14px;font-weight:850}
+.card{border:2px solid #c5e4f1;background:#fff;border-radius:20px;padding:15px;box-shadow:0 9px 20px #2c587412}
+.challenge{background:#fff5cd;border:3px solid #efc76c;border-radius:17px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}.challenge strong{font-size:clamp(18px,2.6vw,25px);display:block}.challenge span{font-weight:750;font-size:15px}.talk{border-radius:12px;background:#eaf7ff;padding:10px 12px;font-size:15px;font-weight:750;margin-top:9px;min-height:42px}
+h2{margin:0 0 10px;font-size:20px}.board{border:2px solid #a7d7e9;border-radius:19px;background:linear-gradient(#a9e3ff,#e9faff 69%,#80c574 70%,#57a961);padding:14px 10px;min-height:246px;position:relative;overflow:hidden}
+.sky{height:89px;display:flex;justify-content:space-between;padding:0 7%;font-size:40px;opacity:.8}.linewrap{position:relative;margin:8px 13px 0;height:112px}.gridline{position:absolute;left:0;right:0;bottom:26px;height:7px;background:#547383;border-radius:15px}.marks{position:absolute;inset:0;display:grid;grid-template-columns:repeat(21,minmax(0,1fr));align-items:end}.tick{display:flex;flex-direction:column;align-items:center;gap:4px;position:relative;font-size:clamp(8px,1.45vw,14px);font-weight:950;z-index:2}.tick span{width:3px;height:17px;background:#476e7d;border-radius:3px}.tick.goal{color:#9b4808;font-size:clamp(10px,1.7vw,16px)}.tick.goal span{height:30px;width:6px;background:#f19b21}.robot{position:absolute;bottom:43px;left:0%;transform:translateX(-50%);font-size:clamp(31px,5vw,55px);z-index:5;transition:left .52s cubic-bezier(.25,.9,.25,1);filter:drop-shadow(0 4px 0 #3062775c)}.robot.jump{animation:jump .5s ease}@keyframes jump{50%{transform:translate(-50%,-38px)}}.goalflag{position:absolute;bottom:79px;left:0;transform:translateX(-50%);font-size:31px;z-index:3}.equation{margin-top:12px;background:#f1fbff;border-radius:12px;padding:11px;font-size:18px;font-weight:900;text-align:center}
+.controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(235px,350px);gap:13px}.sub{font-size:14px;color:#52768a;font-weight:750;margin:0 0 10px}.movegrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.move{border:2px solid #abd4e5;background:#f1faff;border-radius:14px;padding:12px 4px;font-weight:950;font-size:19px;min-height:61px}.move.forward{background:#def8eb;border-color:#a4dbc1;color:#186745}.move.back{background:#fff1e3;border-color:#e3bb8f;color:#98530f}.move:disabled{opacity:.4;cursor:not-allowed}
+.queue{display:flex;gap:6px;flex-wrap:wrap;align-items:center;min-height:53px;border:2px dashed #aacbda;background:#f5fcff;border-radius:12px;padding:9px;margin:8px 0}.queue span{padding:7px 10px;border-radius:10px;background:#dceefa;font-size:18px;font-weight:900}.buttons{display:flex;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:12px;padding:11px 14px;font-weight:900;background:#e4f2f8;color:#285a77}.btn.primary{background:#ffc956;color:#5d420b;font-size:18px}.btn:disabled{opacity:.5}.feedback{font-weight:800;margin-top:10px;background:#eef9ff;border-radius:12px;padding:11px;min-height:45px}.feedback.success{background:#dffae6;color:#236d41}.feedback.error{background:#fff1e2;color:#995211}
+.overlay{position:fixed;inset:0;background:#123b62b8;display:grid;place-items:center;z-index:20;padding:13px}.overlay[hidden]{display:none}.dialog{width:min(480px,100%);border-radius:24px;background:white;padding:25px;text-align:center;box-shadow:0 15px 60px #122b4c55}.dialog h2{font-size:26px}.dialog p{font-size:17px;line-height:1.5}.dialog button{margin:4px}.big{font-size:62px}
+@media(max-width:700px){.controls{grid-template-columns:1fr}.movegrid{grid-template-columns:repeat(4,1fr)}.linewrap{margin:8px 9px}.board{padding:10px 6px}.robot{font-size:32px}.challenge{padding:10px}}
+@media(prefers-reduced-motion:reduce){.robot{transition:none}.robot.jump{animation:none}}
+</style></head><body>
+<header><div><h1>🤖 Robot Saltarín OAOA</h1><small>Recta numérica · Estrategias y cálculo mental</small></div><nav><a href="../">← Juegos OAOA</a><button id="listen">🔊 Escuchar misión</button><button id="help">❓ Ayuda</button><button id="sound">🔈 Sonido</button></nav></header>
+<main>
+<div class="headinfo"><div class="chip" id="level">🎮 Misión 1 de 9</div><div class="chip" id="steps">👣 0 de 3 saltos</div><div class="chip" id="score">⭐ 0 puntos</div><div class="chip" id="tries">🧠 0 intentos</div></div>
+<section class="card"><div class="challenge"><div><strong id="challenge">Llega al 5 desde el 0</strong><span id="rule">Puedes dar hasta 3 saltos</span></div><button class="btn primary" id="sayAgain">▶ Escuchar reto</button></div><div class="talk" id="talk">¡Hola! Soy Rober. Primero piensa tus saltos y después ponlos a prueba.</div></section>
+<section class="card"><h2>🛤️ La recta numérica</h2><div class="board"><div class="sky"><span>☁️</span><span>☀️</span><span>☁️</span></div><div class="linewrap" id="linewrap"><div class="gridline"></div><div class="marks" id="marks"></div><div class="goalflag" id="goalflag">🚩</div><div class="robot" id="robot">🤖</div></div></div><div class="equation" id="equation">0</div></section>
+<div class="controls">
+<section class="card"><h2>🧩 Programa los saltos</h2><p class="sub">Elige cuánto avanzará o retrocederá el robot. Después pulsa «¡Saltar!» para comprobar tu plan.</p><div class="movegrid" id="moves"></div><div class="feedback" id="feedback">Elige tu primer salto.</div></section>
+<section class="card"><h2>🧠 Tu plan</h2><p class="sub">Primero piensa, después comprueba. Puedes borrar antes de ejecutar.</p><div class="queue" id="queue">Todavía no has elegido saltos.</div><div class="buttons"><button class="btn primary" id="run">▶ ¡Saltar!</button><button class="btn" id="undo">↶ Quitar</button><button class="btn" id="clear">✕ Borrar</button><button class="btn" id="hint">💡 Pista</button></div></section></div>
+</main>
+<div class="overlay" id="modal"><div class="dialog"><div class="big" id="modalIcon">🤖</div><h2 id="modalTitle">¡Bienvenido!</h2><p id="modalText">Programa los saltos del robot para llegar al número objetivo.</p><div><button class="btn primary" id="continue">▶ Empezar</button><button class="btn" id="speak">🔊 Escuchar</button></div></div></div>
+<script>
+(()=>{
+"use strict";
+const M=[
+{start:0,goal:5,max:3,jumps:[1,2],tag:"Primeros saltos"},
+{start:2,goal:9,max:3,jumps:[1,2,5],tag:"Busca un salto grande"},
+{start:10,goal:4,max:3,jumps:[1,2,5],tag:"Saltamos hacia atrás"},
+{start:3,goal:13,max:2,jumps:[1,2,5],tag:"Dos saltos exactos"},
+{start:7,goal:15,max:3,jumps:[1,2,5],tag:"Combina tus saltos"},
+{start:16,goal:9,max:2,jumps:[1,2,5],tag:"Restar con saltos"},
+{start:4,goal:19,max:2,jumps:[1,2,5,10],tag:"Grandes distancias"},
+{start:18,goal:11,max:2,jumps:[1,2,5,10],tag:"Planifica el regreso"},
+{start:9,goal:20,max:2,jumps:[1,2,5,10],tag:"¡Misión final!"}
+];
+const $=id=>document.getElementById(id);
+let stage=0,plan=[],pos=M[0].start,busy=true,points=0,tries=0,audio=null,silenced=false,runToken=0,modalCallback=null;
+const mission=()=>M[stage],fmt=n=>n>0?"+"+n:""+n;
+function speak(t){
+if(!("speechSynthesis" in window)){$("talk").textContent="Las instrucciones están escritas en la pantalla.";return}
+try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="es-ES";u.rate=.88;u.pitch=1.04;const v=speechSynthesis.getVoices().find(v=>/^es/i.test(v.lang));if(v)u.voice=v;speechSynthesis.speak(u)}catch(e){}
+}
+function ruleText(){let m=mission();return "¡Hola, explorador! Esta es la misión "+(stage+1)+". El robot está en el número "+m.start+" y tiene que llegar al "+m.goal+". Puedes programar como máximo "+m.max+" saltos. Los saltos disponibles son de "+m.jumps.join(", ")+" unidades, hacia delante o hacia atrás. Elige los saltos y pulsa ¡Saltar! para comprobar tu plan."}
+function tone(good){if(silenced)return;try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();audio.resume();let t=audio.currentTime;[0,1,2].forEach(i=>{let o=audio.createOscillator(),g=audio.createGain();o.type="square";o.frequency.value=(good?[440,550,660]:[300,230,170])[i];g.gain.setValueAtTime(.0001,t+i*.105);g.gain.exponentialRampToValueAtTime(.024,t+i*.105+.02);g.gain.exponentialRampToValueAtTime(.0001,t+i*.105+.10);o.connect(g);g.connect(audio.destination);o.start(t+i*.105);o.stop(t+i*.105+.12)})}catch(e){}}
+function say(s,kind=""){$("feedback").textContent=s;$("feedback").className="feedback "+kind;$("talk").textContent=s}
+function render(){
+let m=mission();
+$("level").textContent="🎮 Misión "+(stage+1)+" de "+M.length;$("steps").textContent="👣 "+plan.length+" de "+m.max+" saltos";$("score").textContent="⭐ "+points+" puntos";$("tries").textContent="🧠 "+tries+" intentos";
+$("challenge").textContent="🎯 Llega al "+m.goal+" desde el "+m.start;
+$("rule").textContent="Hasta "+m.max+" saltos · Longitudes: "+m.jumps.join(", ")+" · Puedes avanzar o retroceder";
+$("marks").innerHTML=Array.from({length:21},(_,i)=>'<div class="tick '+(i===m.goal?"goal":"")+'"><span></span><b>'+i+'</b></div>').join("");
+$("goalflag").style.left=(m.goal/20*100)+"%";$("robot").style.left=(pos/20*100)+"%";
+$("equation").textContent=m.start+(plan.length?"  "+plan.map(fmt).join("  "):"");
+$("queue").innerHTML=plan.length?plan.map(v=>'<span>'+fmt(v)+'</span>').join(""):'Todavía no has elegido saltos.';
+$("moves").innerHTML=m.jumps.flatMap(v=>[v,-v]).map(v=>'<button class="move '+(v>0?"forward":"back")+'" data-jump="'+v+'" '+(busy||plan.length>=m.max?"disabled":"")+'>'+(v>0?"➡ ":"⬅ ")+fmt(v)+'</button>').join("");
+$("moves").querySelectorAll("[data-jump]").forEach(b=>b.onclick=()=>{if(busy)return;plan.push(Number(b.dataset.jump));render();say("Has elegido "+plan.length+" salto"+(plan.length===1?"":"s")+". ¿Dónde crees que llegará el robot?")});
+$("run").disabled=busy||plan.length===0;$("undo").disabled=busy||!plan.length;$("clear").disabled=busy||!plan.length;
+}
+function showModal(icon,title,t,button,cb){$("modalIcon").textContent=icon;$("modalTitle").textContent=title;$("modalText").textContent=t;$("continue").textContent=button;modalCallback=cb;$("modal").hidden=false}
+function start(i){
+runToken++;stage=i;plan=[];pos=mission().start;tries=0;busy=false;$("modal").hidden=true;render();say("Elige tus saltos y pulsa «¡Saltar!». ¡Piensa antes de mover al robot!");speak(ruleText());
+}
+function pathHint(){let m=mission(),delta=m.goal-m.start;const possibles=[...m.jumps,...m.jumps.map(x=>-x)];let queue=[[m.start,[]]],seen=new Set();while(queue.length){let [p,a]=queue.shift();if(p===m.goal)return a; if(a.length>=m.max)continue;for(let j of possibles){let np=p+j;if(np<0||np>20)continue;let k=np+":"+(a.length+1);if(!seen.has(k)){seen.add(k);queue.push([np,[...a,j]])}}}return []}
+async function execute(){
+if(busy||!plan.length)return;busy=true;tries++;let stamp=++runToken,m=mission(),seq=plan.slice();render();
+let current=pos,safe=true;
+for(let v of seq){let next=current+v;if(next<0||next>20){safe=false;break}current=next}
+if(!safe){busy=false;pos=m.start;render();say("Ese plan sale de la recta numérica. Usa saltos que se queden entre el 0 y el 20.","error");tone(false);return}
+current=m.start;for(let v of seq){if(stamp!==runToken)return;current+=v;pos=current;$("robot").classList.remove("jump");void $("robot").offsetWidth;$("robot").classList.add("jump");$("robot").style.left=(pos/20*100)+"%";$("equation").textContent=current+"  ("+fmt(v)+")";await new Promise(resolve=>setTimeout(resolve,630))}
+if(stamp!==runToken)return;
+if(current===m.goal){points+=Math.max(5,25-(tries-1)*5);tone(true);say("¡Lo conseguiste! Has llegado al "+m.goal+" usando "+seq.length+" saltos.","success");showModal("🏆🤖🎉","¡Misión superada!","Has llegado al "+m.goal+" con los saltos "+seq.map(fmt).join(", ")+". "+(stage===M.length-1?"¡Has terminado todas las misiones!":"¿Preparado para el siguiente reto?"),stage===M.length-1?"↻ Volver a empezar":"➡ Siguiente misión",()=>{if(stage===M.length-1){points=0;start(0)}else start(stage+1)})}
+else{tone(false);say("Has llegado al "+current+", pero el objetivo es "+m.goal+". ¡Cambia tu plan y prueba otra estrategia!","error");await new Promise(resolve=>setTimeout(resolve,850));if(stamp!==runToken)return;pos=m.start;plan=[];busy=false;render()}
+}
+$("run").onclick=execute;$("undo").onclick=()=>{if(!busy){plan.pop();render()}};$("clear").onclick=()=>{if(!busy){plan=[];render();say("Plan borrado. ¡Puedes probar otra estrategia!")}};
+$("hint").onclick=()=>{let steps=pathHint();if(steps.length)say("💡 Pista: la distancia entre el inicio y la meta es "+Math.abs(mission().goal-mission().start)+". Intenta conseguirla en "+steps.length+" saltos.");else say("Prueba distintos saltos para acercarte a la meta.")};
+$("listen").onclick=()=>speak(ruleText());$("sayAgain").onclick=()=>speak(ruleText());
+$("help").onclick=()=>{const old=busy;busy=true;render();showModal("💡🤖","¿Cómo se juega?","1. Mira dónde empieza el robot y cuál es la meta. 2. Elige saltos hacia delante o atrás. 3. No superes el máximo permitido. 4. Pulsa ¡Saltar! y observa dónde llega. 5. Si no llegas, cambia el plan. ¡Puedes volver a intentarlo!","▶ Continuar",()=>{busy=old;render()})};
+$("sound").onclick=()=>{silenced=!silenced;$("sound").textContent=silenced?"🔇 Sonido":"🔈 Sonido"};
+$("speak").onclick=()=>speak($("modalText").textContent);
+$("continue").onclick=()=>{if("speechSynthesis" in window)speechSynthesis.cancel();let f=modalCallback;modalCallback=null;$("modal").hidden=true;if(f)f()};
+render();showModal("🤖","¡Hola! Soy Rober","Mi misión es llegar a la bandera con saltos sobre la recta numérica. Primero eliges los saltos; después pulsas ¡Saltar! para comprobar tu plan. ¡Vamos a jugar!","▶ Empezar",()=>start(0));
+})();
+</script></body></html>
