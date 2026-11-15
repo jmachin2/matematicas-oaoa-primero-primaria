@@ -1,0 +1,48 @@
+name: Preparar páginas originales OAOA 29-33
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/preparar-paginas-oaoa.yml'
+permissions:
+  contents: write
+jobs:
+  extract-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Instalar herramientas
+        run: python -m pip install --disable-pip-version-check pymupdf gdown
+      - name: Descargar libro original y extraer páginas independientes
+        run: |
+          python - <<'PY'
+          import os, fitz, gdown
+          from pathlib import Path
+          target=Path('/tmp/oaoa-original.pdf')
+          file_id='1kDDt6by7DsmGHHMrXVqcMUpFkual-RKB'
+          result=gdown.download(id=file_id,output=str(target),quiet=False,fuzzy=True)
+          if not result or not target.exists() or target.stat().st_size < 100000:
+              raise RuntimeError('No se pudo descargar el PDF original.')
+          doc=fitz.open(str(target))
+          if len(doc)!=208:
+              raise RuntimeError(f'Número inesperado de páginas: {len(doc)}')
+          output=Path('assets/paginas-originales')
+          output.mkdir(parents=True, exist_ok=True)
+          for page_number in range(29,34):
+              page=doc[page_number-1]
+              pix=page.get_pixmap(matrix=fitz.Matrix(1.6,1.6),alpha=False)
+              pix.save(str(output/f'pagina-{page_number}.png'))
+              print('Creada página',page_number)
+          PY
+      - name: Guardar imágenes originales en el repositorio
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/paginas-originales/pagina-{29,30,31,32,33}.png
+          if ! git diff --cached --quiet; then
+            git commit -m "Añadir imágenes exactas de páginas originales OAOA 29-33"
+            git push
+          fi
