@@ -23,7 +23,9 @@ El archivo `index.html` de la raíz abre automáticamente la sección **Fichas**
 - `vocabulario/`
 - `juegos/`
 - `examenes/`
-- páginas interactivas hasta `pagina-24/`
+- páginas interactivas hasta `pagina-33/` (incluidas las fichas 29 a 33 del libro OAOA)
+- problemas con diagrama parte-todo y diseño visual según `docs/PATRON_PROBLEMAS_OAOA.md`
+- editor de imprimibles: `editor-imprimibles/?pagina=29` a `?pagina=33`
 - `assets/`
 
 ## Notas
