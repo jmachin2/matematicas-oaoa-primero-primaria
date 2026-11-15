@@ -37,6 +37,7 @@ h2{font-size:clamp(17px,2.4vw,23px);margin:0 0 10px}.info{font-size:15px;line-he
 .config{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.config label{display:grid;gap:3px;font-size:12px;font-weight:850;color:#4f7185}.config select{border:2px solid #cbe3ee;border-radius:9px;padding:7px 8px;background:#fff}
 .end{border:3px solid #efc768;background:#fff9df;border-radius:17px;padding:16px;text-align:center;margin-top:10px}.end h2{margin:4px}.end p{line-height:1.5}
 .note{font-size:12px;color:#698092;margin-top:8px}
+.helpcontrols{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 13px}.helpbtn{border:2px solid #1f8fac;background:#f0fbff;color:#154968;font-weight:900;border-radius:13px;padding:12px 17px;min-height:48px}.helpbtn.play{background:#ffe081;border-color:#e4b942;color:#563d05;display:inline-block}.helpbox{background:#fff9e5;border:2px solid #eacb73;border-radius:16px;padding:14px;margin-bottom:13px;font-size:16px;line-height:1.55}.helpbox[hidden]{display:none}.helpbox h3{margin:0 0 7px}.helpbox ol{margin:4px 0;padding-left:26px}.helpbox .sample{font-size:17px;font-weight:850;color:#175c7b;margin-top:8px}
 @media(max-width:770px){.play{grid-template-columns:1fr}.palette{grid-template-columns:repeat(5,1fr)}header{padding:10px}nav{margin-left:0}.landscape{min-height:230px}.loco{flex-basis:38px;font-size:21px}.rod{height:35px}.panel{padding:12px}.savedrods .rod{min-width:0!important}}
 @media(max-width:410px){.palette{gap:4px}.pick{padding:6px 1px}.pick small{font-size:12px}}
 </style></head><body>
@@ -46,6 +47,13 @@ h2{font-size:clamp(17px,2.4vw,23px);margin:0 0 10px}.info{font-size:15px;line-he
 <div class="status"><div class="pill" id="level">🚉 Nivel 1 de 9</div><div class="pill" id="counter">🚂 0 / 1 trenes</div><div class="pill" id="points">⭐ 0 puntos</div><div class="pill" id="stars">☆ ☆ ☆</div></div>
 <div class="play"><section class="panel"><div class="panelhead"><h2 id="task">Construye un tren</h2><div class="config"><label>Estación inicial<select id="start"></select></label><label>Retos por estación<select id="challenges"><option value="1">1 tren</option><option value="2">2 trenes</option><option value="3" selected>3 trenes</option><option value="4">4 trenes</option></select></label><label>Números<select id="labels"><option value="yes">Visibles</option><option value="no">Ocultos</option></select></label></div></div>
 <p class="info" id="instruction">Construye distintas combinaciones de regletas que lleguen exactamente a la estación.</p>
+<div class="helpcontrols" aria-label="Instrucciones del juego"><button type="button" class="helpbtn play" id="listenRules">▶ Escuchar instrucciones</button><button type="button" class="helpbtn" id="showHelp" aria-expanded="false" aria-controls="rulesBox">❓ Ayuda</button></div>
+<div class="helpbox" id="rulesBox" hidden>
+<h3>🚂 ¿Cómo se juega?</h3>
+<ol><li>Mira el número de la estación.</li><li>Elige al menos dos regletas y ponlas en el tren.</li><li>Consigue que juntas midan lo mismo que el número de la estación.</li><li>Pulsa «Comprobar tren». Si es correcto, busca otra combinación diferente.</li><li>Completa los trenes necesarios para ir a la siguiente estación.</li></ol>
+<div class="sample">💡 Ejemplo: estación 5 → 2 + 3 = 5 o 1 + 4 = 5.</div>
+<button type="button" class="helpbtn play" id="repeatRules">▶ Escuchar otra vez</button>
+</div>
 <div class="landscape"><div class="sun">☀️</div><div class="cloud one">☁️</div><div class="cloud two">☁️</div><div class="destination"><span class="station" id="station">Estación 2</span> <span>🚩</span></div>
 <div class="trackouter"><div class="tracklabel" id="targettext">Meta: 2 unidades</div><div class="track" id="track"><div class="loco">🚂</div><div class="wagons" id="wagons"><span class="empty">Elige regletas abajo</span></div></div><div class="measure" id="measure">0 de 2</div><div class="progressbar"><div id="bar"></div></div></div>
 </div>
@@ -107,6 +115,29 @@ $("palette").innerHTML=Object.keys(COLORS).map(function(k){var v=Number(k);retur
 Array.from($("palette").children).forEach(function(b){b.onclick=function(){add(Number(b.dataset.v))};b.ondragstart=function(e){e.dataTransfer.setData("text/plain",b.dataset.v)}});
 $("track").ondragover=function(e){e.preventDefault()};
 $("track").ondrop=function(e){e.preventDefault();var v=Number(e.dataTransfer.getData("text/plain"));if(v>=1&&v<=10)add(v)};
+
+// Instrucciones accesibles: voz en español integrada en el navegador.
+var RULES="¡Hola, maquinista! Vamos a jugar al tren de las regletas. Primero, mira el número de la estación. Después, elige dos o más regletas y colócalas como vagones. Tienen que sumar exactamente ese número. Por ejemplo, para llegar al cinco, puedes poner una regleta de dos y otra de tres. Cuando lo consigas, pulsa comprobar tren. Después intenta construir otro tren diferente que llegue a la misma estación. ¡Buen viaje!";
+function readRules(){
+ $("rulesBox").hidden=false;$("showHelp").setAttribute("aria-expanded","true");
+ if(!("speechSynthesis" in window)){feedback("Las instrucciones están escritas en el cuadro de ayuda. Este navegador no ofrece lectura de voz.");return}
+ try{
+  window.speechSynthesis.cancel();
+  var utterance=new SpeechSynthesisUtterance(RULES);
+  utterance.lang="es-ES";utterance.rate=.86;utterance.pitch=1.08;utterance.volume=1;
+  var voices=window.speechSynthesis.getVoices();
+  var spanish=voices.find(function(v){return /^es(-|_)/i.test(v.lang)&&/ES/i.test(v.lang)})||voices.find(function(v){return /^es/i.test(v.lang)});
+  if(spanish)utterance.voice=spanish;
+  utterance.onerror=function(){feedback("No se ha podido reproducir la voz. Puedes leer las instrucciones en Ayuda.")};
+  window.speechSynthesis.speak(utterance);
+ }catch(e){feedback("Las instrucciones están disponibles por escrito en Ayuda.")}
+}
+$("listenRules").onclick=readRules;
+$("repeatRules").onclick=readRules;
+$("showHelp").onclick=function(){
+ var box=$("rulesBox");box.hidden=!box.hidden;this.setAttribute("aria-expanded",String(!box.hidden));
+ if(box.hidden&&"speechSynthesis" in window)window.speechSynthesis.cancel();
+};
 window.addEventListener("resize",paint);start(2);
 })();
 </script></body></html>
