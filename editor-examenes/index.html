@@ -32,10 +32,10 @@ aside label{display:grid;gap:4px;font-weight:bold;font-size:12px}aside input,asi
 <div class="layout"><aside><strong>Editar elemento</strong><small>Selecciona un texto. Puedes escribir sobre él y arrastrarlo con el control MOVER. Cambia el tamaño del recuadro desde su esquina inferior derecha.</small>
 <label>Texto<textarea id="text"></textarea></label>
 <label>Tamaño (px)<input type="number" id="size" value="25" min="10" max="90"></label>
-<label>Color<input type="color" id="color" value="#17384e"></label>
+<label>Color de texto<input type="color" id="color" value="#17384e"></label><label>Fondo / color de regleta<input type="color" id="fill" value="#ffffff"></label>
 <label>Tipo de letra<select id="font"><option value="school">Playwrite ES</option><option value="math">Arial</option></select></label>
 <label>X (mm)<input type="number" id="x" step="1"></label><label>Y (mm)<input type="number" id="y" step="1"></label>
-<label>Anchura (mm)<input type="number" id="width" step="1"></label>
+<label>Anchura (mm)<input type="number" id="width" step="1"></label><label>Altura (mm)<input type="number" id="height" step="1"></label>
 <div class="buttons"><button id="newText">+ Texto</button><button id="newBox">+ Respuesta</button><button id="duplicate">Duplicar</button><button id="delete">Eliminar</button><button id="newRod">+ Regleta</button><button id="newDiagram">+ Parte-todo</button></div>
 <div id="status">Selecciona un bloque.</div>
 <small>Editor opcional. El generador original y su descarga PDF permanecen disponibles.</small></aside>
@@ -69,12 +69,14 @@ function make(p,m){
  return e;
 }
 function choose(e){if(selected)selected.classList.remove("selected");selected=e;e.classList.add("selected");sync()}
-function sync(){if(!selected)return;find("text").value=selected.querySelector(".text").textContent;find("size").value=num(selected.style.fontSize);find("color").value=selected.style.color.startsWith("#")?selected.style.color:"#17384e";find("font").value=selected.classList.contains("math")?"math":"school";find("x").value=num(selected.style.left);find("y").value=num(selected.style.top);find("width").value=num(selected.style.width)}
+function sync(){if(!selected)return;find("text").value=selected.querySelector(".text").textContent;find("size").value=num(selected.style.fontSize);find("color").value=selected.style.color.startsWith("#")?selected.style.color:"#17384e";find("font").value=selected.classList.contains("math")?"math":"school";find("x").value=num(selected.style.left);find("y").value=num(selected.style.top);find("width").value=num(selected.style.width);find("height").value=num(selected.style.height);find("fill").value=colorHex(selected.style.backgroundColor)}
+function colorHex(c){if(!c)return "#ffffff";if(c.startsWith("#"))return c;const nums=(c.match(/\d+/g)||[]).slice(0,3);return nums.length===3?"#"+nums.map(n=>Number(n).toString(16).padStart(2,"0")).join(""):"#ffffff"}
 function currentPage(){return selected?selected.closest(".paper"):area.querySelector(".paper")}
-function changed(){const map={size:["fontSize","px"],x:["left","mm"],y:["top","mm"],width:["width","mm"]};for(const key of Object.keys(map)){find(key).addEventListener("input",()=>{if(!selected)return;selected.style[map[key][0]]=find(key).value+map[key][1];validate()})}}
+function changed(){const map={size:["fontSize","px"],x:["left","mm"],y:["top","mm"],width:["width","mm"],height:["height","mm"]};for(const key of Object.keys(map)){find(key).addEventListener("input",()=>{if(!selected)return;selected.style[map[key][0]]=find(key).value+map[key][1];validate()})}}
 changed();
 find("text").addEventListener("input",()=>{if(selected){selected.querySelector(".text").textContent=find("text").value;validate()}});
 find("color").addEventListener("input",()=>{if(selected)selected.style.color=find("color").value});
+find("fill").addEventListener("input",()=>{if(selected)selected.style.backgroundColor=find("fill").value});
 find("font").addEventListener("change",()=>{if(selected){selected.classList.remove("school","math");selected.classList.add(find("font").value)}});
 find("orientation").addEventListener("change",()=>{const landscape=find("orientation").value==="landscape";area.querySelectorAll(".paper").forEach(p=>p.classList.toggle("landscape",landscape));find("orientationCss").textContent="@page{size:A4 "+find("orientation").value+";margin:0}";validate()});
 find("pageAdd").onclick=()=>{page();validate()};
