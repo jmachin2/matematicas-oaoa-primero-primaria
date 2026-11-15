@@ -2,7 +2,7 @@ name: Preparar páginas originales OAOA 29-33
 on:
   workflow_dispatch:
   issues:
-    types: [opened]
+    types: [opened, reopened]
   push:
     paths:
       - '.github/workflows/preparar-paginas-oaoa.yml'
@@ -26,7 +26,7 @@ jobs:
           from pathlib import Path
           target=Path('/tmp/oaoa-original.pdf')
           file_id='1kDDt6by7DsmGHHMrXVqcMUpFkual-RKB'
-          result=gdown.download(id=file_id,output=str(target),quiet=False,fuzzy=True)
+          result=gdown.download(id=file_id,output=str(target),quiet=False)
           if not result or not target.exists() or target.stat().st_size < 100000:
               raise RuntimeError('No se pudo descargar el PDF original.')
           doc=fitz.open(str(target))
