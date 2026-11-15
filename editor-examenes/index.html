@@ -1,0 +1,88 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Editor visual OAOA</title>
+<link href="https://fonts.googleapis.com/css2?family=Playwrite+ES:wght@100..400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;font:14px Arial;color:#17384e;background:#eaf3f7}
+header{position:sticky;top:0;z-index:5;background:white;padding:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;border-bottom:2px solid #bdd5e2}
+button,select,input,textarea{font:inherit;border:1px solid #aac4d2;border-radius:7px;padding:7px;background:white}button{cursor:pointer}button.primary{background:#357fa5;color:white}
+.layout{display:grid;grid-template-columns:235px minmax(0,1fr);gap:12px;padding:12px}
+aside{background:white;padding:13px;border-radius:10px;display:grid;gap:10px;align-content:start;position:sticky;top:70px}
+aside label{display:grid;gap:4px;font-weight:bold;font-size:12px}aside input,aside textarea,aside select{width:100%}aside textarea{min-height:68px}
+.paper-area{display:grid;justify-content:center;gap:18px}.paper{width:210mm;height:297mm;position:relative;background:white;box-shadow:0 4px 18px #2345;overflow:hidden}.paper.landscape{width:297mm;height:210mm}
+.block{position:absolute;border:1px dashed transparent;resize:both;overflow:auto;min-width:15mm;min-height:7mm;padding:2mm;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7}
+.block.school{font-family:"Playwrite ES",cursive}.block.math{font-family:Arial,sans-serif}
+.block.selected{border:2px solid #378abc;background:#e6f7ff55}
+.block .text{outline:0;min-height:1em}.block .drag{position:absolute;right:0;top:0;background:#378abc;color:white;font:11px Arial;padding:3px;display:none;touch-action:none;cursor:grab}
+.block.selected .drag{display:block}.block.warning{outline:3px solid #d55}
+#status{font-size:12px;padding:9px;background:#e7f3f8;border-radius:8px}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+@media(max-width:900px){.layout{display:block}aside{position:static;margin-bottom:12px}.paper-area{justify-content:start;overflow:auto}}
+@page{size:A4 portrait;margin:0}
+@media print{header,aside{display:none!important}body{background:white}.layout{display:block;padding:0}.paper-area{display:block}.paper{box-shadow:none;break-after:page}.paper:last-child{break-after:auto}.block{border:0!important;outline:0!important;background:none!important;resize:none;overflow:visible}.drag{display:none!important}}
+</style><style id="orientationCss"></style></head><body>
+<header><strong>Editor de exámenes OAOA</strong><a href="../examenes/">← Generador</a><select id="orientation"><option value="portrait">A4 vertical</option><option value="landscape">A4 apaisado</option></select><button id="pageAdd">+ Página</button><button id="save">Guardar diseño</button><button id="load">Recuperar</button><button class="primary" id="print">Imprimir / Guardar PDF</button></header>
+<div class="layout"><aside><strong>Editar elemento</strong><small>Selecciona un texto. Puedes escribir sobre él y arrastrarlo con el control MOVER. Cambia el tamaño del recuadro desde su esquina inferior derecha.</small>
+<label>Texto<textarea id="text"></textarea></label>
+<label>Tamaño (px)<input type="number" id="size" value="25" min="10" max="90"></label>
+<label>Color<input type="color" id="color" value="#17384e"></label>
+<label>Tipo de letra<select id="font"><option value="school">Playwrite ES</option><option value="math">Arial</option></select></label>
+<label>X (mm)<input type="number" id="x" step="1"></label><label>Y (mm)<input type="number" id="y" step="1"></label>
+<label>Anchura (mm)<input type="number" id="width" step="1"></label>
+<div class="buttons"><button id="newText">+ Texto</button><button id="newBox">+ Respuesta</button><button id="duplicate">Duplicar</button><button id="delete">Eliminar</button></div>
+<div id="status">Selecciona un bloque.</div>
+<small>Editor opcional. El generador original y su descarga PDF permanecen disponibles.</small></aside>
+<main class="paper-area" id="area"></main></div>
+<script>
+(()=>{
+"use strict";
+const find=id=>document.getElementById(id);
+const area=find("area");
+let selected=null;
+const dims=()=>find("orientation").value==="landscape"?[297,210]:[210,297];
+const num=style=>parseFloat(style)||0;
+function page(){const e=document.createElement("div");e.className="paper";e.classList.toggle("landscape",find("orientation").value==="landscape");area.append(e);return e}
+function make(p,m){
+ const e=document.createElement("div");e.className="block "+(m.kind||"school");
+ e.style.left=(m.x||0)+"mm";e.style.top=(m.y||0)+"mm";e.style.width=(m.w||170)+"mm";e.style.height=(m.h||16)+"mm";e.style.fontSize=(m.size||25)+"px";e.style.color=m.color||"#17384e";
+ const t=document.createElement("div");t.className="text";t.contentEditable="true";t.textContent=m.text||"";
+ const drag=document.createElement("span");drag.className="drag";drag.textContent="MOVER";
+ e.append(t,drag);p.append(e);
+ e.addEventListener("click",()=>choose(e));t.addEventListener("focus",()=>choose(e));
+ t.addEventListener("input",()=>{if(e===selected)find("text").value=t.textContent;validate()});
+ drag.addEventListener("pointerdown",event=>{
+   event.preventDefault();event.stopPropagation();choose(e);drag.setPointerCapture(event.pointerId);
+   const rect=p.getBoundingClientRect(),scale=dims()[0]/rect.width;
+   const x=num(e.style.left),y=num(e.style.top),sx=event.clientX,sy=event.clientY;
+   function moving(ev){e.style.left=Math.max(0,x+(ev.clientX-sx)*scale)+"mm";e.style.top=Math.max(0,y+(ev.clientY-sy)*scale)+"mm";sync();validate()}
+   drag.addEventListener("pointermove",moving);
+   drag.addEventListener("pointerup",()=>drag.removeEventListener("pointermove",moving),{once:true});
+ });
+ e.addEventListener("mouseup",()=>{if(e===selected)sync();validate()});
+ return e;
+}
+function choose(e){if(selected)selected.classList.remove("selected");selected=e;e.classList.add("selected");sync()}
+function sync(){if(!selected)return;find("text").value=selected.querySelector(".text").textContent;find("size").value=num(selected.style.fontSize);find("color").value=selected.style.color.startsWith("#")?selected.style.color:"#17384e";find("font").value=selected.classList.contains("math")?"math":"school";find("x").value=num(selected.style.left);find("y").value=num(selected.style.top);find("width").value=num(selected.style.width)}
+function currentPage(){return selected?selected.closest(".paper"):area.querySelector(".paper")}
+function changed(){const map={size:["fontSize","px"],x:["left","mm"],y:["top","mm"],width:["width","mm"]};for(const key of Object.keys(map)){find(key).addEventListener("input",()=>{if(!selected)return;selected.style[map[key][0]]=find(key).value+map[key][1];validate()})}}
+changed();
+find("text").addEventListener("input",()=>{if(selected){selected.querySelector(".text").textContent=find("text").value;validate()}});
+find("color").addEventListener("input",()=>{if(selected)selected.style.color=find("color").value});
+find("font").addEventListener("change",()=>{if(selected){selected.classList.remove("school","math");selected.classList.add(find("font").value)}});
+find("orientation").addEventListener("change",()=>{const landscape=find("orientation").value==="landscape";area.querySelectorAll(".paper").forEach(p=>p.classList.toggle("landscape",landscape));find("orientationCss").textContent="@page{size:A4 "+find("orientation").value+";margin:0}";validate()});
+find("pageAdd").onclick=()=>{page();validate()};
+find("newText").onclick=()=>{choose(make(currentPage()||page(),{text:"Escribe el texto aquí",x:15,y:25,w:160,h:20,size:26}));validate()};
+find("newBox").onclick=()=>{choose(make(currentPage()||page(),{text:"Respuesta: __________________",kind:"math",x:15,y:75,w:160,h:35,size:22}));validate()};
+find("delete").onclick=()=>{if(selected){selected.remove();selected=null;validate()}};
+find("duplicate").onclick=()=>{if(!selected)return;const e=selected;const p=e.closest(".paper");choose(make(p,{text:e.querySelector(".text").textContent,kind:e.classList.contains("math")?"math":"school",x:num(e.style.left)+5,y:num(e.style.top)+5,w:num(e.style.width),h:num(e.style.height),size:num(e.style.fontSize),color:e.style.color}));validate()};
+function validate(){let errors=0;const [W,H]=dims();area.querySelectorAll(".block").forEach(e=>{const p=e.closest(".paper"),pr=p.getBoundingClientRect(),r=e.getBoundingClientRect(),bad=num(e.style.left)<0||num(e.style.top)<0||num(e.style.left)+r.width/pr.width*W>W-2||num(e.style.top)+r.height/pr.height*H>H-2||e.scrollHeight>e.clientHeight+3;e.classList.toggle("warning",bad);if(bad)errors++});find("status").textContent=errors?errors+" elementos se salen del recuadro o del A4. Corrígelos antes de imprimir.":"Bloques dentro de la hoja. Revisa visualmente el contenido.";find("print").disabled=errors>0;return !errors}
+function serialize(){return {orientation:find("orientation").value,pages:Array.from(area.children,p=>Array.from(p.querySelectorAll(".block"),e=>({text:e.querySelector(".text").textContent,kind:e.classList.contains("math")?"math":"school",x:num(e.style.left),y:num(e.style.top),w:num(e.style.width),h:num(e.style.height),size:num(e.style.fontSize),color:e.style.color})))}}
+find("save").onclick=()=>{localStorage.setItem("oaoa-exam-layout-v1",JSON.stringify(serialize()));find("status").textContent="Diseño guardado en este navegador."};
+find("load").onclick=()=>{try{const model=JSON.parse(localStorage.getItem("oaoa-exam-layout-v1"));if(!model)return;area.replaceChildren();find("orientation").value=model.orientation;model.pages.forEach(items=>{const p=page();items.forEach(m=>make(p,m))});find("orientation").dispatchEvent(new Event("change"))}catch(e){find("status").textContent="No se pudo cargar el diseño."}};
+find("print").onclick=async()=>{if(document.fonts)await document.fonts.ready;if(validate()){if(selected)selected.classList.remove("selected");window.print()}};
+function start(){
+ let raw;try{raw=JSON.parse(sessionStorage.getItem("oaoa-exam-for-editor")||"null")}catch(e){}
+ if(raw&&Array.isArray(raw.sessions)){raw.sessions.slice(0,2).forEach((session,index)=>{const p=page();make(p,{text:"PRUEBA DE MATEMÁTICAS · 1.º PRIMARIA",x:15,y:9,w:180,h:18,size:30});make(p,{text:"Nombre: __________________    Fecha: __________",kind:"math",x:15,y:28,w:180,h:12,size:20});session.tasks.slice(0,3).forEach((t,i)=>{const y=50+i*77;make(p,{text:(i+1)+". "+t.title,x:15,y:y,w:177,h:18,size:30});make(p,{text:t.instruction,x:15,y:y+18,w:177,h:24,size:26});make(p,{text:"REPRESENTACIÓN / DIBUJO",x:15,y:y+44,w:85,h:28,size:19});make(p,{text:"OPERACIÓN: ________\nRESPUESTA: ________",kind:"math",x:105,y:y+44,w:89,h:28,size:19})})})}
+ else{const p=page();make(p,{text:"PRUEBA DE MATEMÁTICAS",x:15,y:15,w:180,h:20,size:32});make(p,{text:"Nombre: __________________    Fecha: __________",kind:"math",x:15,y:40,w:180,h:16,size:20});make(p,{text:"Escribe aquí el problema.",x:15,y:70,w:180,h:30,size:25});find("status").textContent="Abre este editor desde el generador de exámenes para importar las tareas."}
+ validate();
+}
+start();if(document.fonts)document.fonts.ready.then(validate);
+})();
+</script></body></html>
