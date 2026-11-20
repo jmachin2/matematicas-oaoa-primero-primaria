@@ -128,7 +128,8 @@ html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;backgr
         <p class="panel-lead" style="margin:4px 0 0">La prueba combina representación, estrategia, cálculo, resolución y explicación. La rúbrica valora cómo piensa el alumnado, no solo si acierta.</p>
       </div>
       <div class="pdf-actions">
-        <button class="pdf-btn primary" id="testPdfBtn" type="button" disabled>⬇ Prueba PDF</button>
+        <button class="pdf-btn primary" id="visualPdfBtn" type="button" disabled>🎨 Prueba visual PDF</button>
+        <button class="pdf-btn" id="testPdfBtn" type="button" disabled>⬇ Prueba PDF</button>
         <button class="pdf-btn" id="editExamBtn" type="button" disabled>✏️ Editar examen visualmente</button>
         <button class="pdf-btn rubric" id="rubricPdfBtn" type="button" disabled>⬇ Rúbrica PDF</button>
         <button class="pdf-btn" id="printPdfBtn" type="button" disabled>🖨 Imprimir / guardar como PDF</button>
@@ -140,6 +141,7 @@ html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;backgr
   </section>
 </main>
 
+<script src="../assets/oaoa-print-visuals.js"></script>
 <script>
 const SHEETS = [
   {
@@ -474,6 +476,7 @@ function update(){
   $('#analysis').innerHTML=analysisHtml(sel);
   $('#previewPlan').innerHTML=planHtml(sel);
   $('#testPdfBtn').disabled=!sel.length;
+  $('#visualPdfBtn').disabled=!sel.length;
   $('#editExamBtn').disabled=!sel.length;
   $('#rubricPdfBtn').disabled=!sel.length;
   $('#printPdfBtn').disabled=!sel.length;
@@ -775,13 +778,71 @@ $('#openPdfLink').addEventListener('click',e=>{
   e.currentTarget.removeAttribute('download');
 });
 async function ensureSchoolFont(){if(!document.fonts)return;try{await document.fonts.load('400 20px "Playwrite ES"');await document.fonts.ready;}catch(e){console.warn('Fuente escolar no disponible; usando alternativa',e)}}
+
+function visualModelForTask(t){
+ const variant=Math.max(0,Math.min(2,Number(t.variant)||0));
+ const strategies={
+  pairs8:()=>({page:22,type:'brick',nums:[8,[1,2,3][variant]]}),
+  pairs678:()=>({page:23,type:'brick',nums:[[6,2],[7,3],[8,5]][variant]}),
+  represent8:()=>({page:24,type:'brick',nums:[8,[3,4,5][variant]]}),
+  p25:()=>({page:25,type:'sum',nums:[[6,1],[4,4],[3,5]][variant]}),
+  p26:()=>({page:26,type:'brick',nums:[[8,3],[7,2],[6,5]][variant]}),
+  p27:()=>({page:27,type:'money',nums:[[5,2],[5,1,2],[5,1]][variant]}),
+  p28:()=>({page:28,type:'compare',nums:[[5,3],[6,0],[6,1]][variant]}),
+  complement9:()=>({page:29,type:'brick',nums:[9,(t.parts||[2,5,7])[variant]||2]}),
+  represent9:()=>({page:30,type:'brick',nums:[9,t.known||4]}),
+  pairs789:()=>({page:31,type:'brick',nums:[(t.targets||[7,8,9])[variant],(t.parts||[3,5,4])[variant]]}),
+  previous:()=>({page:32,type:'previous',nums:[(t.numbers||[9,8,7])[0]]}),
+  sum789:()=>{const expr=(t.sums||['5 + 2','6 + 2','4 + 5'])[[0,1,2][variant]]||'5 + 2';return {page:33,type:'sum',nums:expr.split('+').map(Number)}}
+ };
+ return strategies[t.type]?.()||null;
+}
+function svgExamImage(svg){
+ return new Promise((resolve,reject)=>{
+  const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>reject(new Error('No se pudo cargar el dibujo vectorial.'));
+  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+ });
+}
+async function createVisualCanvases(sel){
+ const plan=assessmentPlan(sel),output=[];
+ await ensureSchoolFont();
+ let number=1;
+ for(let si=0;si<Math.min(2,plan.length);si++){
+  const canvas=document.createElement('canvas');canvas.width=1240;canvas.height=1754;
+  const g=canvas.getContext('2d');g.fillStyle=C.paper;g.fillRect(0,0,1240,1754);
+  txt(g,'PRUEBA COMPETENCIAL · MATEMÁTICAS',620,74,34,{bold:true,align:'center'});
+  txt(g,'1.º de Primaria · Sesión '+(si+1)+' de '+plan.length,620,111,22,{bold:true,align:'center',color:C.muted});
+  txt(g,'Nombre:',72,158,22,{bold:true});blankLine(g,165,161,510);
+  txt(g,'Fecha:',760,158,22,{bold:true});blankLine(g,835,161,300);
+  g.strokeStyle='#c8dce7';g.lineWidth=3;g.beginPath();g.moveTo(70,190);g.lineTo(1170,190);g.stroke();
+  for(let k=0;k<Math.min(3,plan[si].tasks.length);k++){
+   const t=plan[si].tasks[k],x=70,y=215+k*483,w=1100,h=455;
+   const model=visualModelForTask(t);
+   if(!model||!window.OAOAVisuals){drawTask(g,t,x,y,w,h,number++);continue}
+   let img=null;
+   try{img=await svgExamImage(window.OAOAVisuals.render({...model,mode:'examen'}))}catch(e){console.warn('Se usa el modelo de examen anterior.',e)}
+   if(!img){drawTask(g,t,x,y,w,h,number++);continue}
+   rr(g,x,y,w,h,18,'#fff','#c7dce7',3);
+   txt(g,(number++)+'. '+t.title,x+22,y+40,34,{school:true});
+   wrap(g,t.instruction,x+22,y+89,w-50,42,28,{school:true,color:C.muted});
+   // Mismo dibujo SVG vectorial y código de colores que las actividades de la página.
+   g.drawImage(img,x+94,y+149,912,180);
+   txt(g,'Compruebo y explico cómo lo he pensado:',x+36,y+378,22,{school:true,color:C.muted});
+   blankLine(g,x+36,y+416,w-72);
+  }
+  txt(g,'Puedes comprobar con regletas, dibujo y explicación.',620,1690,20,{school:true,align:'center',color:C.muted});
+  output.push(canvas);
+ }
+ return output;
+}
+
 async function exportPdf(kind){
   const sel=selected();
   if(!sel.length){
     $('#pdfExportStatus').textContent='Selecciona al menos una ficha.';
     return;
   }
-  const btn=$(kind==='test'?'#testPdfBtn':'#rubricPdfBtn');
+  const btn=$(kind==='visual'?'#visualPdfBtn':kind==='test'?'#testPdfBtn':'#rubricPdfBtn');
   const status=$('#pdfExportStatus');
   const fallback=$('#openPdfLink');
   btn.disabled=true;
@@ -789,10 +850,10 @@ async function exportPdf(kind){
   fallback.style.display='none';
   try{
     await ensureSchoolFont();
-    const canvases=kind==='test'?testCanvases(sel):rubricCanvases(sel);
+    const canvases=kind==='visual'?await createVisualCanvases(sel):kind==='test'?testCanvases(sel):rubricCanvases(sel);
     if(!canvases.length) throw new Error('No se han generado páginas.');
     const blob=canvasesToPdf(canvases);
-    const name=kind==='test'?'prueba_competencial_matematicas_1primaria.pdf':'rubrica_prueba_competencial_matematicas_1primaria.pdf';
+    const name=kind==='visual'?'prueba_visual_oaoa_1primaria.pdf':kind==='test'?'prueba_competencial_matematicas_1primaria.pdf':'rubrica_prueba_competencial_matematicas_1primaria.pdf';
     downloadBlob(blob,name);
   }catch(err){
     console.error('Error al generar el PDF',err);
@@ -823,6 +884,7 @@ $('#editExamBtn').onclick=()=>{
 };
 $('#printPdfBtn').onclick=printAsPdf;
 $('#testPdfBtn').onclick=()=>exportPdf('test');
+$('#visualPdfBtn').onclick=()=>exportPdf('visual');
 $('#rubricPdfBtn').onclick=()=>exportPdf('rubric');
 
 renderChoices();update();
