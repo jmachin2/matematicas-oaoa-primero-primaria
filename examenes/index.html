@@ -287,7 +287,12 @@ const SHEETS = [
    strategies:['Comparar resultado con 8','Clasificación por criterio','Completar parte-todo','Comprobación'],
    competences:['C1','C2','C3','C6'],criteria:['1.1','2.1','2.2','3.1','6.2'],
    knowledge:['Sumas iguales a 8','Sumas menores que 8','Complementos en diagramas','Comparación de cantidades'],
-   indicator:'Clasifica correctamente sumas iguales o menores que 8 y completa los ladrillos.'}
+   indicator:'Clasifica correctamente sumas iguales o menores que 8 y completa los ladrillos.'},
+  {id:'p29',order:23,title:'Página 29 · Caza el 9 y complementos',short:'Completar 9 y descubrir la parte que falta',weight:1.45,group:'oper',strategies:['Construcción del 9 con regletas','Complementarios hasta 9','Búsqueda de la parte desconocida'],competences:['C1','C2','C3','C6'],criteria:['1.1','2.1','2.2','3.1','6.2'],knowledge:['Parejas del 9','Complementos hasta 9'],indicator:'Construye 9, encuentra el complemento y lo comprueba.'},
+  {id:'p30',order:24,title:'Página 30 · Dibujo y diagramas del 9',short:'Regletas, dibujo y parte-todo del 9',weight:1.5,group:'oper',strategies:['Construcción del 9','Paso a dibujo','Diagrama parte-todo','Conexión con la suma'],competences:['C1','C2','C3','C6'],criteria:['1.1','2.1','2.2','3.1','6.2'],knowledge:['Representaciones del 9','Diagrama parte-todo'],indicator:'Representa la misma descomposición del 9 de varias maneras.'},
+  {id:'p31',order:25,title:'Página 31 · Parejas de 7, 8 y 9',short:'Organizar parejas y completar sus partes',weight:1.5,group:'oper',strategies:['Búsqueda sistemática de parejas','Complementos del 7, 8 y 9','Comprobación con regletas'],competences:['C1','C2','C3','C5','C6'],criteria:['1.1','2.1','2.2','3.1','5.1','6.2'],knowledge:['Parejas numéricas del 7, 8 y 9'],indicator:'Organiza las parejas y determina la parte desconocida.'},
+  {id:'p32',order:26,title:'Página 32 · El número anterior',short:'Uno menos y secuencia descendente',weight:1.35,group:'oper',strategies:['Quitar una unidad','Número anterior','Regletas y secuencia descendente'],competences:['C1','C2','C3','C4','C6'],criteria:['1.1','2.1','2.2','3.1','4.1','6.2'],knowledge:['Número anterior','Estrategia −1'],indicator:'Encuentra el número inmediatamente anterior quitando una unidad.'},
+  {id:'p33',order:27,title:'Página 33 · Sumas y resultados del 7 al 9',short:'Sumar y clasificar por resultado',weight:1.45,group:'oper',strategies:['Sumas hasta 9','Regletas para comprobar','Clasificación de resultados 7, 8 y 9'],competences:['C1','C2','C3','C5','C6'],criteria:['1.1','2.1','2.2','3.1','5.1','6.2'],knowledge:['Hechos aditivos hasta 9','Comparación de resultados'],indicator:'Calcula y clasifica sumas cuyos resultados son 7, 8 o 9.'}
 ];
 const COMP_DESC={
   C1:'Interpretar situaciones y representarlas matemáticamente.',
@@ -398,7 +403,13 @@ function buildTasks(sel){
       p28:{title:'Igual o menor que 8',type:'p28',instruction:'Clasifica las sumas en iguales a 8 o menores que 8 y completa una pareja.'},
       pairs8:{title:'Parejas del 8',type:'pairs8',instruction:'Completa las parejas que forman 8 y representa una de ellas con regletas.'},
       pairs678:{title:'Parejas del 6, 7 y 8',type:'pairs678',instruction:'Busca la parte que falta para formar cada total y compruébalo.'},
-      represent8:{title:'Representamos el 8',type:'represent8',instruction:'Representa la misma descomposición del 8 mediante dibujo, diagrama parte-todo y suma.'}
+      represent8:{title:'Representamos el 8',type:'represent8',instruction:'Representa la misma descomposición del 8 mediante dibujo, diagrama parte-todo y suma.'},
+      p29:{title:'Complementos del 9',type:'complement9',target:9,parts:[2,5,7],instruction:'Completa 9 con regletas: busca la parte que falta y comprueba.'},
+      p30:{title:'Representa el 9',type:'represent9',total:9,known:4,instruction:'Construye 9 con regletas, dibuja nueve elementos y completa un diagrama parte-todo.'},
+      p31:{title:'Parejas de 7, 8 y 9',type:'pairs789',targets:[7,8,9],parts:[3,5,4],instruction:'Encuentra la parte que falta en cada total: 7, 8 y 9.'},
+      p32:{title:'El número anterior',type:'previous',numbers:[9,7,5,3],instruction:'Retira una unidad de cada número y escribe su anterior: solo uno menos.'},
+      p33:{title:'Clasifico sumas de 7 a 9',type:'sum789',sums:['5 + 2','6 + 2','4 + 5','3 + 6'],instruction:'Calcula y clasifica las sumas según el resultado: 7, 8 o 9.'}
+
     };
     tasks.push({sheet:s,...map[s.id]});
   });
@@ -410,58 +421,25 @@ function buildTasks(sel){
 }
 
 function representativeTasksForSession(sessionSheets,isLastSession,fullSelection){
-  const all=buildTasks(sessionSheets).filter(t=>t.type!=='problem');
-
-  // Priorizamos tareas que recogen varias destrezas a la vez.
-  const priority=['represent8','pairs8','pairs678','partWhole','complements','classify','missingPairs','twoWays',
-                  'detective','commute','matchSums','six','seven','sum567','pairs567','tree7','successor','money7','p25','p26','p27','p28','pairs8','pairs678','represent8'];
-  const ordered=[...all].sort((a,b)=>priority.indexOf(a.type)-priority.indexOf(b.type));
-
-  // En un folio caben tres tareas competenciales con espacio suficiente.
-  // Si hay pocas fichas, conservamos sus tareas; si hay muchas, hacemos una muestra
-  // representativa evitando repetir destrezas muy próximas.
-  const chosen=[];
-  const families=new Set();
-  const family=t=>{
-    if(['twoWays','missingPairs','represent8'].includes(t.type)) return 'representacion';
-    if(['classify','complements','partWhole','pairs567','pairs8','pairs678','p26','p28','tree7'].includes(t.type)) return 'composicion';
-    if(['matchSums','six','seven','sum567','successor','money7'].includes(t.type)) return 'relaciones';
-    if(['commute','detective'].includes(t.type)) return 'razonamiento';
-    return t.type;
+ const tasks=buildTasks(sessionSheets).filter(t=>t.type!=='problem');
+ if(!tasks.length)return [];
+ if(sessionSheets.length===1){
+  const t=tasks[0];
+  const prompts={
+   complement9:['Construye 9 con regletas y completa las partes.','Escribe las sumas de las parejas del 9.','Comprueba la parte que falta hasta llegar a 9.'],
+   represent9:['Construye 9 con regletas y dibuja nueve elementos.','Completa el diagrama parte-todo de 9.','Escribe y explica la suma correspondiente al dibujo.'],
+   pairs789:['Construye una pareja del 7, otra del 8 y otra del 9.','Completa las partes desconocidas de los tres totales.','Comprueba las parejas con regletas y explica el patrón.'],
+   previous:['Quita una unidad para encontrar el anterior.','Completa los números inmediatamente anteriores.','Demuestra con regletas que cada resultado es uno menos.'],
+   sum789:['Construye sumas con resultados 7, 8 y 9.','Clasifica las sumas según su resultado.','Comprueba con regletas las equivalencias.']
   };
-
-  for(const t of ordered){
-    const fam=family(t);
-    if(!families.has(fam) || chosen.length===0){
-      chosen.push(t); families.add(fam);
-    }
-    if(chosen.length>=2) break;
-  }
-  if(chosen.length<2){
-    for(const t of ordered){
-      if(!chosen.includes(t)) chosen.push(t);
-      if(chosen.length>=2) break;
-    }
-  }
-
-  // Siempre incluimos una situación de transferencia. Si hay dos sesiones,
-  // aparece al final de cada una con rango numérico coherente con sus fichas.
-  const maxTarget=sessionSheets.some(x=>['pairs8','pairs678','represent8','p25','p26','p27','p28'].includes(x.id)) ? 8 :
-                  sessionSheets.some(x=>['n7','sums567','pairs567','decomp7','successor','pairs8','pairs678','represent8'].includes(x.id)) ? 7 :
-                  sessionSheets.some(x=>['n6','diag56'].includes(x.id)) ? 6 :
-                  sessionSheets.some(x=>['n5','fourfive','partwhole','sumresult','comm'].includes(x.id)) ? 5 : 4;
-  const problem=maxTarget===8 ? {a:5,b:3,total:8} :
-                maxTarget===7 ? {a:5,b:2,total:7} :
-                maxTarget===6 ? {a:4,b:2,total:6} :
-                maxTarget===5 ? {a:3,b:2,total:5} : {a:2,b:2,total:4};
-  chosen.push({
-    title:'Reto final: resuelve y comprueba',
-    type:'problem',
-    ...problem,
-    instruction:`En una bandeja hay ${problem.a} lápices azules y ${problem.b} lápices verdes. ¿Cuántos lápices hay en total? Representa, calcula y comprueba.`
-  });
-
-  return chosen.slice(0,3);
+  return [0,1,2].map(variant=>({...t,variant,title:(prompts[t.type]?['Construyo','Represento','Compruebo'][variant]:t.title+' · '+['Construyo','Represento','Compruebo'][variant]),instruction:prompts[t.type]?.[variant]||t.instruction}));
+ }
+ const result=[];const fam=new Set();
+ const family=t=>t.type==='previous'?'anterior':['represent8','represent9','twoWays'].includes(t.type)?'representacion':['complement9','pairs789','complements','pairs8','pairs678','partWhole'].includes(t.type)?'parejas':t.type;
+ for(const t of tasks){const f=family(t);if(!fam.has(f)){result.push(t);fam.add(f)}if(result.length>=3)break}
+ for(const t of tasks){if(result.length>=3)break;if(!result.includes(t))result.push(t)}
+ while(result.length<3)result.push({...tasks[0],variant:result.length});
+ return result.slice(0,3);
 }
 
 function assessmentPlan(sel){
@@ -474,7 +452,7 @@ function assessmentPlan(sel){
 function planHtml(sel){
   if(!sel.length) return '';
   const plan=assessmentPlan(sel);
-  return plan.map((p,i)=>`<div class="preview-card"><h4>Folio ${i+1} · Sesión ${i+1}</h4><ol>${p.tasks.map(t=>`<li>${t.title}</li>`).join('')}</ol><p style="margin:8px 0 0;color:#60798a;font-size:.76rem;font-weight:700">Las tareas integran las destrezas seleccionadas; no se repite una actividad por cada ficha.</p></div>`).join('');
+  return plan.map((p,i)=>`<div class="preview-card"><h4>Folio ${i+1} · Sesión ${i+1}</h4><ol>${p.tasks.map(t=>`<li>${t.title}</li>`).join('')}</ol><p style="margin:8px 0 0;color:#60798a;font-size:.76rem;font-weight:700">Con varias fichas se evalúa una muestra representativa, no todas sus estrategias. Para evaluar cada ficha selecciona solo una.</p></div>`).join('');
 }
 
 function update(){
@@ -491,7 +469,7 @@ $('#noneBtn').onclick=()=>{document.querySelectorAll('#sheetSelect input').forEa
 
 // ----- Drawing helpers -----
 const C={ink:'#17384e',muted:'#627b8a',line:'#b9cedb',blue:'#469ac7',paper:'#fffefa',
-  rods:{1:'#f5f1e8',2:'#d95757',3:'#9acb6a',4:'#f29ac2',5:'#edda4a',6:'#2d7b4d',7:'#202020',8:'#8b654e'}};
+  rods:{1:'#f5f1e8',2:'#d95757',3:'#9acb6a',4:'#f29ac2',5:'#edda4a',6:'#2d7b4d',7:'#202020',8:'#8b654e',9:'#2779b2',10:'#eb8c32'}};
 function rr(g,x,y,w,h,r=14,fill='#fff',stroke=C.line,lw=3){
   g.beginPath();g.roundRect(x,y,w,h,r);g.fillStyle=fill;g.fill();g.lineWidth=lw;g.strokeStyle=stroke;g.stroke();
 }
@@ -624,6 +602,17 @@ function drawTask(g,t,x,y,w,h,num){
     });
     txt(g,'IGUAL A 8:',cx,yy+191,21,{bold:true});blankLine(g,cx+125,yy+194,210);
     txt(g,'MENOR QUE 8:',cx+360,yy+191,21,{bold:true});blankLine(g,cx+540,yy+194,175);
+  } else if(t.type==='complement9'){
+    (t.parts||[2,5,7]).forEach((p,i)=>{let xx=cx+i*220;rod(g,9,xx,yy+12,17,31);txt(g,'9 = '+p+' +',xx,yy+95,23,{bold:true});rr(g,xx+150,yy+62,62,41,8,'#fff','#91a9b7',2)});
+  } else if(t.type==='represent9'){
+    tree(g,cx+65,yy+20,9,t.known||4);txt(g,'Dibuja nueve elementos:',cx+450,yy+65,19,{school:true});rr(g,cx+440,yy+85,400,110,9,'#fff','#a9c9d7',2);
+  } else if(t.type==='pairs789'){
+    (t.targets||[7,8,9]).forEach((v,i)=>{let xx=cx+i*245;rod(g,v,xx,yy+15,20,32);txt(g,v+' = '+(t.parts||[3,5,4])[i]+' +',xx,yy+105,22,{bold:true});rr(g,xx+145,yy+72,63,43,8,'#fff','#91a9b7',2)});
+  } else if(t.type==='previous'){
+    (t.numbers||[9,7,5,3]).forEach((v,i)=>{let xx=cx+(i%2)*390,ry=yy+20+Math.floor(i/2)*100;rod(g,v,xx,ry,18,34);txt(g,v+' − 1 =',xx+170,ry+30,25,{bold:true});rr(g,xx+285,ry,72,43,8,'#fff','#91a9b7',2)});
+  } else if(t.type==='sum789'){
+    (t.sums||['5 + 2','6 + 2','4 + 5','3 + 6']).forEach((v,i)=>{let xx=cx+(i%2)*370,ry=yy+20+Math.floor(i/2)*89;txt(g,v+' =',xx,ry+29,25,{bold:true});rr(g,xx+145,ry,72,43,8,'#fff','#91a9b7',2)});
+    txt(g,'Agrupa los resultados en 7, 8 y 9.',cx,yy+255,20,{school:true});
   } else if(t.type==='problem'){
     txt(g,'REPRESENTA',cx,yy+28,18,{bold:true,color:C.muted});rr(g,cx,yy+43,avail,95,12,'#fbfdfe','#d6e3eb',2);
     txt(g,'OPERACIÓN',cx,yy+178,18,{bold:true,color:C.muted});blankLine(g,cx+120,yy+180,260);
