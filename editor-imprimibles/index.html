@@ -20,7 +20,7 @@ h1{font-size:19px;margin:0 0 8px}h2{font-size:16px;margin:0 0 8px}p{line-height:
 .task.prose .editable{line-height:1.8;font-size:var(--size,18pt)}
 .task.math .editable{font-family:Arial,Helvetica,sans-serif;line-height:1.4;font-weight:600}
 @media print{.paper-header,.paper .prompt,.task.prose .editable{font-family:var(--oaoa-hand)}}
-</style></head><body>
+</style><style id="oaoa-strategy-style">.task .strategy-visual{margin:2mm 0 0;max-width:100%;break-inside:avoid}.strategy-visual svg{width:100%;max-height:31mm;overflow:visible;display:block}.task.strategy .editable{font-family:"Playwrite ES","Segoe Print",cursive!important;font-weight:400!important;font-size:var(--size,14pt);line-height:1.55}.task.strategy{padding:1mm 2mm}.task .draw{margin-top:2mm}@media print{.strategy-visual svg{max-height:31mm}}</style></head><body>
 <div class="app"><aside class="panel controls-panel"><h1>✏️ Editor de fichas OAOA</h1><p class="small">Selecciona la modalidad y pulsa «Otra versión». Haz clic en un ejercicio para editarlo o moverlo.</p>
 <label for="kind"><strong>Tipo de ficha</strong></label><select id="kind" class="full"><option value="ampliacion">Ampliación</option><option value="refuerzo">Refuerzo</option><option value="tarea">Tarea</option><option value="tea">TEA</option><option value="pictogramas">Pictogramas</option></select>
 <div id="version">Versión 1</div><button id="regenerate" class="primary full">↻ Otra versión</button>
@@ -28,6 +28,7 @@ h1{font-size:19px;margin:0 0 8px}h2{font-size:16px;margin:0 0 8px}p{line-height:
 <div class="buttons"><button id="save">💾 Guardar diseño</button><button id="reset">Restaurar</button></div>
 <button id="print" class="primary full">🖨️ Imprimir / Guardar PDF</button><p id="message" role="status" aria-live="polite">Cargando ficha…</p><p class="small">Los cambios se guardan en este navegador. El PDF se guarda desde la ventana de impresión.</p></aside>
 <section class="panel"><h2 class="preview-title">Vista previa A4 · <span id="heading"></span></h2><div class="preview-wrap"><article class="paper" id="paper"><div class="paper-header" id="paperTitle"></div><div class="sheet-meta">Nombre: _____________________ &nbsp; Fecha: ______________</div><div class="prompt" id="prompt"></div><div class="items" id="items"></div><div id="paperFooter"></div></article></div></section></div>
+<script src="../assets/oaoa-print-visuals.js"></script>
 <script>
 (function(){'use strict';
 const $=id=>document.getElementById(id);const params=new URLSearchParams(location.search);const page=[22,23,24,25,26,27,28,29,30,31,32,33].includes(Number(params.get('pagina')))?Number(params.get('pagina')):22;
@@ -130,23 +131,25 @@ function buildFollowUp(mode){
  return (keyed[page]||['Dibuja la estrategia que has utilizado.','Comprueba el resultado con otra representación.'])[mode==='ampliacion'?1:0];
 }
 function createModel(){
- const pool=config.tasks,mode=$('kind').value,amount={ampliacion:4,refuerzo:3,tarea:4,tea:3,pictogramas:3}[mode];
+ const pool=config.tasks,mode=$('kind').value,amount={ampliacion:3,refuerzo:3,tarea:3,tea:3,pictogramas:3}[mode];
  const index=version%pool.length,cycle=Math.floor(version/pool.length);
  const chosen=Array.from({length:amount},(_,j)=>{
   const item=pool[(index+j)%pool.length],a=item.nums.slice();
   if(cycle%2===1&&item.type==='sum')a.reverse();
-  return {text:(j+1)+'. '+worksheetStrategyText({type:item.type,nums:a},mode,j),size:mode==='refuerzo'?16:mode==='ampliacion'?15:17,gap:mode==='refuerzo'?7:5,draw:mode==='refuerzo'?18:mode==='ampliacion'?15:mode==='tea'?17:0};
+  return {text:(j+1)+'. '+worksheetStrategyText({type:item.type,nums:a},mode,j),type:item.type,nums:a,size:mode==='refuerzo'?14:mode==='ampliacion'?14:14,gap:4,draw:0};
  });
- chosen.push({text:buildFollowUp(mode),size:mode==='refuerzo'?15:16,gap:6,draw:mode==='ampliacion'?25:mode==='refuerzo'?25:19});
+ chosen.push({text:buildFollowUp(mode),size:14,gap:5,draw:mode==='ampliacion'?16:mode==='refuerzo'?14:13});
  return chosen;
 }
-function snapshot(){return [...$('items').children].map(el=>({text:el.querySelector('.editable')?.textContent||'',size:Number(el.dataset.size),gap:Number(el.dataset.gap),draw:Number(el.dataset.draw)}))}
+function snapshot(){return [...$('items').children].map(el=>({text:el.querySelector('.editable')?.textContent||'',size:Number(el.dataset.size),gap:Number(el.dataset.gap),draw:Number(el.dataset.draw),type:el.dataset.strategy||'',nums:JSON.parse(el.dataset.nums||'[]')}))}
 function remember(){history.push(snapshot());if(history.length>30)history.shift()}
-function buildTask(m){const wrap=document.createElement('div');wrap.className='task '+(/^(?:[0-9]+[.] *)?(?:Explica|Dibuja|Representa|Piensa|Escribe aquí|Observa|Responde|Compara)/i.test(m.text)?'prose':'math');const text=document.createElement('div');text.className='editable';text.contentEditable='true';text.spellcheck=true;text.textContent=m.text;wrap.append(text);wrap.addEventListener('click',()=>pick(wrap));text.addEventListener('input',validate);apply(wrap,m);return wrap}
-function apply(el,m){el.dataset.size=m.size??16;el.dataset.gap=m.gap??5;el.dataset.draw=m.draw??0;el.style.setProperty('--size',el.dataset.size+'pt');el.style.setProperty('--gap',el.dataset.gap+'mm');el.style.setProperty('--draw',el.dataset.draw+'mm');el.querySelectorAll('.draw').forEach(x=>x.remove());if(Number(el.dataset.draw)>0){const draw=document.createElement('div');draw.className='draw';el.append(draw)}}
+function buildTask(m){const wrap=document.createElement('div');wrap.className='task '+(m.type?'strategy':/^(?:[0-9]+[.] *)?(?:Explica|Dibuja|Representa|Piensa|Escribe aquí|Observa|Responde|Compara)/i.test(m.text)?'prose':'math');const text=document.createElement('div');text.className='editable';text.contentEditable='true';text.spellcheck=true;text.textContent=m.text;wrap.append(text);wrap.addEventListener('click',()=>pick(wrap));text.addEventListener('input',validate);apply(wrap,m);return wrap}
+function apply(el,m){el.dataset.strategy=m.type||'';el.dataset.nums=JSON.stringify(m.nums||[]);el.dataset.size=m.size??16;el.dataset.gap=m.gap??5;el.dataset.draw=m.draw??0;el.style.setProperty('--size',el.dataset.size+'pt');el.style.setProperty('--gap',el.dataset.gap+'mm');el.style.setProperty('--draw',el.dataset.draw+'mm');el.querySelectorAll('.draw,.strategy-visual').forEach(x=>x.remove());
+ if(m.type && m.nums && window.OAOAVisuals){const figure=document.createElement('div');figure.className='strategy-visual';figure.innerHTML=OAOAVisuals.render({page,type:m.type,nums:m.nums,mode:$('kind').value});el.append(figure);}
+ if(Number(el.dataset.draw)>0){const draw=document.createElement('div');draw.className='draw';el.append(draw)}}
 function pick(el){selected=el;[...$('items').children].forEach(x=>x.classList.toggle('selected',x===el))}
 function render(models){$('paperTitle').textContent='MATEMÁTICAS OAOA · PÁGINA '+page;$('heading').textContent=config.title;$('version').textContent='Versión '+(version+1)+' · '+config.title;$('paperFooter').textContent='Página '+page+' · Versión '+(version+1);$('prompt').textContent=$('kind').value==='tea'?'MIRA · PIENSA · CONSTRUYE · ESCRIBE':$('kind').value==='pictogramas'?'👀 MIRA · 🧩 JUNTA · ✍️ ESCRIBE':'Resuelve. Puedes usar regletas, dibujos y sumas.';$('items').replaceChildren(...models.map(buildTask));selected=null;validate()}
-function load(){let models=createModel();try{let saved=JSON.parse(localStorage.getItem(key())||'null');if(Array.isArray(saved)&&saved.length>0&&saved.length<30)models=saved}catch(e){}history=[];render(models)}
+function load(){let models=createModel();try{let saved=JSON.parse(localStorage.getItem(key())||'null');if(Array.isArray(saved)&&saved.length>0&&saved.length<30)models=saved.map((m,i)=>({...m,type:m.type||models[i]?.type||'',nums:m.nums||models[i]?.nums||[]}))}catch(e){}history=[];render(models)}
 function validate(){
  const paper=$('paper'),footer=$('paperFooter'),items=$('items');
  const paperRect=paper.getBoundingClientRect(),footerRect=footer.getBoundingClientRect();
@@ -160,7 +163,7 @@ function validate(){
  $('print').disabled=!fit;
  return fit
 }
-function act(mode){if(mode==='undo'){if(history.length)render(history.pop());return}if(mode==='addText'||mode==='addDrawing'){remember();const el=buildTask(mode==='addText'?{text:'Escribe aquí una instrucción.',size:14,gap:5,draw:0}:{text:'Dibuja aquí.',size:13,gap:5,draw:30});$('items').append(el);pick(el);validate();return}if(!selected){$('message').textContent='Selecciona un ejercicio antes de modificarlo.';return}remember();const el=selected;let m={text:el.querySelector('.editable').textContent,size:Number(el.dataset.size),gap:Number(el.dataset.gap),draw:Number(el.dataset.draw)};if(mode==='up'&&el.previousElementSibling)$('items').insertBefore(el,el.previousElementSibling);if(mode==='down'&&el.nextElementSibling)$('items').insertBefore(el.nextElementSibling,el);if(mode==='fontSmaller')m.size=Math.max(10,m.size-1);if(mode==='fontBigger')m.size=Math.min(25,m.size+1);if(mode==='gapSmaller')m.gap=Math.max(0,m.gap-2);if(mode==='gapBigger')m.gap=Math.min(25,m.gap+2);if(mode==='drawSmaller')m.draw=Math.max(0,m.draw-4);if(mode==='drawBigger')m.draw=Math.min(60,m.draw+4);if(mode==='remove'){el.remove();selected=null}else apply(el,m);validate()}
+function act(mode){if(mode==='undo'){if(history.length)render(history.pop());return}if(mode==='addText'||mode==='addDrawing'){remember();const el=buildTask(mode==='addText'?{text:'Escribe aquí una instrucción.',size:14,gap:5,draw:0}:{text:'Dibuja aquí.',size:13,gap:5,draw:30});$('items').append(el);pick(el);validate();return}if(!selected){$('message').textContent='Selecciona un ejercicio antes de modificarlo.';return}remember();const el=selected;let m={text:el.querySelector('.editable').textContent,size:Number(el.dataset.size),gap:Number(el.dataset.gap),draw:Number(el.dataset.draw),type:el.dataset.strategy||'',nums:JSON.parse(el.dataset.nums||'[]')};if(mode==='up'&&el.previousElementSibling)$('items').insertBefore(el,el.previousElementSibling);if(mode==='down'&&el.nextElementSibling)$('items').insertBefore(el.nextElementSibling,el);if(mode==='fontSmaller')m.size=Math.max(10,m.size-1);if(mode==='fontBigger')m.size=Math.min(25,m.size+1);if(mode==='gapSmaller')m.gap=Math.max(0,m.gap-2);if(mode==='gapBigger')m.gap=Math.min(25,m.gap+2);if(mode==='drawSmaller')m.draw=Math.max(0,m.draw-4);if(mode==='drawBigger')m.draw=Math.min(60,m.draw+4);if(mode==='remove'){el.remove();selected=null}else apply(el,m);validate()}
 ['up','down','fontSmaller','fontBigger','gapSmaller','gapBigger','drawSmaller','drawBigger','addText','addDrawing','remove','undo'].forEach(name=>$(name).addEventListener('click',()=>act(name)));
 $('regenerate').addEventListener('click',()=>{version++;load()});$('kind').addEventListener('change',()=>{version=0;load()});$('reset').addEventListener('click',()=>{localStorage.removeItem(key());history=[];render(createModel())});$('save').addEventListener('click',()=>{if(!validate())return;try{localStorage.setItem(key(),JSON.stringify(snapshot()));$('message').textContent='✓ Diseño guardado en este navegador.'}catch(e){$('message').textContent='⚠️ Este navegador no permite guardar el diseño.'}});$('print').addEventListener('click',async()=>{const btn=$('print');btn.disabled=true;try{if(document.fonts){await document.fonts.load('400 14pt "Playwrite ES"');await document.fonts.ready;}if(validate())window.print()}catch(e){$('message').textContent='No se pudo preparar la fuente: '+e.message}finally{validate()}});window.addEventListener('resize',validate);
 load();
