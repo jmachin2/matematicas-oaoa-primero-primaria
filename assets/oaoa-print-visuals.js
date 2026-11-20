@@ -11,7 +11,7 @@ function reg(n,x,y,unit=21,h=32){
 function empty(x,y,w=77,h=33){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="6" fill="#fff" stroke="#819aa9" stroke-width="2" stroke-dasharray="6 5"/>'}
 function box(x,y,w,h,label,fill='#fff',dash=false){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="4" fill="'+fill+'" stroke="#323232" stroke-width="2"'+(dash?' stroke-dasharray="6 4"':'')+'/>'+text(x+w/2-7,y+h/2+7,label,22)}
 function diagram(total,known){return box(274,10,78,35,total)+'<path d="M313 45 L207 77 M313 45 L419 77" fill="none" stroke="#333" stroke-width="3"/>'+box(160,76,92,37,known)+box(374,76,92,37,'?')}
-function base(body,desc){return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 126" width="100%" height="auto" role="img" aria-label="'+esc(desc)+'" preserveAspectRatio="xMidYMid meet" style="max-height:31mm;display:block">'+body+'</svg>'}
+function base(body,desc){return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 126" width="640" height="126" role="img" aria-label="'+esc(desc)+'" preserveAspectRatio="xMidYMid meet" style="max-height:31mm;display:block">'+body+'</svg>'}
 function render(model){
  const data=model||{},nums=Array.isArray(data.nums)?data.nums.map(Number):[],page=Number(data.page)||22;
  const type=data.type||'sum',mode=data.mode||'tarea',a=nums[0]||1,b=nums[1]||1;
