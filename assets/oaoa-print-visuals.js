@@ -5,7 +5,9 @@
 const palette={1:'#f7f4ec',2:'#d95757',3:'#9acb6a',4:'#ed9abc',5:'#edda4a',6:'#2d7b4d',7:'#202020',8:'#8b5a35',9:'#337bb4',10:'#e58d32'};
 function esc(s){return String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
 function text(x,y,s,size=19,weight=700,color='#17384e'){return '<text x="'+x+'" y="'+y+'" font-family="Arial,sans-serif" font-weight="'+weight+'" font-size="'+size+'" fill="'+color+'">'+esc(s)+'</text>'}
-function reg(n,x,y,unit=21,h=32){const v=Math.max(1,Math.min(10,Number(n)||1)),w=v*unit,fill=palette[v]||'#eee';return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="6" fill="'+fill+'" stroke="#17384e" stroke-width="2"/>'+text(x+w/2-6,y+h/2+7,v,20,800,[2,6,7,8,9].includes(v)?'#fff':'#17384e')}
+function reg(n,x,y,unit=21,h=32){
+ const raw=Number(n);if(raw===0)return '<rect x="'+x+'" y="'+y+'" width="30" height="'+h+'" rx="6" fill="#fff" stroke="#819aa9" stroke-width="2" stroke-dasharray="4 4"/>'+text(x+9,y+h/2+7,0,20);
+ const v=Math.max(1,Math.min(10,Number.isFinite(raw)?raw:1)),w=v*unit,fill=palette[v]||'#eee';return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="6" fill="'+fill+'" stroke="#17384e" stroke-width="2"/><rect x="'+(x+3)+'" y="'+(y+3)+'" width="'+Math.max(1,w-6)+'" height="4" fill="#fff" opacity=".25" rx="2"/>'+text(x+w/2-6,y+h/2+7,v,20,800,[2,6,7,8,9].includes(v)?'#fff':'#17384e')}
 function empty(x,y,w=77,h=33){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="6" fill="#fff" stroke="#819aa9" stroke-width="2" stroke-dasharray="6 5"/>'}
 function box(x,y,w,h,label,fill='#fff',dash=false){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="4" fill="'+fill+'" stroke="#323232" stroke-width="2"'+(dash?' stroke-dasharray="6 4"':'')+'/>'+text(x+w/2-7,y+h/2+7,label,22)}
 function diagram(total,known){return box(274,10,78,35,total)+'<path d="M313 45 L207 77 M313 45 L419 77" fill="none" stroke="#333" stroke-width="3"/>'+box(160,76,92,37,known)+box(374,76,92,37,'?')}
