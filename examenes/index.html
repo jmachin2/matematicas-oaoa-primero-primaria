@@ -484,7 +484,7 @@ $('#singleExamBtn').onclick=()=>{const id=$('#singleExamPage').value;document.qu
 
 // ----- Drawing helpers -----
 const C={ink:'#17384e',muted:'#627b8a',line:'#b9cedb',blue:'#469ac7',paper:'#fffefa',
-  rods:{1:'#f5f1e8',2:'#d95757',3:'#9acb6a',4:'#f29ac2',5:'#edda4a',6:'#2d7b4d',7:'#202020',8:'#8b654e',9:'#2779b2',10:'#eb8c32'}};
+  rods:{1:'#f5f1e8',2:'#d95757',3:'#9acb6a',4:'#ed9abc',5:'#edda4a',6:'#2d7b4d',7:'#202020',8:'#8b5a35',9:'#337bb4',10:'#e58d32'}};
 function rr(g,x,y,w,h,r=14,fill='#fff',stroke=C.line,lw=3){
   g.beginPath();g.roundRect(x,y,w,h,r);g.fillStyle=fill;g.fill();g.lineWidth=lw;g.strokeStyle=stroke;g.stroke();
 }
@@ -501,7 +501,7 @@ function wrap(g,t,x,y,maxW,lineH,size=28,opt={}){
   if(line)g.fillText(line,x,yy);g.restore();return yy;
 }
 function rod(g,n,x,y,unit=34,h=42){
-  const w=n*unit;rr(g,x,y,w,h,5,C.rods[n]||'#ddd','#748694',2);txt(g,String(n),x+w/2,y+h*0.7,20,{bold:true,align:'center',color:[2,4,6,7].includes(n)?'#fff':'#25333d'});return w;
+  const w=n*unit;rr(g,x,y,w,h,5,C.rods[n]||'#ddd','#748694',2);txt(g,String(n),x+w/2,y+h*0.7,20,{bold:true,align:'center',color:[2,6,7,8,9].includes(n)?'#fff':'#25333d'});return w;
 }
 function blankLine(g,x,y,w){
   g.strokeStyle='#728b99';g.lineWidth=2;g.setLineDash([8,6]);g.beginPath();g.moveTo(x,y);g.lineTo(x+w,y);g.stroke();g.setLineDash([]);
@@ -606,6 +606,12 @@ function drawTask(g,t,x,y,w,h,num){
     });
     txt(g,'¿Cómo compruebas un ladrillo?',cx,yy+180,22,{bold:true});blankLine(g,cx+355,yy+183,330);
   } else if(t.type==='p27'){
+    // Representación del dinero de la página: billete de 5 €, monedas de 1 € y 2 €.
+    function bank(x,y){rr(g,x,y,78,40,6,'#dceecf','#4b7958',3);txt(g,'5 €',x+39,y+27,21,{bold:true,align:'center'})}
+    function coin(v,x,y){g.beginPath();g.arc(x+17,y+17,17,0,Math.PI*2);g.fillStyle='#f4e7af';g.fill();g.strokeStyle='#a38a48';g.lineWidth=3;g.stroke();txt(g,v+' €',x+17,y+22,15,{bold:true,align:'center'})}
+    bank(cx+590,yy+4);coin(2,cx+685,yy+7);
+    bank(cx+590,yy+72);coin(1,cx+685,yy+75);coin(2,cx+725,yy+75);
+    bank(cx+590,yy+140);coin(1,cx+685,yy+143);
     txt(g,'Saco A: 5 € + 2 € =',cx,yy+40,23,{bold:true});rr(g,cx+280,yy+7,90,42,7,'#fff','#91a9b7',2);
     txt(g,'Saco B: 5 € + 1 € + 2 € =',cx,yy+105,23,{bold:true});rr(g,cx+370,yy+72,90,42,7,'#fff','#91a9b7',2);
     txt(g,'Saco C: 5 € + 1 € =',cx,yy+170,23,{bold:true});rr(g,cx+280,yy+137,90,42,7,'#fff','#91a9b7',2);
@@ -628,6 +634,8 @@ function drawTask(g,t,x,y,w,h,num){
   } else if(t.type==='sum789'){
     (t.sums||['5 + 2','6 + 2','4 + 5','3 + 6']).forEach((v,i)=>{let xx=cx+(i%2)*370,ry=yy+20+Math.floor(i/2)*89;txt(g,v+' =',xx,ry+29,25,{bold:true});rr(g,xx+145,ry,72,43,8,'#fff','#91a9b7',2)});
     txt(g,'Agrupa los resultados en 7, 8 y 9.',cx,yy+255,20,{school:true});
+    const visualPairs=[[5,2],[6,2],[4,5],[3,6]];
+    visualPairs.forEach(([a,b],i)=>{const xx=cx+(i%2)*370,ry=yy+53+Math.floor(i/2)*89;rod(g,a,xx,ry,14,27);rod(g,b,xx+a*14+7,ry,14,27)});
   } else if(t.type==='problem'){
     txt(g,'REPRESENTA',cx,yy+28,18,{bold:true,color:C.muted});rr(g,cx,yy+43,avail,95,12,'#fbfdfe','#d6e3eb',2);
     txt(g,'OPERACIÓN',cx,yy+178,18,{bold:true,color:C.muted});blankLine(g,cx+120,yy+180,260);
