@@ -58,18 +58,18 @@ function render(model){
    body+=text(531,24,'DIBUJO',15);
    for(let dot=0;dot<total;dot++){const dx=542+(dot%4)*20,dy=41+Math.floor(dot/4)*20;body+='<circle cx="'+dx+'" cy="'+dy+'" r="6" fill="#e7f2f8" stroke="#527b94" stroke-width="2"/>'}
    desc='La misma cantidad representada con regleta, diagrama parte-todo y dibujo, como en la página original';
- }else if(page===26||type==='brick'){
-   body=box(270,10,100,40,a)+'<path d="M320 50 L213 75 M320 50 L427 75" stroke="#333" stroke-width="3" fill="none"/>'+box(164,76,99,40,b)+box(377,76,99,40,'?');
-   desc='Muro de ladrillos parte-todo: '+a+' como total, '+b+' como parte y parte desconocida';
- }else if(page===28||type==='compare'){
-   body=reg(a,18,26,18,36)+text(200,58,'+',29)+reg(b,236,26,18,36)+text(434,58,'=',29)+empty(480,26,82,38)+text(200,104,'¿8 o menor que 8?',20);
-   desc='Regletas para comparar el resultado de la suma con 8';
  }else if(page===31||page===23||page===22||page===29||type==='pair'){
    const total=type==='brick'?a:(a+b),given=type==='brick'?b:a;
    body=reg(Math.max(1,Math.min(total,10)),15,13,19,30);
    body+=text(243,38,'=',27)+reg(given,292,13,19,30)+text(470,39,'+',28)+empty(516,12,74,33);
    body+=text(20,97,total+' = '+given+' + ____',24);
    desc='Regleta del total '+total+' y regleta de la parte '+given+'; busca la pareja o complemento';
+ }else if(page===26||type==='brick'){
+   body=box(270,10,100,40,a)+'<path d="M320 50 L213 75 M320 50 L427 75" stroke="#333" stroke-width="3" fill="none"/>'+box(164,76,99,40,b)+box(377,76,99,40,'?');
+   desc='Muro de ladrillos parte-todo: '+a+' como total, '+b+' como parte y parte desconocida';
+ }else if(page===28||type==='compare'){
+   body=reg(a,18,26,18,36)+text(200,58,'+',29)+reg(b,236,26,18,36)+text(434,58,'=',29)+empty(480,26,82,38)+text(200,104,'¿8 o menor que 8?',20);
+   desc='Regletas para comparar el resultado de la suma con 8';
  }else{
    const first=Math.max(1,Math.min(a,9)),second=Math.max(1,Math.min(b,9));
    body=reg(first,17,26,20,38)+text(222,61,'+',32)+reg(second,263,26,20,38)+text(466,61,'=',32)+empty(520,28,85,39);
