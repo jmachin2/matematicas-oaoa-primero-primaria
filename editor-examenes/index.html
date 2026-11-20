@@ -115,7 +115,19 @@ function examTask(p,t,i){
  label(p,t.instruction||"Resuelve y explica tu respuesta.",15,y+17,181,22,23);
  const by=y+42;
  // Reutilizar los datos matemáticos originales; cada pieza se puede seleccionar y mover por separado.
- if(type==="twoWays"){
+ if(type==="complement9"){
+  (t.parts||[2,5,7]).forEach((v,k)=>{const x=17+k*63;rod(p,9,x,by);math(p,"9 = "+v+" + □",x,by+17,60,12,21)});
+ }else if(type==="represent9"){
+  diagram(p,9,t.known||4,by,18);
+  drawing(p,103,by,84,29);
+  label(p,"Dibuja nueve elementos y escribe la suma.",99,by+29,94,10,15);
+ }else if(type==="pairs789"){
+  (t.targets||[7,8,9]).forEach((v,k)=>{const x=16+k*62;rod(p,v,x,by);math(p,v+" = "+(t.parts||[3,5,4])[k]+" + □",x,by+18,61,12,21)});
+ }else if(type==="previous"){
+  (t.numbers||[9,7,5,3]).forEach((v,k)=>{const x=16+(k%2)*92,y=by+Math.floor(k/2)*19;rod(p,v,x,y);math(p,v+" − 1 = □",x+37,y,52,13,21)});
+ }else if(type==="sum789"){
+  (t.sums||["5 + 2","6 + 2","4 + 5","3 + 6"]).forEach((v,k)=>math(p,v+" = □",16+(k%2)*91,by+Math.floor(k/2)*18,84,14,24));
+ }else if(type==="twoWays"){
   label(p,"Objetivo",18,by,35,10);rod(p,t.target||4,57,by);
   drawing(p,18,by+12,72,18);drawing(p,101,by+12,72,18);
  }else if(type==="missingPairs"||type==="pairs8"||type==="pairs678"||type==="pairs567"||type==="seven"){
