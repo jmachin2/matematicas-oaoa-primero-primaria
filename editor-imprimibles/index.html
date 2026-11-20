@@ -133,8 +133,16 @@ function buildFollowUp(mode){
 function createModel(){
  const pool=config.tasks,mode=$('kind').value,amount={ampliacion:3,refuerzo:3,tarea:3,tea:3,pictogramas:3}[mode];
  const index=version%pool.length,cycle=Math.floor(version/pool.length);
+ // Una hoja de parejas 7/8/9 debe mostrar los tres totales, no tres ejercicios del primero.
+ const focus={23:[6,7,8],24:[8,8,8],28:[8,6,7],30:[9,9,9],31:[7,8,9],33:[7,8,9]}[page]||null;
+ const target=t=>t.type==='brick'||t.type==='previous'?Number(t.nums[0]):t.nums.reduce((acc,n)=>acc+Number(n),0);
+ const choose=(j)=>{
+  if(!focus)return pool[(index+j)%pool.length];
+  const candidates=pool.filter(t=>target(t)===focus[j]);
+  return candidates.length?candidates[(version+j)%candidates.length]:pool[(index+j)%pool.length];
+ };
  const chosen=Array.from({length:amount},(_,j)=>{
-  const item=pool[(index+j)%pool.length],a=item.nums.slice();
+  const item=choose(j),a=item.nums.slice();
   if(cycle%2===1&&item.type==='sum')a.reverse();
   return {text:(j+1)+'. '+worksheetStrategyText({type:item.type,nums:a},mode,j),type:item.type,nums:a,size:mode==='refuerzo'?14:mode==='ampliacion'?14:14,gap:4,draw:0};
  });
