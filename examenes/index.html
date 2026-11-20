@@ -434,7 +434,19 @@ function representativeTasksForSession(sessionSheets,isLastSession,fullSelection
    previous:['Quita una unidad para encontrar el anterior.','Completa los números inmediatamente anteriores.','Demuestra con regletas que cada resultado es uno menos.'],
    sum789:['Construye sumas con resultados 7, 8 y 9.','Clasifica las sumas según su resultado.','Comprueba con regletas las equivalencias.']
   };
-  return [0,1,2].map(variant=>({...t,variant,title:(prompts[t.type]?['Construyo','Represento','Compruebo'][variant]:t.title+' · '+['Construyo','Represento','Compruebo'][variant]),instruction:prompts[t.type]?.[variant]||t.instruction}));
+  return [0,1,2].map(variant=>{
+   const item={...t,variant,title:(prompts[t.type]?['Construyo','Represento','Compruebo'][variant]:t.title+' · '+['Construyo','Represento','Compruebo'][variant]),instruction:prompts[t.type]?.[variant]||t.instruction};
+   if(t.type==='previous')item.numbers=[[9,7,5,3],[8,6,4,2],[7,9,6,5]][variant];
+   if(t.type==='complement9')item.parts=[[2,5,7],[1,4,6],[3,7,8]][variant];
+   if(t.type==='represent9')item.known=[4,5,3][variant];
+   if(t.type==='pairs789')item.parts=[[3,5,4],[2,6,5],[4,3,7]][variant];
+   if(t.type==='sum789')item.sums=[
+      ['5 + 2','6 + 2','4 + 5','3 + 6'],
+      ['4 + 3','5 + 3','6 + 3','7 + 2'],
+      ['6 + 1','4 + 4','5 + 4','2 + 7']
+   ][variant];
+   return item;
+  });
  }
  const result=[];const fam=new Set();
  const family=t=>t.type==='previous'?'anterior':['represent8','represent9','twoWays'].includes(t.type)?'representacion':['complement9','pairs789','complements','pairs8','pairs678','partWhole'].includes(t.type)?'parejas':t.type;
