@@ -54,8 +54,64 @@ const sets={
 let version=0,selected=null,history=[],frozen=false;const config=sets[page];
 function key(){return 'oaoa-editor-v3-p'+page+'-'+$('kind').value+'-'+version}
 function escapeTxt(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function taskText(t){const a=t.nums;switch(t.type){case 'brick':return 'Completa: '+a[0]+' = '+a[1]+' + ______';case 'money':return 'Saco de Paco: '+a.map(x=>x+' €').join(' + ')+' = ______ €';case 'previous':return 'Número anterior: '+a[0]+' − 1 = ______';case 'compare':return a.join(' + ')+' = ______ . ¿Igual a 8 o menor que 8? __________';default:return a.join(' + ')+' = ______';}}
-function createModel(){const pool=config.tasks,amount={ampliacion:5,refuerzo:4,tarea:4,tea:3,pictogramas:4}[$('kind').value];const index=version%pool.length;const cycle=Math.floor(version/pool.length);const selectedTasks=Array.from({length:amount},(_,j)=>{const item=pool[(index+j)%pool.length],a=item.nums.slice();if(cycle%2===1&&item.type==='sum')a.reverse();return {text:(j+1)+'. '+taskText({type:item.type,nums:a}),size:18,gap:5,draw:$('kind').value==='ampliacion'?13:$('kind').value==='tea'?17:0}});selectedTasks.push({text:'Explica con un dibujo o con regletas cómo has pensado.',size:13,gap:5,draw:22});return selectedTasks;}
+function taskText(t,mode='tarea'){
+ const a=t.nums, total=a[0], known=a[1], diff=total-known;
+ // Los modelos de tarea parten de la estrategia concreta de la página.
+ if(t.type==='previous'){
+   if(mode==='refuerzo')return 'Quita 1 unidad a '+total+'. ¿Qué número queda? '+total+' − 1 = ____';
+   if(mode==='ampliacion')return 'El número anterior de '+total+' es ____. Compruébalo con una regleta: '+total+' − 1 = ____';
+   return 'Número anterior: '+total+' − 1 = ____';
+ }
+ if(t.type==='brick'){
+   if(mode==='refuerzo')return 'Construye '+total+' con regletas. Tienes '+known+'. ¿Cuánto falta? '+total+' = '+known+' + ____';
+   if(mode==='ampliacion')return 'Completa el diagrama parte-todo: '+total+' = '+known+' + ____. Comprueba el complemento.';
+   return 'Completa el ladrillo: '+total+' = '+known+' + ____';
+ }
+ if(t.type==='money'){
+   const expr=a.map(x=>x+' €').join(' + ');
+   if(mode==='refuerzo')return 'Cuenta el dinero del saco: '+expr+' = ____ €';
+   if(mode==='ampliacion')return 'Saco de Paco: '+expr+' = ____ €. Dibuja otra combinación que tenga ese mismo valor.';
+   return 'Saco de Paco: '+expr+' = ____ €';
+ }
+ if(t.type==='compare'){
+   const expr=a.join(' + ');
+   if(mode==='refuerzo')return 'Calcula '+expr+' = ____. ¿Es 8 o menos que 8? ____';
+   if(mode==='ampliacion')return 'Calcula '+expr+'. Clasifica el resultado y busca otra suma con el mismo total.';
+   return expr+' = ____. ¿Igual a 8 o menor que 8? ____';
+ }
+ const expr=a.join(' + ');
+ if(mode==='refuerzo')return 'Construye '+expr+' con regletas. Después completa: '+expr+' = ____';
+ if(mode==='ampliacion')return 'Calcula '+expr+' = ____. Representa el resultado y escribe otra suma equivalente.';
+ return expr+' = ____';
+}
+function buildFollowUp(mode){
+ const keyed={
+   22:['Representa con regletas una pareja del 8.','Encuentra otra pareja distinta y comprueba que también forma 8.'],
+   23:['Coloca una pareja del 6, otra del 7 y otra del 8.','Compara dos parejas que tienen las partes en distinto orden.'],
+   24:['Construye una pareja del 8 con regletas y dibújala.','Representa el 8 con un dibujo, un diagrama y una suma.'],
+   25:['Dibuja una suma antes de escribirla.','Resuelve un pequeño problema usando un diagrama parte-todo y comprueba.'],
+   26:['Completa un ladrillo: ¿qué parte falta?','Explica dos ladrillos que tienen el mismo total.'],
+   27:['Dibuja las monedas que aparecen en el saco.','Explica otra combinación de monedas con el mismo valor.'],
+   28:['Marca las sumas que dan 8 y las que son menores.','Inventa una suma que dé 8 y otra que sea menor; explica por qué.'],
+   29:['Construye una pareja del 9 y busca el complemento.','Encuentra dos complementos del 9 y explica cómo los compruebas.'],
+   30:['Construye el 9 y dibuja nueve elementos.','Muestra el 9 con regletas, dibujo, diagrama parte-todo y suma.'],
+   31:['Construye una pareja del 7, del 8 y del 9.','Ordena las parejas del 7, 8 y 9 y explica el patrón.'],
+   32:['Quita una unidad para mostrar el anterior.','Explica por qué el número anterior es siempre uno menos.'],
+   33:['Agrupa las sumas según den 7, 8 o 9.','Crea una nueva suma para cada total: 7, 8 y 9.']
+ };
+ return (keyed[page]||['Dibuja la estrategia que has utilizado.','Comprueba el resultado con otra representación.'])[mode==='ampliacion'?1:0];
+}
+function createModel(){
+ const pool=config.tasks,mode=$('kind').value,amount={ampliacion:4,refuerzo:3,tarea:4,tea:3,pictogramas:3}[mode];
+ const index=version%pool.length,cycle=Math.floor(version/pool.length);
+ const chosen=Array.from({length:amount},(_,j)=>{
+  const item=pool[(index+j)%pool.length],a=item.nums.slice();
+  if(cycle%2===1&&item.type==='sum')a.reverse();
+  return {text:(j+1)+'. '+taskText({type:item.type,nums:a},mode),size:mode==='refuerzo'?16:mode==='ampliacion'?15:17,gap:mode==='refuerzo'?7:5,draw:mode==='refuerzo'?18:mode==='ampliacion'?15:mode==='tea'?17:0};
+ });
+ chosen.push({text:buildFollowUp(mode),size:mode==='refuerzo'?15:16,gap:6,draw:mode==='ampliacion'?25:mode==='refuerzo'?25:19});
+ return chosen;
+}
 function snapshot(){return [...$('items').children].map(el=>({text:el.querySelector('.editable')?.textContent||'',size:Number(el.dataset.size),gap:Number(el.dataset.gap),draw:Number(el.dataset.draw)}))}
 function remember(){history.push(snapshot());if(history.length>30)history.shift()}
 function buildTask(m){const wrap=document.createElement('div');wrap.className='task '+(/^(?:[0-9]+[.] *)?(?:Explica|Dibuja|Representa|Piensa|Escribe aquí|Observa|Responde|Compara)/i.test(m.text)?'prose':'math');const text=document.createElement('div');text.className='editable';text.contentEditable='true';text.spellcheck=true;text.textContent=m.text;wrap.append(text);wrap.addEventListener('click',()=>pick(wrap));text.addEventListener('input',validate);apply(wrap,m);return wrap}
