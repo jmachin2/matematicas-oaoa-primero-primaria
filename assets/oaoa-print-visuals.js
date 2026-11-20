@@ -30,8 +30,10 @@ function render(model){
  }else if(page===24||page===30||type==='diagram'){
    const total=type==='brick'?a:page===30?9:8,known=type==='brick'?b:a;
    body=diagram(total,known);
-   body+=text(18,28,'PARTE–TODO',16);
-   desc='Esquema parte-todo con casillas y ramas, como el modelo del problema';
+   body+=reg(total,15,40,12,28)+text(18,26,'REGLETA',15);
+   body+=text(531,24,'DIBUJO',15);
+   for(let dot=0;dot<total;dot++){const dx=542+(dot%4)*20,dy=41+Math.floor(dot/4)*20;body+='<circle cx="'+dx+'" cy="'+dy+'" r="6" fill="#e7f2f8" stroke="#527b94" stroke-width="2"/>'}
+   desc='La misma cantidad representada con regleta, diagrama parte-todo y dibujo, como en la página original';
  }else if(page===26||type==='brick'){
    body=box(270,10,100,40,a)+'<path d="M320 50 L213 75 M320 50 L427 75" stroke="#333" stroke-width="3" fill="none"/>'+box(164,76,99,40,b)+box(377,76,99,40,'?');
    desc='Muro de ladrillos parte-todo: '+a+' como total, '+b+' como parte y parte desconocida';
