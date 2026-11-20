@@ -16,7 +16,31 @@ function render(model){
  const data=model||{},nums=Array.isArray(data.nums)?data.nums.map(Number):[],page=Number(data.page)||22;
  const type=data.type||'sum',mode=data.mode||'tarea',a=nums[0]||1,b=nums[1]||1;
  let body='',desc='';
- if(page===32||type==='previous'){
+ if(type==='commute'){
+   const [left,right]=[a,b];body=reg(left,18,14,16,31)+reg(right,18+left*16,14,16,31)+text(279,38,'=',31)+reg(right,330,14,16,31)+reg(left,330+right*16,14,16,31);
+   body+=text(20,91,left+' + '+right+' = '+right+' + '+left,26);
+   desc='Conmutatividad: mismas regletas en orden diferente y total constante';
+ }else if(type==='successor'){
+   body=reg(a,20,28,21,36)+text(250,61,'+',32)+reg(1,295,28,21,36)+text(350,61,'=',32)+empty(405,26,116,40);
+   body+=text(26,112,'Añadimos una unidad para llegar al número posterior',18,400);
+   desc='Número posterior: añade una regleta de una unidad a la cantidad inicial';
+ }else if(type==='compare45'){
+   body=reg(4,27,23,26,42)+text(154,51,'4',25)+reg(5,323,23,26,42)+text(471,51,'5',25);
+   body+=text(28,106,'COMPARO LAS CANTIDADES Y CLASIFICO',19);
+   desc='Comparación del cuatro y el cinco con regletas de longitud proporcional';
+ }else if(type==='compare56'){
+   body=box(30,13,175,46,'2 + 3 = 5')+box(227,13,175,46,'3 + 3 = 6')+box(424,13,177,46,'2 + 3 = 6');
+   body+=text(30,102,'Busca la igualdad incorrecta y compruébala',20);
+   desc='Detective de los números cinco y seis: comprueba y corrige un error';
+ }else if(type==='classify567'){
+   [5,6,7].forEach((n,i)=>{const x=23+i*206;body+=reg(n,x,19,18,34)+text(x+31,97,'TOTAL '+n,20)});
+   desc='Clasificación y construcción con regletas de sumas que forman cinco, seis y siete';
+ }else if(type==='tree7'){
+   body=box(279,3,82,30,7)+box(157,54,76,30,5)+box(426,54,76,30,2);
+   body+='<path d="M320 33 L196 54 M320 33 L465 54 M196 84 L107 99 M196 84 L283 99" fill="none" stroke="#333" stroke-width="3"/>';
+   body+=box(66,96,75,29,3)+box(241,96,75,29,2);
+   desc='Árbol de descomposición sucesiva de siete: partes cinco y dos, y cinco descompuesto en tres y dos';
+ }else if(page===32||type==='previous'){
    const v=Number(nums[0])||8;
    body=reg(v,20,28,22,40)+text(260,65,'−',35)+reg(1,306,28,22,40)+text(356,65,'=',35)+empty(410,29,105,40);
    desc='Regleta del '+v+' menos una unidad; escribe el número anterior';
