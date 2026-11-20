@@ -84,6 +84,34 @@ function taskText(t,mode='tarea'){
  if(mode==='ampliacion')return 'Calcula '+expr+' = ____. Representa el resultado y escribe otra suma equivalente.';
  return expr+' = ____';
 }
+function worksheetStrategyText(item,mode,j){
+ const a=item.nums;
+ if(page===30){
+  const [total,known]=item.type==='brick'?a:[9,a[0]];
+  const prompt='El 9: construye 9 con regletas, dibuja nueve elementos y completa el diagrama 9 = '+known+' + ____.';
+  return mode==='refuerzo'?'Usa la regleta de 9 y la de '+known+'. Completa el diagrama y dibuja el total.':
+   mode==='ampliacion'?prompt+' Escribe otra descomposición equivalente.':prompt;
+ }
+ if(page===31){
+  const total=item.type==='brick'?a[0]:a.reduce((v,n)=>v+n,0);
+  const known=a[0]===total?a[1]:a[0];
+  return mode==='refuerzo'?'Pareja del '+total+': coloca '+known+' y busca cuánto falta. Total: '+total+' = '+known+' + ____.':
+   mode==='ampliacion'?'Pareja del '+total+': '+total+' = '+known+' + ____. Escribe otra pareja y explica el orden.':
+   'Pareja del '+total+': '+total+' = '+known+' + ____; comprueba con regletas.';
+ }
+ if(page===33){
+  const expression=item.type==='sum'?a.join(' + '):a[1]+' + ____';
+  const prompt='Construye '+expression+' con regletas y clasifica su total: 7, 8 o 9.';
+  return mode==='refuerzo'?prompt:
+   mode==='ampliacion'?prompt+' Encuentra otra suma que tenga el mismo resultado.':prompt;
+ }
+ if(page===29&&item.type==='sum'){
+  const total=a.reduce((v,n)=>v+n,0);
+  const known=a[0];
+  return 'Construye el '+total+' con regletas. ¿Qué complemento falta a '+known+'? '+total+' = '+known+' + ____'+(mode==='ampliacion'?'. Halla otra pareja.':'.');
+ }
+ return taskText(item,mode);
+}
 function buildFollowUp(mode){
  const keyed={
    22:['Representa con regletas una pareja del 8.','Encuentra otra pareja distinta y comprueba que también forma 8.'],
@@ -107,7 +135,7 @@ function createModel(){
  const chosen=Array.from({length:amount},(_,j)=>{
   const item=pool[(index+j)%pool.length],a=item.nums.slice();
   if(cycle%2===1&&item.type==='sum')a.reverse();
-  return {text:(j+1)+'. '+taskText({type:item.type,nums:a},mode),size:mode==='refuerzo'?16:mode==='ampliacion'?15:17,gap:mode==='refuerzo'?7:5,draw:mode==='refuerzo'?18:mode==='ampliacion'?15:mode==='tea'?17:0};
+  return {text:(j+1)+'. '+worksheetStrategyText({type:item.type,nums:a},mode,j),size:mode==='refuerzo'?16:mode==='ampliacion'?15:17,gap:mode==='refuerzo'?7:5,draw:mode==='refuerzo'?18:mode==='ampliacion'?15:mode==='tea'?17:0};
  });
  chosen.push({text:buildFollowUp(mode),size:mode==='refuerzo'?15:16,gap:6,draw:mode==='ampliacion'?25:mode==='refuerzo'?25:19});
  return chosen;
