@@ -22,6 +22,11 @@ function render(model){
    desc='Regleta del '+v+' menos una unidad; escribe el número anterior';
  }else if(page===27||type==='money'){
    let x=20;for(const amount of nums.slice(0,4)){if(amount===5){body+='<rect x="'+x+'" y="28" width="104" height="58" rx="7" fill="#e6f2db" stroke="#3b7757" stroke-width="3"/>'+text(x+23,65,'5 €',29);x+=120}else{body+='<circle cx="'+(x+34)+'" cy="57" r="30" fill="#f4e7af" stroke="#a38a48" stroke-width="3"/>'+text(x+17,67,amount+' €',19);x+=85}}body+=text(Math.min(x+10,460),67,'=',29)+empty(Math.min(x+60,505),30,90,50);desc='Monedas y billetes del saco de Paco';
+ }else if(page===29){
+   const given=type==='brick'?b:a;
+   body=reg(9,15,17,20,34)+text(226,45,'=',29)+reg(given,267,17,20,34)+text(461,45,'+',29)+empty(502,17,92,36);
+   body+=text(20,100,'9 = '+given+' + ____',24);
+   desc='Caza el 9: regleta azul como total, regleta conocida y complemento que falta';
  }else if(page===24||page===30||type==='diagram'){
    const total=type==='brick'?a:page===30?9:8,known=type==='brick'?b:a;
    body=diagram(total,known);
