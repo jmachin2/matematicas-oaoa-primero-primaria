@@ -104,7 +104,7 @@ html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;backgr
     <section class="panel">
       <h2>1. Elige las fichas que quieres evaluar</h2>
       <p class="panel-lead">No se copian literalmente las fichas. Se evalúan las destrezas y relaciones matemáticas que se han trabajado con ellas.</p>
-      <div class="sheet-select" id="sheetSelect"></div>
+      <div class="sheet-select" id="sheetSelect"></div><div class="single-exam-picker" style="margin:15px 0;padding:12px;background:#f2f9fd;border:2px solid #c8dce7;border-radius:12px"><label for="singleExamPage"><strong>Examen individual de cualquier ficha</strong></label><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><select id="singleExamPage" style="flex:1;min-width:210px;padding:9px;border-radius:8px;border:1px solid #a9c9d7"></select><button type="button" class="small-btn" id="singleExamBtn">Preparar examen de esta ficha</button></div><p style="font-size:.8rem;margin:8px 0 0">Incluye todas las fichas disponibles hasta la página 33. Genera las tareas solo de la estrategia elegida.</p></div>
       <div class="select-actions">
         <button class="small-btn" id="allBtn" type="button">Seleccionar todas</button>
         <button class="small-btn" id="noneBtn" type="button">Quitar selección</button>
@@ -322,8 +322,10 @@ const byId=id=>SHEETS.find(x=>x.id===id);
 
 function renderChoices(){
   const host=$('#sheetSelect');
+  const individual=$('#singleExamPage');individual.replaceChildren();
   host.innerHTML='';
   SHEETS.forEach(s=>{
+    const opt=document.createElement('option');opt.value=s.id;opt.textContent=s.title;individual.append(opt);
     const lab=document.createElement('label');
     lab.className='sheet-choice';
     lab.innerHTML=`<input type="checkbox" value="${s.id}"><strong>${s.title}</strong><span>${s.short}</span>`;
@@ -466,6 +468,7 @@ function update(){
 }
 $('#allBtn').onclick=()=>{document.querySelectorAll('#sheetSelect input').forEach(x=>x.checked=true);update()};
 $('#noneBtn').onclick=()=>{document.querySelectorAll('#sheetSelect input').forEach(x=>x.checked=false);update()};
+$('#singleExamBtn').onclick=()=>{const id=$('#singleExamPage').value;document.querySelectorAll('#sheetSelect input').forEach(x=>x.checked=x.value===id);update();document.querySelector('.output-box')?.scrollIntoView({behavior:'smooth',block:'start'});};
 
 // ----- Drawing helpers -----
 const C={ink:'#17384e',muted:'#627b8a',line:'#b9cedb',blue:'#469ac7',paper:'#fffefa',
