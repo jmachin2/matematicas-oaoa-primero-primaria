@@ -1,14 +1,64 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Robot que retrocede · OAOA P32</title><style>
 :root{--ink:#163b50;--sky:#eaf7ff;--blue:#377faa;--ok:#2f865c;--warn:#ad5128}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 0,#fff8e5,#e2f4fe 70%);color:var(--ink);font:17px Arial,sans-serif;min-height:100vh}button,a{font:inherit}button{cursor:pointer}a{color:#1b6e9c}header{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fff;padding:13px max(18px,calc((100vw - 1060px)/2));border-bottom:3px solid #c2dfec}header a{font-weight:800;text-decoration:none}header strong{font-size:1.1rem}main{max-width:1040px;margin:auto;padding:22px 18px 38px}.top{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}h1{font-size:clamp(1.7rem,4vw,2.65rem);margin:0}.eyebrow{color:#50778c;font-size:.83rem;font-weight:800;letter-spacing:.1em}.help{background:#fff;border:2px solid #c2dae6;border-radius:18px;padding:16px 19px;margin:18px 0}.help p{margin:7px 0 0;line-height:1.4}.controls{display:flex;gap:8px;flex-wrap:wrap}.btn{border:2px solid #91bcd2;border-radius:12px;background:#fff;color:var(--ink);padding:10px 16px;font-weight:800;min-height:46px}.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}.btn:focus-visible,.tile:focus-visible{outline:4px solid #e9a53f;outline-offset:3px}.btn:disabled{opacity:.5;cursor:default}.modes{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 18px}.modes button[aria-pressed=true]{background:#286f9c;color:white}.board{background:white;border:3px solid #b4d3e2;border-radius:25px;box-shadow:0 8px 24px #1e506013;overflow:hidden;padding:22px 18px 25px}.mission{text-align:center;font-size:clamp(1.2rem,2.8vw,1.7rem);font-weight:800;min-height:3.5em}.mission small{display:block;font-size:1rem;color:#5e7b8b;margin-top:6px}.track{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:4px;padding:90px 0 12px;margin-top:3px;position:relative}.tile{position:relative;min-width:0;aspect-ratio:1/1.12;background:#ecf6fb;border:2px solid #9cbed1;border-radius:12px;font-weight:900;font-size:clamp(15px,3vw,28px);color:#18435b;padding:0}.tile::before{content:"";position:absolute;bottom:65%;height:12px;width:100%;left:0;background:#c2d8e5;z-index:0}.tile.robot{background:#fff2bd;border-color:#d9a23d}.tile.target{background:#dff5e7;border-color:var(--ok)}.tile .robot-icon{position:absolute;left:50%;bottom:calc(100% + 13px);transform:translateX(-50%);font-size:clamp(30px,5vw,55px);filter:drop-shadow(0 5px 2px #a3bac2);pointer-events:none}.under{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:10px}.equation{font-weight:900;font-size:clamp(1.35rem,3vw,2rem);background:#e8f3fa;border-radius:12px;padding:10px 18px}.status{font-size:1.1rem;font-weight:800;min-height:2.8em;flex:1;line-height:1.4}.status.ok{color:var(--ok)}.status.err{color:var(--warn)}.progress{font-weight:800;color:#4b6c7e;margin-top:8px}.stars{font-size:1.7rem;letter-spacing:.15em;color:#e2a13b}@media(max-width:700px){.track{gap:2px;padding-top:75px}.tile{border-radius:7px}.board{padding:15px 8px}.help{padding:12px}header{padding:12px}.tile .robot-icon{bottom:calc(100% + 8px)}}
+
+/* Modo arcade: gran legibilidad, profundidad y animaciones no distractoras */
+:root{--ink:#15324a;--blue:#246cb9;--ok:#198f69;--warn:#b94a57}
+body{background:radial-gradient(circle at 70% 14%,#3a64c7 0,#192d68 38%,#0d1745 100%);color:#f7fbff;min-height:100vh}
+body::before{content:"✦     ·      ✦    ·     ★     ·     ✦      ·      ✦";position:fixed;top:110px;left:0;width:100%;text-align:center;white-space:pre;color:#b0dafa55;font-size:clamp(20px,4vw,43px);pointer-events:none}
+header{background:#0b1940dd;border-color:#4d7abe;color:white;box-shadow:0 5px 20px #0003}
+header a{color:#d2f5ff}.eyebrow{color:#a8eaf7}
+h1{font-weight:1000;letter-spacing:-.035em;color:#fff;filter:drop-shadow(0 3px 0 #1a3274)}
+main{position:relative;z-index:1}
+.btn{color:#173f61;border:2px solid #8bd8ff;background:linear-gradient(#fff,#d9f3ff);box-shadow:0 4px 0 #32609a,0 6px 13px #0002;transition:transform .12s,box-shadow .12s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #32609a}
+.btn.primary{background:linear-gradient(#ffde54,#ff9f40);border-color:#ffe88f;color:#563918;box-shadow:0 5px 0 #b96933;font-weight:1000}
+.modes button[aria-pressed=true]{background:linear-gradient(#3ce0dd,#1d96c5);border-color:#a5fdf3;box-shadow:0 4px 0 #216a98;color:#fff}
+.help{background:#142a67e8;border:2px solid #749fef;color:#f2faff;box-shadow:0 5px 0 #09163e}
+.board{position:relative;border:5px solid #78bff5;background:linear-gradient(#e9f9ff 0%,#f8fdff 62%,#d9f5d7 63%,#b7e1af 100%);box-shadow:0 9px 0 #163c83,0 19px 40px #0006;color:#163955}
+.board::before{content:"☁️                  ☁️                     ☁️";position:absolute;top:7px;left:0;width:100%;text-align:center;font-size:35px;opacity:.4;pointer-events:none;white-space:nowrap;overflow:hidden}
+.board::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 11% 13%,#fff8a77a 0 25px,transparent 26px);pointer-events:none}
+.board> *{position:relative;z-index:1}
+.mission{padding:12px 10px 5px;background:#ffffffd6;border:2px dashed #87b5d2;border-radius:16px;min-height:3em;margin-bottom:8px}
+.track{padding-top:95px;padding-bottom:22px}
+.tile{border:3px solid #65a4d4;background:linear-gradient(#f9fffc,#cfe7ff);box-shadow:0 7px 0 #518ab3;color:#123e66;transition:background .2s,transform .2s;touch-action:manipulation}
+.tile:hover{background:#fff4c8;transform:translateY(-3px)}
+.tile::before{height:8px;bottom:48%;background:#96bfdc}
+.tile.robot{background:linear-gradient(#fff5ae,#ffd677);border-color:#eaa234}
+.tile.target{background:#b4f5d4;border-color:#27b586;box-shadow:0 7px 0 #249475}
+.tile .robot-icon{font-size:clamp(37px,6vw,66px);animation:robotFloat 1.55s ease-in-out infinite;filter:drop-shadow(0 6px 2px #324e5977)}
+.equation{background:#fff6c3;border:3px solid #eab856;box-shadow:0 4px 0 #d3a149}
+.stars{color:#e4aa13;text-shadow:0 2px #fff,0 3px 4px #835e18}
+.status.ok{color:#116745}.status.err{color:#9a2d40}
+.arcade-hud{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 16px;background:#0d2251;border:2px solid #4a78ce;border-radius:13px;font-size:.9rem;font-weight:900;margin:12px 0;letter-spacing:.04em}
+.arcade-hud .pill{border-radius:99px;background:#19396d;padding:7px 12px;color:#f7e6a6}
+.music-on{background:linear-gradient(#b0ffda,#61dca2)!important;border-color:#b8ffdd!important}
+.win-pop{animation:winPop .52s ease both}
+.game-particles{position:absolute;pointer-events:none;inset:0;overflow:hidden;z-index:9}
+.game-particles span{position:absolute;top:50%;left:var(--x);font-size:var(--s);animation:burst .95s ease-out forwards}
+@keyframes robotFloat{0%,100%{transform:translate(-50%,0) rotate(-5deg)}50%{transform:translate(-50%,-8px) rotate(5deg)}}
+@keyframes winPop{0%{transform:scale(.91)}60%{transform:scale(1.06)}100%{transform:scale(1)}}
+@keyframes burst{0%{opacity:0;transform:translateY(15px) scale(.5)}20%{opacity:1}100%{opacity:0;transform:translateY(-120px) rotate(70deg) scale(1.3)}}
+@media(max-width:700px){.track{padding-top:76px;padding-bottom:17px}.board::before{font-size:23px}.help{margin:12px 0}.arcade-hud{margin:8px 0}.tile{border-width:2px;box-shadow:0 4px 0 #518ab3}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style></head><body><header><strong>🤖 Robot que retrocede · Página 32</strong><a href="../">← Juegos OAOA</a></header><main><div class="top"><div><div class="eyebrow">1.º PRIMARIA · ESTRATEGIA −1</div><h1>¡Un paso hacia atrás!</h1></div><div class="controls"><button id="speak" class="btn">🔊 Escuchar</button><button id="sound" class="btn" aria-pressed="true">Voz: sí</button><button id="restart" class="btn">↻ Reiniciar</button></div></div>
 <section class="help"><strong>Tu misión:</strong><p>El robot está sobre un número. <strong>Busca el número anterior</strong> y pulsa la casilla que está <strong>una unidad antes</strong>. ¡Solo puede retroceder una casilla!</p></section>
 <div class="modes" aria-label="Dificultad"><button class="btn" data-level="1" aria-pressed="true">🌱 Con ayuda</button><button class="btn" data-level="2" aria-pressed="false">🚀 Yo solo</button><button class="btn" data-level="3" aria-pressed="false">⭐ Gran reto</button></div>
-<section class="board"><div class="mission" id="mission" aria-live="polite"></div><div class="track" id="track" role="group" aria-label="Recta numérica de 0 a 10"></div><div class="under"><div class="equation" id="equation">8 − 1 = ?</div><div class="status" id="status" role="status" aria-live="polite"></div></div><div class="under"><div class="progress" id="progress"></div><div class="stars" id="stars" aria-label="Estrellas ganadas"></div><button class="btn primary" id="next" disabled>Continuar →</button></div></section>
-</main><script>
+<div class="arcade-hud"><span>🪐 MISIÓN ESPACIAL</span><span class="pill">🎯 NÚMERO ANTERIOR</span></div><section class="board"><div class="game-particles" id="particles" aria-hidden="true"></div><div class="mission" id="mission" aria-live="polite"></div><div class="track" id="track" role="group" aria-label="Recta numérica de 0 a 10"></div><div class="under"><div class="equation" id="equation">8 − 1 = ?</div><div class="status" id="status" role="status" aria-live="polite"></div></div><div class="under"><div class="progress" id="progress"></div><div class="stars" id="stars" aria-label="Estrellas ganadas"></div><button class="btn primary" id="next" disabled>Continuar →</button></div></section>
+</main><script src="../../assets/arcade-audio.js"></script><script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id),samples=[8,6,9,4,7,5,3,10,2,8,9,6],rounds={1:5,2:7,3:9};
 let level=1,round=0,success=0,current=8,solved=false,voice=true,misses=0;
 const speak=t=>{if(!voice||!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='es-ES';u.rate=.85;u.pitch=1.08;speechSynthesis.speak(u)}catch(e){}};
+
+const arcade=window.OAOAArcadeAudio('robot');
+let musicEnabled=false;
+function setMusicButton(){const b=$('music');b.textContent=musicEnabled?'🎵 Música: sí':'🎵 Música: no';b.setAttribute('aria-pressed',String(musicEnabled));b.classList.toggle('music-on',musicEnabled)}
+$('music').onclick=async()=>{if(musicEnabled){arcade.stop();musicEnabled=false}else{musicEnabled=await arcade.start()}setMusicButton()};
+let effectsEnabled=true;
+$('effects').onclick=()=>{effectsEnabled=!effectsEnabled;arcade.setEffects(effectsEnabled);$('effects').textContent=effectsEnabled?'🔔 Efectos: sí':'🔕 Efectos: no';$('effects').setAttribute('aria-pressed',String(effectsEnabled))};
+function burst(){const host=$('particles');if(!host)return;host.innerHTML=Array.from({length:13},(_,i)=>'<span style="--x:'+(8+(i*23)%84)+'%;--s:'+(18+(i%4)*5)+'px">'+['⭐','✨','🎉','💫'][i%4]+'</span>').join('');setTimeout(()=>{host.innerHTML=''},1100)}
+function sparkle(){const target=$('mission');target.classList.remove('win-pop');void target.offsetWidth;target.classList.add('win-pop');burst()}
+
 function missionText(){return 'Estás en el '+current+'. Retrocede una unidad. ¿A qué número llegas?'}
 function draw(){
  const target=current-1;
@@ -26,9 +76,9 @@ function choose(n){
  if(n!==expected){
  misses++;stat.textContent=n===current?'El robot debe retroceder, no quedarse quieto.':'Prueba otra vez. Retrocede exactamente una casilla.';stat.classList.add('err');
  if(misses>=2){stat.textContent+=' Mira qué número está justo a la izquierda.';document.querySelector('[data-n="'+expected+'"]').classList.add('target')}
- speak('Intenta de nuevo. Da un solo paso hacia atrás.');return;
+ arcade.effect('error');speak('Intenta de nuevo. Da un solo paso hacia atrás.');return;
  }
- solved=true;success++;stat.textContent='¡Muy bien! '+current+' menos uno es '+expected+'.';stat.classList.add('ok');
+ solved=true;success++;arcade.effect('win');sparkle();stat.textContent='¡Muy bien! '+current+' menos uno es '+expected+'.';stat.classList.add('ok');
  const old=current;current=expected;
  $('track').querySelectorAll('.tile').forEach(x=>{x.classList.toggle('robot',Number(x.dataset.n)===current);x.querySelector('.robot-icon')?.remove();if(Number(x.dataset.n)===current)x.insertAdjacentHTML('beforeend','<span class="robot-icon" aria-hidden="true">🤖</span>')});
  $('equation').textContent=old+' − 1 = '+expected;
@@ -50,7 +100,7 @@ function next(){
  $('mission').innerHTML='🎉 ¡Reto superado!<small>Sabes encontrar el número anterior.</small>';
  $('status').textContent='Has resuelto '+success+' misiones. Puedes elegir otro nivel.';
  $('track').querySelectorAll('button').forEach(b=>b.disabled=true);
- $('next').disabled=true;speak('¡Enhorabuena! Has terminado el reto.');return;
+ $('next').disabled=true;arcade.effect('finish');sparkle();speak('¡Enhorabuena! Has terminado el reto.');return;
  }
  newRound();
 }
