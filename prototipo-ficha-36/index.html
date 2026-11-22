@@ -1,0 +1,235 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Prototipo visual OAOA · Página 36</title>
+<link href="https://fonts.googleapis.com/css2?family=Playwrite+ES:wght@100..400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#17384e;--pale:#eff7fa;--line:#b9d0dc;--blue:#337bb4}*{box-sizing:border-box}body{margin:0;background:#e6eef3;color:var(--ink);font-family:Arial,sans-serif}.tools{position:sticky;top:0;z-index:10;display:flex;gap:9px;align-items:center;flex-wrap:wrap;background:white;border-bottom:2px solid var(--line);padding:12px 15px}.tools h1{font-size:16px;margin:0 12px 0 0}.tools a{color:#17668d}.tools select,.tools button{border:1px solid #8eafc1;border-radius:8px;padding:9px;font:600 14px Arial;background:white;color:var(--ink);cursor:pointer}.tools button.primary{background:#28769f;color:white}.tools .description{font-size:12px;color:#557384;margin:0;flex-basis:100%}
+.stage{display:grid;justify-content:center;padding:20px;overflow:auto}.paper{width:210mm;height:297mm;background:white;padding:11mm 13mm 12mm;box-shadow:0 8px 23px #28435b2b;overflow:hidden;position:relative}
+.header{display:flex;align-items:start;justify-content:space-between;border-bottom:2px solid #b4cedc;padding-bottom:5mm;gap:14px}.eyebrow{text-transform:uppercase;letter-spacing:.10em;font-size:10pt;color:#47778d;font-weight:bold}.heading{font:400 20pt "Playwrite ES","Segoe Print",cursive;margin:3mm 0 0}.tag{border:1.5px solid #b5cfdc;background:#f1f8fc;border-radius:20px;font-size:10pt;padding:5px 11px;white-space:nowrap;font-weight:bold}
+.details{display:grid;grid-template-columns:1fr 2fr;gap:8mm;font:12pt Arial;padding:5mm 0 5mm}
+.card{border:1.5px solid #bdd1dd;border-radius:12px;margin-bottom:4.5mm;padding:4.5mm 5mm 4mm;break-inside:avoid}.headrow{display:flex;align-items:center;gap:9px;margin-bottom:2mm}.step{border:2px solid #3b88a9;border-radius:9px;padding:3px 9px;font:700 12pt Arial}.action{font:400 15pt "Playwrite ES","Segoe Print",cursive;margin:0}.instruction{font:400 13.5pt "Playwrite ES","Segoe Print",cursive;line-height:1.6;margin:0 0 2mm}.visual{display:flex;align-items:center;justify-content:center;gap:6mm;margin:2.5mm 0}.rod{display:flex;align-items:center;justify-content:center;height:13mm;border:1.6px solid #264556;border-radius:5px;font:bold 18pt Arial;box-shadow:inset 0 2px 0 #ffffff66}.rod.total{width:9cm;background:#337bb4;color:white}.rod.partA{background:#ed9abc}.rod.partB{background:#edda4a}.rod-rows{display:grid;justify-content:center;gap:3mm;margin:2mm auto 3mm}.rod-row{display:flex;align-items:center;gap:0;justify-content:center}.big-eq{font:700 19pt Arial;text-align:center;margin:2mm 0}.diagram{display:block;width:100%;max-width:130mm;height:41mm;margin:2mm auto}.draw-area{border:2px dashed #9cbac8;border-radius:11px;height:25mm;position:relative;margin:2mm 0}.draw-area > span{position:absolute;top:3mm;left:4mm;color:#597b8f;font:10pt Arial}.dots{display:grid;grid-template-columns:repeat(9,1fr);justify-items:center;align-items:center;width:100%;height:100%;padding:10mm 5mm 3mm}.dot{width:9mm;height:9mm;border-radius:50%;border:1.7px solid #4c8ca7;background:#e8f5fb}.answer{display:flex;gap:6mm;align-items:center;margin-top:3mm;font:700 15pt Arial}.answer .line{flex:1;border-bottom:2px solid #728c98;min-height:8mm}.answer .short{width:27mm;border-bottom:2px solid #728c98;min-height:8mm}.footer{position:absolute;bottom:8mm;left:13mm;right:13mm;border-top:1px solid #e0e9ed;padding-top:2mm;color:#718690;font-size:9pt;display:flex;justify-content:space-between}
+.hint{font:11pt Arial;color:#47697a;background:#f1f8fb;border-left:4px solid #3b88a9;padding:3mm;margin:2mm 0}
+.compact .card{padding-top:3.3mm;padding-bottom:3.3mm;margin-bottom:3.5mm}.compact .diagram{height:32mm}.compact .draw-area{height:22mm}.compact .instruction{font-size:13pt}.compact .rod{height:11mm}
+
+/* Ajuste de imprenta A4: se prioriza la integridad del último bloque.
+   Nunca cortar una actividad al llegar al pie de página. */
+.paper{padding-top:9mm;padding-bottom:13mm}
+.header{padding-bottom:3mm}
+.heading{font-size:18pt;margin-top:2mm}
+.details{padding:3.5mm 0}
+.card{padding:2.8mm 4mm 2.8mm;margin-bottom:2.5mm}
+.headrow{margin-bottom:1mm}
+.action{font-size:14pt}
+.instruction{font-size:12.5pt;line-height:1.4;margin-bottom:1mm}
+.rod{height:10mm;font-size:16pt}
+.rod-rows{gap:1.5mm;margin:1.3mm auto 1.5mm}
+.big-eq{font-size:17pt;margin:1mm 0}
+.diagram{height:29mm;margin:1mm auto}
+.draw-area{height:19mm;margin:1mm 0}
+.dots{padding:6mm 5mm 1.5mm}
+.dot{height:6mm;width:6mm}
+.answer{font-size:13.5pt;margin-top:2mm}
+.answer .line{min-height:6mm}
+.compact .card{padding:2.5mm 4mm;margin-bottom:2mm}
+.compact .diagram{height:26mm}
+.compact .draw-area{height:17mm}
+.compact .instruction{font-size:12pt}
+.compact .rod{height:9mm}
+.paper.tight .card{padding:2mm 3.5mm;margin-bottom:1.5mm}
+.paper.tight .draw-area{height:15mm}
+.paper.tight .diagram{height:24mm}
+.paper.tight .instruction{font-size:11.5pt;line-height:1.3}
+.paper.tight .rod{height:8mm}
+.paper.tight .rod-rows{gap:1mm}
+.paper.tight .answer{margin-top:1mm}
+.paper.tight #activities{gap:1.5mm;padding-bottom:3mm}
+.paper.tight .heading{font-size:17pt}
+.paper.tight .details{padding:2.5mm 0}
+.paper.tight .card{border-radius:8px}
+
+.paper.overflow{outline:4px solid #b63b31}
+.paper{display:block}
+#activities{display:flex;flex-direction:column;gap:2.7mm;padding:0 0 4mm;margin:0}
+#activities .card{flex:0 0 auto;margin:0}
+.draw-area{overflow:hidden}
+@media print{#activities{padding-bottom:4mm}}
+@media screen{.paper .footer{bottom:8mm}}
+
+#layoutStatus{font:600 13px Arial,sans-serif;padding:6px 9px;border-radius:7px;background:#e6f4eb;color:#245c41}
+#layoutStatus.bad{background:#fff0e6;color:#a33825}
+@media print{.paper.overflow{outline:0}}
+
+@page{size:A4 portrait;margin:0}
+@media print{body{background:white}.tools{display:none!important}.stage{display:block;padding:0;overflow:visible}.paper{box-shadow:none;margin:0;print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+@media(max-width:830px){.stage{justify-content:start}.tools h1{width:100%}}
+.previous-area{display:flex;justify-content:center;align-items:center;gap:4mm;margin:3mm auto 2mm;min-height:24mm}
+.previous-row{display:flex;justify-content:center;align-items:center;gap:0;margin:2mm 0}
+.unit{width:14mm;height:14mm;border:1.5px solid #324b5a;border-radius:3px;background:#a0c4d6;display:grid;place-items:center;font:bold 14pt Arial}
+.unit.taken{background:white;border:2px dashed #c35c3e;color:#b4452c}
+.previous-symbol{font:bold 22pt Arial;padding:0 3mm}
+.previous-eq{font:bold 20pt Arial;text-align:center;padding:2mm 0}
+.numberline{position:relative;max-width:150mm;margin:4mm auto 2mm;display:grid;grid-template-columns:repeat(10,1fr);gap:0}
+.numberline .mark{height:14mm;border:1px solid #bccdd6;display:grid;place-items:center;font:bold 16pt Arial}
+.numberline .mark.active{background:#e7f2fa;border:2px solid #357fa5}
+.numberline .mark.before{background:#e4f2e8;border:2px solid #5e986e}
+.numberline-label{text-align:center;font:11pt Arial;margin:0 0 2mm}
+.two-questions{display:grid;grid-template-columns:1fr 1fr;gap:6mm}
+.two-questions .taskbox{border:1px solid #bed1db;border-radius:8px;padding:2.5mm;min-width:0}
+.two-questions .taskbox .previous-eq{font-size:18pt}
+.paper.tight .unit{width:12mm;height:12mm}
+.paper.tight .previous-area{margin:1.5mm auto}
+@media print{.unit{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+.rod.missing{background:#fff;border:2px dashed #8da8b8;color:#17384e}.rod-row{gap:0}.rod-rows{margin:2mm auto 3mm;gap:3mm}.rod{min-height:11mm}.paper.tight .rod{min-height:8mm}.paper.tight .rod-rows{gap:1mm}.paper.tight .draw-area{height:16mm}
+.tree{position:relative;max-width:135mm;margin:2mm auto 1mm;padding:1mm;display:grid;justify-items:center;gap:2.5mm}
+.tree-top,.tree-node{border:2px solid #6c8b80;background:white;border-radius:5px;min-width:23mm;min-height:13mm;display:grid;place-items:center;font:bold 19pt Arial}
+.tree-bottom{display:flex;justify-content:center;gap:22mm}
+.tree .branches{height:10mm;width:85mm;display:block}
+.bricks{display:flex;justify-content:center;gap:4mm;flex-wrap:wrap;margin:3mm 0}
+.brick{display:grid;grid-template-columns:23mm 23mm;grid-template-rows:12mm 14mm;align-items:center;text-align:center;font:bold 17pt Arial}
+.brick .top{grid-column:1/3;width:23mm;justify-self:center;border:2px solid #ed7b72;height:12mm}
+.brick .bottom{border:2px solid #ed7b72;height:14mm}
+.problem{display:flex;align-items:center;justify-content:space-around;gap:3mm;margin:2mm 0;padding:3mm;background:#f5fafb;border:1.5px dashed #abc6d2;border-radius:8px;font:bold 14pt Arial}
+.problem .missing{display:inline-flex;justify-content:center;align-items:center;border:2px solid #809cae;width:18mm;height:12mm;background:white}
+.choice{font:13pt Arial;display:flex;gap:8mm;align-items:center;margin:2mm 0}
+.choice span{border:2px solid #7594a4;display:inline-block;width:5mm;height:5mm}
+.tenframe{display:grid;grid-template-columns:repeat(5,1fr);max-width:145mm;margin:3mm auto;border:2px solid #536b7a}
+.tenframe span{height:17mm;border:1px solid #536b7a;display:grid;place-items:center;font:bold 17pt Arial}
+.tenframe .filled{background:#d7e9f3}
+.tenframe .partial{background:#fafafa}
+.tenrod{height:13mm;width:100mm;margin:3mm auto;background:#e58d32;border:2px solid #ad642a;border-radius:4px;text-align:center;font:bold 19pt Arial}
+.pairs{display:grid;grid-template-columns:repeat(2,1fr);gap:2mm 5mm;font:bold 17pt Arial;max-width:140mm;margin:3mm auto}
+.pairs .pair{padding:3mm;border:1px solid #bad1dc;border-radius:6px;text-align:center}
+.paper.tight .tenframe span{height:12mm}
+.paper.tight .tree-top,.paper.tight .tree-node{min-height:10mm}
+.paper.tight .brick .top{height:10mm}
+.paper.tight .brick .bottom{height:11mm}
+</style></head><body>
+<div class="tools"><h1>Prototipo de claridad visual · Página 36</h1><a href="../editor-imprimibles/?pagina=36">← Generador actual</a><label for="mode">Modalidad</label><select id="mode"><option value="refuerzo">Refuerzo</option><option value="tarea">Tarea ordinaria</option><option value="ampliacion">Ampliación</option></select><button id="other">Otra versión</button><button class="primary" id="print">Imprimir / PDF</button><span id="layoutStatus" role="status" aria-live="polite">Comprobando A4…</span><p class="description">Prototipo independiente: conserva intacto el generador actual. Compara la jerarquía, el tamaño de las regletas y los espacios de respuesta. Comprueba la vista previa antes de guardar el PDF.</p></div>
+<main class="stage"><article class="paper" id="paper"><header class="header"><div><div class="eyebrow">Matemáticas OAOA · Página 36</div><h2 class="heading">Construimos el 10</h2></div><div class="tag" id="tag">REFUERZO</div></header><div class="details"><span>Nombre: ____________________</span><span>Fecha: ________________________</span></div><section id="activities"></section><footer class="footer"><span>CEIP Camino Largo · 1.º de Primaria</span><span id="folio">Página 36 · Modelo 1</span></footer></article></main>
+<script>
+
+(function(){
+'use strict';
+const PAGE=31,sets=[[7,3,4],[8,3,5],[9,4,5],[7,2,5],[8,2,6],[9,3,6],[7,1,6],[8,4,4],[9,2,7]];const $=id=>document.getElementById(id),color={1:'#f7f4ec',2:'#d95757',3:'#9acb6a',4:'#ed9abc',5:'#edda4a',6:'#2d7b4d',7:'#202020',8:'#8b5a35',9:'#337bb4'};
+let version=0;
+function rod(n){return '<span class="rod" style="width:'+(n*10)+'mm;background:'+color[n]+';color:'+([6,7,8,9].includes(n)?'#fff':'#17384e')+'">'+n+'</span>'}
+function whole(n){return '<div class="rod-rows"><div class="rod-row">'+rod(n)+'</div></div>'}
+function pair(n,a,help){
+ const b=n-a;
+ return '<div class="rod-rows"><div class="rod-row">'+rod(n)+'</div><div class="rod-row">'+rod(a)+'<span class="rod missing" style="width:'+(b*10)+'mm">'+(help?'?':'')+'</span></div></div>';
+}
+function parts(t,help){
+ return '<div class="rod-rows"><div class="rod-row">'+rod(t[1])+rod(t[2])+'</div>'+(help?'<div class="rod-row"><span class="rod missing" style="width:'+(t[0]*10)+'mm">?</span></div>':'')+'</div>';
+}
+function draw(label){return '<div class="draw-area"><span>'+label+'</span></div>'}
+function card(num,title,instruction,body){return '<section class="card"><div class="headrow"><span class="step">'+num+'</span><h3 class="action">'+title+'</h3></div><p class="instruction">'+instruction+'</p>'+body+'</section>'}
+function line(label){return '<div class="answer">'+label+'<span class="line"></span></div>'}
+function checkLayout(){
+ const paper=$('paper'),content=$('activities'),footer=paper.querySelector('.footer');
+ paper.classList.remove('tight','overflow');
+ const fits=()=>{
+  const end=footer.getBoundingClientRect().top-8,cr=content.getBoundingClientRect(),pr=paper.getBoundingClientRect();
+  return [...content.querySelectorAll('.card')].length===3 &&
+  [...content.querySelectorAll('.card')].every(el=>{const r=el.getBoundingClientRect();return r.top>=cr.top-1&&r.bottom<=end&&r.left>=pr.left&&r.right<=pr.right&&el.scrollHeight<=el.clientHeight+2})&&cr.bottom<=end+1&&paper.scrollWidth<=paper.clientWidth+2;
+ };
+ if(!fits())paper.classList.add('tight');
+ const ok=fits();paper.classList.toggle('overflow',!ok);
+ const status=$('layoutStatus');status.textContent=ok?'✓ Contenido dentro del A4':'⚠️ Desbordamiento: impresión bloqueada';status.classList.toggle('bad',!ok);$('print').disabled=!ok;return ok;
+}
+function render(){
+ const mode=$('mode').value,A=[];
+ $('tag').textContent={refuerzo:'REFUERZO',tarea:'TAREA',ampliacion:'AMPLIACIÓN'}[mode];
+ $('folio').textContent='Página '+PAGE+' · Modelo '+(version+1);
+ if(!sets.every(t=>t.reduce((a,b)=>a+b,0)===9 || (t.length===3&&t[0]===t[1]+t[2]))){
+  $('layoutStatus').textContent='⚠️ Error matemático';$('print').disabled=true;return;
+ }
+ 
+const groups=[7,8,9],sample=n=>sets.filter(t=>t[0]===n)[version%sets.filter(t=>t[0]===n).length];
+if(mode==='refuerzo'){
+ A.push(card(1,'Construyo','Une las partes y forma 7.',pair(7,sample(7)[1],true)+line('7 = ____ + ____')));
+ A.push(card(2,'Completo','Busca la pareja que forma 8.',pair(8,sample(8)[1],true)+line('8 = ____ + ____')));
+ A.push(card(3,'Compruebo','Completa la pareja que forma 9.',pair(9,sample(9)[1],false)+line('9 = ____ + ____')));
+}else if(mode==='tarea'){
+ A.push(card(1,'Formo 7','Escribe las dos partes que forman 7.',pair(7,sample(7)[1],false)+line('7 = ____ + ____')));
+ A.push(card(2,'Formo 8','Escribe las dos partes que forman 8.',pair(8,sample(8)[1],false)+line('8 = ____ + ____')));
+ A.push(card(3,'Formo 9','Escribe las dos partes que forman 9.',pair(9,sample(9)[1],false)+line('9 = ____ + ____')));
+}else{
+ A.push(card(1,'Investigo','Encuentra dos parejas diferentes del 7.',whole(7)+line('7 = ____ + ____')+line('7 = ____ + ____')));
+ A.push(card(2,'Comparo','Busca dos parejas diferentes del 8.',whole(8)+line('8 = ____ + ____')+line('8 = ____ + ____')));
+ A.push(card(3,'Explico','Busca dos parejas del 9 y di qué cambia.',whole(9)+line('9 = ____ + ____')+line('9 = ____ + ____')));
+}
+
+ $('activities').innerHTML=A.join('');
+ $('paper').classList.toggle('compact',mode==='ampliacion');
+ checkLayout();
+}
+$('mode').addEventListener('change',render);
+$('other').addEventListener('click',()=>{version=(version+1)%sets.length;render()});
+$('print').addEventListener('click',async()=>{if(document.fonts)await document.fonts.ready;if(checkLayout())window.print()});
+window.addEventListener('resize',checkLayout);window.addEventListener('beforeprint',checkLayout);
+if(document.fonts?.ready)document.fonts.ready.then(checkLayout);
+render();
+})();
+
+</script></body></html<script>
+
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const PAGE=36;
+let version=0;
+const variants=[0,1,2,3,4,5];
+function card(k,name,prompt,inner){return '<section class="card"><div class="headrow"><span class="step">'+k+'</span><h3 class="action">'+name+'</h3></div><p class="instruction">'+prompt+'</p>'+inner+'</section>'}
+function line(label){return '<div class="answer">'+label+'<span class="line"></span></div>'}
+function draw(label){return '<div class="draw-area"><span>'+label+'</span></div>'}
+function brick(total,a,b,showAnswer){
+ return '<div class="brick"><div class="top">'+(total===null?'?':total)+'</div><div class="bottom">'+(a===null?'?':a)+'</div><div class="bottom">'+(b===null?'?':b)+'</div></div>';
+}
+function tree(t,a,b){
+ return '<div class="tree"><div class="tree-top">'+(t===null?'?':t)+'</div><svg class="branches" viewBox="0 0 320 40" aria-hidden="true"><path d="M160 0L85 39 M160 0L235 39" stroke="#c38b62" stroke-width="3" fill="none"/></svg><div class="tree-bottom"><div class="tree-node">'+(a===null?'?':a)+'</div><div class="tree-node">'+(b===null?'?':b)+'</div></div></div>';
+}
+function tenframe(n){return '<div class="tenframe" aria-label="Marco de diez casillas">'+Array.from({length:10},(_,i)=>'<span class="'+(i<n?'filled':'partial')+'">'+(i<n?'●':'')+'</span>').join('')+'</div>'}
+function tenrod(){return '<div class="tenrod">10</div>'}
+function pairs(n){const all=[[1,9],[2,8],[3,7],[4,6],[5,5]],a=all[(version)%5];return '<div class="pairs"><div class="pair">'+a[0]+' + ____ = 10</div><div class="pair">____ + '+a[1]+' = 10</div></div>'}
+function checkLayout(){
+ const paper=$('paper'),content=$('activities'),footer=paper.querySelector('.footer');paper.classList.remove('tight','overflow');
+ const fits=()=>{
+  const end=footer.getBoundingClientRect().top-8,cr=content.getBoundingClientRect(),pr=paper.getBoundingClientRect();
+  const cards=[...content.querySelectorAll('.card')];
+  return cards.length===3&&cards.every(el=>{const r=el.getBoundingClientRect();return r.top>=cr.top-1&&r.bottom<=end&&r.left>=pr.left&&r.right<=pr.right&&el.scrollHeight<=el.clientHeight+2})&&cr.bottom<=end+1&&paper.scrollWidth<=paper.clientWidth+2;
+ };
+ if(!fits())paper.classList.add('tight');
+ const ok=fits();paper.classList.toggle('overflow',!ok);
+ $('layoutStatus').textContent=ok?'✓ Contenido dentro del A4':'⚠️ Desbordamiento: impresión bloqueada';$('layoutStatus').classList.toggle('bad',!ok);
+ $('print').disabled=!ok;return ok;
+}
+function render(){
+ const mode=$('mode').value,A=[];
+ $('tag').textContent={refuerzo:'REFUERZO',tarea:'TAREA',ampliacion:'AMPLIACIÓN'}[mode];
+ $('folio').textContent='Página '+PAGE+' · Modelo '+(version+1);
+ 
+ const a=version%5+1,b=10-a;
+ if(mode==='refuerzo'){
+  A.push(card(1,'Construyo','Cuenta diez unidades. Diez unos forman un 10.',tenframe(10)+tenrod()));
+  A.push(card(2,'Completo','Mira '+a+' unidades. ¿Cuántas faltan para 10?',tenframe(a)+line(a+' + ____ = 10')));
+  A.push(card(3,'Descubro','Busca otra pareja del 10.',pairs(10)+line('Otra pareja: ____ + ____ = 10')));
+ }else if(mode==='tarea'){
+  A.push(card(1,'Construyo','Completa el marco de diez casillas.',tenframe(a)+line('Faltan ____ para llegar a 10')));
+  A.push(card(2,'Represento','Dibuja diez unidades de otra manera.',draw('Dibuja diez unidades')+line('He dibujado: ____')));
+  A.push(card(3,'Parejas','Escribe parejas diferentes del número 10.',line('10 = ____ + ____')+line('10 = ____ + ____')+line('10 = ____ + ____')));
+ }else{
+  A.push(card(1,'Investigo','Busca cinco parejas diferentes del número 10.',line('1. ____ + ____ = 10')+line('2. ____ + ____ = 10')+line('3. ____ + ____ = 10')));
+  A.push(card(2,'Represento','Dibuja dos parejas del 10 en un marco.',tenframe(0)+line('Mis dos partes son ____ y ____')));
+  A.push(card(3,'Explico','¿Por qué 10 unidades forman una decena?',tenrod()+line('Mi explicación:')));
+ }
+ $('activities').innerHTML=A.join('');
+ $('paper').classList.toggle('compact',mode==='ampliacion');
+ checkLayout();
+}
+$('mode').addEventListener('change',render);
+$('other').addEventListener('click',()=>{version=(version+1)%6;render()});
+$('print').addEventListener('click',async()=>{if(document.fonts)await document.fonts.ready;if(checkLayout())window.print()});
+window.addEventListener('resize',checkLayout);window.addEventListener('beforeprint',checkLayout);
+if(document.fonts?.ready)document.fonts.ready.then(checkLayout);
+render();
+})();
+
+</script></body></html>
