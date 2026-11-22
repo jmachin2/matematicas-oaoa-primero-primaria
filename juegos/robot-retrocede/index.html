@@ -43,10 +43,44 @@ main{position:relative;z-index:1}
 @keyframes burst{0%{opacity:0;transform:translateY(15px) scale(.5)}20%{opacity:1}100%{opacity:0;transform:translateY(-120px) rotate(70deg) scale(1.3)}}
 @media(max-width:700px){.track{padding-top:76px;padding-bottom:17px}.board::before{font-size:23px}.help{margin:12px 0}.arcade-hud{margin:8px 0}.tile{border-width:2px;box-shadow:0 4px 0 #518ab3}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
-.challenge-predict{max-width:740px;margin:12px auto;background:#fff8dd;border:3px solid #e4af50;border-radius:16px;padding:14px;text-align:center;color:#5c441f;font-weight:900;font-size:1.1rem}.challenge-predict[hidden]{display:none}.prediction-options{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:9px auto}.prediction-options button{min-width:65px;min-height:55px;font-size:1.5rem;font-weight:900;border:3px solid #d29f48;border-radius:12px;background:#fff;cursor:pointer}.prediction-options button:hover{background:#eaffdd}.journey-counter{display:inline-block;border:2px solid #80a2c6;background:#e6f4fc;border-radius:15px;padding:8px 14px;margin:4px auto;color:#285170;font-weight:900}@media(max-width:620px){.challenge-predict{padding:9px}.prediction-options button{min-width:51px;min-height:48px}}</style></head><body><header><strong>🤖 Robot que retrocede · Página 32</strong><a href="../">← Juegos OAOA</a></header><main><div class="top"><div><div class="eyebrow">1.º PRIMARIA · ESTRATEGIA −1</div><h1>¡Un paso hacia atrás!</h1></div><div class="controls"><button id="speak" class="btn">🔊 Escuchar</button><button id="sound" class="btn" aria-pressed="true">Voz: sí</button><button id="music" class="btn" aria-pressed="false">🎵 Música: no</button><button id="effects" class="btn" aria-pressed="true">🔔 Efectos: sí</button><button id="restart" class="btn">↻ Reiniciar</button></div></div>
+.challenge-predict{max-width:740px;margin:12px auto;background:#fff8dd;border:3px solid #e4af50;border-radius:16px;padding:14px;text-align:center;color:#5c441f;font-weight:900;font-size:1.1rem}.challenge-predict[hidden]{display:none}.prediction-options{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:9px auto}.prediction-options button{min-width:65px;min-height:55px;font-size:1.5rem;font-weight:900;border:3px solid #d29f48;border-radius:12px;background:#fff;cursor:pointer}.prediction-options button:hover{background:#eaffdd}.journey-counter{display:inline-block;border:2px solid #80a2c6;background:#e6f4fc;border-radius:15px;padding:8px 14px;margin:4px auto;color:#285170;font-weight:900}@media(max-width:620px){.challenge-predict{padding:9px}.prediction-options button{min-width:51px;min-height:48px}}
+/* Pantalla de selección inicial accesible para 1.º de Primaria */
+[hidden]{display:none!important}
+.selection-screen{max-width:980px;margin:20px auto 30px;padding:clamp(20px,4vw,38px);border:5px solid #8ed9ff;border-radius:28px;background:linear-gradient(145deg,#f7fcff,#deedff);color:#143958;box-shadow:0 10px 0 #1c4f9a,0 22px 34px #0006;text-align:center}
+.selection-robot{font-size:clamp(70px,13vw,126px);line-height:1.1;animation:selectionFloat 2.3s ease-in-out infinite}
+.selection-screen h2{font-size:clamp(1.7rem,4vw,2.6rem);margin:8px auto 12px;max-width:700px}
+.selection-screen p{font-size:clamp(1rem,2vw,1.22rem);margin:6px auto 21px}
+.selection-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:760px;margin:10px auto 21px}
+.selection-choice{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;min-height:180px;padding:22px 15px;border-radius:22px;border:4px solid #66b69a;background:linear-gradient(#dcffe7,#a8eecb);color:#164d3e;font-weight:900;font-size:clamp(1.4rem,2.7vw,2rem);box-shadow:0 7px 0 #3c876d;cursor:pointer;transition:transform .15s}
+.selection-choice.independent{border-color:#5b9be7;background:linear-gradient(#e4f2ff,#a7cffc);color:#174276;box-shadow:0 7px 0 #3e7cbd}
+.selection-choice .picture{font-size:clamp(46px,7vw,70px)}
+.selection-choice small{font-size:clamp(.86rem,1.6vw,1.05rem);font-weight:700;line-height:1.3}
+.selection-choice:hover{transform:translateY(-3px)}
+.selection-choice:focus-visible{outline:5px solid #e8a12d;outline-offset:4px}
+.selection-choice:active{transform:translateY(4px);box-shadow:0 2px 0 #3c876d}
+.selection-audio{background:#fff;border:2px solid #80acc8;border-radius:13px;padding:12px 18px;font-weight:800;cursor:pointer;color:#235676}
+.game-mode-label{margin:8px 0 15px;padding:8px 14px;border:2px solid #83b9ea;border-radius:13px;background:#173c7d;color:#fff;font-size:.96rem;font-weight:900}
+.end-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px auto}
+@keyframes selectionFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@media(max-width:640px){.selection-choices{grid-template-columns:1fr}.selection-choice{min-height:135px;padding:12px}.selection-screen{padding:18px}}
+@media(prefers-reduced-motion:reduce){.selection-robot{animation:none}}
+</style></head><body><header><strong>🤖 Robot que retrocede · Página 32</strong><a href="../">← Juegos OAOA</a></header><main><div class="top"><div><div class="eyebrow">1.º PRIMARIA · ESTRATEGIA −1</div><h1>¡Un paso hacia atrás!</h1></div><div class="controls"><button id="speak" class="btn">🔊 Escuchar</button><button id="sound" class="btn" aria-pressed="true">Voz: sí</button><button id="music" class="btn" aria-pressed="false">🎵 Música: no</button><button id="effects" class="btn" aria-pressed="true">🔔 Efectos: sí</button><button id="restart" class="btn">↻ Reiniciar</button></div></div>
 <section class="help"><strong>Tu misión:</strong><p>El robot está sobre un número. <strong>Busca el número anterior</strong> y pulsa la casilla que está <strong>una unidad antes</strong>. ¡Solo puede retroceder una casilla cada vez! En «Gran reto», predice el destino y encadena varios pasos.</p></section>
-<div class="modes" aria-label="Dificultad"><button class="btn" data-level="1" aria-pressed="true">🌱 Con ayuda</button><button class="btn" data-level="2" aria-pressed="false">🚀 Yo solo</button><button class="btn" data-level="3" aria-pressed="false">⭐ Gran reto · Varios pasos</button></div>
+<section class="selection-screen" id="modeSelection" aria-labelledby="modeQuestion">
+ <div class="selection-robot" aria-hidden="true">🤖</div>
+ <h2 id="modeQuestion">¿Quieres jugar con ayuda o sin ayuda?</h2>
+ <p>Elige cómo quieres jugar. ¡Tú decides!</p>
+ <div class="selection-choices">
+  <button type="button" class="selection-choice" id="chooseHelp"><span class="picture" aria-hidden="true">🌱</span>CON AYUDA<small>Te enseñaré la casilla anterior.</small></button>
+  <button type="button" class="selection-choice independent" id="chooseSolo"><span class="picture" aria-hidden="true">🚀</span>SIN AYUDA<small>Encuentra tú solo el número anterior.</small></button>
+ </div>
+ <button type="button" class="selection-audio" id="welcomeAudio">🔊 Escuchar la pregunta</button>
+</section>
+<div id="gameArea" hidden>
+<div class="game-mode-label" id="modeLabel">Modo: con ayuda</div>
 <div class="arcade-hud"><span>🪐 MISIÓN ESPACIAL</span><span class="pill">🎯 NÚMERO ANTERIOR</span></div><section class="board"><div class="game-particles" id="particles" aria-hidden="true"></div><div class="mission" id="mission" aria-live="polite"></div><div class="challenge-predict" id="predict" hidden></div><div class="track" id="track" role="group" aria-label="Recta numérica de 0 a 10"></div><div class="under"><div class="equation" id="equation">8 − 1 = ?</div><div class="status" id="status" role="status" aria-live="polite"></div></div><div class="under"><div class="progress" id="progress"></div><div class="stars" id="stars" aria-label="Estrellas ganadas"></div><button class="btn primary" id="next" disabled>Continuar →</button></div></section>
+<div class="end-actions"><button class="btn" id="changeMode">↩ Elegir con ayuda o sin ayuda</button><button class="btn" id="bigChallenge" hidden>⭐ Probar el Gran reto</button></div>
+</div>
 </main><script src="../../assets/arcade-audio.js"></script><script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id),samples=[8,6,9,4,7,5,3,10,2,8,9,6],rounds={1:5,2:7,3:6};
@@ -119,7 +153,7 @@ function choose(n){
  draw();$('next').disabled=false;$('next').textContent=round+1>=rounds[level]?'Ver resultado ★':'Continuar →';
  speak('¡Muy bien! '+startNumber+' menos '+stepsTotal+' es '+goal+'.');
 }
-function start(){round=0;success=0;newRound()}
+function start(){round=0;success=0;$('bigChallenge').hidden=true;newRound()}
 function newRound(){
  solved=false;misses=0;stepsDone=0;predictionDone=false;
  if(level===3){const task=bigTasks[round%bigTasks.length];startNumber=task.n;stepsTotal=task.steps}
@@ -135,14 +169,30 @@ function next(){
   $('mission').innerHTML='🎉 ¡Reto superado!<small>'+(level===3?'Has previsto y realizado retrocesos de varios pasos.':'Sabes encontrar el número anterior.')+'</small>';
   $('status').textContent='Has resuelto '+success+' misiones. Puedes elegir otro nivel.';
   $('track').querySelectorAll('button').forEach(b=>b.disabled=true);
-  $('next').disabled=true;arcade.effect('finish');sparkle();speak('¡Enhorabuena! Has terminado el reto.');return;
+  $('next').disabled=true;if(level!==3)$('bigChallenge').hidden=false;arcade.effect('finish');sparkle();speak('¡Enhorabuena! Has terminado el reto.');return;
  }
  newRound();
 }
-document.querySelectorAll('[data-level]').forEach(b=>b.onclick=()=>{level=Number(b.dataset.level);document.querySelectorAll('[data-level]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));start()});
+function chooseMode(n){
+ level=n;
+ $('modeSelection').hidden=true;$('gameArea').hidden=false;
+ $('modeLabel').textContent=n===1?'🌱 Estás jugando CON AYUDA':n===2?'🚀 Estás jugando SIN AYUDA':'⭐ GRAN RETO: varios pasos';
+ start();
+}
+function returnToModeSelection(){
+ if('speechSynthesis' in window)speechSynthesis.cancel();
+ $('gameArea').hidden=true;$('modeSelection').hidden=false;$('bigChallenge').hidden=true;
+ $('modeSelection').scrollIntoView({block:'start',behavior:'smooth'});
+}
+$('chooseHelp').onclick=()=>chooseMode(1);
+$('chooseSolo').onclick=()=>chooseMode(2);
+$('changeMode').onclick=returnToModeSelection;
+$('bigChallenge').onclick=()=>chooseMode(3);
+$('welcomeAudio').onclick=()=>speak('¿Quieres jugar con ayuda o sin ayuda? Con ayuda te muestro el número anterior. Sin ayuda tendrás que descubrirlo tú solo.');
+
 $('next').onclick=next;$('restart').onclick=start;
 $('speak').onclick=()=>speak(missionText());
 $('sound').onclick=()=>{voice=!voice;$('sound').textContent='Voz: '+(voice?'sí':'no');$('sound').setAttribute('aria-pressed',String(voice));if(!voice&&'speechSynthesis' in window)speechSynthesis.cancel()};
-start();
+// Esperar a que el alumno elija el modo antes de iniciar la primera misión.
 })();
 </script></body></html>
