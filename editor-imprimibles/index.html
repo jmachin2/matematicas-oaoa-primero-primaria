@@ -162,7 +162,7 @@ function apply(el,m){el.dataset.sourceText=m.sourceText||m.text;el.dataset.strat
  if(Number(el.dataset.draw)>0){const draw=document.createElement('div');draw.className='draw';el.append(draw)}}
 function pick(el){selected=el;[...$('items').children].forEach(x=>x.classList.toggle('selected',x===el))}
 function render(models){$('paperTitle').textContent='MATEMÁTICAS OAOA · PÁGINA '+page;$('heading').textContent=config.title;$('version').textContent='Versión '+(version+1)+' · '+config.title;$('paperFooter').textContent='Página '+page+' · Versión '+(version+1);$('prompt').textContent=$('kind').value==='tea'?'MIRA · PIENSA · CONSTRUYE · ESCRIBE':$('kind').value==='pictogramas'?'👀 MIRA · 🧩 JUNTA · ✍️ ESCRIBE':'Resuelve. Puedes usar regletas, dibujos y sumas.';$('items').replaceChildren(...models.map(buildTask));selected=null;validate()}
-function load(){let models=createModel();try{let saved=JSON.parse(localStorage.getItem(key())||'null');if(Array.isArray(saved)&&saved.length>0&&saved.length<30)models=saved.map((m,i)=>({...m,type:m.type||models[i]?.type||'',nums:m.nums||models[i]?.nums||[]}))}catch(e){}history=[];render(models)}
+function load(){let models=createModel();try{let saved=JSON.parse(localStorage.getItem(key())||'null');if(Array.isArray(saved)&&saved.length>0&&saved.length<30)models=saved.map((m,i)=>({...m,type:m.type||models[i]?.type||'',nums:m.nums||models[i]?.nums||[],sourceText:m.sourceText||models[i]?.text||m.text}))}catch(e){}history=[];render(models)}
 function validate(){
  const paper=$('paper'),footer=$('paperFooter'),items=$('items');
  const paperRect=paper.getBoundingClientRect(),footerRect=footer.getBoundingClientRect();
