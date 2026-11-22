@@ -1,0 +1,196 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Prototipo visual OAOA · Página 38</title>
+<link href="https://fonts.googleapis.com/css2?family=Playwrite+ES:wght@100..400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#17384e;--pale:#eff7fa;--line:#b9d0dc;--blue:#337bb4}*{box-sizing:border-box}body{margin:0;background:#e6eef3;color:var(--ink);font-family:Arial,sans-serif}.tools{position:sticky;top:0;z-index:10;display:flex;gap:9px;align-items:center;flex-wrap:wrap;background:white;border-bottom:2px solid var(--line);padding:12px 15px}.tools h1{font-size:16px;margin:0 12px 0 0}.tools a{color:#17668d}.tools select,.tools button{border:1px solid #8eafc1;border-radius:8px;padding:9px;font:600 14px Arial;background:white;color:var(--ink);cursor:pointer}.tools button.primary{background:#28769f;color:white}.tools .description{font-size:12px;color:#557384;margin:0;flex-basis:100%}
+.stage{display:grid;justify-content:center;padding:20px;overflow:auto}.paper{width:210mm;height:297mm;background:white;padding:11mm 13mm 12mm;box-shadow:0 8px 23px #28435b2b;overflow:hidden;position:relative}
+.header{display:flex;align-items:start;justify-content:space-between;border-bottom:2px solid #b4cedc;padding-bottom:5mm;gap:14px}.eyebrow{text-transform:uppercase;letter-spacing:.10em;font-size:10pt;color:#47778d;font-weight:bold}.heading{font:400 20pt "Playwrite ES","Segoe Print",cursive;margin:3mm 0 0}.tag{border:1.5px solid #b5cfdc;background:#f1f8fc;border-radius:20px;font-size:10pt;padding:5px 11px;white-space:nowrap;font-weight:bold}
+.details{display:grid;grid-template-columns:1fr 2fr;gap:8mm;font:12pt Arial;padding:5mm 0 5mm}
+.card{border:1.5px solid #bdd1dd;border-radius:12px;margin-bottom:4.5mm;padding:4.5mm 5mm 4mm;break-inside:avoid}.headrow{display:flex;align-items:center;gap:9px;margin-bottom:2mm}.step{border:2px solid #3b88a9;border-radius:9px;padding:3px 9px;font:700 12pt Arial}.action{font:400 15pt "Playwrite ES","Segoe Print",cursive;margin:0}.instruction{font:400 13.5pt "Playwrite ES","Segoe Print",cursive;line-height:1.6;margin:0 0 2mm}.visual{display:flex;align-items:center;justify-content:center;gap:6mm;margin:2.5mm 0}.rod{display:flex;align-items:center;justify-content:center;height:13mm;border:1.6px solid #264556;border-radius:5px;font:bold 18pt Arial;box-shadow:inset 0 2px 0 #ffffff66}.rod.total{width:9cm;background:#337bb4;color:white}.rod.partA{background:#ed9abc}.rod.partB{background:#edda4a}.rod-rows{display:grid;justify-content:center;gap:3mm;margin:2mm auto 3mm}.rod-row{display:flex;align-items:center;gap:0;justify-content:center}.big-eq{font:700 19pt Arial;text-align:center;margin:2mm 0}.diagram{display:block;width:100%;max-width:130mm;height:41mm;margin:2mm auto}.draw-area{border:2px dashed #9cbac8;border-radius:11px;height:25mm;position:relative;margin:2mm 0}.draw-area > span{position:absolute;top:3mm;left:4mm;color:#597b8f;font:10pt Arial}.dots{display:grid;grid-template-columns:repeat(9,1fr);justify-items:center;align-items:center;width:100%;height:100%;padding:10mm 5mm 3mm}.dot{width:9mm;height:9mm;border-radius:50%;border:1.7px solid #4c8ca7;background:#e8f5fb}.answer{display:flex;gap:6mm;align-items:center;margin-top:3mm;font:700 15pt Arial}.answer .line{flex:1;border-bottom:2px solid #728c98;min-height:8mm}.answer .short{width:27mm;border-bottom:2px solid #728c98;min-height:8mm}.footer{position:absolute;bottom:8mm;left:13mm;right:13mm;border-top:1px solid #e0e9ed;padding-top:2mm;color:#718690;font-size:9pt;display:flex;justify-content:space-between}
+.hint{font:11pt Arial;color:#47697a;background:#f1f8fb;border-left:4px solid #3b88a9;padding:3mm;margin:2mm 0}
+.compact .card{padding-top:3.3mm;padding-bottom:3.3mm;margin-bottom:3.5mm}.compact .diagram{height:32mm}.compact .draw-area{height:22mm}.compact .instruction{font-size:13pt}.compact .rod{height:11mm}
+
+/* Ajuste de imprenta A4: se prioriza la integridad del último bloque.
+   Nunca cortar una actividad al llegar al pie de página. */
+.paper{padding-top:9mm;padding-bottom:13mm}
+.header{padding-bottom:3mm}
+.heading{font-size:18pt;margin-top:2mm}
+.details{padding:3.5mm 0}
+.card{padding:2.8mm 4mm 2.8mm;margin-bottom:2.5mm}
+.headrow{margin-bottom:1mm}
+.action{font-size:14pt}
+.instruction{font-size:12.5pt;line-height:1.4;margin-bottom:1mm}
+.rod{height:10mm;font-size:16pt}
+.rod-rows{gap:1.5mm;margin:1.3mm auto 1.5mm}
+.big-eq{font-size:17pt;margin:1mm 0}
+.diagram{height:29mm;margin:1mm auto}
+.draw-area{height:19mm;margin:1mm 0}
+.dots{padding:6mm 5mm 1.5mm}
+.dot{height:6mm;width:6mm}
+.answer{font-size:13.5pt;margin-top:2mm}
+.answer .line{min-height:6mm}
+.compact .card{padding:2.5mm 4mm;margin-bottom:2mm}
+.compact .diagram{height:26mm}
+.compact .draw-area{height:17mm}
+.compact .instruction{font-size:12pt}
+.compact .rod{height:9mm}
+.paper.tight .card{padding:2mm 3.5mm;margin-bottom:1.5mm}
+.paper.tight .draw-area{height:15mm}
+.paper.tight .diagram{height:24mm}
+.paper.tight .instruction{font-size:11.5pt;line-height:1.3}
+.paper.tight .rod{height:8mm}
+.paper.tight .rod-rows{gap:1mm}
+.paper.tight .answer{margin-top:1mm}
+.paper.tight #activities{gap:1.5mm;padding-bottom:3mm}
+.paper.tight .heading{font-size:17pt}
+.paper.tight .details{padding:2.5mm 0}
+.paper.tight .card{border-radius:8px}
+
+.paper.overflow{outline:4px solid #b63b31}
+.paper{display:block}
+#activities{display:flex;flex-direction:column;gap:2.7mm;padding:0 0 4mm;margin:0}
+#activities .card{flex:0 0 auto;margin:0}
+.draw-area{overflow:hidden}
+@media print{#activities{padding-bottom:4mm}}
+@media screen{.paper .footer{bottom:8mm}}
+
+#layoutStatus{font:600 13px Arial,sans-serif;padding:6px 9px;border-radius:7px;background:#e6f4eb;color:#245c41}
+#layoutStatus.bad{background:#fff0e6;color:#a33825}
+@media print{.paper.overflow{outline:0}}
+
+@page{size:A4 portrait;margin:0}
+@media print{body{background:white}.tools{display:none!important}.stage{display:block;padding:0;overflow:visible}.paper{box-shadow:none;margin:0;print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+@media(max-width:830px){.stage{justify-content:start}.tools h1{width:100%}}
+.previous-area{display:flex;justify-content:center;align-items:center;gap:4mm;margin:3mm auto 2mm;min-height:24mm}
+.previous-row{display:flex;justify-content:center;align-items:center;gap:0;margin:2mm 0}
+.unit{width:14mm;height:14mm;border:1.5px solid #324b5a;border-radius:3px;background:#a0c4d6;display:grid;place-items:center;font:bold 14pt Arial}
+.unit.taken{background:white;border:2px dashed #c35c3e;color:#b4452c}
+.previous-symbol{font:bold 22pt Arial;padding:0 3mm}
+.previous-eq{font:bold 20pt Arial;text-align:center;padding:2mm 0}
+.numberline{position:relative;max-width:150mm;margin:4mm auto 2mm;display:grid;grid-template-columns:repeat(10,1fr);gap:0}
+.numberline .mark{height:14mm;border:1px solid #bccdd6;display:grid;place-items:center;font:bold 16pt Arial}
+.numberline .mark.active{background:#e7f2fa;border:2px solid #357fa5}
+.numberline .mark.before{background:#e4f2e8;border:2px solid #5e986e}
+.numberline-label{text-align:center;font:11pt Arial;margin:0 0 2mm}
+.two-questions{display:grid;grid-template-columns:1fr 1fr;gap:6mm}
+.two-questions .taskbox{border:1px solid #bed1db;border-radius:8px;padding:2.5mm;min-width:0}
+.two-questions .taskbox .previous-eq{font-size:18pt}
+.paper.tight .unit{width:12mm;height:12mm}
+.paper.tight .previous-area{margin:1.5mm auto}
+@media print{.unit{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+.rod.missing{background:#fff;border:2px dashed #8da8b8;color:#17384e}.rod-row{gap:0}.rod-rows{margin:2mm auto 3mm;gap:3mm}.rod{min-height:11mm}.paper.tight .rod{min-height:8mm}.paper.tight .rod-rows{gap:1mm}.paper.tight .draw-area{height:16mm}
+.tree{position:relative;max-width:135mm;margin:2mm auto 1mm;padding:1mm;display:grid;justify-items:center;gap:2.5mm}
+.tree-top,.tree-node{border:2px solid #6c8b80;background:white;border-radius:5px;min-width:23mm;min-height:13mm;display:grid;place-items:center;font:bold 19pt Arial}
+.tree-bottom{display:flex;justify-content:center;gap:22mm}
+.tree .branches{height:10mm;width:85mm;display:block}
+.bricks{display:flex;justify-content:center;gap:4mm;flex-wrap:wrap;margin:3mm 0}
+.brick{display:grid;grid-template-columns:23mm 23mm;grid-template-rows:12mm 14mm;align-items:center;text-align:center;font:bold 17pt Arial}
+.brick .top{grid-column:1/3;width:23mm;justify-self:center;border:2px solid #ed7b72;height:12mm}
+.brick .bottom{border:2px solid #ed7b72;height:14mm}
+.problem{display:flex;align-items:center;justify-content:space-around;gap:3mm;margin:2mm 0;padding:3mm;background:#f5fafb;border:1.5px dashed #abc6d2;border-radius:8px;font:bold 14pt Arial}
+.problem .missing{display:inline-flex;justify-content:center;align-items:center;border:2px solid #809cae;width:18mm;height:12mm;background:white}
+.choice{font:13pt Arial;display:flex;gap:8mm;align-items:center;margin:2mm 0}
+.choice span{border:2px solid #7594a4;display:inline-block;width:5mm;height:5mm}
+.tenframe{display:grid;grid-template-columns:repeat(5,1fr);max-width:145mm;margin:3mm auto;border:2px solid #536b7a}
+.tenframe span{height:17mm;border:1px solid #536b7a;display:grid;place-items:center;font:bold 17pt Arial}
+.tenframe .filled{background:#d7e9f3}
+.tenframe .partial{background:#fafafa}
+.tenrod{height:13mm;width:100mm;margin:3mm auto;background:#e58d32;border:2px solid #ad642a;border-radius:4px;text-align:center;font:bold 19pt Arial}
+.pairs{display:grid;grid-template-columns:repeat(2,1fr);gap:2mm 5mm;font:bold 17pt Arial;max-width:140mm;margin:3mm auto}
+.pairs .pair{padding:3mm;border:1px solid #bad1dc;border-radius:6px;text-align:center}
+.paper.tight .tenframe span{height:12mm}
+.paper.tight .tree-top,.paper.tight .tree-node{min-height:10mm}
+.paper.tight .brick .top{height:10mm}
+.paper.tight .brick .bottom{height:11mm}
+
+/* Representaciones de las actividades 70–73 del libro: círculos, conjuntos, parejas. */
+.ten-box{display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(2,1fr);width:140mm;max-width:100%;margin:2mm auto 3mm;border:1.5px solid #4d6270}
+.ten-cell{height:16mm;display:grid;place-items:center;border:1px solid #4d6270;background:#fff}
+.ten-cell svg{width:12mm;height:12mm}
+.ten-cell svg circle{fill:#fff;stroke:#233c4a;stroke-width:3}
+.ten-cell.groupA svg circle{fill:#ef897b}
+.ten-cell.groupB svg circle{fill:#91bddd}
+.example-tag{text-align:center;font:bold 13pt Arial;color:#34576b;margin:1mm auto}
+.sheep-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1.5mm 2mm;max-width:143mm;margin:2mm auto}
+.sheep-card{height:18mm;display:grid;place-items:center;border:1px dashed #b6cbd6;background:#fff}
+.sheep-card svg{width:18mm;height:16mm;stroke:#334e61;fill:#fff}
+.sheep-card.groupA{outline:2px solid #ed8274;outline-offset:-2px}
+.sheep-card.groupB{outline:2px solid #337bb4;outline-offset:-2px}
+.number-hunt{display:grid;grid-template-columns:repeat(6,1fr);gap:1mm 3mm;max-width:148mm;margin:2mm auto}
+.number-hunt span{border:1px solid #d4e0e7;border-radius:5px;height:14mm;display:grid;place-items:center;font:bold 21pt Arial}
+.number-hunt span.paired{border:2px solid #e68d4b}
+.steps{font:12pt Arial;display:flex;justify-content:center;gap:3mm;align-items:center;margin:1mm 0}
+.steps strong{color:#e07d49}
+.equation-boxes{display:grid;grid-template-columns:1fr 1fr;gap:4mm;margin:2mm auto}
+.equation-boxes .eq{border:2px solid #f0aaa1;padding:3mm;font:bold 18pt Arial;text-align:center}
+.complement{display:flex;justify-content:center;align-items:center;gap:3mm;margin:3mm 0;font:bold 18pt Arial}
+.complement span{display:grid;place-items:center;height:13mm;min-width:20mm;border:2px solid #6c98ae;border-radius:5px}
+.complement .unknown{border-style:dashed}
+.tiny-prompt{font:11pt Arial;text-align:center;color:#527082}
+.paper.tight .ten-cell{height:12mm}.paper.tight .sheep-card{height:14mm}.paper.tight .number-hunt span{height:11mm}.paper.tight .equation-boxes .eq{padding:1.5mm}
+</style></head><body>
+<div class="tools"><h1>Prototipo de claridad visual · Página 38</h1><a href="https://drive.google.com/file/d/1kDDt6by7DsmGHHMrXVqcMUpFkual-RKB/view" target="_blank" rel="noopener">↗ Consultar libro OAOA original</a><label for="mode">Modalidad</label><select id="mode"><option value="refuerzo">Refuerzo</option><option value="tarea">Tarea ordinaria</option><option value="ampliacion">Ampliación</option></select><button id="other">Otra versión</button><button class="primary" id="print">Imprimir / PDF</button><span id="layoutStatus" role="status" aria-live="polite">Comprobando A4…</span><p class="description">Ficha piloto basada en la página correspondiente del libro OAOA. Revisa siempre la vista previa A4 antes de guardar el PDF; las modalidades están pendientes de validación.</p></div>
+<main class="stage"><article class="paper" id="paper"><header class="header"><div><div class="eyebrow">Matemáticas OAOA · Página 38</div><h2 class="heading">Agrupamos diez ovejas</h2></div><div class="tag" id="tag">REFUERZO</div></header><div class="details"><span>Nombre: ____________________</span><span>Fecha: ________________________</span></div><section id="activities"></section><footer class="footer"><span>CEIP Camino Largo · 1.º de Primaria</span><span id="folio">Página 38 · Modelo 1</span></footer></article></main>
+<script>
+
+(function(){
+'use strict';
+const PAGE=38,$=id=>document.getElementById(id);
+let version=0;
+function card(num,name,instruction,inner){return '<section class="card"><div class="headrow"><span class="step">'+num+'</span><h3 class="action">'+name+'</h3></div><p class="instruction">'+instruction+'</p>'+inner+'</section>'}
+function line(label){return '<div class="answer">'+label+'<span class="line"></span></div>'}
+function note(label){return '<p class="tiny-prompt">'+label+'</p>'}
+function tenFrame(a,filled){
+ // Marco de 10: la primera parte ocupa exactamente a casillas; segunda parte 10−a.
+ return '<div class="ten-box" aria-label="Diez círculos; primera parte '+a+' y segunda '+(10-a)+'">'+Array.from({length:10},(_,i)=>'<span class="ten-cell '+(filled?(i<a?'groupA':'groupB'):'')+'"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="23"/></svg></span>').join('')+'</div>';
+}
+function sheepSVG(){return '<svg viewBox="0 0 85 69" aria-hidden="true"><ellipse cx="42" cy="32" rx="26" ry="17" stroke-width="2.2"/><circle cx="20" cy="18" r="12" stroke-width="2"/><ellipse cx="13" cy="25" rx="8" ry="10" stroke-width="2"/><path d="M28 45v16 M51 45v16 M58 45v16" fill="none" stroke-width="3"/><circle cx="10" cy="22" r="1.9" fill="#334e61"/></svg>'}
+function flock(a,marked){return '<div class="sheep-grid" aria-label="10 ovejas; rodea los dos grupos">'+Array.from({length:10},(_,i)=>'<span class="sheep-card '+(marked?(i<a?'groupA':'groupB'):'')+'">'+sheepSVG()+'</span>').join('')+'</div>'}
+function hunt(arr,mark){return '<div class="number-hunt" aria-label="Números para buscar parejas que suman diez">'+arr.map((n,i)=>'<span class="'+(mark&&i<2?'paired':'')+'">'+n+'</span>').join('')+'</div>'}
+function comp(n){return '<div class="complement"><span>10</span> = <span>'+n+'</span> + <span class="unknown">?</span></div>'}
+function checkLayout(){
+ const p=$('paper'),c=$('activities'),foot=p.querySelector('.footer');p.classList.remove('tight','overflow');
+ const fits=()=>{
+  const limit=foot.getBoundingClientRect().top-8,r=c.getBoundingClientRect(),pr=p.getBoundingClientRect();
+  const cards=[...c.querySelectorAll('.card')];
+  return cards.length===3&&cards.every(el=>{const x=el.getBoundingClientRect();return x.top>=r.top-1&&x.bottom<=limit&&x.left>=pr.left&&x.right<=pr.right&&el.scrollHeight<=el.clientHeight+2})&&r.bottom<=limit+1&&p.scrollWidth<=p.clientWidth+2;
+ };
+ if(!fits())p.classList.add('tight');
+ const ok=fits();p.classList.toggle('overflow',!ok);
+ $('layoutStatus').textContent=ok?'✓ Contenido dentro del A4':'⚠️ Desbordamiento: impresión bloqueada';
+ $('layoutStatus').classList.toggle('bad',!ok);$('print').disabled=!ok;
+ return ok;
+}
+function render(){
+ const mode=$('mode').value,A=[];
+ $('tag').textContent={refuerzo:'REFUERZO',tarea:'TAREA',ampliacion:'AMPLIACIÓN'}[mode];
+ $('folio').textContent='Página '+PAGE+' · Modelo '+(version+1);
+ 
+const pairs=[[6,4],[7,3],[9,1],[5,5],[8,2]],p=pairs[version],q=pairs[(version+1)%5];
+if(!pairs.every(x=>x[0]+x[1]===10))throw new Error('Grupo incorrecto');
+if(mode==='refuerzo'){
+ A.push(card(1,'Observo','Mira dos grupos de ovejas que forman diez.',flock(6,true)+note('6 y 4: diez ovejas en total')));
+ A.push(card(2,'Rodeo','Rodea '+p[0]+' ovejas de rojo y '+p[1]+' de azul.',flock(p[0],false)+line(p[0]+' + '+p[1]+' = ____')));
+ A.push(card(3,'Completo','Observa el total y escribe el resultado.',flock(q[0],false)+line(q[0]+' + '+q[1]+' = ____')));
+}else if(mode==='tarea'){
+ A.push(card(1,'Rodeo','Forma dos grupos: '+p[0]+' y '+p[1]+'.',flock(p[0],false)+line('Total:')));
+ A.push(card(2,'Rodeo','Forma '+q[0]+' y '+q[1]+' con dos colores.',flock(q[0],false)+line(q[0]+' + '+q[1]+' = ____')));
+ A.push(card(3,'Escribo','Inventa otra forma de agrupar las diez ovejas.',flock(5,false)+line('____ + ____ = 10')));
+}else{
+ A.push(card(1,'Investigo','Agrupa diez ovejas de dos maneras.',flock(p[0],false)+line('Primera pareja: ____ + ____ = 10')));
+ A.push(card(2,'Cambio','Rodea ahora otra agrupación del mismo total.',flock(q[0],false)+line('Segunda pareja: ____ + ____ = 10')));
+ A.push(card(3,'Explico','¿Qué cambia al repartir las diez ovejas?',line('No cambia el total porque:')+line('Cambian las partes:')));
+}
+
+ $('activities').innerHTML=A.join('');
+ $('paper').classList.toggle('compact',mode==='ampliacion');
+ checkLayout();
+}
+$('mode').addEventListener('change',render);
+$('other').addEventListener('click',()=>{version=(version+1)%5;render()});
+$('print').addEventListener('click',async()=>{if(document.fonts)await document.fonts.ready;if(checkLayout())window.print()});
+window.addEventListener('resize',checkLayout);window.addEventListener('beforeprint',checkLayout);
+if(document.fonts?.ready)document.fonts.ready.then(checkLayout);
+render();
+})();
+
+</script></body></html>
