@@ -71,7 +71,7 @@ function render(model){
    body=reg(a,18,26,18,36)+text(200,58,'+',29)+reg(b,236,26,18,36)+text(434,58,'=',29)+empty(480,26,82,38)+text(200,104,'¿8 o menor que 8?',20);
    desc='Regletas para comparar el resultado de la suma con 8';
  }else{
-   const first=Math.max(1,Math.min(a,9)),second=Math.max(1,Math.min(b,9));
+   const first=Math.max(0,Math.min(a,9)),second=Math.max(0,Math.min(b,9));
    body=reg(first,17,26,20,38)+text(222,61,'+',32)+reg(second,263,26,20,38)+text(466,61,'=',32)+empty(520,28,85,39);
    desc='Representación de suma con dos regletas y casilla de resultado';
  }
