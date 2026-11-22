@@ -65,7 +65,7 @@ main{position:relative;z-index:1}
 @media(max-width:640px){.selection-choices{grid-template-columns:1fr}.selection-choice{min-height:135px;padding:12px}.selection-screen{padding:18px}}
 @media(prefers-reduced-motion:reduce){.selection-robot{animation:none}}
 </style></head><body><header><strong>🤖 Robot que retrocede · Página 32</strong><a href="../">← Juegos OAOA</a></header><main><div class="top"><div><div class="eyebrow">1.º PRIMARIA · ESTRATEGIA −1</div><h1>¡Un paso hacia atrás!</h1></div><div class="controls"><button id="speak" class="btn">🔊 Escuchar</button><button id="sound" class="btn" aria-pressed="true">Voz: sí</button><button id="music" class="btn" aria-pressed="false">🎵 Música: no</button><button id="effects" class="btn" aria-pressed="true">🔔 Efectos: sí</button><button id="restart" class="btn">↻ Reiniciar</button></div></div>
-<section class="help"><strong>Tu misión:</strong><p>El robot está sobre un número. <strong>Busca el número anterior</strong> y pulsa la casilla que está <strong>una unidad antes</strong>. ¡Solo puede retroceder una casilla cada vez! En «Gran reto», predice el destino y encadena varios pasos.</p></section>
+
 <section class="selection-screen" id="modeSelection" aria-labelledby="modeQuestion">
  <div class="selection-robot" aria-hidden="true">🤖</div>
  <h2 id="modeQuestion">¿Quieres jugar con ayuda o sin ayuda?</h2>
@@ -77,6 +77,7 @@ main{position:relative;z-index:1}
  <button type="button" class="selection-audio" id="welcomeAudio">🔊 Escuchar la pregunta</button>
 </section>
 <div id="gameArea" hidden>
+<section class="help"><strong>Tu misión:</strong><p>El robot está sobre un número. <strong>Busca el número anterior</strong> y pulsa la casilla que está <strong>una unidad antes</strong>. ¡Solo puede retroceder una casilla cada vez! En «Gran reto», predice el destino y encadena varios pasos.</p></section>
 <div class="game-mode-label" id="modeLabel">Modo: con ayuda</div>
 <div class="arcade-hud"><span>🪐 MISIÓN ESPACIAL</span><span class="pill">🎯 NÚMERO ANTERIOR</span></div><section class="board"><div class="game-particles" id="particles" aria-hidden="true"></div><div class="mission" id="mission" aria-live="polite"></div><div class="challenge-predict" id="predict" hidden></div><div class="track" id="track" role="group" aria-label="Recta numérica de 0 a 10"></div><div class="under"><div class="equation" id="equation">8 − 1 = ?</div><div class="status" id="status" role="status" aria-live="polite"></div></div><div class="under"><div class="progress" id="progress"></div><div class="stars" id="stars" aria-label="Estrellas ganadas"></div><button class="btn primary" id="next" disabled>Continuar →</button></div></section>
 <div class="end-actions"><button class="btn" id="changeMode">↩ Elegir con ayuda o sin ayuda</button><button class="btn" id="bigChallenge" hidden>⭐ Probar el Gran reto</button></div>
@@ -174,6 +175,7 @@ function next(){
  newRound();
 }
 function chooseMode(n){
+ if('speechSynthesis' in window)speechSynthesis.cancel();
  level=n;
  $('modeSelection').hidden=true;$('gameArea').hidden=false;
  $('modeLabel').textContent=n===1?'🌱 Estás jugando CON AYUDA':n===2?'🚀 Estás jugando SIN AYUDA':'⭐ GRAN RETO: varios pasos';
