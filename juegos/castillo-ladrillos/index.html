@@ -40,6 +40,48 @@ main{position:relative;z-index:1}
 @keyframes burst{0%{opacity:0;transform:translateY(20px) scale(.5)}25%{opacity:1}100%{opacity:0;transform:translateY(-140px) rotate(70deg) scale(1.3)}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 @media(max-width:620px){.castle::before{font-size:70px}.castle::after{font-size:21px}.stage{border-width:3px}}
+
+/* Ajuste completo sin scroll: conserva el escenario y todos los botones visibles. */
+html,body{height:100%;height:100dvh;overflow:hidden!important;overscroll-behavior:none}
+body{display:flex;flex-direction:column}
+body>header{flex:0 0 auto;position:relative;z-index:12}
+body>main{flex:0 0 auto;width:min(1040px,calc(100vw - 18px));max-width:none;margin:0 auto;padding:10px 8px 8px;transform-origin:top center;will-change:transform}
+body>main .top{gap:8px}
+body>main .controls,body>main .levels,body>main .modes{gap:6px}
+body>main .help,body>main .intro{margin:8px 0;padding:9px 13px}
+body>main .board,body>main .stage{padding:12px 13px 13px}
+body>main .arcade-hud{margin:7px 0;padding:5px 12px}
+body>main .track{padding-top:77px;padding-bottom:14px}
+body>main .tile .robot-icon{bottom:calc(100% + 7px)}
+body>main .castle{min-height:185px;padding-top:28px;padding-bottom:10px;margin:7px auto 9px}
+body>main .brick-top,body>main .brick-part{min-height:63px}
+body>main .brick-row{margin-top:8px}
+body>main .options{gap:6px}
+body>main .option{min-height:52px}
+body>main .selection-screen{margin:10px auto;padding:18px 24px}
+body>main .selection-robot{font-size:70px}
+body>main .selection-choice{min-height:124px;padding:12px 10px}
+body>main .selection-choice .picture{font-size:42px}
+body>main .selection-screen h2{margin:4px auto 9px}
+body>main .selection-screen p{margin:4px auto 12px}
+@media(max-height:780px){
+body>main h1{font-size:clamp(1.5rem,3vw,2.1rem)}
+body>main .btn{min-height:36px;padding:6px 10px}
+body>main .top{gap:7px}
+body>main .track{padding-top:61px;padding-bottom:10px}
+body>main .tile .robot-icon{font-size:clamp(30px,4.8vw,50px)}
+body>main .mission{padding:6px;min-height:2.7em;margin:3px auto}
+body>main .castle{min-height:145px;padding:20px 12px 8px}
+body>main .brick-top,body>main .brick-part{min-height:49px}
+body>main .option{min-height:43px;font-size:25px}
+body>main .selection-choice{min-height:105px}
+}
+@media(max-width:620px){
+body>main{width:calc(100vw - 12px);padding:4px}
+body>main .selection-screen{padding:10px 12px}
+body>main .selection-choice{min-height:98px}
+body>main .tile .robot-icon{font-size:clamp(26px,5vw,45px)}
+}
 </style></head><body><header><strong>🏰 Castillo de los ladrillos · Página 34</strong><a href="../">← Juegos OAOA</a></header><main><div class="top"><div><div class="eyebrow">1.º DE PRIMARIA · PARTE–TODO</div><h1>¡Construye el castillo!</h1></div><div class="controls"><button class="btn" id="speak">🔊 Instrucciones</button><button class="btn" id="voice" aria-pressed="true">Voz: sí</button><button class="btn" id="music" aria-pressed="false">🎵 Música: no</button><button class="btn" id="effects" aria-pressed="true">🔔 Efectos: sí</button><button class="btn" id="restart">↻ Reiniciar</button></div></div>
 <p class="intro">En cada torre, <strong>los dos ladrillos inferiores forman el superior</strong>. Encuentra el número que falta y construye la muralla. En los niveles siguientes usarás diagramas y buscarás varias soluciones.</p>
 <div class="levels" aria-label="Dificultad"><button class="btn" data-level="1" aria-pressed="true">🌱 Construyo</button><button class="btn" data-level="2" aria-pressed="false">🌳 Diagrama</button><button class="btn" data-level="3" aria-pressed="false">⭐ Invento parejas</button></div>
@@ -145,5 +187,31 @@ $('next').onclick=next;$('restart').onclick=start;
 $('voice').onclick=()=>{voice=!voice;$('voice').textContent='Voz: '+(voice?'sí':'no');$('voice').setAttribute('aria-pressed',String(voice));if(!voice&&'speechSynthesis' in window)speechSynthesis.cancel()};
 $('speak').onclick=()=>speak($('mission').textContent+' '+$('instructions').textContent);
 start();
+
+/* Vista adaptativa: pantalla inicial, partidas, cambios de nivel y resultados. */
+(function fitGameToViewport(){
+ const layout=document.querySelector('main'),header=document.querySelector('body>header');
+ let pending=false;
+ function apply(){
+  pending=false;
+  if(!layout||!header)return;
+  layout.style.transform='none';
+  const availableH=Math.max(1,window.innerHeight-header.getBoundingClientRect().height-5);
+  const availableW=Math.max(1,window.innerWidth-10);
+  const contentH=Math.max(layout.scrollHeight,layout.offsetHeight,1);
+  const contentW=Math.max(layout.scrollWidth,layout.offsetWidth,1);
+  const scale=Math.min(1,availableH/contentH,availableW/contentW);
+  layout.style.transform='scale('+Math.max(.1,scale).toFixed(4)+')';
+ }
+ function schedule(){if(pending)return;pending=true;requestAnimationFrame(apply)}
+ new MutationObserver(schedule).observe(layout,{subtree:true,childList:true,characterData:true});
+ window.addEventListener('resize',schedule,{passive:true});
+ window.addEventListener('orientationchange',schedule,{passive:true});
+ if(window.visualViewport)window.visualViewport.addEventListener('resize',schedule,{passive:true});
+ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(schedule);
+ window.addEventListener('load',schedule);
+ schedule();
+})();
+
 })();
 </script></body></html>
