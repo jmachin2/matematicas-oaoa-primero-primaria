@@ -22,7 +22,10 @@ main{position:relative;z-index:1}
 .track{padding-top:95px;padding-bottom:22px}
 .tile{border:3px solid #65a4d4;background:linear-gradient(#f9fffc,#cfe7ff);box-shadow:0 7px 0 #518ab3;color:#123e66;transition:background .2s,transform .2s;touch-action:manipulation}
 .tile:hover{background:#fff4c8;transform:translateY(-3px)}
-.tile::before{height:8px;bottom:48%;background:#96bfdc}
+.tile::before{display:none!important}/* Casillas numeradas sin travesaños superpuestos: las cifras deben ser totalmente legibles. */
+.tile{background-image:linear-gradient(180deg,#fff 0%,#eaf5ff 100%);text-shadow:none}
+.tile.robot{background-image:linear-gradient(180deg,#fff6c4,#ffdb81)}
+.tile.target{background-image:linear-gradient(180deg,#e6fff1,#b4f5d4)}
 .tile.robot{background:linear-gradient(#fff5ae,#ffd677);border-color:#eaa234}
 .tile.target{background:#b4f5d4;border-color:#27b586;box-shadow:0 7px 0 #249475}
 .tile .robot-icon{font-size:clamp(37px,6vw,66px);animation:robotFloat 1.55s ease-in-out infinite;filter:drop-shadow(0 6px 2px #324e5977)}
