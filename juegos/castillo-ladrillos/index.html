@@ -15,7 +15,7 @@ function chooseData(){const arr=tasks[level];return arr[stage%arr.length]}
 function options(solution){
  let nums;
  if(level===3)nums=Array.from({length:active.total-1},(_,i)=>i+1);
- else nums=[solution,Math.max(1,solution-1),Math.min(9,solution+1),Math.max(1,solution-2)].filter(n=>n<active.total);
+ else nums=[solution,solution-1,solution+1,solution-2,solution+2].filter(n=>n>=1&&n<active.total);
  nums=[...new Set(nums)].sort((a,b)=>a-b);
  $('options').innerHTML=nums.map(n=>'<button class="option" data-n="'+n+'" aria-label="Elegir '+n+'">'+n+'</button>').join('');
  document.querySelectorAll('.option').forEach(b=>b.onclick=()=>choose(Number(b.dataset.n)));
