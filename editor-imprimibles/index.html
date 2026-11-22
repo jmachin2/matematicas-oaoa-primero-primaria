@@ -55,7 +55,7 @@ const sets={
 33:{title:'Sumas y relaciones del 7 al 9',word:'RESULTADO',tasks:[...[[6,2],[4,4],[3,6],[8,1],[2,6],[7,1],[5,3],[5,2],[5,4],[6,3],[4,3],[6,2]].map(a=>({type:'sum',nums:a})),...[[9,6],[8,4],[7,5]].map(a=>({type:'brick',nums:a}))]}
 };
 let version=0,selected=null,history=[],frozen=false;const config=sets[page];
-function key(){return 'oaoa-editor-v3-p'+page+'-'+$('kind').value+'-'+version}
+function key(){return ((page===21||page===27)?'oaoa-editor-v4-money-p':'oaoa-editor-v3-p')+page+'-'+$('kind').value+'-'+version}
 function escapeTxt(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function taskText(t,mode='tarea'){
  const a=t.nums, total=a[0], known=a[1], diff=total-known;
