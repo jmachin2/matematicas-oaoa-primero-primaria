@@ -40,7 +40,19 @@
 .paper.tight .rod{height:8mm}
 .paper.tight .rod-rows{gap:1mm}
 .paper.tight .answer{margin-top:1mm}
+.paper.tight #activities{gap:1mm;padding-bottom:7mm}
+.paper.tight .heading{font-size:17pt}
+.paper.tight .details{padding:2.5mm 0}
+.paper.tight .card{border-radius:8px}
+
 .paper.overflow{outline:4px solid #b63b31}
+.paper{display:flex;flex-direction:column}
+#activities{min-height:0;flex:1 1 auto;display:flex;flex-direction:column;justify-content:space-evenly;gap:1.5mm;padding-bottom:8mm}
+#activities .card{flex:0 0 auto;margin:0}
+.draw-area{overflow:hidden}
+@media print{#activities{padding-bottom:8mm}}
+@media screen{.paper .footer{bottom:8mm}}
+
 #layoutStatus{font:600 13px Arial,sans-serif;padding:6px 9px;border-radius:7px;background:#e6f4eb;color:#245c41}
 #layoutStatus.bad{background:#fff0e6;color:#a33825}
 @media print{.paper.overflow{outline:0}}
@@ -56,7 +68,6 @@
 'use strict';
 const $=id=>document.getElementById(id),values=[[4,5],[3,6],[2,7],[1,8],[5,4],[6,3]];
 let version=0;
-const esc=n=>Number(n);
 function rod(n,cls){const pct=n/9*90;const rgb={1:'#f7f4ec',2:'#d95757',3:'#9acb6a',4:'#ed9abc',5:'#edda4a',6:'#2d7b4d',7:'#202020',8:'#8b5a35',9:'#337bb4'}[n]||'#fff';return '<span class="rod '+(cls||'')+'" style="width:'+pct+'mm;background:'+rgb+';color:'+([2,6,7,8,9].includes(n)?'#fff':'#17384e')+'">'+n+'</span>'}
 function reglets(a,b){return '<div class="rod-rows"><div class="rod-row">'+rod(9,'total')+'</div><div class="rod-row">'+rod(a,'partA')+rod(b,'partB')+'</div></div>'}
 function diagram(a,b,help){return '<svg class="diagram" viewBox="0 0 500 154" role="img" aria-label="Diagrama parte-todo del 9"><rect x="200" y="4" width="100" height="49" rx="6" fill="#fff" stroke="#324c5c" stroke-width="3"/><text x="250" y="38" text-anchor="middle" font-size="33" font-weight="700" font-family="Arial" fill="#17384e">9</text><path d="M250 53L133 86 M250 53L370 86" stroke="#324c5c" stroke-width="3" fill="none"/><rect x="65" y="86" width="135" height="60" rx="7" fill="#fff" stroke="#324c5c" stroke-width="3"/><rect x="302" y="86" width="135" height="60" rx="7" fill="#fff" stroke="#324c5c" stroke-width="3"/><text x="132" y="126" text-anchor="middle" font-size="35" font-weight="700" font-family="Arial" fill="#17384e">'+(help?a:'?')+'</text><text x="370" y="126" text-anchor="middle" font-size="35" font-weight="700" font-family="Arial" fill="#17384e">?</text></svg>'}
@@ -67,9 +78,19 @@ function line(label){return '<div class="answer">'+label+'<span class="line"></s
 function checkLayout(){
  const paper=$('paper'),content=$('activities'),footer=paper.querySelector('.footer');
  paper.classList.remove('tight','overflow');
- // Forzar el cálculo de alturas después de cambiar de modalidad.
- const fits=()=>content.getBoundingClientRect().bottom <= footer.getBoundingClientRect().top-12 &&
-   [...content.querySelectorAll('.card')].every(c=>c.scrollHeight<=c.clientHeight+2);
+ // Comprobación geométrica del contenido y de cada bloque; no se ocultan desbordamientos.
+ const fits=()=>{
+  const bottomLimit=footer.getBoundingClientRect().top-8;
+  const cr=content.getBoundingClientRect();
+  const cards=[...content.querySelectorAll('.card')];
+  const within=cards.every(el=>{
+   const r=el.getBoundingClientRect();
+   return r.top>=cr.top-1 && r.bottom<=bottomLimit &&
+    r.left>=paper.getBoundingClientRect().left && r.right<=paper.getBoundingClientRect().right &&
+    el.scrollHeight<=el.clientHeight+2;
+  });
+  return within && cr.bottom<=bottomLimit+1 && paper.scrollWidth<=paper.clientWidth+2;
+ };
  if(!fits())paper.classList.add('tight');
  const ok=fits();
  paper.classList.toggle('overflow',!ok);
@@ -94,9 +115,11 @@ function render(){
  }else{
   A.push(card(1,'Construyo','Busca dos parejas distintas que formen 9.',reglets(a,b)+line('Otra pareja:')));
   A.push(card(2,'Dibujo','Representa nueve elementos de dos maneras.',blank('Primer dibujo')+blank('Segundo dibujo')));
-  A.push(card(3,'Explico','Completa las dos descomposiciones y compáralas.',diagram(a,b,false)+line('Primera suma:')+line('Otra suma:')));
+  A.push(card(3,'Explico','Completa el diagrama y escribe dos sumas diferentes.',diagram(a,b,false)+line('Primera suma:')+line('Segunda suma:')));
  }
  $('activities').innerHTML=A.join('');
+ const summary=A.length===3&&values.every(pair=>pair[0]+pair[1]===9);
+ if(!summary){$('layoutStatus').textContent='⚠️ Incoherencia matemática: generación detenida';$('print').disabled=true;return;}
  $('paper').classList.toggle('compact',mode==='ampliacion');
  checkLayout();
 }
@@ -104,6 +127,7 @@ $('mode').addEventListener('change',render);
 $('other').addEventListener('click',()=>{version=(version+1)%values.length;render()});
 $('print').addEventListener('click',async()=>{if(document.fonts)await document.fonts.ready;if(checkLayout())window.print()});
 window.addEventListener('resize',checkLayout);
+window.addEventListener('beforeprint',()=>{checkLayout()});
 if(document.fonts?.ready)document.fonts.ready.then(checkLayout);
 
 render();
