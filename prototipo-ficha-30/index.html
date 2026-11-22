@@ -1,0 +1,56 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Prototipo visual OAOA · Página 30</title>
+<link href="https://fonts.googleapis.com/css2?family=Playwrite+ES:wght@100..400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#17384e;--pale:#eff7fa;--line:#b9d0dc;--blue:#337bb4}*{box-sizing:border-box}body{margin:0;background:#e6eef3;color:var(--ink);font-family:Arial,sans-serif}.tools{position:sticky;top:0;z-index:10;display:flex;gap:9px;align-items:center;flex-wrap:wrap;background:white;border-bottom:2px solid var(--line);padding:12px 15px}.tools h1{font-size:16px;margin:0 12px 0 0}.tools a{color:#17668d}.tools select,.tools button{border:1px solid #8eafc1;border-radius:8px;padding:9px;font:600 14px Arial;background:white;color:var(--ink);cursor:pointer}.tools button.primary{background:#28769f;color:white}.tools .description{font-size:12px;color:#557384;margin:0;flex-basis:100%}
+.stage{display:grid;justify-content:center;padding:20px;overflow:auto}.paper{width:210mm;height:297mm;background:white;padding:11mm 13mm 12mm;box-shadow:0 8px 23px #28435b2b;overflow:hidden;position:relative}
+.header{display:flex;align-items:start;justify-content:space-between;border-bottom:2px solid #b4cedc;padding-bottom:5mm;gap:14px}.eyebrow{text-transform:uppercase;letter-spacing:.10em;font-size:10pt;color:#47778d;font-weight:bold}.heading{font:400 20pt "Playwrite ES","Segoe Print",cursive;margin:3mm 0 0}.tag{border:1.5px solid #b5cfdc;background:#f1f8fc;border-radius:20px;font-size:10pt;padding:5px 11px;white-space:nowrap;font-weight:bold}
+.details{display:grid;grid-template-columns:1fr 2fr;gap:8mm;font:12pt Arial;padding:5mm 0 5mm}
+.card{border:1.5px solid #bdd1dd;border-radius:12px;margin-bottom:4.5mm;padding:4.5mm 5mm 4mm;break-inside:avoid}.headrow{display:flex;align-items:center;gap:9px;margin-bottom:2mm}.step{border:2px solid #3b88a9;border-radius:9px;padding:3px 9px;font:700 12pt Arial}.action{font:400 15pt "Playwrite ES","Segoe Print",cursive;margin:0}.instruction{font:400 13.5pt "Playwrite ES","Segoe Print",cursive;line-height:1.6;margin:0 0 2mm}.visual{display:flex;align-items:center;justify-content:center;gap:6mm;margin:2.5mm 0}.rod{display:flex;align-items:center;justify-content:center;height:13mm;border:1.6px solid #264556;border-radius:5px;font:bold 18pt Arial;box-shadow:inset 0 2px 0 #ffffff66}.rod.total{width:9cm;background:#337bb4;color:white}.rod.partA{background:#ed9abc}.rod.partB{background:#edda4a}.rod-rows{display:grid;justify-content:center;gap:3mm;margin:2mm auto 3mm}.rod-row{display:flex;align-items:center;gap:2mm;justify-content:center}.big-eq{font:700 19pt Arial;text-align:center;margin:2mm 0}.diagram{display:block;width:100%;max-width:130mm;height:41mm;margin:2mm auto}.draw-area{border:2px dashed #9cbac8;border-radius:11px;height:25mm;position:relative;margin:2mm 0}.draw-area > span{position:absolute;top:3mm;left:4mm;color:#597b8f;font:10pt Arial}.dots{display:grid;grid-template-columns:repeat(9,1fr);justify-items:center;align-items:center;width:100%;height:100%;padding:10mm 5mm 3mm}.dot{width:9mm;height:9mm;border-radius:50%;border:1.7px solid #4c8ca7;background:#e8f5fb}.answer{display:flex;gap:6mm;align-items:center;margin-top:3mm;font:700 15pt Arial}.answer .line{flex:1;border-bottom:2px solid #728c98;min-height:8mm}.answer .short{width:27mm;border-bottom:2px solid #728c98;min-height:8mm}.footer{position:absolute;bottom:8mm;left:13mm;right:13mm;border-top:1px solid #e0e9ed;padding-top:2mm;color:#718690;font-size:9pt;display:flex;justify-content:space-between}
+.hint{font:11pt Arial;color:#47697a;background:#f1f8fb;border-left:4px solid #3b88a9;padding:3mm;margin:2mm 0}
+.compact .card{padding-top:3.3mm;padding-bottom:3.3mm;margin-bottom:3.5mm}.compact .diagram{height:32mm}.compact .draw-area{height:22mm}.compact .instruction{font-size:13pt}.compact .rod{height:11mm}
+@page{size:A4 portrait;margin:0}
+@media print{body{background:white}.tools{display:none!important}.stage{display:block;padding:0;overflow:visible}.paper{box-shadow:none;margin:0;print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+@media(max-width:830px){.stage{justify-content:start}.tools h1{width:100%}}
+</style></head><body>
+<div class="tools"><h1>Prototipo de claridad visual · Página 30</h1><a href="../editor-imprimibles/?pagina=30">← Generador actual</a><label for="mode">Modalidad</label><select id="mode"><option value="refuerzo">Refuerzo</option><option value="tarea">Tarea ordinaria</option><option value="ampliacion">Ampliación</option></select><button id="other">Otra versión</button><button class="primary" id="print">Imprimir / PDF</button><p class="description">Prototipo independiente: conserva intacto el generador actual. Compara la jerarquía, el tamaño de las regletas y los espacios de respuesta. Comprueba la vista previa antes de guardar el PDF.</p></div>
+<main class="stage"><article class="paper" id="paper"><header class="header"><div><div class="eyebrow">Matemáticas OAOA · Página 30</div><h2 class="heading">Representamos el 9</h2></div><div class="tag" id="tag">REFUERZO</div></header><div class="details"><span>Nombre: ____________________</span><span>Fecha: ________________________</span></div><section id="activities"></section><footer class="footer"><span>CEIP Camino Largo · 1.º de Primaria</span><span id="folio">Página 30 · Modelo 1</span></footer></article></main>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id),values=[[4,5],[3,6],[2,7],[1,8],[5,4],[6,3]];
+let version=0;
+const esc=n=>Number(n);
+function rod(n,cls){const pct=n/9*90;const rgb={1:'#f7f4ec',2:'#d95757',3:'#9acb6a',4:'#ed9abc',5:'#edda4a',6:'#2d7b4d',7:'#202020',8:'#8b5a35',9:'#337bb4'}[n]||'#fff';return '<span class="rod '+(cls||'')+'" style="width:'+pct+'mm;background:'+rgb+';color:'+([2,6,7,8,9].includes(n)?'#fff':'#17384e')+'">'+n+'</span>'}
+function reglets(a,b){return '<div class="rod-rows"><div class="rod-row">'+rod(9,'total')+'</div><div class="rod-row">'+rod(a,'partA')+'<b style="font:20pt Arial">+</b>'+rod(b,'partB')+'</div></div>'}
+function diagram(a,b,help){return '<svg class="diagram" viewBox="0 0 500 154" role="img" aria-label="Diagrama parte-todo del 9"><rect x="200" y="4" width="100" height="49" rx="6" fill="#fff" stroke="#324c5c" stroke-width="3"/><text x="250" y="38" text-anchor="middle" font-size="33" font-weight="700" font-family="Arial" fill="#17384e">9</text><path d="M250 53L133 86 M250 53L370 86" stroke="#324c5c" stroke-width="3" fill="none"/><rect x="65" y="86" width="135" height="60" rx="7" fill="#fff" stroke="#324c5c" stroke-width="3"/><rect x="302" y="86" width="135" height="60" rx="7" fill="#fff" stroke="#324c5c" stroke-width="3"/><text x="132" y="126" text-anchor="middle" font-size="35" font-weight="700" font-family="Arial" fill="#17384e">'+(help?a:'?')+'</text><text x="370" y="126" text-anchor="middle" font-size="35" font-weight="700" font-family="Arial" fill="#17384e">?</text></svg>'}
+function dots(){return '<div class="draw-area"><span>Modelo: nueve elementos</span><div class="dots">'+Array.from({length:9},()=>'<div class="dot"></div>').join('')+'</div></div>'}
+function blank(label){return '<div class="draw-area"><span>'+label+'</span></div>'}
+function card(num,title,instruction,body,foot=''){return '<section class="card"><div class="headrow"><span class="step">'+num+'</span><h3 class="action">'+title+'</h3></div><p class="instruction">'+instruction+'</p>'+body+foot+'</section>'}
+function line(label){return '<div class="answer">'+label+'<span class="line"></span></div>'}
+function render(){
+ const mode=$('mode').value,pair=values[version%values.length],a=pair[0],b=pair[1],alternate=values[(version+2)%values.length];
+ $('tag').textContent={refuerzo:'REFUERZO',tarea:'TAREA',ampliacion:'AMPLIACIÓN'}[mode];
+ $('folio').textContent='Página 30 · Modelo '+(version+1);
+ const A=[];
+ if(mode==='refuerzo'){
+  A.push(card(1,'Construyo','Mira las regletas. Juntas forman 9.',reglets(a,b)+'<div class="big-eq">'+a+' + '+b+' = 9</div>'));
+  A.push(card(2,'Dibujo','Mira los nueve elementos y dibuja otros nueve.',dots()+blank('Dibuja aquí nueve elementos')));
+  A.push(card(3,'Completo','Completa la parte que falta en el diagrama.',diagram(a,b,true)+line('9 = '+a+' +')));
+ }else if(mode==='tarea'){
+  A.push(card(1,'Construyo','Construye el 9 con dos regletas y escribe la suma.',reglets(a,b)+line('Suma:')));
+  A.push(card(2,'Dibujo','Dibuja nueve elementos.',blank('Dibuja aquí nueve elementos')));
+  A.push(card(3,'Completo','Completa el diagrama y escribe la suma.',diagram(a,b,true)+line('Suma:')));
+ }else{
+  A.push(card(1,'Construyo','Busca dos parejas distintas que formen 9.',reglets(a,b)+line('Otra pareja:')));
+  A.push(card(2,'Dibujo','Representa nueve elementos de dos maneras.',blank('Primer dibujo')+blank('Segundo dibujo')));
+  A.push(card(3,'Explico','Completa las dos descomposiciones y compáralas.',diagram(a,b,false)+line('Primera suma:')+line('Otra suma:')));
+ }
+ $('activities').innerHTML=A.join('');
+ $('paper').classList.toggle('compact',mode==='ampliacion');
+}
+$('mode').addEventListener('change',render);
+$('other').addEventListener('click',()=>{version=(version+1)%values.length;render()});
+$('print').addEventListener('click',async()=>{if(document.fonts)await document.fonts.ready;window.print()});
+render();
+})();
+</script></body></html>
