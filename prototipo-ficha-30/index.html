@@ -40,17 +40,17 @@
 .paper.tight .rod{height:8mm}
 .paper.tight .rod-rows{gap:1mm}
 .paper.tight .answer{margin-top:1mm}
-.paper.tight #activities{gap:1mm;padding-bottom:7mm}
+.paper.tight #activities{gap:1.5mm;padding-bottom:3mm}
 .paper.tight .heading{font-size:17pt}
 .paper.tight .details{padding:2.5mm 0}
 .paper.tight .card{border-radius:8px}
 
 .paper.overflow{outline:4px solid #b63b31}
-.paper{display:flex;flex-direction:column}
-#activities{min-height:0;flex:1 1 auto;display:flex;flex-direction:column;justify-content:space-evenly;gap:1.5mm;padding-bottom:8mm}
+.paper{display:block}
+#activities{display:flex;flex-direction:column;gap:2.7mm;padding:0 0 4mm;margin:0}
 #activities .card{flex:0 0 auto;margin:0}
 .draw-area{overflow:hidden}
-@media print{#activities{padding-bottom:8mm}}
+@media print{#activities{padding-bottom:4mm}}
 @media screen{.paper .footer{bottom:8mm}}
 
 #layoutStatus{font:600 13px Arial,sans-serif;padding:6px 9px;border-radius:7px;background:#e6f4eb;color:#245c41}
