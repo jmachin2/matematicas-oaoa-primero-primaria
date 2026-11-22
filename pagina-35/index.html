@@ -118,19 +118,80 @@ function tone(ok){if(!sound)return;try{const ac=new AudioContext(),o=ac.createOs
 function feedback(id,ok,msg){let el=$('#fb'+id);if(!el)return;el.className='feedback '+(ok?'ok':'err');el.textContent=(ok?'✓ ':'↻ ')+msg;tone(ok)}
 function choices(host,correct,candidates,step,next){host.innerHTML='';[...new Set(candidates)].sort((a,b)=>a-b).forEach(v=>{const b=document.createElement('button');b.className='choice';b.textContent=v;b.onclick=()=>{const ok=v===correct;b.classList.add(ok?'good':'bad');feedback(step,ok,ok?'Correcto. Explica por qué.':'Revisa las partes con las regletas.');if(ok&&next)setTimeout(next,450)};host.appendChild(b)})}
 
+
+function htmlTask(title,visual,instruction,correct,candidates,step,restart){
+ const host=$('#work'+step);
+ host.innerHTML='<div class="prompt">'+title+'</div>'+visual+'<div class="prompt">'+instruction+'</div><div class="answer-row" id="choices'+step+'"></div><div class="actions" style="justify-content:center;margin-top:12px"><button class="action" id="next'+step+'">Otro ejemplo</button></div>';
+ choices($('#choices'+step),correct,candidates,step);
+ $('#next'+step).onclick=restart;
+}
+function diagramSVG(total,part,unknown){
+ return '<div class="oaoa-diagram" style="display:grid;justify-items:center;gap:0;max-width:340px;margin:14px auto"><div style="border:3px solid #527c93;border-radius:10px;padding:8px 22px;font-size:32px;font-weight:800">'+total+'</div><svg width="240" height="55" viewBox="0 0 240 55"><path d="M120 0 L50 55 M120 0 L190 55" stroke="#527c93" fill="none" stroke-width="4"/></svg><div style="display:flex;justify-content:space-between;width:280px"><div style="border:3px solid #527c93;border-radius:10px;min-width:70px;padding:8px;font-size:31px;font-weight:800;text-align:center">'+part+'</div><div style="border:3px dashed #527c93;border-radius:10px;min-width:70px;padding:8px;font-size:31px;font-weight:800;text-align:center">'+unknown+'</div></div></div>';
+}
+function brickHTML(total,a,b){
+ return '<div style="display:grid;justify-items:center;margin:18px auto;gap:1px;font-size:32px;font-weight:800;color:#233c52"><div style="background:#ffe7d6;border:3px solid #cb865b;border-radius:4px;min-width:85px;padding:8px;text-align:center">'+total+'</div><div style="display:flex;gap:1px"><div style="border:3px solid #cb865b;border-radius:4px;min-width:85px;text-align:center;padding:8px">'+a+'</div><div style="border:3px dashed #cb865b;border-radius:4px;min-width:85px;text-align:center;padding:8px">'+b+'</div></div></div>';
+}
+function tenObjects(a,mode){
+ const icon=mode==='ovejas'?'🐑':mode==='bichos'?'🐞':'●';
+ return '<div style="display:grid;grid-template-columns:repeat(5,minmax(35px,1fr));gap:8px;max-width:490px;margin:16px auto;text-align:center">'+Array.from({length:10},(_,i)=>'<button type="button" class="choice oaoa-object" aria-label="'+(i+1)+' de 10" style="font-size:clamp(20px,3vw,32px);padding:8px;background:'+(i<a?'#f2d1bd':'#d4e8f6')+';border:2px solid #6b9eb6">'+icon+'</button>').join('')+'</div>';
+}
+function huntHTML(nums){
+ return '<div style="display:grid;grid-template-columns:repeat(6,minmax(34px,1fr));max-width:500px;gap:6px;margin:15px auto">'+nums.map(n=>'<button class="choice oaoa-number" type="button" data-value="'+n+'">'+n+'</button>').join('')+'</div><div id="huntInfo" class="notice">Selecciona dos números cuya suma sea 10.</div>';
+}
+function setupHunt(){
+ let selected=[];
+ document.querySelectorAll('.oaoa-number').forEach(b=>b.onclick=()=>{
+  if(b.disabled)return;
+  b.classList.add('good');selected.push(b);b.disabled=true;
+  if(selected.length===2){
+   const sum=selected.reduce((a,x)=>a+Number(x.dataset.value),0),ok=sum===10;
+   $('#huntInfo').textContent=ok?'✓ '+selected[0].dataset.value+' + '+selected[1].dataset.value+' = 10':'Busca otra pareja: '+sum+' no es 10';
+   tone(ok);
+   if(!ok){selected.forEach(x=>{x.disabled=false;x.classList.remove('good')})}
+   selected=[];
+  }
+ });
+}
+function setupObjects(action,a){
+ let clicked=0;
+ document.querySelectorAll('.oaoa-object').forEach(btn=>btn.onclick=()=>{
+  clicked++;btn.style.background=clicked<=a?'#ee8f85':'#8dc4e1';
+  btn.style.borderWidth='4px';
+  if(clicked===10){const n1=document.querySelectorAll('.oaoa-object').length;$('#fb1').textContent='✓ Has señalado diez elementos. Ahora explica cómo los has agrupado.';tone(n1===10)}
+ });
+}
+
 function build1(){
- const pair=DATA.items[which%DATA.items.length],a=pair[0],b=pair[1],total=a+b;
- const visual=DATA.n===34?'<div class="big">Diagrama: '+total+' = '+a+' + '+b+'</div><div class="workrow">'+rod(total)+'<span class="op">=</span>'+rod(a)+rod(b)+'</div>':DATA.n===35?'<div class="big">Regalo: '+DATA.problemTotal+' €</div><div class="workrow">'+rod(DATA.problemKnown)+'<span class="op">+</span><span class="num blank">?</span></div>':DATA.n===37?'<div class="workrow" aria-label="Diez fichas para colorear">'+Array.from({length:10},(_,i)=>'<button type="button" class="choice" style="min-width:36px" onclick="this.style.background=this.style.background===\'rgb(231, 150, 141)\'?\'#99c4dc\':\'#e7968d\'">●</button>').join('')+'</div>':DATA.n===38?'<div class="workrow">'+Array.from({length:10},()=>'<span class="num">🐑</span>').join('')+'</div>':'<div class="workrow">'+rod(total)+'</div><div class="eq">'+a+' + '+b+' = ?</div>';
- $('#work1').innerHTML=visual+'<div class="prompt">¿Cuántas unidades forman el total?</div><div class="answer-row" id="a1"></div><div class="actions" style="justify-content:center;margin-top:12px"><button class="action" id="another1">Otro ejemplo</button></div>';
- const target=DATA.n===35?DATA.problemTotal:total;
- choices($('#a1'),target,[target,Math.max(0,target-1),Math.min(10,target+1)],1);
- $('#another1').onclick=()=>{which++;build1()};
+ const p=DATA.items[which%DATA.items.length],a=p[0],b=p[1],total=a+b;
+ const newTask=()=>{which++;build1()};
+ if(DATA.n===34){
+  htmlTask('65 · Construyo el diagrama',diagramSVG(total,a,'?'),'¿Qué parte falta para completar '+total+'?',b,[b,Math.max(0,b-1),Math.min(10,b+1)],1,newTask);
+ }else if(DATA.n===35){
+  htmlTask('67 · El regalo','<div class="big">Precio: 9 € · Tengo: 5 €</div>'+diagramSVG(9,5,'?'),'¿Cuántos euros faltan?',4,[3,4,5],1,newTask);
+ }else if(DATA.n===36){
+  htmlTask('69 · Construyo el 10',tenObjects(a,'unidades'),'¿Cuántos elementos hay en total?',10,[8,9,10],1,newTask);
+ }else if(DATA.n===37||DATA.n===38){
+  const groupA=DATA.n===37?'Colorea los bichos':'Rodea las ovejas';
+  htmlTask((DATA.n===37?'70':'71')+' · '+groupA,tenObjects(a,DATA.n===37?'bichos':'ovejas'),'Forma los grupos '+a+' y '+b+'. ¿Cuál es el total?',10,[8,9,10],1,newTask);
+  setupObjects(DATA.n===37?'colorear':'rodear',a);
+ }else{
+  const nums=[9,1,7,3,6,4,5,5,8,2,2,8,4,6,3,7,1,9];
+  $('#work1').innerHTML='<div class="prompt">72 · Caza los números que forman 10</div>'+huntHTML(nums)+'<button class="action" id="another1">Nuevos números</button>';
+  setupHunt();$('#another1').onclick=newTask;
+ }
 }
 function build2(){
  const pair=DATA.bricks[challenge%DATA.bricks.length],total=pair[0],known=pair[1],missing=total-known;
- $('#work2').innerHTML='<div class="targetline">'+rod(total)+'</div><div class="workrow">'+rod(known)+'<span class="op">+</span><span class="num blank">?</span></div><div class="eq">'+known+' + ? = '+total+'</div><div class="answer-row" id="a2"></div><div class="actions" style="justify-content:center;margin-top:12px"><button class="action" id="another2">Otro ejercicio</button></div>';
- choices($('#a2'),missing,[missing,Math.max(0,missing-1),Math.min(10,missing+1)],2);
- $('#another2').onclick=()=>{challenge++;build2()};
+ const next=()=>{challenge++;build2()};
+ if(DATA.n===34){
+  htmlTask('66 · Completo los ladrillos',brickHTML(total,known,'?'),'¿Qué número va en el ladrillo que falta?',missing,[missing,Math.max(0,missing-1),Math.min(10,missing+1)],2,next);
+ }else if(DATA.n===35){
+  htmlTask('68 · Sumo en árbol',diagramSVG(total,known,'?'),'Calcula la parte que falta en el árbol.',missing,[missing,Math.max(0,missing-1),Math.min(10,missing+1)],2,next);
+ }else if(DATA.n===36||DATA.n===37||DATA.n===38){
+  htmlTask('Completo hasta 10',tenObjects(known,DATA.n===38?'ovejas':DATA.n===37?'bichos':'unidades'),'Hay '+known+'. ¿Cuántos faltan hasta diez?',missing,[missing,Math.max(0,missing-1),Math.min(10,missing+1)],2,next);
+ }else{
+  htmlTask('73 · ¿Cuánto falta para llegar a 10?',diagramSVG(10,known,'?'),known+' + ? = 10. Elige el complemento.',missing,[missing,Math.max(0,missing-1),Math.min(10,missing+1)],2,next);
+ }
 }
 function build3(){
  const pair=DATA.items[(challenge+1)%DATA.items.length],a=pair[0],b=pair[1],total=a+b;
@@ -155,10 +216,11 @@ function build4(){
 }
 function build5(){
  const pair=DATA.items[challenge%DATA.items.length],a=pair[0],b=pair[1],total=a+b;
- const label=DATA.n===34?'¿Puedes descomponer otra vez una de las partes?':DATA.n===35?'¿Qué cantidad falta para completar el precio del regalo?':DATA.n===37?'¿Cambian los 10 bichos cuando cambiamos sus colores?':DATA.n===38?'¿Cambia el número de ovejas cuando hacemos grupos distintos?':DATA.n===39?'¿Cuál es la parte que falta para llegar a 10?':'¿Qué cambia en las parejas del 10?';
- $('#work5').innerHTML='<div class="prompt">'+label+'</div><div class="eq">'+total+' = '+a+' + '+b+'</div><div class="targetline">'+rod(total)+'</div><div class="answer-row" id="a5"></div><div class="actions" style="justify-content:center;margin-top:12px"><button class="action" id="another5">Otro ejemplo</button></div>';
- choices($('#a5'),total,[total,Math.max(0,total-1),Math.min(10,total+1)],5);
- $('#another5').onclick=()=>{challenge++;build5()};
+ const next=()=>{challenge++;build5()};
+ const question=DATA.n===34?'¿Qué ocurre si dividimos una parte en otras dos?':DATA.n===35?'Si tengo una parte del dinero, ¿qué debo buscar?':DATA.n===37?'¿Qué se conserva al cambiar los colores?':DATA.n===38?'¿Qué se conserva al cambiar los grupos de ovejas?':DATA.n===39?'¿Qué pareja completa el 10?':'¿Qué ocurre con el total cuando cambian las partes?';
+ const content=DATA.n===34?diagramSVG(total,a,'?'):DATA.n===35?diagramSVG(9,5,'?'):DATA.n===37||DATA.n===38?tenObjects(a,DATA.n===37?'bichos':'ovejas'):diagramSVG(total,a,'?');
+ const answer=DATA.n===35?4:DATA.n===34||DATA.n===39?b:total;
+ htmlTask(question,content,'Elige la cantidad que falta o el total que se mantiene.',answer,[answer,Math.max(0,answer-1),Math.min(10,answer+1)],5,next);
 }
 function build6(){let host=$('#problemChoices');[DATA.answer,DATA.answer-1,DATA.answer+1].sort((a,b)=>a-b).forEach(v=>{let b=document.createElement('button');b.className='choice';b.textContent=v;b.onclick=()=>{let ok=v===DATA.answer;b.classList.add(ok?'good':'bad');feedback(6,ok,ok?'Representa y explica tu solución.':'Representa la situación otra vez.')};host.appendChild(b)})}
 function sizeAnnot(){const cv=$('#annot'),layer=$('#sheetLayer');cv.width=layer.clientWidth*devicePixelRatio;cv.height=layer.clientHeight*devicePixelRatio;cv.style.pointerEvents=annotMode==='eraser'?'auto':'auto';redraw()}
