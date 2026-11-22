@@ -14,7 +14,7 @@ function diagram(total,known){return box(274,10,78,35,total)+'<path d="M313 45 L
 function base(body,desc){return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 126" width="640" height="126" role="img" aria-label="'+esc(desc)+'" preserveAspectRatio="xMidYMid meet" style="max-height:31mm;display:block">'+body+'</svg>'}
 function render(model){
  const data=model||{},nums=Array.isArray(data.nums)?data.nums.map(Number):[],page=Number(data.page)||22;
- const type=data.type||'sum',mode=data.mode||'tarea',a=nums[0]||1,b=nums[1]||1;
+ const type=data.type||'sum',mode=data.mode||'tarea',a=Number.isFinite(nums[0])?nums[0]:1,b=Number.isFinite(nums[1])?nums[1]:1;
  let body='',desc='';
  if(type==='commute'){
    const [left,right]=[a,b];body=reg(left,18,14,16,31)+reg(right,18+left*16,14,16,31)+text(279,38,'=',31)+reg(right,330,14,16,31)+reg(left,330+right*16,14,16,31);
