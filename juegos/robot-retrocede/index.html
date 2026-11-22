@@ -1,0 +1,63 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Robot que retrocede · OAOA P32</title><style>
+:root{--ink:#163b50;--sky:#eaf7ff;--blue:#377faa;--ok:#2f865c;--warn:#ad5128}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 0,#fff8e5,#e2f4fe 70%);color:var(--ink);font:17px Arial,sans-serif;min-height:100vh}button,a{font:inherit}button{cursor:pointer}a{color:#1b6e9c}header{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fff;padding:13px max(18px,calc((100vw - 1060px)/2));border-bottom:3px solid #c2dfec}header a{font-weight:800;text-decoration:none}header strong{font-size:1.1rem}main{max-width:1040px;margin:auto;padding:22px 18px 38px}.top{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}h1{font-size:clamp(1.7rem,4vw,2.65rem);margin:0}.eyebrow{color:#50778c;font-size:.83rem;font-weight:800;letter-spacing:.1em}.help{background:#fff;border:2px solid #c2dae6;border-radius:18px;padding:16px 19px;margin:18px 0}.help p{margin:7px 0 0;line-height:1.4}.controls{display:flex;gap:8px;flex-wrap:wrap}.btn{border:2px solid #91bcd2;border-radius:12px;background:#fff;color:var(--ink);padding:10px 16px;font-weight:800;min-height:46px}.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}.btn:focus-visible,.tile:focus-visible{outline:4px solid #e9a53f;outline-offset:3px}.btn:disabled{opacity:.5;cursor:default}.modes{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 18px}.modes button[aria-pressed=true]{background:#286f9c;color:white}.board{background:white;border:3px solid #b4d3e2;border-radius:25px;box-shadow:0 8px 24px #1e506013;overflow:hidden;padding:22px 18px 25px}.mission{text-align:center;font-size:clamp(1.2rem,2.8vw,1.7rem);font-weight:800;min-height:3.5em}.mission small{display:block;font-size:1rem;color:#5e7b8b;margin-top:6px}.track{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:4px;padding:90px 0 12px;margin-top:3px;position:relative}.tile{position:relative;min-width:0;aspect-ratio:1/1.12;background:#ecf6fb;border:2px solid #9cbed1;border-radius:12px;font-weight:900;font-size:clamp(15px,3vw,28px);color:#18435b;padding:0}.tile::before{content:"";position:absolute;bottom:65%;height:12px;width:100%;left:0;background:#c2d8e5;z-index:0}.tile.robot{background:#fff2bd;border-color:#d9a23d}.tile.target{background:#dff5e7;border-color:var(--ok)}.tile .robot-icon{position:absolute;left:50%;bottom:calc(100% + 13px);transform:translateX(-50%);font-size:clamp(30px,5vw,55px);filter:drop-shadow(0 5px 2px #a3bac2);pointer-events:none}.under{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:10px}.equation{font-weight:900;font-size:clamp(1.35rem,3vw,2rem);background:#e8f3fa;border-radius:12px;padding:10px 18px}.status{font-size:1.1rem;font-weight:800;min-height:2.8em;flex:1;line-height:1.4}.status.ok{color:var(--ok)}.status.err{color:var(--warn)}.progress{font-weight:800;color:#4b6c7e;margin-top:8px}.stars{font-size:1.7rem;letter-spacing:.15em;color:#e2a13b}@media(max-width:700px){.track{gap:2px;padding-top:75px}.tile{border-radius:7px}.board{padding:15px 8px}.help{padding:12px}header{padding:12px}.tile .robot-icon{bottom:calc(100% + 8px)}}
+</style></head><body><header><strong>🤖 Robot que retrocede · Página 32</strong><a href="../">← Juegos OAOA</a></header><main><div class="top"><div><div class="eyebrow">1.º PRIMARIA · ESTRATEGIA −1</div><h1>¡Un paso hacia atrás!</h1></div><div class="controls"><button id="speak" class="btn">🔊 Escuchar</button><button id="sound" class="btn" aria-pressed="true">Voz: sí</button><button id="restart" class="btn">↻ Reiniciar</button></div></div>
+<section class="help"><strong>Tu misión:</strong><p>El robot está sobre un número. <strong>Busca el número anterior</strong> y pulsa la casilla que está <strong>una unidad antes</strong>. ¡Solo puede retroceder una casilla!</p></section>
+<div class="modes" aria-label="Dificultad"><button class="btn" data-level="1" aria-pressed="true">🌱 Con ayuda</button><button class="btn" data-level="2" aria-pressed="false">🚀 Yo solo</button><button class="btn" data-level="3" aria-pressed="false">⭐ Gran reto</button></div>
+<section class="board"><div class="mission" id="mission" aria-live="polite"></div><div class="track" id="track" role="group" aria-label="Recta numérica de 0 a 10"></div><div class="under"><div class="equation" id="equation">8 − 1 = ?</div><div class="status" id="status" role="status" aria-live="polite"></div></div><div class="under"><div class="progress" id="progress"></div><div class="stars" id="stars" aria-label="Estrellas ganadas"></div><button class="btn primary" id="next" disabled>Continuar →</button></div></section>
+</main><script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id),samples=[8,6,9,4,7,5,3,10,2,8,9,6],rounds={1:5,2:7,3:9};
+let level=1,round=0,success=0,current=8,solved=false,voice=true,misses=0;
+const speak=t=>{if(!voice||!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='es-ES';u.rate=.85;u.pitch=1.08;speechSynthesis.speak(u)}catch(e){}};
+function missionText(){return 'Estás en el '+current+'. Retrocede una unidad. ¿A qué número llegas?'}
+function draw(){
+ const target=current-1;
+ $('mission').innerHTML='Busca el número anterior de <strong>'+current+'</strong><small>Selecciona una única casilla para dar un paso hacia atrás.</small>';
+ $('track').innerHTML=Array.from({length:11},(_,i)=>'<button type="button" class="tile '+(i===current?'robot':'')+' '+(level===1&&i===target?'target':'')+'" data-n="'+i+'" aria-label="Casilla '+i+'" '+(i===current?', posición del robot':'')+'>'+i+(i===current?'<span class="robot-icon" aria-hidden="true">🤖</span>':'')+'</button>').join('');
+ document.querySelectorAll('.tile').forEach(b=>b.addEventListener('click',()=>choose(Number(b.dataset.n))));
+ $('equation').textContent=current+' − 1 = '+(solved?target:'?');
+ $('progress').textContent='Misión '+Math.min(round+1,rounds[level])+' de '+rounds[level]+' · Aciertos: '+success;
+ $('stars').textContent='★'.repeat(Math.min(success,5))+'☆'.repeat(Math.max(0,5-Math.min(success,5)));
+ $('next').disabled=!solved;
+}
+function choose(n){
+ if(solved)return;
+ const expected=current-1,stat=$('status');stat.className='status';
+ if(n!==expected){
+ misses++;stat.textContent=n===current?'El robot debe retroceder, no quedarse quieto.':'Prueba otra vez. Retrocede exactamente una casilla.';stat.classList.add('err');
+ if(misses>=2){stat.textContent+=' Mira qué número está justo a la izquierda.';document.querySelector('[data-n="'+expected+'"]').classList.add('target')}
+ speak('Intenta de nuevo. Da un solo paso hacia atrás.');return;
+ }
+ solved=true;success++;stat.textContent='¡Muy bien! '+current+' menos uno es '+expected+'.';stat.classList.add('ok');
+ const old=current;current=expected;
+ $('track').querySelectorAll('.tile').forEach(x=>{x.classList.toggle('robot',Number(x.dataset.n)===current);x.querySelector('.robot-icon')?.remove();if(Number(x.dataset.n)===current)x.insertAdjacentHTML('beforeend','<span class="robot-icon" aria-hidden="true">🤖</span>')});
+ $('equation').textContent=old+' − 1 = '+expected;
+ $('next').disabled=false;$('next').textContent=round+1>=rounds[level]?'Ver resultado ★':'Continuar →';
+ $('progress').textContent='Misión '+(round+1)+' de '+rounds[level]+' · Aciertos: '+success;
+ $('stars').textContent='★'.repeat(Math.min(success,5))+'☆'.repeat(Math.max(0,5-Math.min(success,5)));
+ speak('¡Bien! '+old+' menos uno es '+expected+'.');
+}
+function start(){round=0;success=0;newRound()}
+function newRound(){
+ solved=false;misses=0;current=samples[(round+(level-1)*3)%samples.length];
+ $('status').textContent='Elige la casilla correcta.';$('status').className='status';$('next').textContent='Continuar →';
+ draw();speak(missionText());
+}
+function next(){
+ if(!solved)return;
+ round++;
+ if(round>=rounds[level]){
+ $('mission').innerHTML='🎉 ¡Reto superado!<small>Sabes encontrar el número anterior.</small>';
+ $('status').textContent='Has resuelto '+success+' misiones. Puedes elegir otro nivel.';
+ $('track').querySelectorAll('button').forEach(b=>b.disabled=true);
+ $('next').disabled=true;speak('¡Enhorabuena! Has terminado el reto.');return;
+ }
+ newRound();
+}
+document.querySelectorAll('[data-level]').forEach(b=>b.onclick=()=>{level=Number(b.dataset.level);document.querySelectorAll('[data-level]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));start()});
+$('next').onclick=next;$('restart').onclick=start;
+$('speak').onclick=()=>speak(missionText());
+$('sound').onclick=()=>{voice=!voice;$('sound').textContent='Voz: '+(voice?'sí':'no');$('sound').setAttribute('aria-pressed',String(voice));if(!voice&&'speechSynthesis' in window)speechSynthesis.cancel()};
+start();
+})();
+</script></body></html>
