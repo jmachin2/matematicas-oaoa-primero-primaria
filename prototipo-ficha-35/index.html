@@ -101,8 +101,8 @@
 .paper.tight .tree-top,.paper.tight .tree-node{min-height:10mm}
 .paper.tight .brick .top{height:10mm}
 .paper.tight .brick .bottom{height:11mm}
-</style></head><body>
-<div class="tools"><h1>Prototipo de claridad visual · Página 35</h1><a href="../editor-imprimibles/?pagina=35">← Generador actual</a><label for="mode">Modalidad</label><select id="mode"><option value="refuerzo">Refuerzo</option><option value="tarea">Tarea ordinaria</option><option value="ampliacion">Ampliación</option></select><button id="other">Otra versión</button><button class="primary" id="print">Imprimir / PDF</button><span id="layoutStatus" role="status" aria-live="polite">Comprobando A4…</span><p class="description">Prototipo independiente: conserva intacto el generador actual. Compara la jerarquía, el tamaño de las regletas y los espacios de respuesta. Comprueba la vista previa antes de guardar el PDF.</p></div>
+.two-trees{display:grid;grid-template-columns:1fr 1fr;gap:2mm}.two-trees .tree{margin:1mm auto}.two-trees .tree-bottom{gap:2mm}.two-trees .tree-node{min-width:13mm;min-height:10mm;font-size:15pt}.two-trees .tree-top{min-width:15mm;min-height:10mm;font-size:15pt}.two-trees .branches{width:42mm;height:6mm}.two-trees .tree{gap:0}</style></head><body>
+<div class="tools"><h1>Prototipo de claridad visual · Página 35</h1><a href="https://drive.google.com/file/d/1kDDt6by7DsmGHHMrXVqcMUpFkual-RKB/view" target="_blank" rel="noopener">↗ Consultar libro OAOA original</a><label for="mode">Modalidad</label><select id="mode"><option value="refuerzo">Refuerzo</option><option value="tarea">Tarea ordinaria</option><option value="ampliacion">Ampliación</option></select><button id="other">Otra versión</button><button class="primary" id="print">Imprimir / PDF</button><span id="layoutStatus" role="status" aria-live="polite">Comprobando A4…</span><p class="description">Ficha piloto basada en la página correspondiente del libro OAOA. Revisa siempre la vista previa A4 antes de guardar el PDF; las modalidades están pendientes de validación.</p></div>
 <main class="stage"><article class="paper" id="paper"><header class="header"><div><div class="eyebrow">Matemáticas OAOA · Página 35</div><h2 class="heading">Reto «El regalo»</h2></div><div class="tag" id="tag">REFUERZO</div></header><div class="details"><span>Nombre: ____________________</span><span>Fecha: ________________________</span></div><section id="activities"></section><footer class="footer"><span>CEIP Camino Largo · 1.º de Primaria</span><span id="folio">Página 35 · Modelo 1</span></footer></article></main>
 <script>
 
@@ -217,7 +217,7 @@ function render(){
  }else if(mode==='tarea'){
   A.push(card(1,'Resuelvo','Necesito 9 €. Tengo '+have+' €. ¿Cuánto falta?',gift+line('Me faltan: ____ €')));
   A.push(card(2,'Elijo','Marca la operación que usarás.', '<div class="choice"><span></span>Suma <span></span>Resta</div>'+line('Operación:')));
-  A.push(card(3,'Sumo en árbol','Completa los resultados de estos árboles.',tree(null,one[0],one[1])+tree(null,two[0],two[1])));
+  A.push(card(3,'Sumo en árbol','Completa los resultados de estos árboles.','<div class="two-trees">'+tree(null,one[0],one[1])+tree(null,two[0],two[1])+'</div>'));
  }else{
   A.push(card(1,'Investigo','Para comprar el regalo necesito 9 € y tengo '+have+' €.',gift+line('Escribe dos maneras de hallar lo que falta:')));
   A.push(card(2,'Relaciono','Representa una suma y una resta del problema.',tree(9,have,null)+line('Suma:')+line('Resta:')));
