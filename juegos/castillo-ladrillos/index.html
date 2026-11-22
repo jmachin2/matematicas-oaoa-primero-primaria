@@ -7,7 +7,7 @@
 </main><script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id);let level=1,stage=0,solved=false,voice=true,errors=0,found=[],active=null;
-const tasks={1:[[7,3],[8,5],[9,4],[7,2],[9,6],[8,3]],2:[[8,5],[9,6],[7,4],[9,5],[8,3],[7,2]],3:[[7,0],[8,0],[9,0]]};
+const tasks={1:[[7,3],[8,5],[9,4],[7,2],[9,6],[8,3]],2:[[8,5],[9,6],[7,4],[9,5],[8,3],[7,5]],3:[[7,0],[8,0],[9,0]]};
 const speak=t=>{if(!voice||!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const s=new SpeechSynthesisUtterance(t);s.lang='es-ES';s.rate=.83;speechSynthesis.speak(s)}catch(e){}};
 function brick(total,known,missing){return '<div class="brick-top">'+total+'</div><div class="bridge">EL TOTAL</div><div class="brick-row"><div class="brick-part">'+known+'</div><div class="brick-part missing" id="empty">'+missing+'</div></div>'}
 function diagram(total,known,missing){return '<div class="diagram"><div class="root">'+total+'</div><svg viewBox="0 0 225 42" aria-hidden="true"><path d="M112 0 L41 42 M112 0 L185 42" stroke="#68899b" stroke-width="4" fill="none"/></svg><div class="leaves"><div class="branch">'+known+'</div><div class="branch" id="empty">'+missing+'</div></div></div>'}
@@ -37,6 +37,7 @@ function newStage(){
   $('castle').innerHTML=level===1?brick(total,known,'?'):diagram(total,known,'?');
   $('instructions').textContent=known+' + ? = '+total+' · ¿Qué parte falta?';
   options(missing);
+  if(level===2)active.phase='total';
  }
  updateProgress();
  speak(level===3?'Encuentra tres parejas diferentes del número '+total+'.': 'El total es '+total+'. Una parte es '+known+'. ¿Qué número falta?');
@@ -55,9 +56,25 @@ function choose(n){
   active.phase='first';active.known=null;$('instructions').textContent='¡Muy bien! Ahora busca otra pareja distinta.';setTimeout(()=>{if(!solved&&active.phase==='first'){$('castle').innerHTML=brick(active.total,'?', '?');options(1)}},650);
   return;
  }
+ if(level===2&&active.phase==='split'){
+  const expected=active.known-2;
+  if(n!==expected){wrong();return}
+  $('castle').innerHTML=diagram(active.total,active.known,active.total-active.known)
+    +'<div class="instructions">Ahora '+active.known+' = 2 + '+n+'</div>'
+    +diagram(active.known,2,n);
+  success();return;
+ }
  const missing=active.total-active.known;
  if(n!==missing){wrong();return}
- $('castle').innerHTML=level===1?brick(active.total,active.known,n):diagram(active.total,active.known,n);
+ if(level===2){
+  active.phase='split';
+  $('castle').innerHTML=diagram(active.total,active.known,n);
+  $('instructions').textContent='¡Bien! Ahora descompón también '+active.known+'. Si una parte es 2, ¿cuánto falta?';
+  $('status').textContent='Segunda parte del reto: descomposición sucesiva.';
+  options(active.known-2);
+  speak('Muy bien. Ahora divide '+active.known+' en dos partes. Una es dos. ¿Cuánto falta?');return;
+ }
+ $('castle').innerHTML=brick(active.total,active.known,n);
  success();
 }
 function success(){
