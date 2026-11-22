@@ -43,14 +43,14 @@ main{position:relative;z-index:1}
 @keyframes burst{0%{opacity:0;transform:translateY(15px) scale(.5)}20%{opacity:1}100%{opacity:0;transform:translateY(-120px) rotate(70deg) scale(1.3)}}
 @media(max-width:700px){.track{padding-top:76px;padding-bottom:17px}.board::before{font-size:23px}.help{margin:12px 0}.arcade-hud{margin:8px 0}.tile{border-width:2px;box-shadow:0 4px 0 #518ab3}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
-</style></head><body><header><strong>🤖 Robot que retrocede · Página 32</strong><a href="../">← Juegos OAOA</a></header><main><div class="top"><div><div class="eyebrow">1.º PRIMARIA · ESTRATEGIA −1</div><h1>¡Un paso hacia atrás!</h1></div><div class="controls"><button id="speak" class="btn">🔊 Escuchar</button><button id="sound" class="btn" aria-pressed="true">Voz: sí</button><button id="music" class="btn" aria-pressed="false">🎵 Música: no</button><button id="effects" class="btn" aria-pressed="true">🔔 Efectos: sí</button><button id="restart" class="btn">↻ Reiniciar</button></div></div>
-<section class="help"><strong>Tu misión:</strong><p>El robot está sobre un número. <strong>Busca el número anterior</strong> y pulsa la casilla que está <strong>una unidad antes</strong>. ¡Solo puede retroceder una casilla!</p></section>
-<div class="modes" aria-label="Dificultad"><button class="btn" data-level="1" aria-pressed="true">🌱 Con ayuda</button><button class="btn" data-level="2" aria-pressed="false">🚀 Yo solo</button><button class="btn" data-level="3" aria-pressed="false">⭐ Gran reto</button></div>
-<div class="arcade-hud"><span>🪐 MISIÓN ESPACIAL</span><span class="pill">🎯 NÚMERO ANTERIOR</span></div><section class="board"><div class="game-particles" id="particles" aria-hidden="true"></div><div class="mission" id="mission" aria-live="polite"></div><div class="track" id="track" role="group" aria-label="Recta numérica de 0 a 10"></div><div class="under"><div class="equation" id="equation">8 − 1 = ?</div><div class="status" id="status" role="status" aria-live="polite"></div></div><div class="under"><div class="progress" id="progress"></div><div class="stars" id="stars" aria-label="Estrellas ganadas"></div><button class="btn primary" id="next" disabled>Continuar →</button></div></section>
+.challenge-predict{max-width:740px;margin:12px auto;background:#fff8dd;border:3px solid #e4af50;border-radius:16px;padding:14px;text-align:center;color:#5c441f;font-weight:900;font-size:1.1rem}.challenge-predict[hidden]{display:none}.prediction-options{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:9px auto}.prediction-options button{min-width:65px;min-height:55px;font-size:1.5rem;font-weight:900;border:3px solid #d29f48;border-radius:12px;background:#fff;cursor:pointer}.prediction-options button:hover{background:#eaffdd}.journey-counter{display:inline-block;border:2px solid #80a2c6;background:#e6f4fc;border-radius:15px;padding:8px 14px;margin:4px auto;color:#285170;font-weight:900}@media(max-width:620px){.challenge-predict{padding:9px}.prediction-options button{min-width:51px;min-height:48px}}</style></head><body><header><strong>🤖 Robot que retrocede · Página 32</strong><a href="../">← Juegos OAOA</a></header><main><div class="top"><div><div class="eyebrow">1.º PRIMARIA · ESTRATEGIA −1</div><h1>¡Un paso hacia atrás!</h1></div><div class="controls"><button id="speak" class="btn">🔊 Escuchar</button><button id="sound" class="btn" aria-pressed="true">Voz: sí</button><button id="music" class="btn" aria-pressed="false">🎵 Música: no</button><button id="effects" class="btn" aria-pressed="true">🔔 Efectos: sí</button><button id="restart" class="btn">↻ Reiniciar</button></div></div>
+<section class="help"><strong>Tu misión:</strong><p>El robot está sobre un número. <strong>Busca el número anterior</strong> y pulsa la casilla que está <strong>una unidad antes</strong>. ¡Solo puede retroceder una casilla cada vez! En «Gran reto», predice el destino y encadena varios pasos.</p></section>
+<div class="modes" aria-label="Dificultad"><button class="btn" data-level="1" aria-pressed="true">🌱 Con ayuda</button><button class="btn" data-level="2" aria-pressed="false">🚀 Yo solo</button><button class="btn" data-level="3" aria-pressed="false">⭐ Gran reto · Varios pasos</button></div>
+<div class="arcade-hud"><span>🪐 MISIÓN ESPACIAL</span><span class="pill">🎯 NÚMERO ANTERIOR</span></div><section class="board"><div class="game-particles" id="particles" aria-hidden="true"></div><div class="mission" id="mission" aria-live="polite"></div><div class="challenge-predict" id="predict" hidden></div><div class="track" id="track" role="group" aria-label="Recta numérica de 0 a 10"></div><div class="under"><div class="equation" id="equation">8 − 1 = ?</div><div class="status" id="status" role="status" aria-live="polite"></div></div><div class="under"><div class="progress" id="progress"></div><div class="stars" id="stars" aria-label="Estrellas ganadas"></div><button class="btn primary" id="next" disabled>Continuar →</button></div></section>
 </main><script src="../../assets/arcade-audio.js"></script><script>
 (()=>{'use strict';
-const $=id=>document.getElementById(id),samples=[8,6,9,4,7,5,3,10,2,8,9,6],rounds={1:5,2:7,3:9};
-let level=1,round=0,success=0,current=8,solved=false,voice=true,misses=0;
+const $=id=>document.getElementById(id),samples=[8,6,9,4,7,5,3,10,2,8,9,6],rounds={1:5,2:7,3:6};
+let level=1,round=0,success=0,current=8,startNumber=8,goal=7,stepsTotal=1,stepsDone=0,solved=false,voice=true,misses=0,predictionDone=false;
 const speak=t=>{if(!voice||!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='es-ES';u.rate=.85;u.pitch=1.08;speechSynthesis.speak(u)}catch(e){}};
 
 const arcade=window.OAOAArcadeAudio('robot');
@@ -62,48 +62,80 @@ $('effects').onclick=()=>{effectsEnabled=!effectsEnabled;arcade.setEffects(effec
 function burst(){const host=$('particles');if(!host)return;host.innerHTML=Array.from({length:13},(_,i)=>'<span style="--x:'+(8+(i*23)%84)+'%;--s:'+(18+(i%4)*5)+'px">'+['⭐','✨','🎉','💫'][i%4]+'</span>').join('');setTimeout(()=>{host.innerHTML=''},1100)}
 function sparkle(){const target=$('mission');target.classList.remove('win-pop');void target.offsetWidth;target.classList.add('win-pop');burst()}
 
-function missionText(){return 'Estás en el '+current+'. Retrocede una unidad. ¿A qué número llegas?'}
+
+const bigTasks=[{n:9,steps:2},{n:8,steps:3},{n:10,steps:3},{n:7,steps:2},{n:9,steps:3},{n:6,steps:2}];
+function missionText(){
+ if(level===3){return 'Gran reto. Estás en el '+startNumber+'. Primero calcula dónde terminarás si retrocedes '+stepsTotal+' pasos. Luego mueve el robot un paso cada vez.'}
+ return 'Estás en el '+startNumber+'. Retrocede una unidad. ¿A qué número llegas?';
+}
+function showPrediction(){
+ const box=$('predict');box.hidden=level!==3||predictionDone;
+ if(box.hidden){box.innerHTML='';return}
+ const alternatives=[goal,Math.max(0,goal-1),Math.min(10,goal+1)];
+ box.innerHTML='<div>🧠 Primero piensa: desde '+startNumber+', ¿dónde terminarás después de '+stepsTotal+' pasos hacia atrás?</div>'
+ +'<div class="prediction-options">'+[...new Set(alternatives)].sort((a,b)=>a-b).map(n=>'<button type="button" data-predict="'+n+'">'+n+'</button>').join('')+'</div>'
+ +'<small>No muevas todavía el robot. Calcula la casilla final.</small>';
+ box.querySelectorAll('[data-predict]').forEach(b=>b.onclick=()=>predict(Number(b.dataset.predict)));
+}
+function predict(n){
+ if(n!==goal){$('status').textContent='Todavía no. Imagina '+stepsTotal+' pasos hacia atrás desde '+startNumber+'.';$('status').className='status err';arcade.effect('error');return}
+ predictionDone=true;arcade.effect('tap');$('status').textContent='¡Destino previsto! Ahora mueve el robot paso a paso.';$('status').className='status ok';draw();speak('Muy bien. Ahora retrocede un paso cada vez.');
+}
 function draw(){
- const target=current-1;
- $('mission').innerHTML='Busca el número anterior de <strong>'+current+'</strong><small>Selecciona una única casilla para dar un paso hacia atrás.</small>';
- $('track').innerHTML=Array.from({length:11},(_,i)=>'<button type="button" class="tile '+(i===current?'robot':'')+' '+(level===1&&i===target?'target':'')+'" data-n="'+i+'" aria-label="Casilla '+i+'" '+(i===current?', posición del robot':'')+'>'+i+(i===current?'<span class="robot-icon" aria-hidden="true">🤖</span>':'')+'</button>').join('');
- document.querySelectorAll('.tile').forEach(b=>b.addEventListener('click',()=>choose(Number(b.dataset.n))));
- $('equation').textContent=current+' − 1 = '+(solved?target:'?');
+ const previous=current-1;
+ const challenge=level===3;
+ const heading=challenge?'⭐ GRAN RETO · '+stepsTotal+' pasos hacia atrás':'Busca el número anterior de <strong>'+current+'</strong>';
+ const detail=challenge?'Empieza en '+startNumber+'. Retrocede uno a uno hasta '+goal+'. Llevas '+stepsDone+' de '+stepsTotal+' pasos.':'Selecciona una única casilla para dar un paso hacia atrás.';
+ $('mission').innerHTML=heading+'<small>'+detail+'</small>';
+ showPrediction();
+ $('track').innerHTML=Array.from({length:11},(_,i)=>{
+  const shown=i===current;
+  const hint=level===1&&i===previous||misses>=2&&i===previous&&(!challenge||predictionDone);
+  return '<button type="button" class="tile '+(shown?'robot':'')+' '+(hint?'target':'')+'" data-n="'+i+'" '+(challenge&&!predictionDone?'disabled ':'')+'aria-label="Casilla '+i+(shown?', posición del robot':'')+'">'+i+(shown?'<span class="robot-icon" aria-hidden="true">🤖</span>':'')+'</button>';
+ }).join('');
+ $('track').querySelectorAll('.tile').forEach(b=>b.addEventListener('click',()=>choose(Number(b.dataset.n))));
+ $('equation').textContent=challenge?startNumber+' − '+stepsTotal+' = '+(solved?goal:'?'):startNumber+' − 1 = '+(solved?goal:'?');
  $('progress').textContent='Misión '+Math.min(round+1,rounds[level])+' de '+rounds[level]+' · Aciertos: '+success;
  $('stars').textContent='★'.repeat(Math.min(success,5))+'☆'.repeat(Math.max(0,5-Math.min(success,5)));
  $('next').disabled=!solved;
 }
 function choose(n){
- if(solved)return;
+ if(solved||level===3&&!predictionDone)return;
  const expected=current-1,stat=$('status');stat.className='status';
  if(n!==expected){
- misses++;stat.textContent=n===current?'El robot debe retroceder, no quedarse quieto.':'Prueba otra vez. Retrocede exactamente una casilla.';stat.classList.add('err');
- if(misses>=2){stat.textContent+=' Mira qué número está justo a la izquierda.';document.querySelector('[data-n="'+expected+'"]').classList.add('target')}
- arcade.effect('error');speak('Intenta de nuevo. Da un solo paso hacia atrás.');return;
+  misses++;
+  stat.textContent=n===current?'El robot debe retroceder, no quedarse quieto.':'Solo puedes moverte a la casilla inmediatamente anterior.';
+  if(misses>=2)stat.textContent+=' Busca la casilla justo a la izquierda.';
+  stat.classList.add('err');arcade.effect('error');draw();speak('Da un solo paso hacia atrás.');return;
  }
- solved=true;success++;arcade.effect('win');sparkle();stat.textContent='¡Muy bien! '+current+' menos uno es '+expected+'.';stat.classList.add('ok');
- const old=current;current=expected;
- $('track').querySelectorAll('.tile').forEach(x=>{x.classList.toggle('robot',Number(x.dataset.n)===current);x.querySelector('.robot-icon')?.remove();if(Number(x.dataset.n)===current)x.insertAdjacentHTML('beforeend','<span class="robot-icon" aria-hidden="true">🤖</span>')});
- $('equation').textContent=old+' − 1 = '+expected;
- $('next').disabled=false;$('next').textContent=round+1>=rounds[level]?'Ver resultado ★':'Continuar →';
- $('progress').textContent='Misión '+(round+1)+' de '+rounds[level]+' · Aciertos: '+success;
- $('stars').textContent='★'.repeat(Math.min(success,5))+'☆'.repeat(Math.max(0,5-Math.min(success,5)));
- speak('¡Bien! '+old+' menos uno es '+expected+'.');
+ current=expected;stepsDone++;misses=0;
+ if(stepsDone<stepsTotal){
+  arcade.effect('tap');
+  stat.textContent='¡Paso '+stepsDone+' de '+stepsTotal+'! Continúa hacia atrás.';stat.classList.add('ok');
+  draw();speak('Bien. Sigue retrocediendo.');return;
+ }
+ solved=true;success++;arcade.effect('win');sparkle();
+ stat.textContent='¡Conseguido! '+startNumber+' menos '+stepsTotal+' es '+goal+'.';stat.classList.add('ok');
+ draw();$('next').disabled=false;$('next').textContent=round+1>=rounds[level]?'Ver resultado ★':'Continuar →';
+ speak('¡Muy bien! '+startNumber+' menos '+stepsTotal+' es '+goal+'.');
 }
 function start(){round=0;success=0;newRound()}
 function newRound(){
- solved=false;misses=0;current=samples[(round+(level-1)*3)%samples.length];
- $('status').textContent='Elige la casilla correcta.';$('status').className='status';$('next').textContent='Continuar →';
- draw();speak(missionText());
+ solved=false;misses=0;stepsDone=0;predictionDone=false;
+ if(level===3){const task=bigTasks[round%bigTasks.length];startNumber=task.n;stepsTotal=task.steps}
+ else{startNumber=samples[(round+(level-1)*3)%samples.length];stepsTotal=1;predictionDone=true}
+ current=startNumber;goal=startNumber-stepsTotal;
+ $('status').textContent=level===3?'Primero predice la casilla final.':'Elige la casilla correcta.';
+ $('status').className='status';$('next').textContent='Continuar →';draw();speak(missionText());
 }
 function next(){
  if(!solved)return;
  round++;
  if(round>=rounds[level]){
- $('mission').innerHTML='🎉 ¡Reto superado!<small>Sabes encontrar el número anterior.</small>';
- $('status').textContent='Has resuelto '+success+' misiones. Puedes elegir otro nivel.';
- $('track').querySelectorAll('button').forEach(b=>b.disabled=true);
- $('next').disabled=true;arcade.effect('finish');sparkle();speak('¡Enhorabuena! Has terminado el reto.');return;
+  $('mission').innerHTML='🎉 ¡Reto superado!<small>'+(level===3?'Has previsto y realizado retrocesos de varios pasos.':'Sabes encontrar el número anterior.')+'</small>';
+  $('status').textContent='Has resuelto '+success+' misiones. Puedes elegir otro nivel.';
+  $('track').querySelectorAll('button').forEach(b=>b.disabled=true);
+  $('next').disabled=true;arcade.effect('finish');sparkle();speak('¡Enhorabuena! Has terminado el reto.');return;
  }
  newRound();
 }
