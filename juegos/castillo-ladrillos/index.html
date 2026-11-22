@@ -1,0 +1,82 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Castillo de los ladrillos · OAOA P34</title><style>
+:root{--ink:#17394c;--blue:#357da6;--gold:#d69b4b}*{box-sizing:border-box}body{margin:0;background:linear-gradient(#dff4ff,#fff6e2);color:var(--ink);font:17px Arial,sans-serif;min-height:100vh}a,button{font:inherit}a{color:#226c97}button{cursor:pointer}header{background:#fff;border-bottom:3px solid #c9e0eb;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px max(17px,calc((100vw - 1000px)/2))}header a{text-decoration:none;font-weight:800}main{max-width:1040px;margin:auto;padding:23px 18px 40px}h1{font-size:clamp(1.65rem,4vw,2.65rem);margin:0}.top{display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap}.eyebrow{font-size:.83rem;letter-spacing:.1em;font-weight:800;color:#597b8c}.btn{background:#fff;border:2px solid #a8c9da;border-radius:12px;color:var(--ink);padding:10px 14px;font-weight:800;min-height:46px}.btn.primary{background:#347da6;border-color:#347da6;color:#fff}.btn:focus-visible,.option:focus-visible{outline:4px solid #e2b153;outline-offset:3px}.btn:disabled{opacity:.5;cursor:default}.controls,.levels{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 15px}.levels button[aria-pressed=true]{background:#2f769f;border-color:#2f769f;color:white}.intro{background:white;border:2px solid #bfd8e4;border-radius:18px;padding:13px 17px;line-height:1.5}.stage{background:#fff;border:3px solid #b7d4e3;border-radius:24px;padding:20px 16px 24px;box-shadow:0 8px 22px #33556617}.mission{text-align:center;font-weight:900;font-size:clamp(1.2rem,3vw,1.65rem);min-height:2.5em}.castle{position:relative;max-width:740px;margin:8px auto 18px;border-radius:20px 20px 12px 12px;background:linear-gradient(#e8f7ff,#fbf3e6);padding:45px 18px 18px;min-height:256px;overflow:hidden}.castle::before{content:"🏰";position:absolute;font-size:62px;left:20px;top:7px;opacity:.25}.brick-top,.brick-part{display:grid;place-items:center;border:4px solid #ad704a;border-radius:8px;background:#f6cf9c;font-size:clamp(24px,5vw,46px);font-weight:900;min-height:82px;box-shadow:0 5px #a45b3f}.brick-top{width:min(210px,45%);margin:auto}.brick-row{display:flex;gap:6px;justify-content:center;margin:12px auto 0}.brick-part{width:min(220px,45%);background:#f9e1be}.brick-part.missing{background:#fff;border-style:dashed}.bridge{font-weight:900;text-align:center;margin:10px auto;color:#6c513a}.diagram{max-width:380px;margin:5px auto 10px;display:grid;justify-items:center}.diagram .root,.diagram .branch{font-weight:900;font-size:29px;display:grid;place-items:center;border:3px solid #7b9eb2;border-radius:9px;width:75px;height:53px;background:white}.diagram svg{width:225px;height:42px}.diagram .leaves{display:flex;justify-content:space-between;width:270px}.instructions{text-align:center;margin:0 auto 14px;font-size:1.1rem;font-weight:700}.options{display:flex;gap:9px;flex-wrap:wrap;justify-content:center}.option{min-width:72px;min-height:62px;border:3px solid #a3bfd0;background:#ecf7fc;color:#17394c;border-radius:14px;font-size:31px;font-weight:900}.option:hover{background:#dbf1f8}.status{min-height:55px;text-align:center;font-weight:800;line-height:1.4;margin:14px auto 0}.status.ok{color:#278354}.status.err{color:#ac4d2d}.bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:12px}.stars{font-size:1.6rem;color:var(--gold)}@media(max-width:620px){.castle{padding:34px 9px 12px;min-height:210px}.brick-top,.brick-part{min-height:61px}.option{min-width:57px;min-height:55px}.stage{padding:14px 9px}}
+</style></head><body><header><strong>🏰 Castillo de los ladrillos · Página 34</strong><a href="../">← Juegos OAOA</a></header><main><div class="top"><div><div class="eyebrow">1.º DE PRIMARIA · PARTE–TODO</div><h1>¡Construye el castillo!</h1></div><div class="controls"><button class="btn" id="speak">🔊 Instrucciones</button><button class="btn" id="voice" aria-pressed="true">Voz: sí</button><button class="btn" id="restart">↻ Reiniciar</button></div></div>
+<p class="intro">En cada torre, <strong>los dos ladrillos inferiores forman el superior</strong>. Encuentra el número que falta y construye la muralla. En los niveles siguientes usarás diagramas y buscarás varias soluciones.</p>
+<div class="levels" aria-label="Dificultad"><button class="btn" data-level="1" aria-pressed="true">🌱 Construyo</button><button class="btn" data-level="2" aria-pressed="false">🌳 Diagrama</button><button class="btn" data-level="3" aria-pressed="false">⭐ Invento parejas</button></div>
+<section class="stage"><div class="mission" id="mission" aria-live="polite"></div><div class="castle" id="castle"></div><p class="instructions" id="instructions"></p><div class="options" id="options" role="group" aria-label="Números para completar el ladrillo"></div><p class="status" id="status" role="status" aria-live="polite"></p><div class="bottom"><div id="progress"></div><div class="stars" id="stars"></div><button id="next" class="btn primary" disabled>Continuar →</button></div></section>
+</main><script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id);let level=1,stage=0,solved=false,voice=true,errors=0,found=[],active=null;
+const tasks={1:[[7,3],[8,5],[9,4],[7,2],[9,6],[8,3]],2:[[8,5],[9,6],[7,4],[9,5],[8,3],[7,2]],3:[[7,0],[8,0],[9,0]]};
+const speak=t=>{if(!voice||!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const s=new SpeechSynthesisUtterance(t);s.lang='es-ES';s.rate=.83;speechSynthesis.speak(s)}catch(e){}};
+function brick(total,known,missing){return '<div class="brick-top">'+total+'</div><div class="bridge">EL TOTAL</div><div class="brick-row"><div class="brick-part">'+known+'</div><div class="brick-part missing" id="empty">'+missing+'</div></div>'}
+function diagram(total,known,missing){return '<div class="diagram"><div class="root">'+total+'</div><svg viewBox="0 0 225 42" aria-hidden="true"><path d="M112 0 L41 42 M112 0 L185 42" stroke="#68899b" stroke-width="4" fill="none"/></svg><div class="leaves"><div class="branch">'+known+'</div><div class="branch" id="empty">'+missing+'</div></div></div>'}
+function chooseData(){const arr=tasks[level];return arr[stage%arr.length]}
+function options(solution){
+ let nums;
+ if(level===3)nums=Array.from({length:active.total-1},(_,i)=>i+1);
+ else nums=[solution,Math.max(1,solution-1),Math.min(9,solution+1),Math.max(1,solution-2)].filter(n=>n<active.total);
+ nums=[...new Set(nums)].sort((a,b)=>a-b);
+ $('options').innerHTML=nums.map(n=>'<button class="option" data-n="'+n+'" aria-label="Elegir '+n+'">'+n+'</button>').join('');
+ document.querySelectorAll('.option').forEach(b=>b.onclick=()=>choose(Number(b.dataset.n)));
+}
+function newStage(){
+ solved=false;errors=0;found=[];
+ const [total,known]=chooseData();
+ active={total,known};
+ $('status').textContent='Elige una regleta numérica para completar el ladrillo.';$('status').className='status';
+ $('next').disabled=true;$('next').textContent='Continuar →';
+ if(level===3){
+  active.known=null;$('mission').textContent='¡Encuentra tres parejas distintas que formen '+total+'!';
+  $('castle').innerHTML=brick(total,'?', '?');
+  $('instructions').textContent='Primero elige la primera parte. Después, completa la segunda.';
+  active.phase='first';options(1);
+ }else{
+  const missing=total-known;
+  $('mission').textContent=level===1?'Completa el ladrillo del '+total: 'Completa el diagrama del '+total;
+  $('castle').innerHTML=level===1?brick(total,known,'?'):diagram(total,known,'?');
+  $('instructions').textContent=known+' + ? = '+total+' · ¿Qué parte falta?';
+  options(missing);
+ }
+ updateProgress();
+ speak(level===3?'Encuentra tres parejas diferentes del número '+total+'.': 'El total es '+total+'. Una parte es '+known+'. ¿Qué número falta?');
+}
+function updateProgress(){let max=tasks[level].length;$('progress').textContent='Reto '+Math.min(stage+1,max)+' de '+max+(level===3?' · Parejas: '+found.length+'/3':'');$('stars').textContent='★'.repeat(stage)+'☆'.repeat(Math.max(0,max-stage))}
+function wrong(){errors++;$('status').className='status err';$('status').textContent=errors>=2?'Mira el total y la parte conocida. Cuenta cuánto falta.':'Todavía no encaja. Comprueba las dos partes.';speak('Revisa las partes. ¿Cuánto falta para llegar al total?')}
+function choose(n){
+ if(solved)return;
+ if(level===3){
+  if(active.phase==='first'){active.known=n;active.phase='second';$('castle').innerHTML=brick(active.total,n,'?');$('instructions').textContent=n+' + ? = '+active.total;options(active.total-n);$('status').textContent='Ahora completa la segunda parte.';return}
+  const missing=active.total-active.known,key=[Math.min(active.known,n),Math.max(active.known,n)].join('+');
+  if(n!==missing){wrong();return}
+  if(found.includes(key)){active.phase='first';active.known=null;$('castle').innerHTML=brick(active.total,'?', '?');$('instructions').textContent='Esa pareja ya está construida. Busca otra diferente.';options(1);$('status').className='status err';$('status').textContent='Pareja repetida. Inventa otra.';return}
+  found.push(key);$('castle').innerHTML=brick(active.total,active.known,n);$('status').textContent='✓ Pareja '+found.length+': '+active.known+' + '+n+' = '+active.total;updateProgress();
+  if(found.length>=3){success();return}
+  active.phase='first';active.known=null;$('instructions').textContent='¡Muy bien! Ahora busca otra pareja distinta.';setTimeout(()=>{if(!solved&&active.phase==='first'){$('castle').innerHTML=brick(active.total,'?', '?');options(1)}},650);
+  return;
+ }
+ const missing=active.total-active.known;
+ if(n!==missing){wrong();return}
+ $('castle').innerHTML=level===1?brick(active.total,active.known,n):diagram(active.total,active.known,n);
+ success();
+}
+function success(){
+ solved=true;$('status').className='status ok';$('status').textContent=level===3?'¡Tres parejas diferentes! El total no cambia.':'¡Perfecto! '+active.known+' + '+(active.total-active.known)+' = '+active.total+'.';
+ $('instructions').textContent=level===3?'Has comprobado distintas maneras de formar el mismo número.':'Los dos ladrillos de abajo forman el de arriba.';
+ $('options').querySelectorAll('button').forEach(b=>b.disabled=true);
+ $('next').disabled=false;$('next').textContent=stage+1>=tasks[level].length?'¡Castillo terminado! ★':'Continuar →';
+ speak('¡Muy bien! Has construido correctamente la torre.');
+}
+function next(){
+ if(!solved)return;stage++;
+ if(stage>=tasks[level].length){$('mission').textContent='🎉 ¡Castillo terminado!';$('castle').innerHTML='<div style="font-size:95px;text-align:center">🏰🌟</div>';$('instructions').textContent='Elige otro nivel para seguir construyendo.';$('status').textContent='¡Has superado todas las torres!';$('options').innerHTML='';$('next').disabled=true;updateProgress();speak('¡Enhorabuena! ¡Has terminado tu castillo!');return}
+ newStage();
+}
+function start(){stage=0;newStage()}
+document.querySelectorAll('[data-level]').forEach(b=>b.onclick=()=>{level=Number(b.dataset.level);document.querySelectorAll('[data-level]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));start()});
+$('next').onclick=next;$('restart').onclick=start;
+$('voice').onclick=()=>{voice=!voice;$('voice').textContent='Voz: '+(voice?'sí':'no');$('voice').setAttribute('aria-pressed',String(voice));if(!voice&&'speechSynthesis' in window)speechSynthesis.cancel()};
+$('speak').onclick=()=>speak($('mission').textContent+' '+$('instructions').textContent);
+start();
+})();
+</script></body></html>
