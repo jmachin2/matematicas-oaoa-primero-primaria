@@ -1,4 +1,4 @@
-name: Preparar páginas originales OAOA 29-33
+name: Preparar páginas originales OAOA 29-39
 on:
   workflow_dispatch:
   issues:
@@ -10,7 +10,7 @@ permissions:
   contents: write
 jobs:
   extract-pages:
-    if: github.event_name != 'issues' || github.event.issue.title == '[OAOA] Publicar páginas originales 29-33'
+    if: github.event_name != 'issues' || github.event.issue.title == '[OAOA] Publicar páginas originales 29-39'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -34,7 +34,7 @@ jobs:
               raise RuntimeError(f'Número inesperado de páginas: {len(doc)}')
           output=Path('assets/paginas-originales')
           output.mkdir(parents=True, exist_ok=True)
-          for page_number in range(29,34):
+          for page_number in range(29,40):
               page=doc[page_number-1]
               pix=page.get_pixmap(matrix=fitz.Matrix(1.6,1.6),alpha=False)
               pix.save(str(output/f'pagina-{page_number}.png'))
@@ -44,8 +44,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/paginas-originales/pagina-29.png assets/paginas-originales/pagina-30.png assets/paginas-originales/pagina-31.png assets/paginas-originales/pagina-32.png assets/paginas-originales/pagina-33.png
+          git add assets/paginas-originales/pagina-{29..39}.png
           if ! git diff --cached --quiet; then
-            git commit -m "Añadir imágenes exactas de páginas originales OAOA 29-33"
+            git commit -m "Añadir imágenes exactas de páginas originales OAOA 29-39"
             git push origin HEAD:main
           fi
