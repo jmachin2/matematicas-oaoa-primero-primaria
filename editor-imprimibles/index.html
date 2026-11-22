@@ -32,8 +32,9 @@ h1{font-size:19px;margin:0 0 8px}h2{font-size:16px;margin:0 0 8px}p{line-height:
 <script src="../assets/oaoa-strategy-contract.js"></script>
 <script>
 (function(){'use strict';
-const $=id=>document.getElementById(id);const params=new URLSearchParams(location.search);const page=[22,23,24,25,26,27,28,29,30,31,32,33].includes(Number(params.get('pagina')))?Number(params.get('pagina')):22;
+const $=id=>document.getElementById(id);const params=new URLSearchParams(location.search);const page=[21,22,23,24,25,26,27,28,29,30,31,32,33].includes(Number(params.get('pagina')))?Number(params.get('pagina')):22;
 const sets={
+21:{title:'Billetes y monedas · Sacos de Paco',word:'VALOR',tasks:[[2,5],[2,2,2],[5,1],[1,2,2]].map(a=>({type:'money',nums:a}))},
 22:{title:'Número 8 · parejas y complementos',word:'PAREJA',tasks:[
 ...[ [1,7],[2,6],[3,5],[4,4],[5,3],[6,2],[7,1],[0,8],[8,0] ].map(a=>({type:'sum',nums:a})),
 ...[[8,1],[8,2],[8,3],[8,4],[8,5],[8,6],[8,7]].map(a=>({type:'brick',nums:a}))
@@ -46,7 +47,7 @@ const sets={
 ...[[8,1],[8,2],[8,3],[8,4],[8,5],[8,6],[8,7]].map(a=>({type:'brick',nums:a})),
 ...[[1,7],[2,6],[3,5],[4,4],[5,3],[6,2],[7,1],[0,8]].map(a=>({type:'sum',nums:a}))
 ]},
-25:{title:'Sumas hasta el 8',word:'SUMA',tasks:[[6,1],[4,4],[3,2],[4,2],[2,6],[3,1],[5,3],[1,7],[2,5],[4,3],[1,6],[5,2]].map(a=>({type:'sum',nums:a}))},26:{title:'Ladrillos y resultados',word:'COMPLEMENTO',tasks:[...[ [8,1],[7,6],[7,2],[4,3],[6,5],[8,4],[3,1],[5,2],[8,5],[7,3],[6,4] ].map(a=>({type:'brick',nums:a})),...[[1,3],[4,1],[3,3],[5,2],[4,4]].map(a=>({type:'sum',nums:a}))]},27:{title:'Los sacos de Paco',word:'TOTAL',tasks:[...[[5,2],[5,1,2],[5,2,1],[2,2,1],[5,1,1],[2,2,2],[2,2,2,2],[2,1,2]].map(a=>({type:'money',nums:a})),...[[5,2],[2,2],[1,5],[3,5],[4,3],[2,6]].map(a=>({type:'sum',nums:a}))]},28:{title:'Igual que 8 o menor',word:'MENOR',tasks:[...[[5,3],[6,0],[4,2],[6,1],[1,7],[2,2],[3,5],[2,3],[6,2],[4,4],[7,1],[3,4]].map(a=>({type:'compare',nums:a})),...[[7,2],[6,5],[8,4],[3,2],[2,1],[5,2],[8,2],[7,3]].map(a=>({type:'brick',nums:a}))]},
+25:{title:'Sumas hasta el 8',word:'SUMA',tasks:[[6,1],[4,4],[3,2],[4,2],[2,6],[3,1],[5,3],[1,7],[2,5],[4,3],[1,6],[5,2]].map(a=>({type:'sum',nums:a}))},26:{title:'Ladrillos y resultados',word:'COMPLEMENTO',tasks:[...[ [8,1],[7,6],[7,2],[4,3],[6,5],[8,4],[3,1],[5,2],[8,5],[7,3],[6,4] ].map(a=>({type:'brick',nums:a})),...[[1,3],[4,1],[3,3],[5,2],[4,4]].map(a=>({type:'sum',nums:a}))]},27:{title:'Sacos de Paco · Billetes y monedas',word:'VALOR',tasks:[[5,2],[5,1,2],[1,5],[2,1,2],[5,1,1],[2,2,2],[2,2,1],[1,2,2,2]].map(a=>({type:'money',nums:a}))},28:{title:'Igual que 8 o menor',word:'MENOR',tasks:[...[[5,3],[6,0],[4,2],[6,1],[1,7],[2,2],[3,5],[2,3],[6,2],[4,4],[7,1],[3,4]].map(a=>({type:'compare',nums:a})),...[[7,2],[6,5],[8,4],[3,2],[2,1],[5,2],[8,2],[7,3]].map(a=>({type:'brick',nums:a}))]},
 29:{title:'Caza el 9 y complementos',word:'COMPLEMENTO',tasks:[...[[9,5],[9,7],[9,6],[9,4],[9,2],[9,8],[9,3],[9,1]].map(a=>({type:'brick',nums:a})),...[[4,5],[6,3],[8,1],[7,2],[5,4]].map(a=>({type:'sum',nums:a}))]},
 30:{title:'Dibuja el 9 y diagramas',word:'DIAGRAMA',tasks:[...[[9,2],[8,4],[6,3],[9,5],[9,3],[9,7],[9,4],[8,5]].map(a=>({type:'brick',nums:a})),...[[4,5],[3,6],[5,4]].map(a=>({type:'sum',nums:a}))]},
 31:{title:'Parejas del 7, 8 y 9',word:'PAREJAS',tasks:[...[[3,4],[2,5],[1,6],[4,4],[3,5],[2,6],[4,5],[3,6],[1,8],[5,2]].map(a=>({type:'sum',nums:a})),...[[7,3],[8,5],[9,4]].map(a=>({type:'brick',nums:a}))]},
@@ -71,9 +72,9 @@ function taskText(t,mode='tarea'){
  }
  if(t.type==='money'){
    const expr=a.map(x=>x+' €').join(' + ');
-   if(mode==='refuerzo')return 'Cuenta el dinero del saco: '+expr+' = ____ €';
-   if(mode==='ampliacion')return 'Saco de Paco: '+expr+' = ____ €. Dibuja otra combinación que tenga ese mismo valor.';
-   return 'Saco de Paco: '+expr+' = ____ €';
+   if(mode==='refuerzo'||mode==='tea'||mode==='pictogramas')return 'Mira el saco. Cuenta el VALOR de cada pieza. '+expr+' = ____ €.';
+   if(mode==='ampliacion')return 'Cuenta el valor: '+expr+' = ____ €. Dibuja otra combinación de 1 €, 2 € y 5 € que tenga el mismo valor.';
+   return 'Sacos de Paco: '+expr+' = ____ €. Cuenta el valor, no las piezas.';
  }
  if(t.type==='compare'){
    const expr=a.join(' + ');
@@ -88,6 +89,7 @@ function taskText(t,mode='tarea'){
 }
 function worksheetStrategyText(item,mode,j){
  const a=item.nums;
+ if((page===21||page===27)&&item.type==='money')return taskText(item,mode);
  if(page===30){
   const [total,known]=item.type==='brick'?a:[9,a[0]];
   const prompt='El 9: construye 9 con regletas, dibuja nueve elementos y completa el diagrama 9 = '+known+' + ____.';
@@ -121,7 +123,8 @@ function buildFollowUp(mode){
    24:['Construye una pareja del 8 con regletas y dibújala.','Representa el 8 con un dibujo, un diagrama y una suma.'],
    25:['Dibuja una suma antes de escribirla.','Resuelve un pequeño problema usando un diagrama parte-todo y comprueba.'],
    26:['Completa un ladrillo: ¿qué parte falta?','Explica dos ladrillos que tienen el mismo total.'],
-   27:['Dibuja las monedas que aparecen en el saco.','Explica otra combinación de monedas con el mismo valor.'],
+   21:['Dibuja monedas de 1 € y 2 € que tengan el mismo valor que el saco.','¿Qué sacos tienen el mismo valor? Explica por qué.'],
+   27:['Compara los sacos: ¿cuáles tienen el mismo valor?','Inventa dos sacos distintos que tengan igual valor, usando 1 €, 2 € y 5 €.'],
    28:['Marca las sumas que dan 8 y las que son menores.','Inventa una suma que dé 8 y otra que sea menor; explica por qué.'],
    29:['Construye una pareja del 9 y busca el complemento.','Encuentra dos complementos del 9 y explica cómo los compruebas.'],
    30:['Construye el 9 y dibuja nueve elementos.','Muestra el 9 con regletas, dibujo, diagrama parte-todo y suma.'],
@@ -143,7 +146,7 @@ function createModel(){
   return candidates.length?candidates[(version+j)%candidates.length]:pool[(index+j)%pool.length];
  };
  const chosen=Array.from({length:amount},(_,j)=>{
-  const item=choose(j),a=item.nums.slice();
+  const item=(page===21||page===27)?pool[(version*3+j)%pool.length]:choose(j),a=item.nums.slice();
   if(cycle%2===1&&item.type==='sum')a.reverse();
   return {text:(j+1)+'. '+worksheetStrategyText({type:item.type,nums:a},mode,j),type:item.type,nums:a,size:mode==='refuerzo'?14:mode==='ampliacion'?14:14,gap:4,draw:0};
  });
@@ -161,7 +164,7 @@ function apply(el,m){el.dataset.sourceText=m.sourceText||m.text;el.dataset.strat
  if(m.type && m.nums && window.OAOAVisuals){const figure=document.createElement('div');figure.className='strategy-visual';figure.innerHTML=OAOAVisuals.render({page,type:m.type,nums:m.nums,mode:$('kind').value});el.append(figure);}
  if(Number(el.dataset.draw)>0){const draw=document.createElement('div');draw.className='draw';el.append(draw)}}
 function pick(el){selected=el;[...$('items').children].forEach(x=>x.classList.toggle('selected',x===el))}
-function render(models){$('paperTitle').textContent='MATEMÁTICAS OAOA · PÁGINA '+page;$('heading').textContent=config.title;$('version').textContent='Versión '+(version+1)+' · '+config.title;$('paperFooter').textContent='Página '+page+' · Versión '+(version+1);$('prompt').textContent=$('kind').value==='tea'?'MIRA · PIENSA · CONSTRUYE · ESCRIBE':$('kind').value==='pictogramas'?'👀 MIRA · 🧩 JUNTA · ✍️ ESCRIBE':'Resuelve. Puedes usar regletas, dibujos y sumas.';$('items').replaceChildren(...models.map(buildTask));selected=null;validate()}
+function render(models){$('paperTitle').textContent='MATEMÁTICAS OAOA · PÁGINA '+page;$('heading').textContent=config.title;$('version').textContent='Versión '+(version+1)+' · '+config.title;$('paperFooter').textContent='Página '+page+' · Versión '+(version+1);$('prompt').textContent=$('kind').value==='tea'?'MIRA · PIENSA · CONSTRUYE · ESCRIBE':$('kind').value==='pictogramas'?'👀 MIRA · 🧩 JUNTA · ✍️ ESCRIBE':((page===21||page===27)?'Cuenta el valor de los billetes y monedas de cada saco.':'Resuelve. Puedes usar regletas, dibujos y sumas.');$('items').replaceChildren(...models.map(buildTask));selected=null;validate()}
 function load(){let models=createModel();try{let saved=JSON.parse(localStorage.getItem(key())||'null');if(Array.isArray(saved)&&saved.length>0&&saved.length<30)models=saved.map((m,i)=>({...m,type:m.type||models[i]?.type||'',nums:m.nums||models[i]?.nums||[],sourceText:m.sourceText||models[i]?.text||m.text}))}catch(e){}history=[];render(models)}
 function validate(){
  const paper=$('paper'),footer=$('paperFooter'),items=$('items');
