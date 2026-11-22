@@ -95,10 +95,10 @@ function units(n,showRemoval){
 }
 function rods(n,showAnswer){
  return '<div class="rod-rows"><div class="rod-row"><span class="rod" style="width:'+n*10+'mm;background:'+color[n]+';color:'+([6,7,8,9].includes(n)?'#fff':'#17384e')+'">'+n+'</span></div>'+
- '<div class="rod-row"><span class="rod" style="width:10mm;background:'+color[1]+'">1</span><span class="previous-symbol">→</span><span class="rod" style="width:'+(n-1)*10+'mm;background:'+color[n-1]+';color:'+([6,7,8,9].includes(n-1)?'#fff':'#17384e')+'">'+(showAnswer?n-1:'?')+'</span></div></div>';
+ '<div class="rod-row"><span class="rod" style="width:'+(n-1)*10+'mm;background:'+color[n-1]+';color:'+([6,7,8,9].includes(n-1)?'#fff':'#17384e')+'">'+(showAnswer?n-1:'?')+'</span><span class="rod" style="width:10mm;background:'+color[1]+'">1</span></div></div>';
 }
-function numberline(n){
- return '<div class="numberline" aria-label="Números del 0 al 9, marca el número anterior">'+Array.from({length:10},(_,i)=>'<div class="mark '+(i===n?'active':i===n-1?'before':'')+'">'+i+'</div>').join('')+'</div><p class="numberline-label">Retrocede una posición: '+n+' → ____</p>';
+function numberline(n,showHint){
+ return '<div class="numberline" aria-label="Números del 0 al 9, marca el número anterior">'+Array.from({length:10},(_,i)=>'<div class="mark '+(i===n?'active':showHint&&i===n-1?'before':'')+'">'+i+'</div>').join('')+'</div><p class="numberline-label">Retrocede una posición: '+n+' → ____</p>';
 }
 function card(num,title,instruction,body,foot=''){return '<section class="card"><div class="headrow"><span class="step">'+num+'</span><h3 class="action">'+title+'</h3></div><p class="instruction">'+instruction+'</p>'+body+foot+'</section>'}
 function line(label){return '<div class="answer">'+label+'<span class="line"></span></div>'}
@@ -122,7 +122,7 @@ function render(){
  const A=[];
  if(mode==='refuerzo'){
   A.push(card(1,'Quito uno','Observa: de '+n+' unidades quitamos una.',units(n,true)+'<div class="previous-eq">'+n+' − 1 = '+(n-1)+'</div>'));
-  A.push(card(2,'Retrocedo','Busca el número que va justo antes.',numberline(other)+line('Anterior:')));
+  A.push(card(2,'Retrocedo','Busca el número que va justo antes.',numberline(other,true)+line('Anterior:')));
   A.push(card(3,'Completo','Quita una unidad y completa.',units(other,true)+line(other+' − 1 =')));
  }else if(mode==='tarea'){
   A.push(card(1,'Construyo','Construye '+n+' con regletas. Quita una.',rods(n,false)+line(n+' − 1 =')));
