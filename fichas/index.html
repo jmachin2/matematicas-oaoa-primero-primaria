@@ -37,17 +37,6 @@ html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;backgr
 .icon{width:58px;height:58px;border-radius:16px;background:#e6f4fa;display:grid;place-items:center;font-size:1.8rem}
 .card h2{margin:0;font-size:1.08rem}.card p{margin:5px 0 0;color:var(--muted);font-weight:700}
 .arrow{font-size:1.8rem;color:var(--blue);font-weight:900}
-.weekly{background:#fff;border:2px solid #80b2cc;border-radius:19px;padding:18px;margin-bottom:22px;box-shadow:var(--shadow)}
-.weekly h2{margin:0 0 5px;font-size:1.3rem}
-.weekly p{margin:0 0 14px;color:var(--muted);line-height:1.45}
-.weekly-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-.weekly-item{display:flex;flex-direction:column;gap:5px;min-height:140px;background:#f1f8fc;border:2px solid #b6d4e3;border-radius:14px;padding:13px;text-decoration:none;color:var(--ink)}
-.weekly-item:hover{background:#e3f3fb;border-color:#469ac7}
-.weekly-item strong{font-size:1.22rem}
-.weekly-item .sub{font-weight:700;font-size:.89rem;line-height:1.35}
-.weekly-item .open{margin-top:auto;color:#216f99;font-weight:800}
-@media(max-width:860px){.weekly-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:500px){.weekly-grid{grid-template-columns:1fr}}
 .note{margin-top:16px;background:#fff9dd;border:2px solid #e2c873;border-radius:15px;padding:12px 15px;font-weight:800;color:#665421}
 @media(max-width:760px){
   .header-inner{padding:12px 14px 0}.brand-row{align-items:flex-start}.page-main{padding:14px}
@@ -76,16 +65,6 @@ html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;backgr
 </header>
 
 <main class="page-main">
-  <section class="weekly" aria-labelledby="nextweek-title">
-    <h2 id="nextweek-title">📚 Próxima semana · Páginas 31 a 34</h2>
-    <p>Acceso directo a las cuatro páginas del libro OAOA. Las páginas 31, 32 y 33 incluyen actividades interactivas; la 34 dispone de fichas imprimibles adaptadas.</p>
-    <div class="weekly-grid">
-      <a class="weekly-item" href="../pagina-31/"><strong>31 · Parejas</strong><span class="sub">Parejas del 7, 8 y 9</span><span class="open">Abrir página →</span></a>
-      <a class="weekly-item" href="../pagina-32/"><strong>32 · Anterior</strong><span class="sub">Restar una unidad (−1)</span><span class="open">Abrir página →</span></a>
-      <a class="weekly-item" href="../pagina-33/"><strong>33 · Sumas</strong><span class="sub">Sumas del 7 al 9</span><span class="open">Abrir página →</span></a>
-      <a class="weekly-item" href="../pagina-34/"><strong>34 · Diagramas</strong><span class="sub">Parte-todo y ladrillos</span><span class="open">Abrir página →</span></a>
-    </div>
-  </section>
   <h2 class="section-title">Fichas interactivas</h2>
   <p class="section-lead">Selecciona una ficha para trabajarla en la PDI o en el ordenador.</p>
   <div class="cards">
@@ -115,7 +94,12 @@ html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;backgr
 <a class="card" href="../pagina-31/"><div class="icon">🧩</div><div><h2>Página 31 · Parejas del 7, 8 y 9</h2><p>59 · Parejas / 60 · Memorízalas</p></div><span class="arrow">→</span></a>
 <a class="card" href="../pagina-32/"><div class="icon">💶</div><div><h2>Página 32 · El número anterior</h2><p>61 · Estrategia de cálculo −1</p></div><span class="arrow">→</span></a>
 <a class="card" href="../pagina-33/"><div class="icon">🎯</div><div><h2>Página 33 · Sumas y relaciones del 7 al 9</h2><p>63 · Sumas del 8 y 9 / 64 · Une con flechas</p></div><span class="arrow">→</span></a>
-<a class="card" href="../pagina-34/"><div class="icon">🧱</div><div><h2>Página 34 · Diagramas y ladrillos</h2><p>65 · Diagramas / 66 · Ladrillos · Fichas imprimibles</p></div><span class="arrow">→</span></a>
+<a class="card" href="../pagina-34/"><div class="icon">🧱</div><div><h2>Página 34 · Diagramas y ladrillos</h2><p>65 · Diagramas / 66 · Ladrillos</p></div><span class="arrow">→</span></a>
+<a class="card" href="../pagina-35/"><div class="icon">🎁</div><div><h2>Página 35 · Reto del regalo y sumas en árbol</h2><p>67 · Reto del regalo / 68 · Sumas en árbol</p></div><span class="arrow">→</span></a>
+<a class="card" href="../pagina-36/"><div class="icon">🔟</div><div><h2>Página 36 · El número 10</h2><p>69 · Construimos 10</p></div><span class="arrow">→</span></a>
+<a class="card" href="../pagina-37/"><div class="icon">🎨</div><div><h2>Página 37 · Coloreamos parejas del 10</h2><p>70 · Colorea los bichos</p></div><span class="arrow">→</span></a>
+<a class="card" href="../pagina-38/"><div class="icon">🐑</div><div><h2>Página 38 · Agrupamos diez ovejas</h2><p>71 · Rodea las ovejas</p></div><span class="arrow">→</span></a>
+<a class="card" href="../pagina-39/"><div class="icon">🎯</div><div><h2>Página 39 · Caza el 10 y sus complementos</h2><p>72 · Cuenta y forma 10 / 73 · Cuánto falta</p></div><span class="arrow">→</span></a>
   </div>
   <div class="note">Cada actividad tiene su propia URL. Dentro de cada ficha, «← Menú de fichas» vuelve a esta pantalla.</div>
 </main>
